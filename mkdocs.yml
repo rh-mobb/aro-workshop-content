@@ -1,0 +1,42 @@
+# Project Information
+site_name: ARO Hack-A-Thon
+site_url: https://rh-mobb.github.io/aro-hackathon-content
+site_description: A choose-your-own-adventure workshop for Operations and Development teams on ARO.
+site_author: Red Hat
+
+# Repository
+repo_name: rh-mobb/aro-hackathon-content
+repo_url: https://github.com/rh-mobb/aro-hackathon-content
+
+# Nav Menu Definition
+nav:
+  - Home: index.md
+  - Operations:
+    - Setup: 'ops/1-account-setup.md'
+    - ARO Reference Architecture: 'ops/2-deploy-aro-ref-arch.md'
+    - Azure Service Operator: 'ops/3-azure-service-operator.md'
+  - App Dev:
+    - Setup: 'app/1-account-setup.md'
+
+
+# Theme Configuration
+theme:
+  name: material
+  language: 'en'
+  palette:
+    primary: black
+    accent: red
+  font:
+    text: Overpass
+    code: Overpass Mono
+  logo: favicon.ico
+  favicon: favicon.ico
+docs_dir: aro-content
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - toc:
+      permalink: "#"
+
+# Google Analytics
