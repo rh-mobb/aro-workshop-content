@@ -105,6 +105,7 @@ If you haven't and want to run a simple script to create the database for you th
    #%prod.quarkus.kubernetes.deployment-target=knative
    %prod.quarkus.openshift.build-strategy=docker
    #%prod.quarkus.openshift.expose=true
+   %prod.quarkus.openshift.deployment-kind=Deployment
 
    # Serverless configurations
    #%prod.quarkus.container-image.group=microsweeper-%prod.quarkus
