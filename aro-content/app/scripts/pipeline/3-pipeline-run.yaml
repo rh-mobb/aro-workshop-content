@@ -1,0 +1,25 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: minesweeper-pipeline-
+spec:
+  pipelineRef:
+    name: maven-pipeline
+  serviceAccountName: pipeline
+  params:
+  - name: application-name
+    value: minesweeper
+  - name: dependency-git-url
+    value: https://github.com/kmcolli/common-java-dependencies.git
+  - name: application-git-url
+    value: https://github.com/kmcolli/microsweeper-quarkus
+  - name:  application-git-revision
+    value: ARO
+  - name: dockerfile-path
+    value: src/main/docker/Dockerfile.jvm
+  - name: image-name
+    value: kevcolliacr.azurecr.io/minesweeper
+  workspaces:
+  - name: source
+    persistentVolumeClaim:
+      claimName: minesweeper-source-pvc
