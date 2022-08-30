@@ -16,7 +16,7 @@ When the storage setup prompt appears, select Show advanced settings to view add
 
 Mount your storage using the advanced option with the following settings:
 
-![Advanced Storage Settings](/assets/images/advanced-storage.png){ align=center }
+![Advanced Storage Settings](../assets/images/advanced-storage.png){ align=center }
 
 
 
