@@ -7,9 +7,6 @@ mkdir openshift
 
 tar -zxvf openshift-client-linux.tar.gz -C openshift
 
-mv openshift/oc /usr/local/bin/oc
-echo 'export PATH=$PATH:~/openshift' >> ~/.bashrc
+echo 'export PATH=$PATH:~/openshift' >> ~/.bashrc && source ~/.bashrc
 
-source ~/.bashrc
-
-az account set --subscription 'my-subscription-name'
+az account set --subscriptiocat cloud   n 'my-subscription-name'
