@@ -42,6 +42,13 @@ markdown_extensions:
       permalink: "#"
   - attr_list
   - md_in_html
-  - glightbox
+  - glightbox:
+      touchNavigation: true
+      loop: false
+      effect: zoom
+      width: 100%
+      height: auto
+      zoomable: true
+      draggable: true
 
 # Google Analytics
