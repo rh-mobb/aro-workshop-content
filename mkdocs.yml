@@ -17,6 +17,7 @@ nav:
     - Azure Service Operator: 'ops/3-azure-service-operator.md'
   - App Dev:
     - Setup: 'app/1-account-setup.md'
+    - Deploy and Expose and App: 'app/2-deploy-app.md'
 
 
 # Theme Configuration
