@@ -90,7 +90,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
  - FlexibleServersDatabase 
  - FlexibleServersFirewallRule
 
-- **ResourceGroup**  **(if you don't. have Resource Group)**
+ **ResourceGroup**  **(if you don't. have Resource Group)**
 ```
 cat <<EOF | oc apply -f -
 apiVersion: resources.azure.com/v1beta20200601
@@ -102,7 +102,7 @@ spec:
   location: eastus
 EOF
 ```
-- **Provision PostgreSQL flexible server**
+ **Provision PostgreSQL flexible server**
 
       create a secret for the DB server
 ```
@@ -117,7 +117,7 @@ metadata :
 EOF
 ```
       
-- **create DB server**
+ **create DB server**
       
  ```
  cat <<EOF | oc apply -f -
@@ -142,7 +142,7 @@ spec:
     storageSizeGB: 32
  ```
 
-- **create Server configuration**
+ **create Server configuration**
 ```
 cat  <<EOF | oc apply -f -
 apiVersion: dbforpostgresql.azure.com/v1beta20210601
@@ -158,7 +158,7 @@ spec:
   value: READ
 EOF
 ```
-- **create a firewall rule for the database**
+ **create a firewall rule for the database**
 ```
 cat  <<EOF | oc apply -f -
 apiVersion: dbforpostgresql.azure.com/v1beta20210601
