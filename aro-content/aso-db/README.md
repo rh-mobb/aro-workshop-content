@@ -51,7 +51,7 @@ stringData:
 EOF
 ```
 
-**install cer-manager operator**
+**install cert-manager operator**
 
 ```
 cat <<EOF | oc apply -f -
