@@ -69,7 +69,7 @@ spec:
   startingCSV: openshift-cert-manager.v1.7.1
 EOF
 ```
-**deploy ASO v2 on ARO cluster**
+**deploy ASO **v2 on **the **ARO**** cluster****
 ```
 helm repo add aso2 https://raw.githubusercontent.com/Azure/azure-service-operator/main/v2/charts
 helm upgrade --install --devel aso2 aso2/azure-service-operator \
@@ -83,7 +83,7 @@ helm upgrade --install --devel aso2 aso2/azure-service-operator \
 
 ## Provision DB for Minesweeper APP
 
-to provision a PostgreSQL DB you need to create a the following object in your cluster:
+to provision a PostgreSQL DB you need to create the following objects in your cluster:
  - ResourceGroup  
  - FlexibleServer  
  - FlexibleServersDatabase 
@@ -101,9 +101,9 @@ spec:
   location: eastus
 EOF
 ```
-2. **Provision a  PostgreSQL flexible server**
+2. **Provision PostgreSQL flexible server**
 
-      create a secret for DB server
+      create a secret for the DB server
 ```
 cat <<EOF | oc apply -f -
 apiVersion : v1
@@ -157,21 +157,7 @@ spec:
   value: READ
 EOF
 ```
-create database 
-```
-cat  <<EOF | oc apply -f -
-apiVersion: dbforpostgresql.azure.com/v1beta20210601
-kind: FlexibleServersDatabase
-metadata:
-  name: wksp-db
-  namespace: default
-spec:
-  owner:
-    name: wksp-pqslserver
-  charset: utf8
-EOF
-```
-create firewall rule for database
+create a firewall rule for the database
 ```
 cat  <<EOF | oc apply -f -
 apiVersion: dbforpostgresql.azure.com/v1beta20210601
