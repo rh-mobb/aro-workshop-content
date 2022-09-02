@@ -104,7 +104,7 @@ EOF
 ```
  **Provision PostgreSQL flexible server**
 
-      create a secret for the DB server
+create a secret for the DB server
 ```
 cat <<EOF | oc apply -f -
 apiVersion : v1
