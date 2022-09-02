@@ -121,7 +121,7 @@ EOF
       
  ```
  cat <<EOF | oc apply -f -
- apiVersion: dbforpostgresql.azure.com/v1beta20210601
+apiVersion: dbforpostgresql.azure.com/v1beta20210601
 kind: FlexibleServer
 metadata:
   name: wksp-pqslserver
@@ -140,6 +140,7 @@ spec:
     key: password
   storage:
     storageSizeGB: 32
+EOF
  ```
 
  **create Server configuration**
