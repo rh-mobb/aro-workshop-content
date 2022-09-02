@@ -14,7 +14,8 @@ In this workshop, we use ASO to provision a PostgreSQL DB and connect applicatio
   
   
 
-### Install and run ASO on your ARO OpenShift cluster
+### 1. Install and run ASO on your ARO OpenShift cluster
+**Note:** if ASO is not installed otherwise go to section 2
 
 **create an Azure Service Principal to grant ASO permissions to create resources in your subscription**
 ```
@@ -81,7 +82,7 @@ helm upgrade --install --devel aso2 aso2/azure-service-operator \
      --set azureClientSecret=$AZURE_CLIENT_SECRET
 ```
 
-## Provision DB for Minesweeper APP
+## 2. Provision DB for Minesweeper APP
 
 to provision a PostgreSQL DB you need to create the following objects in your cluster:
  - ResourceGroup  
@@ -89,7 +90,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
  - FlexibleServersDatabase 
  - FlexibleServersFirewallRule
 
-1. **ResourceGroup**  **(if you don't. have Resource Group)**
+- **ResourceGroup**  **(if you don't. have Resource Group)**
 ```
 cat <<EOF | oc apply -f -
 apiVersion: resources.azure.com/v1beta20200601
@@ -101,7 +102,7 @@ spec:
   location: eastus
 EOF
 ```
-2. **Provision PostgreSQL flexible server**
+- **Provision PostgreSQL flexible server**
 
       create a secret for the DB server
 ```
@@ -116,7 +117,7 @@ metadata :
 EOF
 ```
       
-   create DB server
+- **create DB server**
       
  ```
  cat <<EOF | oc apply -f -
@@ -141,7 +142,7 @@ spec:
     storageSizeGB: 32
  ```
 
-create Server configuration
+- **create Server configuration**
 ```
 cat  <<EOF | oc apply -f -
 apiVersion: dbforpostgresql.azure.com/v1beta20210601
@@ -157,7 +158,7 @@ spec:
   value: READ
 EOF
 ```
-create a firewall rule for the database
+- **create a firewall rule for the database**
 ```
 cat  <<EOF | oc apply -f -
 apiVersion: dbforpostgresql.azure.com/v1beta20210601
