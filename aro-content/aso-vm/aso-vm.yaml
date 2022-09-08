@@ -87,7 +87,7 @@ spec:
 apiVersion: network.azure.com/v1beta20201101
 kind: NetworkSecurityGroupsSecurityRule
 metadata:
-  name: samplerule
+  name: sshrule
   namespace: default
 spec:
   location: eastus
