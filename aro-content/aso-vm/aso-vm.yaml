@@ -39,7 +39,7 @@ spec:
 apiVersion: network.azure.com/v1beta20201101
 kind: NetworkInterface
 metadata:
-  name: samplenic
+  name: wksp-vm-nic
   namespace: default
 spec:
   location: eastus
@@ -134,4 +134,4 @@ spec:
       - reference:
           group: network.azure.com
           kind: NetworkInterface
-          name: samplenic
+          name: wksp-vm-nic
