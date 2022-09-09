@@ -1,0 +1,21 @@
+apiVersion: compute.azure.com/v1beta20200930
+kind: Snapshot
+metadata:
+  name: wksp-vm-disk-snapshot
+  namespace: default
+spec:
+  azureName: wksp-vm-disk-snapshot
+  location: eastus
+  owner:
+    name: wksp-rg
+  creationData:
+    createOption: Empty
+  diskSizeGB: 64
+
+# creationData:
+#     createOption: Empty
+#     sourceResourceReference:
+#       group: network.azure.com
+#       kind: NetworkInterface
+#       name: wksp-vm-nic
+#   diskSizeGB: 64
