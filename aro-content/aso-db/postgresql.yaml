@@ -11,9 +11,9 @@ kind : Secret
 metadata : 
   name : server-admin-pw
   namespace : default
-  stringData : 
-   password : aGFja2F0aG9uUGFzcw==  # hackathonPass
-
+data:
+  password: aGFja2F0aG9uUGFzcw== # hackathonPass
+type: Opaque
 
 --- 
 apiVersion: dbforpostgresql.azure.com/v1beta20210601
@@ -29,6 +29,9 @@ spec:
   sku:
     name: Standard_B1ms
     tier: Burstable
+#    family: Gen5
+#    size: "51200"
+#    capacity: 2
   administratorLogin: myAdmin
   administratorLoginPassword: # This is the name/key of a Kubernetes secret in the same namespace
     name: server-admin-pw
