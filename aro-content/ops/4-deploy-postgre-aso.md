@@ -24,7 +24,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
  - FlexibleServersDatabase 
  - FlexibleServersFirewallRule
 
- **ResourceGroup**  **(if you don't. have Resource Group)**
+ **ResourceGroup**  **(if you don't have Resource Group)**
 ```
 cat <<EOF | oc apply -f -
 apiVersion: resources.azure.com/v1beta20200601
