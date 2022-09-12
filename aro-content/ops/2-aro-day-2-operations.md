@@ -444,6 +444,3 @@ Click on the machine that was just created.
 You can see that the label is now there.
 
 ![checklabel](media/managedlab/45-machine-label.png)
-
-### Access the internal Registry
-
