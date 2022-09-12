@@ -51,17 +51,18 @@ EOF
 **install cert-manager operator**
 
 **create Namespace for cert-manager-operator**
-
+```
 cat <<EOF | oc apply -f -
 kind: Namespace
 apiVersion: v1
 metadata:
   name: openshift-cert-manager-operator
 EOF
+```
 
 **create operator group**
 
-
+```
 cat <<EOF | oc apply -f -
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
@@ -70,7 +71,7 @@ metadata:
   namespace: openshift-cert-manager-operator
 spec: {}  
 EOF
-
+```
 **create subscription**
 
 ```
