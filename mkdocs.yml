@@ -14,8 +14,7 @@ nav:
   - Workshop Setup: general/1-workshop-setup.md
   - Operations:
     - Setup: ops/1-account-setup.md
-    - ARO Reference Architecture: ops/2-deploy-aro-ref-arch.md
-    - Azure Service Operator: ops/3-azure-service-operator.md
+    - ARO Day 2 Operations: ops/2-aro-day-2-operations.md
   - App Dev:
     - Setup: app/1-account-setup.md
     - Deploy and Expose and App: app/2-deploy-app.md
