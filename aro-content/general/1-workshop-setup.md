@@ -2,6 +2,8 @@
 
 ### Access Azure Portal and CLI
 
+Access the Azure Portal through <https://portal.azure.com>
+
 #### Azure Credentials
 
 Azure credentials will be provided to you by the organizing staff on the day of the event.
