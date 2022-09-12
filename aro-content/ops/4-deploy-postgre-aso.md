@@ -3,7 +3,7 @@ Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gi
 1. Custom Resource Definitions (CRDs) for each of the Azure services that a Kubernetes user can provision.
 2. A Kubernetes controller that manages the Azure resources represented by the user-specified Custom Resources. The controller attempts to synchronize the desired state in the user-specified Custom Resource with the actual state of that resource in Azure, creating it if it doesn't exist, updating it if it has been changed, or deleting it.
 
-In this workshop, we use ASO to provision a PostgreSQL DB and connect applications to Azure resources from within Kubernetes
+In this task, we use ASO to provision a PostgreSQL DB and connect applications to Azure resources from within Kubernetes
 
 ### Prerequisites
 
@@ -11,78 +11,12 @@ In this workshop, we use ASO to provision a PostgreSQL DB and connect applicatio
 
 * oc cli
 
+* Azure Service Operator(ASO) operator v2
   
   
 
-### 1. Install and run ASO on your ARO OpenShift cluster
-**Note:** if ASO is not installed otherwise go to section 2
 
-**create an Azure Service Principal to grant ASO permissions to create resources in your subscription**
-```
- #!/bin/sh
-
-AZURE_TENANT_ID="$(az account show -o tsv --query tenantId)"
-echo "Azure Tenant ID $AZURE_TENANT_ID"
-AZURE_SUBSCRIPTION_ID="$(az account show -o tsv --query id)"
-echo "Azure subscription ID $AZURE_SUBSCRIPTION_ID"
-export IDENTITY_CLIENT_ID="$(az identity show -g ${IDENTITY_RESOURCE_GROUP} -n ${IDENTITY_NAME} > --query clientId -otsv)"
-export IDENTITY_RESOURCE_ID="$(az identity show -g ${IDENTITY_RESOURCE_GROUP} -n ${IDENTITY_NAME} > --query id -otsv)"
-AZURE_SP="$(az ad sp create-for-rbac -n mhs-aso-hack --role contributor \ --scopes /subscriptions/$AZURE_SUBSCRIPTION_ID -o json )"
-echo " Azure SP ID/SECRET $AZURE_SP"
-AZURE_CLIENT_ID="$(echo $AZURE_SP | jq -r '.appId')"
-echo "SP ID $AZURE_CLIENT_ID"
-AZURE_CLIENT_SECRET="$(echo $AZURE_SP | jq -r '.password')"
-echo "SP SECRET $AZURE_CLIENT_SECRET"
-```
-
- **create a secret for ASO** 
-```
-cat <<EOF | oc apply -f - 
-apiVersion: v1
-kind: Secret
-metadata:
-  name: azureoperatorsettings
-  namespace: openshift-operators
-stringData:
-  AZURE_TENANT_ID: $AZURE_TENANT_ID
-  AZURE_SUBSCRIPTION_ID: $AZURE_SUBSCRIPTION_ID
-  AZURE_CLIENT_ID: $AZURE_CLIENT_ID
-  AZURE_CLIENT_SECRET: $AZURE_CLIENT_SECRET
-#  AZURE_CLOUD_ENV: AzureCloud
-EOF
-```
-
-**install cert-manager operator**
-
-```
-cat <<EOF | oc apply -f -
-apiVersion: operators.coreos.com/v1alpha1
-kind: Subscription
-metadata:
-  name: openshift-cert-manager-operator
-  namespace: openshift-cert-manager-operator
-spec:
-  channel: tech-preview
-  installPlanApproval: Automatic
-  name: openshift-cert-manager-operator
-  source: redhat-operators
-  sourceNamespace: openshift-marketplace
-  startingCSV: openshift-cert-manager.v1.7.1
-EOF
-```
-**deploy ASO **v2 on **the **ARO**** cluster****
-```
-helm repo add aso2 https://raw.githubusercontent.com/Azure/azure-service-operator/main/v2/charts
-helm upgrade --install --devel aso2 aso2/azure-service-operator \
-     --create-namespace \
-     --namespace=azureserviceoperator-system \
-     --set azureSubscriptionID=$AZURE_SUBSCRIPTION_ID \
-     --set azureTenantID=$AZURE_TENANT_ID \
-     --set azureClientID=$AZURE_CLIENT_ID \
-     --set azureClientSecret=$AZURE_CLIENT_SECRET
-```
-
-## 2. Provision DB for Minesweeper APP
+## Provision DB for Minesweeper APP
 
 to provision a PostgreSQL DB you need to create the following objects in your cluster:
  - ResourceGroup  
