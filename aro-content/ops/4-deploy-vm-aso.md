@@ -3,7 +3,7 @@ Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gi
 1. Custom Resource Definitions (CRDs) for each of the Azure services that a Kubernetes user can provision.
 2. A Kubernetes controller that manages the Azure resources represented by the user-specified Custom Resources. The controller attempts to synchronize the desired state in the user-specified Custom Resource with the actual state of that resource in Azure, creating it if it doesn't exist, updating it if it has been changed, or deleting it.
 
-In this workshop, we use ASO to provision a PostgreSQL DB and connect applications to Azure resources from within Kubernetes
+In this step, we use ASO to provision a PostgreSQL DB and connect applications to Azure resources from within Kubernetes
 
 ### Prerequisites
 
