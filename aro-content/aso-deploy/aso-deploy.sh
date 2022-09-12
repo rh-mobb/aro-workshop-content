@@ -69,7 +69,7 @@ spec:
   startingCSV: openshift-cert-manager.v1.7.1
 EOF
 
-sleep 10
+while [[ $(oc get pods -l app=cert-manager -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager pod" && sleep 1; done
 
 helm repo add aso2 https://raw.githubusercontent.com/Azure/azure-service-operator/main/v2/charts
 helm upgrade --install --devel aso2 aso2/azure-service-operator \
