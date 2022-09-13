@@ -111,3 +111,4 @@ helm upgrade --install --devel aso2 aso2/azure-service-operator \
      --set azureClientID=$AZURE_CLIENT_ID \
      --set azureClientSecret=$AZURE_CLIENT_SECRET
 ```
+**Note: issuing certificate takes up to 5 min for ASO operator.**
