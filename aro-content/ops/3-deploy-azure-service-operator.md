@@ -12,6 +12,8 @@ Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gi
 
 * logged in to ARO cluster
 
+*  optional: client tool for Postgres - psql , pgadmin
+
 ###  Install and run ASO on your ARO OpenShift cluster
 
 
