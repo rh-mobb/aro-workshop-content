@@ -46,8 +46,9 @@ kind : Secret
 metadata : 
   name : server-admin-pw
   namespace : default
-  stringData : 
-   password : aGFja2F0aG9uUGFzcw== 
+data:
+  password: aGFja2F0aG9uUGFzcw==
+type: Opaque
 EOF
 ```
       
