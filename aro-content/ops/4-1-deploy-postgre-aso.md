@@ -38,7 +38,7 @@ EOF
 ```
  **Provision PostgreSQL flexible server**
 
-**create a secret for the DB server**
+1. **create a secret for the DB server**
 ```
 cat <<EOF | oc apply -f -
 apiVersion : v1
@@ -52,7 +52,7 @@ type: Opaque
 EOF
 ```
       
- **create DB server**
+2. **create DB server**
       
  ```
  cat <<EOF | oc apply -f -
@@ -78,7 +78,7 @@ spec:
 EOF
  ```
 
- **create Server configuration**
+3.  **create Server configuration**
 ```
 cat  <<EOF | oc apply -f -
 apiVersion: dbforpostgresql.azure.com/v1beta20210601
@@ -94,7 +94,7 @@ spec:
   value: READ
 EOF
 ```
- **create a firewall rule for the database**
+4. **create a firewall rule for the database**
 ```
 cat  <<EOF | oc apply -f -
 apiVersion: dbforpostgresql.azure.com/v1beta20210601
@@ -113,7 +113,7 @@ EOF
 **Note: it takes about 10 minutes for the database to be operational and running** 
 
  
-**create a sample DB**
+5. **create a sample DB**
 ```
 cat  <<EOF | oc apply -f -
 apiVersion: dbforpostgresql.azure.com/v1beta20210601
@@ -130,7 +130,7 @@ EOF
 ```
 
 
-**check connection to DB server**
+6. **check connection to DB server**
 
 ```
 psql "host=wksp-pqslserver.postgres.database.azure.com port=5432 dbname=wksp-db user=myAdmin password=<password> sslmode=require"
