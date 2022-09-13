@@ -271,7 +271,7 @@ az aro show \
 
 Expand "Compute" in the left menu and then click on "MachineSets"
 
-![machinesets-console](../assets/images/scale-down-console.png.png)
+![machinesets-console](../assets/images/scale-down-console.png)
 
 In the main pane you will see the same information about the machine sets from the command line.  Now click on the "three dots" at the end of the line for the machine set that you scaled up to "2". Select "Edit machine count" and decrease it to "1". Click save.
 
