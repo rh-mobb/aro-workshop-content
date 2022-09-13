@@ -15,6 +15,7 @@ nav:
   - Operations:
     - Setup: ops/1-account-setup.md
     - ARO Day 2 Operations: ops/2-aro-day-2-operations.md
+    - Azure Service Operator: ops/3-deploy-azure-service-operator.md
   - App Dev:
     - Setup: app/1-account-setup.md
     - Deploy and Expose and App: app/2-deploy-app.md
