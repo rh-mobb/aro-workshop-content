@@ -10,6 +10,8 @@ Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gi
 
 * oc cli
 
+* logged in to ARO cluster
+
 ###  Install and run ASO on your ARO OpenShift cluster
 
 
