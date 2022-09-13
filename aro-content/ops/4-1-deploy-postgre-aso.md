@@ -110,4 +110,6 @@ spec:
 EOF
 ```
 
+**Note: it takes about 10 minutes for the database to be operational and running** 
+
  
