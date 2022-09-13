@@ -168,6 +168,7 @@ There may be times when you need to change aspects of your worker nodes. Things 
 #### Scaling worker nodes
 
 ##### View the machine sets that are in the cluster
+
 Let's see which machine sets we have in our cluster.  If you are following this lab, you should only have three so far (one for each availability zone).
 
 From the terminal run:
@@ -288,7 +289,7 @@ A ClusterAutoscaler must have at least 1 machine autoscaler in order for the clu
 
 This can be accomplished via the Web Console or through the CLI with a YAML file for the custom resource definition. We'll use the latter.
 
-Download the sample [MachineAutoscaler resource definition](https://raw.githubusercontent.com/microsoft/aroworkshop/master/yaml/machine-autoscaler.yaml) and open it in your favorite editor.
+Download the sample [MachineAutoscaler resource definition](https://rh-mobb.github.io/aro-hackathon-content/assets/machine-autoscaler.yaml) and open it in your favorite editor.
 
 For `metadata.name` give this machine autoscaler a name. Technically, this can be anything you want. But to make it easier to identify which machine set this machine autoscaler affects, specify or include the name of the machine set to scale. The machine set name takes the following form: \<clusterid>-\<machineset>-\<region-az>.
 
@@ -328,14 +329,14 @@ ok0620-rq5tl-worker-westus21   MachineSet   ok0620-rq5tl-worker-westus2   1     
 
 ##### Create the Cluster Autoscaler
 
-This is the sample [ClusterAutoscaler resource definition](https://raw.githubusercontent.com/microsoft/aroworkshop/master/yaml/cluster-autoscaler.yaml) for this lab.
+This is the sample [ClusterAutoscaler resource definition](https://rh-mobb.github.io/aro-hackathon-content/assets/cluster-autoscaler.yaml) for this workshop.
 
 See the [documentation](https://docs.openshift.com/container-platform/latest/machine_management/applying-autoscaling.html#cluster-autoscaler-cr_applying-autoscaling) for a detailed explanation of each parameter. You shouldn't need to edit this file.
 
 Create the resource in the cluster:
 
 ```
-$ oc create -f https://raw.githubusercontent.com/microsoft/aroworkshop/master/yaml/cluster-autoscaler.yaml
+$ oc create -f https://rh-mobb.github.io/aro-hackathon-content/assets/cluster-autoscaler.yaml
 clusterautoscaler.autoscaling.openshift.io/default created
 ```
 
@@ -440,6 +441,8 @@ ok0620-rq5tl-worker-westus23-hzggb   Running    Standard_D4s_v3   westus2   3   
 
 To add a node label it is recommended to set the label in the machine set. While you can directly add a label the node, this is not recommended since nodes could be overwritten and then the label would disappear.  Once the machine set is modified to contain the desired label any new machines created from that set would have the newly added labels.  This means that existing machines (nodes) will not get the label.  Therefore, to make sure all nodes have the label, you should scale the machine set down to zero and then scale the machine set back up.
 
+Labels are a useful way to select which nodes / machine sets that an application will run on. If you have a memory intensitve application, you may choose to use a memory heavy node type to place that application on. By using labels on the machinesets and selectors on your pod / deployment specification, you ensure thats where the application lands.
+oc get pods
 
 ##### Using the web console
 
