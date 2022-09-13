@@ -113,3 +113,25 @@ EOF
 **Note: it takes about 10 minutes for the database to be operational and running** 
 
  
+**create a sample DB**
+```
+cat  <<EOF | oc apply -f -
+apiVersion: dbforpostgresql.azure.com/v1beta20210601
+kind: FlexibleServersDatabase
+metadata:
+  name: wksp-db
+  namespace: default
+spec:
+  owner:
+    name: wksp-pqslserver
+  charset: utf8
+
+EOF
+```
+
+
+**check connection to DB server**
+
+```
+psql "host=wksp-pqslserver.postgres.database.azure.com port=5432 dbname=wksp-db user=myAdmin password=<password> sslmode=require"
+```
