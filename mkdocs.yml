@@ -41,5 +41,8 @@ markdown_extensions:
       permalink: "#"
   - attr_list
   - md_in_html
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
 
 # Google Analytics

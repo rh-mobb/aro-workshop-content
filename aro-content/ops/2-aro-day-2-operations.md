@@ -4,7 +4,21 @@ After a cluster has been provisioned, the Cluster / Platform Operations team tak
 
 ### Managing Upgrades
 
-1. Run this oc command to enable the Managed Upgrade Operator (MUO)
+The Managed Upgrade Operator has been created to manage the orchestration of automated in-place cluster upgrades.
+
+Whilst the operator's job is to invoke a cluster upgrade, it does not perform any activities of the cluster upgrade process itself. This remains the responsibility of the OpenShift Container Platform. The operator's goal is to satisfy the operating conditions that a managed cluster must hold, both pre- and post-invocation of the cluster upgrade.
+
+Examples of activities that are not core to an OpenShift upgrade process but could be handled by the operator include:
+
+- Pre and post-upgrade health checks.
+- Worker capacity scaling during the upgrade period.
+- Alerting silence window management.
+
+Configuring the Managed Upgrade Operator for ARO ensures that your cluster functions as you need it to during upgrades. The process of executing upgrades is shown here:
+
+![MUO Upgrade Process](../assets/images/upgradecluster-flow.svg)
+
+Run this oc command to enable the Managed Upgrade Operator (MUO)
 
 ```
 oc patch cluster.aro.openshift.io cluster --patch \
@@ -12,7 +26,7 @@ oc patch cluster.aro.openshift.io cluster --patch \
  --type=merge
 ```
 
-1. Wait a few moments to ensure the Management Upgrade Operator is ready
+Wait a few moments to ensure the Management Upgrade Operator is ready, the status of the operator can be verified with:
 
 ```bash
 oc -n openshift-managed-upgrade-operator \
@@ -23,7 +37,7 @@ NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
 managed-upgrade-operator   1/1     1            1           2m2s
 ```
 
-1. Configure the Managed Upgrade Operator
+Next, configure the Managed Upgrade Operator by using the following YAML embedded into a bash command:
 
 ```
 cat << EOF | oc apply -f -
@@ -66,25 +80,31 @@ data:
 EOF
 ```
 
-1. Restart the Managed Upgrade Operator
+Restart the Managed Upgrade Operator
 
 ```
 oc -n openshift-managed-upgrade-operator \
   scale deployment managed-upgrade-operator --replicas=0
+
 oc -n openshift-managed-upgrade-operator \
   scale deployment managed-upgrade-operator --replicas=1
 ```
 
-1. Look for available Upgrades
+Look for available Upgrades
 
-> If there output is `nil` there are no available upgrades and you cannot continue.
+!!! info
+    If the output is `nil` there are no available upgrades and you cannot continue.
+
 ```bash
 oc get clusterversion version -o jsonpath='{.status.availableUpdates}'
 ```
 
-1. Schedule an Upgrade
+Schedule an Upgrade
 
-> Set the Channel and Version to the desired values from the above list of available upgrades.
+!!! info
+    Set the Channel and Version to the desired values from the above list of available upgrades.
+
+The configuration below will schedule an upgrade for the current date / time + 5 minutes, allow PDB-blocked nodes to drain for 60 minutes before a drain is forced, and sets a capacity reservation so that workloads are not interrupted during an upgrade.
 
 ```bash
 cat << EOF | oc apply -f -
@@ -97,14 +117,14 @@ spec:
   type: "ARO"
   upgradeAt: $(date -u --iso-8601=seconds --date "+5 minutes")
   PDBForceDrainTimeout: 60
-  capacityReservation: false
+  capacityReservation: true
   desired:
-    channel: "stable-4.9"
-    version: "4.9.27"
+    channel: "stable-4.10"
+    version: "4.10.28"
 EOF
 ```
 
-1. Check the status of the scheduled upgrade
+Check the status of the scheduled upgrade
 
 ```bash
 c -n openshift-managed-upgrade-operator get \
@@ -112,7 +132,8 @@ c -n openshift-managed-upgrade-operator get \
  managed-upgrade-config -o jsonpath='{.status}' | jq
 ```
 
-*The output of this command should show upgrades in progress*
+!!! info
+    The output of this command should show upgrades in progress
 
 ```
 {
@@ -130,7 +151,7 @@ c -n openshift-managed-upgrade-operator get \
       },
 ```
 
-1. You can verify the upgrade has completed successfully via the following
+You can verify the upgrade has completed successfully via the following
 
 ```
 oc get clusterversion version
