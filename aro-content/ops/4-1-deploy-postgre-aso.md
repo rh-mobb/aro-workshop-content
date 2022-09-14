@@ -33,7 +33,9 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
    ```
 1. **Provision PostgreSQL flexible server**
 
-   1. **create a secret for the DB server**
+   1. **Create a secret for the DB server**
+      
+      **NOTE: You can update password in base64 format**
       ```
       cat <<EOF | oc apply -f -
       apiVersion : v1
@@ -47,7 +49,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
       EOF
       ```
             
-   1. **create DB server**
+   2. **Create DB server**
       
       ```
       cat <<EOF | oc apply -f -
@@ -73,7 +75,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
       EOF
       ```
       
-   1. **create Server configuration**
+   3. **Create Server configuration**
       ```
       cat  <<EOF | oc apply -f -
       apiVersion: dbforpostgresql.azure.com/v1beta20210601
@@ -89,7 +91,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
         value: READ
       EOF
       ```
-   1. **create a firewall rule for the database**
+   4. **Create a firewall rule for the database**
       ```
       cat  <<EOF | oc apply -f -
       apiVersion: dbforpostgresql.azure.com/v1beta20210601
@@ -108,7 +110,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
 **Note: it takes about 10 minutes for the database to be operational and running** 
 
  
-1. **create a sample DB**
+1. **Create a sample DB**
    ```
    cat  <<EOF | oc apply -f -
    apiVersion: dbforpostgresql.azure.com/v1beta20210601
