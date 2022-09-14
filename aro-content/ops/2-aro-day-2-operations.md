@@ -4,7 +4,21 @@ After a cluster has been provisioned, the Cluster / Platform Operations team tak
 
 ### Managing Upgrades
 
-1. Run this oc command to enable the Managed Upgrade Operator (MUO)
+The Managed Upgrade Operator has been created to manage the orchestration of automated in-place cluster upgrades.
+
+Whilst the operator's job is to invoke a cluster upgrade, it does not perform any activities of the cluster upgrade process itself. This remains the responsibility of the OpenShift Container Platform. The operator's goal is to satisfy the operating conditions that a managed cluster must hold, both pre- and post-invocation of the cluster upgrade.
+
+Examples of activities that are not core to an OpenShift upgrade process but could be handled by the operator include:
+
+- Pre and post-upgrade health checks.
+- Worker capacity scaling during the upgrade period.
+- Alerting silence window management.
+
+Configuring the Managed Upgrade Operator for ARO ensures that your cluster functions as you need it to during upgrades. The process of executing upgrades is shown here:
+
+![MUO Upgrade Process](../assets/images/upgradecluster-flow.svg)
+
+Run this oc command to enable the Managed Upgrade Operator (MUO)
 
 ```
 oc patch cluster.aro.openshift.io cluster --patch \
@@ -12,7 +26,7 @@ oc patch cluster.aro.openshift.io cluster --patch \
  --type=merge
 ```
 
-1. Wait a few moments to ensure the Management Upgrade Operator is ready
+Wait a few moments to ensure the Management Upgrade Operator is ready, the status of the operator can be verified with:
 
 ```bash
 oc -n openshift-managed-upgrade-operator \
@@ -23,7 +37,7 @@ NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
 managed-upgrade-operator   1/1     1            1           2m2s
 ```
 
-1. Configure the Managed Upgrade Operator
+Next, configure the Managed Upgrade Operator by using the following YAML embedded into a bash command:
 
 ```
 cat << EOF | oc apply -f -
@@ -66,25 +80,31 @@ data:
 EOF
 ```
 
-1. Restart the Managed Upgrade Operator
+Restart the Managed Upgrade Operator
 
 ```
 oc -n openshift-managed-upgrade-operator \
   scale deployment managed-upgrade-operator --replicas=0
+
 oc -n openshift-managed-upgrade-operator \
   scale deployment managed-upgrade-operator --replicas=1
 ```
 
-1. Look for available Upgrades
+Look for available Upgrades
 
-> If there output is `nil` there are no available upgrades and you cannot continue.
+!!! info
+    If the output is `nil` there are no available upgrades and you cannot continue.
+
 ```bash
 oc get clusterversion version -o jsonpath='{.status.availableUpdates}'
 ```
 
-1. Schedule an Upgrade
+Schedule an Upgrade
 
-> Set the Channel and Version to the desired values from the above list of available upgrades.
+!!! info
+    Set the Channel and Version to the desired values from the above list of available upgrades.
+
+The configuration below will schedule an upgrade for the current date / time + 5 minutes, allow PDB-blocked nodes to drain for 60 minutes before a drain is forced, and sets a capacity reservation so that workloads are not interrupted during an upgrade.
 
 ```bash
 cat << EOF | oc apply -f -
@@ -97,14 +117,14 @@ spec:
   type: "ARO"
   upgradeAt: $(date -u --iso-8601=seconds --date "+5 minutes")
   PDBForceDrainTimeout: 60
-  capacityReservation: false
+  capacityReservation: true
   desired:
-    channel: "stable-4.9"
-    version: "4.9.27"
+    channel: "stable-4.10"
+    version: "4.10.28"
 EOF
 ```
 
-1. Check the status of the scheduled upgrade
+Check the status of the scheduled upgrade
 
 ```bash
 c -n openshift-managed-upgrade-operator get \
@@ -112,7 +132,8 @@ c -n openshift-managed-upgrade-operator get \
  managed-upgrade-config -o jsonpath='{.status}' | jq
 ```
 
-*The output of this command should show upgrades in progress*
+!!! info
+    The output of this command should show upgrades in progress
 
 ```
 {
@@ -130,7 +151,7 @@ c -n openshift-managed-upgrade-operator get \
       },
 ```
 
-1. You can verify the upgrade has completed successfully via the following
+You can verify the upgrade has completed successfully via the following
 
 ```
 oc get clusterversion version
@@ -147,6 +168,7 @@ There may be times when you need to change aspects of your worker nodes. Things 
 #### Scaling worker nodes
 
 ##### View the machine sets that are in the cluster
+
 Let's see which machine sets we have in our cluster.  If you are following this lab, you should only have three so far (one for each availability zone).
 
 From the terminal run:
@@ -249,7 +271,7 @@ az aro show \
 
 Expand "Compute" in the left menu and then click on "MachineSets"
 
-![machinesets-console](../assets/images/scale-down-console.png.png)
+![machinesets-console](../assets/images/scale-down-console.png)
 
 In the main pane you will see the same information about the machine sets from the command line.  Now click on the "three dots" at the end of the line for the machine set that you scaled up to "2". Select "Edit machine count" and decrease it to "1". Click save.
 
@@ -267,7 +289,7 @@ A ClusterAutoscaler must have at least 1 machine autoscaler in order for the clu
 
 This can be accomplished via the Web Console or through the CLI with a YAML file for the custom resource definition. We'll use the latter.
 
-Download the sample [MachineAutoscaler resource definition](https://raw.githubusercontent.com/microsoft/aroworkshop/master/yaml/machine-autoscaler.yaml) and open it in your favorite editor.
+Download the sample [MachineAutoscaler resource definition](https://rh-mobb.github.io/aro-hackathon-content/assets/machine-autoscaler.yaml) and open it in your favorite editor.
 
 For `metadata.name` give this machine autoscaler a name. Technically, this can be anything you want. But to make it easier to identify which machine set this machine autoscaler affects, specify or include the name of the machine set to scale. The machine set name takes the following form: \<clusterid>-\<machineset>-\<region-az>.
 
@@ -307,14 +329,14 @@ ok0620-rq5tl-worker-westus21   MachineSet   ok0620-rq5tl-worker-westus2   1     
 
 ##### Create the Cluster Autoscaler
 
-This is the sample [ClusterAutoscaler resource definition](https://raw.githubusercontent.com/microsoft/aroworkshop/master/yaml/cluster-autoscaler.yaml) for this lab.
+This is the sample [ClusterAutoscaler resource definition](https://rh-mobb.github.io/aro-hackathon-content/assets/cluster-autoscaler.yaml) for this workshop.
 
 See the [documentation](https://docs.openshift.com/container-platform/latest/machine_management/applying-autoscaling.html#cluster-autoscaler-cr_applying-autoscaling) for a detailed explanation of each parameter. You shouldn't need to edit this file.
 
 Create the resource in the cluster:
 
 ```
-$ oc create -f https://raw.githubusercontent.com/microsoft/aroworkshop/master/yaml/cluster-autoscaler.yaml
+$ oc create -f https://rh-mobb.github.io/aro-hackathon-content/assets/cluster-autoscaler.yaml
 clusterautoscaler.autoscaling.openshift.io/default created
 ```
 
@@ -419,6 +441,8 @@ ok0620-rq5tl-worker-westus23-hzggb   Running    Standard_D4s_v3   westus2   3   
 
 To add a node label it is recommended to set the label in the machine set. While you can directly add a label the node, this is not recommended since nodes could be overwritten and then the label would disappear.  Once the machine set is modified to contain the desired label any new machines created from that set would have the newly added labels.  This means that existing machines (nodes) will not get the label.  Therefore, to make sure all nodes have the label, you should scale the machine set down to zero and then scale the machine set back up.
 
+Labels are a useful way to select which nodes / machine sets that an application will run on. If you have a memory intensitve application, you may choose to use a memory heavy node type to place that application on. By using labels on the machinesets and selectors on your pod / deployment specification, you ensure thats where the application lands.
+oc get pods
 
 ##### Using the web console
 
