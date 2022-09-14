@@ -39,7 +39,7 @@ AZURE_CLIENT_SECRET="$(echo $AZURE_SP | jq -r '.password')"
 echo "SP SECRET $AZURE_CLIENT_SECRET"
 ```
 
- **create a secret for ASO** 
+1.  **create a secret for ASO** 
 ```
 cat <<EOF | oc apply -f - 
 apiVersion: v1
@@ -56,9 +56,9 @@ stringData:
 EOF
 ```
 
-**install cert-manager operator**
+1. **install cert-manager operator**
 
-**create Namespace for cert-manager-operator**
+    1. **create Namespace for cert-manager-operator**
 ```
 cat <<EOF | oc apply -f -
 kind: Namespace
@@ -68,8 +68,7 @@ metadata:
 EOF
 ```
 
-**create operator group**
-
+    1. **create operator group**
 ```
 cat <<EOF | oc apply -f -
 apiVersion: operators.coreos.com/v1
@@ -80,8 +79,7 @@ metadata:
 spec: {}  
 EOF
 ```
-**create subscription**
-
+    1. **create subscription**
 ```
 cat <<EOF | oc apply -f -
 apiVersion: operators.coreos.com/v1alpha1
@@ -99,16 +97,13 @@ spec:
 EOF
 ```
 
-**wait for cert-manager operator to be up and running**
-
+    1. **wait for cert-manager operator to be up and running**
 ```
 while [[ $(oc get pods -l app=cert-manager -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager pod" && sleep 1; done
-
 while [[ $(oc get pods -l app=webhook -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager webhook pod" && sleep 1; done
 ```
 
-
-**deploy ASO **v2 on **the **ARO**** cluster****
+1. **deploy ASO **v2 on **the **ARO**** cluster****
 ```
 helm repo add aso2 https://raw.githubusercontent.com/Azure/azure-service-operator/main/v2/charts
 helm upgrade --install --devel aso2 aso2/azure-service-operator \
