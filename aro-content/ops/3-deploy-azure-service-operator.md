@@ -39,7 +39,7 @@ Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gi
    echo "SP SECRET $AZURE_CLIENT_SECRET"
    ```
 
-1.  **create a secret for ASO** 
+1. **create a secret for ASO** 
    ```
    cat <<EOF | oc apply -f - 
    apiVersion: v1
@@ -58,7 +58,7 @@ Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gi
    
 1. **install cert-manager operator**
 
-  1. **create Namespace for cert-manager-operator**
+   1. **create Namespace for cert-manager-operator**
       ```
       cat <<EOF | oc apply -f -
       kind: Namespace
@@ -68,34 +68,34 @@ Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gi
       EOF
       ```
       
-  1. **create operator group**
-```
-cat <<EOF | oc apply -f -
-apiVersion: operators.coreos.com/v1
-kind: OperatorGroup
-metadata:
-  name: openshift-cert-manager-operator-group
-  namespace: openshift-cert-manager-operator
-spec: {}  
-EOF
-```
+   1. **create operator group**
+      ```
+      cat <<EOF | oc apply -f -
+      apiVersion: operators.coreos.com/v1
+      kind: OperatorGroup
+      metadata:
+        name: openshift-cert-manager-operator-group
+        namespace: openshift-cert-manager-operator
+      spec: {}  
+      EOF
+      ```
    1. **create subscription**
-```
-cat <<EOF | oc apply -f -
-apiVersion: operators.coreos.com/v1alpha1
-kind: Subscription
-metadata:
-  name: openshift-cert-manager-operator
-  namespace: openshift-cert-manager-operator
-spec:
-  channel: tech-preview
-  installPlanApproval: Automatic
-  name: openshift-cert-manager-operator
-  source: redhat-operators
-  sourceNamespace: openshift-marketplace
-  startingCSV: openshift-cert-manager.v1.7.1
-EOF
-```
+      ```
+      cat <<EOF | oc apply -f -
+      apiVersion: operators.coreos.com/v1alpha1
+      kind: Subscription
+      metadata:
+        name: openshift-cert-manager-operator
+        namespace: openshift-cert-manager-operator
+      spec:
+        channel: tech-preview
+        installPlanApproval: Automatic
+        name: openshift-cert-manager-operator
+        source: redhat-operators
+        sourceNamespace: openshift-marketplace
+        startingCSV: openshift-cert-manager.v1.7.1
+      EOF
+      ```
 
 1. **wait for cert-manager operator to be up and running**
 ```
