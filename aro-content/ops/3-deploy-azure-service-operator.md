@@ -97,21 +97,21 @@ Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gi
       EOF
       ```
 
-1. **wait for cert-manager operator to be up and running**
-```
-while [[ $(oc get pods -l app=cert-manager -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager pod" && sleep 1; done
-while [[ $(oc get pods -l app=webhook -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager webhook pod" && sleep 1; done
-```
-
+   1. **wait for cert-manager operator to be up and running**
+      ```
+      while [[ $(oc get pods -l app=cert-manager -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager pod" && sleep 1; done
+      while [[ $(oc get pods -l app=webhook -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager webhook pod" && sleep 1; done
+      ```
+      
 1. **deploy ASO **v2 on **the **ARO**** cluster****
-```
-helm repo add aso2 https://raw.githubusercontent.com/Azure/azure-service-operator/main/v2/charts
-helm upgrade --install --devel aso2 aso2/azure-service-operator \
-     --create-namespace \
-     --namespace=azureserviceoperator-system \
-     --set azureSubscriptionID=$AZURE_SUBSCRIPTION_ID \
-     --set azureTenantID=$AZURE_TENANT_ID \
-     --set azureClientID=$AZURE_CLIENT_ID \
-     --set azureClientSecret=$AZURE_CLIENT_SECRET
-```
+   ```
+   helm repo add aso2 https://raw.githubusercontent.com/Azure/azure-service-operator/main/v2/charts
+   helm upgrade --install --devel aso2 aso2/azure-service-operator \
+        --create-namespace \
+        --namespace=azureserviceoperator-system \
+        --set azureSubscriptionID=$AZURE_SUBSCRIPTION_ID \
+        --set azureTenantID=$AZURE_TENANT_ID \
+        --set azureClientID=$AZURE_CLIENT_ID \
+        --set azureClientSecret=$AZURE_CLIENT_SECRET
+   ```
 **Note: issuing certificate takes up to 5 min for ASO operator.**
