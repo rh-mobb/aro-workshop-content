@@ -7,21 +7,16 @@ Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gi
 ### Prerequisites
 
 * an ARO cluster
-
 * oc cli
-
 * jq
-
 * helm
-
 * logged in to ARO cluster
+* optional: client tool for Postgres - psql , pgadmin
 
-*  optional: client tool for Postgres - psql , pgadmin
-
-###  Install and run ASO on your ARO OpenShift cluster
+###  Install and run ASO on your ARO cluster
 
 
-1. **create an Azure Service Principal to grant ASO permissions to create resources in your subscription**
+1. **Create an Azure Service Principal to grant ASO permissions to create resources in your subscription**
    ```
    #!/bin/sh
    
@@ -39,7 +34,7 @@ Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gi
    echo "SP SECRET $AZURE_CLIENT_SECRET"
    ```
 
-1. **create a secret for ASO** 
+1. **Create a secret for ASO** 
    ```
    cat <<EOF | oc apply -f - 
    apiVersion: v1
@@ -56,9 +51,9 @@ Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gi
    EOF
    ```
    
-1. **install cert-manager operator**
+1. **Install cert-manager operator**
 
-   1. **create Namespace for cert-manager-operator**
+   1. **Create Namespace for cert-manager-operator**
       ```
       cat <<EOF | oc apply -f -
       kind: Namespace
@@ -68,7 +63,7 @@ Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gi
       EOF
       ```
       
-   1. **create operator group**
+   1. **Create operator group**
       ```
       cat <<EOF | oc apply -f -
       apiVersion: operators.coreos.com/v1
@@ -79,7 +74,7 @@ Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gi
       spec: {}  
       EOF
       ```
-   1. **create subscription**
+   1. **Create subscription**
       ```
       cat <<EOF | oc apply -f -
       apiVersion: operators.coreos.com/v1alpha1
@@ -97,7 +92,7 @@ Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gi
       EOF
       ```
 
-   1. **wait for cert-manager operator to be up and running**
+   1. **Wait for cert-manager operator to be up and running**
       ```
       while [[ $(oc get pods -l app=cert-manager -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager pod" && sleep 1; done
       while [[ $(oc get pods -l app=webhook -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager webhook pod" && sleep 1; done
