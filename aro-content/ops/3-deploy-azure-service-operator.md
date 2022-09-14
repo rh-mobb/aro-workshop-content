@@ -21,9 +21,9 @@ Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gi
 ###  Install and run ASO on your ARO OpenShift cluster
 
 
-**create an Azure Service Principal to grant ASO permissions to create resources in your subscription**
+1. **create an Azure Service Principal to grant ASO permissions to create resources in your subscription**
 ```
- #!/bin/sh
+#!/bin/sh
 
 AZURE_TENANT_ID="$(az account show -o tsv --query tenantId)"
 echo "Azure Tenant ID $AZURE_TENANT_ID"
@@ -58,7 +58,7 @@ EOF
 
 1. **install cert-manager operator**
 
-    1. **create Namespace for cert-manager-operator**
+  1. **create Namespace for cert-manager-operator**
 ```
 cat <<EOF | oc apply -f -
 kind: Namespace
@@ -68,7 +68,7 @@ metadata:
 EOF
 ```
 
-    1. **create operator group**
+  1. **create operator group**
 ```
 cat <<EOF | oc apply -f -
 apiVersion: operators.coreos.com/v1
@@ -79,7 +79,7 @@ metadata:
 spec: {}  
 EOF
 ```
-    1. **create subscription**
+   1. **create subscription**
 ```
 cat <<EOF | oc apply -f -
 apiVersion: operators.coreos.com/v1alpha1
@@ -97,7 +97,7 @@ spec:
 EOF
 ```
 
-    1. **wait for cert-manager operator to be up and running**
+   1. **wait for cert-manager operator to be up and running**
 ```
 while [[ $(oc get pods -l app=cert-manager -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager pod" && sleep 1; done
 while [[ $(oc get pods -l app=webhook -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager webhook pod" && sleep 1; done
