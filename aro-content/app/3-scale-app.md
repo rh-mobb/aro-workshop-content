@@ -1,4 +1,4 @@
-# Deploy and Expose an Application
+# Make Application Resilient 
 In this section of the workshop, we will deploy an application to an ARO cluster, Ensure the application is resilient to node failure and scale when under load.
 
 
