@@ -160,6 +160,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
       EOF
       ```
    1. Create virtual machine
+      
       **NOTE: update ssh key(KeyData) in spec.osProfile.ssh.publicKeys**
       ```
       cat  <<EOF | oc apply -f -
