@@ -95,7 +95,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
       ```
       cat  <<EOF | oc apply -f -
       apiVersion: dbforpostgresql.azure.com/v1beta20210601
-      kind: FlexibleServersFirewallRule
+      kind: FlexibleServersFirewallRules
       metadata:
         name: wksp-fw-rule
         namespace: default
