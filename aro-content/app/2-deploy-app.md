@@ -201,19 +201,19 @@ Notice the IP address - can you guess where it comes from?
 It comes from the ARO Load Balancer.  In this workshop, we are using a Public Cluster which means the load balancer is exposed to the Internet.  If this was a private cluster, you would have to have connectivity to the VNET ARO is running on whether that be VPN, Express Route, or something else.
 
 To view the ARO load balancer, on the Azure Portal, Search for 'Load Balancers' and click on the Load balancers service.
-<img src="images/load-balancer-search.png">
+<img src="images/load-balancers-search.png">
 
 Scroll down the list of load balancers until you see the one with your cluster name.  You will notice two load balancers, one that has -internal in the name and one that does not.  The '*-internal' load balancer is used for the OpenShift API.  The other load balancer ( without -internal ) in the name is used for applications.  Click into the load balancer for applications.
 <img src="images/load-balancer-list.png">
 
 On the next screen, click on Frontend IP configuration.  Notice the IP address of the 2nd load balancer on the list.  This IP address matches what you found with the nslookup command.
-<img src="images/load-balancer.png">
+<img src="images/load-balancers.png">
 
 For the fun of it, we can also look at what backends this load balancer is connected to. Click into the 2nd load balancer on the list above, and then click into the first rule.
-<img src="images/load-balancer-used-by.png">
+<img src="images/load-balancers-balancer-used-by.png">
 
 On the next screen, notice the Backend pool.  This is the subnet that contains all the workers.  And the best part is all of this came with OpenShift and ARO!
-<img src="images/load-backendpool.png">
+<img src="images/load-balancers-backendpool.png">
 
 
 
