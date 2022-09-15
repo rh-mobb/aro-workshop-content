@@ -1,0 +1,14 @@
+A Public Cluster
+OpenShift Pipelines installed on the Cluster
+
+A $USERID unique user / developer id
+
+A namespace for each developer - name should be the $USERID
+User should have project admin rights
+
+A $USERID acr instance in the same Resource Group as ARO
+
+$USERID Domain - see Front Door setup
+
+$USER-minesweeper-database instance on shared Postgresql Service
+

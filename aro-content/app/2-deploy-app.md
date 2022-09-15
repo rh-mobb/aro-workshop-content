@@ -1,62 +1,54 @@
 # Deploy and Expose an Application
-Securing exposing an Internet facing application with a private ARO Cluster.
+Securing exposing an Internet facing application with an ARO Cluster.
 
 When you create a cluster on ARO you have several options in making the cluster public or private. With a public cluster you are allowing Internet traffic to the api and *.apps endpoints. With a private cluster you can make either or both the api and .apps endpoints private.
 
 How can you allow Internet access to an application running on your private cluster where the .apps endpoint is private? This document will guide you through using Azure Frontdoor to expose your applications to the Internet. There are several advantages of this approach, namely your cluster and all the resources in your Azure account can remain private, providing you an extra layer of security. Azure FrontDoor operates at the edge so we are controlling traffic before it even gets into your Azure account. On top of that, Azure FrontDoor also offers WAF and DDoS protection, certificate management and SSL Offloading just to name a few benefits.
 
+*Note: in this workshop we are using public clusters to simplify connectity to the environment.  Even though we are using a public cluster, the same methodology applies to expose an application to the Internet from a private cluster.
+
 ## Prerequisites
-* a private ARO cluster
-* oc cli
+* a unique USER ID
 * Azure Database for PostgreSQL
+* Azure Container Registry Instance and Password
+* A public GitHub id ( only required for the Pipeline Part )
 <br>
-
-
-You will need to use the provided Virtual Machine to build and deploy the application.  This VM has the following required CLIs and development environment already installed:
-* az cli
-* oc cli
-* [maven cli](https://maven.apache.org/install.html)
-* [quarkus cli](https://quarkus.io/guides/cli-tooling)
-* [OpenJDK Java 11](https://www.azul.com/downloads/?package=jdk) 
 
 ## Deploy an application
 Now the fun part, let's deploy an application!  
 We will be deploying a Java based application called [microsweeper](https://github.com/redhat-mw-demos/microsweeper-quarkus/tree/ARO).  This is an application that runs on OpenShift and uses a PostgreSQL database to store scores.  With ARO being a first class service on Azure, we will create an Azure Database for PostgreSQL service and connect it to our cluster with a private endpoint.
 
-Prerequisites - this part of the workshop assumes you have already created a Azure Database for PostgreSQL database named microsweeper-database that you created and configured in a previous step.
+Prerequisites - this part of the workshop assumes you have already created a Azure Database for PostgreSQL database named <USERID>-microsweeper-database that you created and configured in a previous step.
 
-If you haven't and want to run a simple script to create the database for you the script is located [HERE](scripts/database-install-config.sh)
+1. Throughout this tutorial, we will be distinguishing your application and resources based on a USERID assigned to you.  Please see a facilitator if they have not given you a USER ID.
 
+From the Azure Cloud Shell, set an environment variable for your user id and the Azure Resource Group given to you by the facilitor:
 
+```bash
+export USERID=<The user ID a facilitator gave you>
+export ARORG=<The Azure Resource Group a facilitator gave you>
+
+```
 
 1. The first thing we need to do is get a copy of the code that we will build and deploy to our clusters.  Clone the git repository
 
    ```bash
-   git clone -b ARO https://github.com/redhat-mw-demos/microsweeper-quarkus.git
+   git clone -b ARO https://github.com/rh-mobb/aro-hackaton-app
    ```
 
 1. change to the root directory
 
    ```bash
-   cd microsweeper-quarkus
+   cd aro-hackaton-app
    ```
 
 
-1. Log into your openshift cluster
-   > Before you deploy your application, you will need to be connected to a private network that has access to the cluster.
+1. Log into your openshift cluster with Azure Cloud Shell
+
+1. Switch to your OpenShift Project
 
    ```bash
-   kubeadmin_password=$(az aro list-credentials --name $AROCLUSTER --resource-group $ARORG --query kubeadminPassword --output tsv)
-   
-   apiServer=$(az aro show -g $ARORG -n $AROCLUSTER --query apiserverProfile.url -o tsv)
-
-   oc login $apiServer -u kubeadmin -p $kubeadmin_password
-   ```
-
-1. Create a new OpenShift Project
-
-   ```bash
-   oc new-project minesweeper
+   oc project <USER ID>
    ```
 
 1. add the openshift extension to quarkus
@@ -68,6 +60,9 @@ If you haven't and want to run a simple script to create the database for you th
 1. Edit microsweeper-quarkus/src/main/resources/application.properties
 
    Make sure your file looks like the one below, changing the IP address on line 3 to the private ip address of your postgres instance.  You should have gotten your PostgreSQL private IP in the previous step when you created the database instance.
+
+   Also change the following line to represent the database that has been configured for you:
+   %prod.quarkus.datasource.username=quarkus@<USERID>-microsweeper-database
  
    Also note the options in OpenShift Configurations.
 
@@ -91,7 +86,7 @@ If you haven't and want to run a simple script to create the database for you th
    %prod.quarkus.datasource.db-kind=postgresql
    %prod.quarkus.datasource.jdbc.url=jdbc:postgresql://<CHANGE TO PRIVATE IP>:5432/score
    %prod.quarkus.datasource.jdbc.driver=org.postgresql.Driver
-   %prod.quarkus.datasource.username=quarkus@microsweeper-database
+   %prod.quarkus.datasource.username=quarkus@<USERID>microsweeper-database
    %prod.quarkus.datasource.password=r3dh4t1!
    %prod.quarkus.hibernate-orm.database.generation=drop-and-create
    %prod.quarkus.hibernate-orm.database.generation=update
@@ -238,12 +233,12 @@ Setting up and configuring Azure Front Door for the minesweeper application is t
 The first step is to export three environment variables for the Resource Group ARO is in, the ARO Cluster name, and your User ID.
 
 ```bash
-export ARORG=$1
-export AROCLUSTER=$2
-export USER=$3
+export ARORG=(ARO Resource Group Name)
+export AROCLUSTER=(ARO Cluster Name)
+export USER=(Your User ID)
 ```
 
-Next we, need to get the naem of VNET ARO is in
+Next we, need to get the name of the VNET ARO is in
 
 ```bash
 VNET_NAME=$(az network vnet list -g $ARORG --query '[0].name' -o tsv)
@@ -255,7 +250,7 @@ Provide a subnet prefix for the private link subnet.  This subnet will contain t
 PRIVATEENDPOINTSUBNET_PREFIX=10.1.5.0/24
 ```
 
-Give the private link subnet a meaninful name
+Give the private link subnet a meaningful name
 
 ```bash
 PRIVATEENDPOINTSUBNET_NAME='PrivateEndpoint-subnet'
@@ -267,7 +262,7 @@ Create a unique random number so we don't create services with the same name
 UNIQUE=$RANDOM
 ```
 
-Give the name of the Azure Front Door Service we will create a unique name
+Provide a unique name for the Azure Front Door Service we will create
 
 ```bash
 AFD_NAME=$UNIQUE-afd
@@ -289,7 +284,7 @@ Get the workers nodes subnet name and IDs so we can connect the Azure Front Door
 ```bash
 WORKER_SUBNET_NAME=$(az aro show --name $AROCLUSTER --resource-group $ARORG --query 'workerProfiles[0].subnetId' -o tsv | sed 's/.*\///')
 WORKER_SUBNET_ID=$(az aro show --name $AROCLUSTER --resource-group $ARORG --query 'workerProfiles[0].subnetId' -o tsv)
-privatelink_id=$(az network private-link-service show -n $AROCLUSTER-pls -g $ARORG --query 'id' -o tsv)
+# privatelink_id=$(az network private-link-service show -n $AROCLUSTER-pls -g $ARORG --query 'id' -o tsv)
 ```
 
 Get the internal load balancer name, id and ip that the private link service will be connected to.
@@ -345,7 +340,7 @@ az afd profile create \
 afd_id=$(az afd profile show -g $ARORG --profile-name $AFD_NAME --query 'id' -o tsv)
 ```
 
-Create an Front Door endpoint for the ARO Internal Load Balancer.  This will allow Front Door to send traffic to the ARO Load Balancer.
+Create a Front Door endpoint for the ARO Internal Load Balancer.  This will allow Front Door to send traffic to the ARO Load Balancer.
 
 ```bash
 az afd endpoint create \
@@ -475,7 +470,7 @@ az network dns record-set txt add-record -g $DNS_RG -z $DOMAIN -n _dnsauth.$(ech
 ```
 
 Check if the domain has been validated:
-*Note this would be a great time to take a break and grab a coffer ... it can take several minutes for Azure Front Door to validate your domain.
+*Note this would be a great time to take a break and grab a coffee ... it can take several minutes for Azure Front Door to validate your domain.
 
 ```
 az afd custom-domain list -g $ARORG --profile-name $AFD_NAME --query "[? contains(hostName, '$ARO_APP_FQDN')].domainValidationState"
@@ -508,7 +503,9 @@ oc delete route microsweeper-appservice
 
 Next, we create a new route that points to our application.
 
- # Create new route
+Create new route
+
+```bash
 cat << EOF | oc apply -f -
 apiVersion: route.openshift.io/v1
 kind: Route
@@ -529,3 +526,148 @@ spec:
       port: 8080
   wildcardPolicy: None
 EOF
+```
+
+# TODO - screen shots to show nslookup points to the edge
+
+# Automate deploying the application with OpenShift Pipelines
+
+We will be using OpenShift Pipelines which is based on the Open Source Tekton project to automatically deploy our application using a CI/CD pipeline.
+ 
+If you would like to read more about OpenShift Pipelines, click [here](https://docs.openshift.com/container-platform/4.11/cicd/pipelines/understanding-openshift-pipelines.html)
+
+The first thing you need to do is fork the code repositories so that you can make changes to the code base and then OpenShift pipelines will build and deploy the new code.
+
+Opening your browser, go to the following github repos 
+https://github.com/rh-mobb/common-java-dependencies
+https://github.com/rh-mobb/aro-hackaton-app
+
+For each of the repositories, click Fork and then choose your own Git Account.
+<img src="images/fork-git.png">
+
+The next thing we need to do is import common Tekton tasks that our pipeline will use.  These common tasks are designed to be reused across multiple pipelines.
+
+Let's start by taking a look at the reusable Tasks that we will be using.  From your cloud shell, change directorys to ~/aro-hackaton-app/pipeline and list the files.
+
+```bash
+cd ~/aro-hackaton-app/pipeline/tasks
+ls
+```
+Expected output:
+<img src="images/pipeline-tasks.png">
+
+1-git-clone.yaml
+Clones a given GitHub Repo.
+
+2-mvn.yaml
+This Task can be used to run a Maven build
+
+3-mvn-build-image.yaml
+Packages source with maven builds and into a container image, then pushes it to a container registry. Builds source into a container image using Project Atomic's Buildah build tool. It uses Buildah's support for building from Dockerfiles, using its buildah bud command.This command executes the directives in the Dockerfile to assemble a container image, then pushes that image to a container registry.
+
+4-apply-manifest.yaml
+Applied manifest files to the cluster
+
+5-update-deployment.yaml
+Updates a deployment with the new container image.
+
+From the Cloud Shell, we need to apply all of these tasks to our cluster.  Run the following command:
+oc apply -f ~/aro-hackaton-app/pipeline/tasks
+
+expected output:
+<img src="images/apply-pipeline-tasks.png">
+
+Next, we need to create a secret to push and pull images into Azure Container Registry.  Each attendee has their own Azure Container Registry service assigned to them, with the naming convention <USERID>acr.azurecr.io
+
+```bash
+ACRPWD=$(az acr credential show -n ${USERID}acr -g $ARORG --query 'passwords[0].value' -o tsv)
+
+oc create secret docker-registry --docker-server=${USERID}acr.azurecr.io --docker-username=${USERID}acr --docker-password=$ACRPWD --docker-email=unused acr-secret
+```
+
+Create the pipeline service account and permissions that the pipeline tasks will run under:
+
+```bash
+oc create -f ~/aro-hackaton-app/pipeline/1-pipeline-account.yaml
+```
+
+Expected output:
+<img src="images/create-pipeline-account.png">
+
+Link the acr-secret you just created to it can mount and pull images
+
+```bash
+oc secrets link pipeline acr-secret --for=pull,mount
+```
+
+Make sure the secret is linked to the pipeline service account.
+
+```bash
+oc describe sa pipeline
+```
+
+expected output: 
+<img src="images/pipeline-sa-secret.png">
+
+We also need to give the pipeline permission for certain security context constraints to that it can execute.
+
+```bash
+oc adm policy add-scc-to-user anyuid -z pipeline
+oc adm policy add-scc-to-user privileged -z pipeline
+```
+
+Create a PVC that the pipeline will use to storage the build images:
+
+```bash
+oc create -f ~/aro-hackaton-app/pipeline/2-pipeline-pvc.yaml
+```
+
+Next we need to create the pipeline definition.  Before we actually create the pipeline, lets take a look at the pipeline definition.
+
+Open a browser to the git repo to browse the pipeline.yaml file.
+https://github.com/rh-mobb/aro-hackaton-app/blob/main/pipeline/3-pipeline.yaml
+
+Browse through the file and notice all the tasks that are being executed.  These are the tasks we imported in the previous step.  The pipeline definition simply says which order the tasks are run and what parameters should be passed between tasks.
+<img src="images/pipeline-yaml.png">
+
+Now create the pipeline definition on your cluster:
+
+```bash
+oc create -f ~/aro-hackaton-app/pipeline/3-pipeline.yaml
+``` 
+
+and Finally we will create a pipeline run that will execute the pipeline, which will pull code from the your git repo that you forked, will build the image and deploy it to OpenShift.
+
+There are a couple settings in the pipeline run that we will need to update.
+
+Edit the ~/aro-hackaton-app/pipeline/4-pipeline-run.yaml file.  The three things to change is the:
+* dependency-git-url - to point to your personal git repository
+* application-git-url - to point to your personal git repository
+* image-name - change this to reflect to the ACR Registry created for you ... this should be $USERID.azurecr.io/minesweeper
+
+<img src="images/pipeline-run.png">
+
+After editing the file, now create the pipeline run.
+
+```bash
+oc create -f ~/aro-hackaton-app/pipeline/4-pipeline-run.yaml
+```
+
+This will start a pipeline run and redeploy the minesweeper application, but this time will build the code from your github repository and the pipeline will deploy the application as well to OpenShift.
+
+Let's take a look at the OpenShift console to see what was created and if the application was successfully deployed.
+
+From the OpenShift Conole - Administrator view, click on Pipelines and then Tasks.
+<img src="images/pipeline-tasks-ocp.png">
+
+Notice the 5 tasks that we imported and click into them to view the yaml defitions.
+
+Next, lets look at the Pipeline.   Click on Pipelines.  Notice that that last run was successful.  Click on maven-pipeline to view the pipeline details.
+<img src="images/pipeline-ocp.png">
+
+On the following screen, click on Pipeline Runs to view the status of each Pipeline Run.
+<img src="images/pipeline-run-ocp.png">
+
+Lastely, click on the piperun name and you can see all the details and steps of the Pipeline.  If your are curious, also click on logs and view the logs of the different tasks that were ran.
+<img src="images/pipeline-run-details-ocp.png">
+
