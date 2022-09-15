@@ -15,16 +15,17 @@ You will need to use the provided Virtual Machine to build and deploy the applic
 
 ## Deploy an application
 Let's deploy an application!  
+
 We will be deploying a JavaScript based application called [frontend-js](https://github.com/sohaibazed/frontend-js.git). This application will run on OpenShift and will be deployed as a Deployment object. The Deployment object creates ReplicaSet and ReplicaSet creates and manages pods.
 
 Deploy the application
 ```bash
 oc new-project frontend-js
-oc new-app https://github.com/sohaibazed/frontend-js.git
+oc new-app https://github.com/sohaibazed/frontend-js.git --name frontend-js
 oc expose svc frontend-js
 oc set resources deployment/frontend-js \
-   --limits=cpu=50m,memory=100Mi \
-   --requests=cpu=60m,memory=150Mi
+   --limits=cpu=60m,memory=150Mi \
+   --requests=cpu=50m,memory=100Mi
 ```
 
 Wait a couple of minutes for the application to deploy and then run ```oc get route -n frontend-js``` command to get the URL to access the app.
@@ -43,19 +44,63 @@ NAME                     DESIRED   CURRENT   READY   AGE
 frontend-js-7dd7d46854   1         1         1       58s
 ```
 
-Right now the application is deployed inside one pod, and in case the worker running the pod crashes, the ReplicaSet object will recreate the pod on another node. You can scale the application to run on multiple pods using the following command
+Right now the application is deployed inside one pod, and in case the worker running the pod crashes, the ReplicaSet object will register that the pod is down and recreate it on another node. You can scale the application to run on multiple pods using the following command
 
 ```bash
-oc scale deployment frontend-js --replicas=2
+oc scale deployment frontend-js --replicas=3
 deployment.apps/frontend-js scaled
 
 oc get pod
 NAME                           READY   STATUS      RESTARTS   AGE
 frontend-js-1-build            0/1     Completed   0          5m7s
-frontend-js-7dd7d46854-2xc9d   1/1     Running     0          3m48s
-frontend-js-7dd7d46854-8r2fb   1/1     Running     0          24s
+frontend-js-7cdc846c94-5mrk8   1/1     Running     0          3m45s
+frontend-js-7cdc846c94-bj4wq   1/1     Running     0          3m45s
+frontend-js-7cdc846c94-gjxv6   1/1     Running     0          4m39s
 ```
 
+## Pod Disruption Budget
+A Pod disruption Budget (PBD) allows you to limit the disruption to your application when its pods need to be rescheduled for upgrades or routine maintenance work on ARO nodes. In essence, it lets developers define the minimum tolerable operational requirements for a Deployment so that it remains stable even during a disruption. 
+
+For example, frontend-js deployed as part of the last step contains two replicas distributed evenly across two nodes. We can tolerate losing one pods but not two, so we create a PDB that requires a minimum of two replicas.
+
+A PodDisruptionBudget object’s configuration consists of the following key parts:
+* A label selector, which is a label query over a set of pods.
+* An availability level, which specifies the minimum number of pods that must be available simultaneously, either:
+  * minAvailable is the number of pods must always be available, even during a disruption.
+  * maxUnavailable is the number of pods can be unavailable during a disruption.
+
+
+**NOTE** A maxUnavailable of 0% or 0 or a minAvailable of 100% or equal to the number of replicas is permitted but can block nodes from being drained.
+
+
+Create PBD.yaml file with the following yaml.
+```
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: frontend-js-pdb
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      deployment: frontend-js
+```
+
+Create PDB object
+```
+oc apply -f pdb.yaml
+poddisruptionbudget.policy/frontend-js-pdb created
+```
+
+After creating PDB, OpenShift API will ensure two pods of ```frontend-js``` is running all the time while cluster is going through upgrade.
+
+Check the status of PBD
+```
+oc get poddisruptionbudgets
+NAME              MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE
+frontend-js-pdb   2               N/A               1                     7m39s
+
+```
 ## Horizontal Pod Autoscaler (HPA)
 
 As a developer, you can use a horizontal pod autoscaler (HPA) to specify how OpenShift Container Platform should automatically increase or decrease the scale of a replication controller or deployment configuration, based on metrics collected from the pods that belong to that replication controller or deployment configuration. You can create an HPA for any any deployment, deployment config, replica set, replication controller, or stateful set.
@@ -76,8 +121,8 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: frontend-js
-  minReplicas: 1
-  maxReplicas: 3
+  minReplicas: 2
+  maxReplicas: 4
   metrics:
     - type: Resource
       resource:
@@ -103,13 +148,20 @@ oc create -f frontend-js-cpu-hpa.yaml -n frontend-js
 Check HPA status
 ```
 watch oc get horizontalpodautoscaler/frontend-js-cpu -n frontend-js
+NAME              REFERENCE                TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+frontend-js-cpu   Deployment/frontend-js   0%/50%    2         4         2          33s
 ```
 
 Generate load using siege. 
 ```
 FRONTEND_URL=http://$(oc get route frontend-js -n frontend-js -o jsonpath='{.spec.host}')
-siege -c 40 $FRONTEND_URL
+siege -c 60 $FRONTEND_URL
 ```
 
-wait for a minute and check the status of Horizontal Pod Autoscaler. Your app should scale up to 3 replicas by now. 
+wait for a minute and check the status of Horizontal Pod Autoscaler. Your app should scale up to more then two replicas by now. 
 
+```
+watch oc get horizontalpodautoscaler/frontend-js-cpu -n frontend-js
+NAME              REFERENCE                TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+frontend-js-cpu   Deployment/frontend-js   118%/50%   2         4         4          7m26s
+```
