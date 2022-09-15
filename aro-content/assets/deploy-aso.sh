@@ -10,7 +10,7 @@ echo "Azure subscription ID $AZURE_SUBSCRIPTION_ID"
 
 # export IDENTITY_CLIENT_ID="$(az identity show -g ${IDENTITY_RESOURCE_GROUP} -n ${IDENTITY_NAME} --query clientId -otsv)"
 # export IDENTITY_RESOURCE_ID="$(az identity show -g ${IDENTITY_RESOURCE_GROUP} -n ${IDENTITY_NAME} --query id -otsv)"
-AZURE_SP="$(az ad sp create-for-rbac -n mhs-aso-hack --role contributor \
+AZURE_SP="$(az ad sp create-for-rbac -n wksp-sp-$RANDOM --role contributor \
  --scopes /subscriptions/$AZURE_SUBSCRIPTION_ID -o json )"
 
  echo " Azure SP ID/SECRET $AZURE_SP"
