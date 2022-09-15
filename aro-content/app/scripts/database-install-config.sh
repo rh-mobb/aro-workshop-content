@@ -2,8 +2,9 @@
 # usage: ./database-install-config.sh <resource group> <Azure Region>
 export ARORG=$1
 export LOCATION=$2
+export VNETRG=$3
 
-VNET_NAME=$(az network vnet list -g $ARORG --query '[0].name' -o tsv)
+VNET_NAME=$(az network vnet list -g $VNETRG --query '[0].name' -o tsv)
 PRIVATEENDPOINTSUBNET_PREFIX=10.1.5.0/24
 PRIVATEENDPOINTSUBNET_NAME='PrivateEndpoint-subnet'
 UNIQUEID=$RANDOM
@@ -14,7 +15,7 @@ POSTGRES_ID=$(az postgres server show -n microsweeper-database -g $ARORG --query
 
 # Create a private endpoint connection for the database
 az network vnet subnet create \
---resource-group $ARORG \
+--resource-group $VNETRG \
 --vnet-name $VNET_NAME \
 --name $PRIVATEENDPOINTSUBNET_NAME \
 --address-prefixes $PRIVATEENDPOINTSUBNET_PREFIX \
@@ -22,7 +23,7 @@ az network vnet subnet create \
 
 az network private-endpoint create \
 --name 'postgresPvtEndpoint' \
---resource-group $ARORG \
+--resource-group $VNETRG \
 --vnet-name $VNET_NAME \
 --subnet $PRIVATEENDPOINTSUBNET_NAME \
 --private-connection-resource-id $POSTGRES_ID \
@@ -48,7 +49,7 @@ az network private-endpoint dns-zone-group create \
 --private-dns-zone 'privatelink.postgres.database.azure.com' \
 --zone-name 'postgresqlServer'
 
-NETWORK_INTERFACE_ID=$(az network private-endpoint show --name postgresPvtEndpoint --resource-group $ARORG --query 'networkInterfaces[0].id' -o tsv)
+NETWORK_INTERFACE_ID=$(az network private-endpoint show --name postgresPvtEndpoint --resource-group $VNETRG --query 'networkInterfaces[0].id' -o tsv)
 
 POSTGRES_IP=$(az resource show --ids $NETWORK_INTERFACE_ID --api-version 2019-04-01 --query 'properties.ipConfigurations[0].properties.privateIPAddress' -o tsv)
 
