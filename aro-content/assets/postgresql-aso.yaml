@@ -62,7 +62,7 @@ spec:
   charset: utf8
 ---
 apiVersion: dbforpostgresql.azure.com/v1beta20210601
-kind: FlexibleServersFirewallRules
+kind: FlexibleServersFirewallRule
 metadata:
   name: wksp-fw-rule
   namespace: default
