@@ -609,6 +609,13 @@ oc describe sa pipeline
 expected output: 
 <img src="images/pipeline-sa-secret.png">
 
+We also need to give the pipeline permission for certain security context constraints to that it can execute.
+
+```bash
+oc adm policy add-scc-to-user anyuid -z pipeline
+oc adm policy add-scc-to-user privileged -z pipeline
+```
+
 Create a PVC that the pipeline will use to storage the build images:
 
 ```bash
@@ -617,6 +624,50 @@ oc create -f ~/aro-hackaton-app/pipeline/2-pipeline-pvc.yaml
 
 Next we need to create the pipeline definition.  Before we actually create the pipeline, lets take a look at the pipeline definition.
 
+Open a browser to the git repo to browse the pipeline.yaml file.
+https://github.com/rh-mobb/aro-hackaton-app/blob/main/pipeline/3-pipeline.yaml
 
+Browse through the file and notice all the tasks that are being executed.  These are the tasks we imported in the previous step.  The pipeline definition simply says which order the tasks are run and what parameters should be passed between tasks.
+<img src="images/pipeline-yaml.png">
 
-and Finally 
+Now create the pipeline definition on your cluster:
+
+```bash
+oc create -f ~/aro-hackaton-app/pipeline/3-pipeline.yaml
+``` 
+
+and Finally we will create a pipeline run that will execute the pipeline, which will pull code from the your git repo that you forked, will build the image and deploy it to OpenShift.
+
+There are a couple settings in the pipeline run that we will need to update.
+
+Edit the ~/aro-hackaton-app/pipeline/4-pipeline-run.yaml file.  The three things to change is the:
+* dependency-git-url - to point to your personal git repository
+* application-git-url - to point to your personal git repository
+* image-name - change this to reflect to the ACR Registry created for you ... this should be $USERID.azurecr.io/minesweeper
+
+<img src="images/pipeline-run.png">
+
+After editing the file, now create the pipeline run.
+
+```bash
+oc create -f ~/aro-hackaton-app/pipeline/4-pipeline-run.yaml
+```
+
+This will start a pipeline run and redeploy the minesweeper application, but this time will build the code from your github repository and the pipeline will deploy the application as well to OpenShift.
+
+Let's take a look at the OpenShift console to see what was created and if the application was successfully deployed.
+
+From the OpenShift Conole - Administrator view, click on Pipelines and then Tasks.
+<img src="images/pipeline-tasks-ocp.png">
+
+Notice the 5 tasks that we imported and click into them to view the yaml defitions.
+
+Next, lets look at the Pipeline.   Click on Pipelines.  Notice that that last run was successful.  Click on maven-pipeline to view the pipeline details.
+<img src="images/pipeline-ocp.png">
+
+On the following screen, click on Pipeline Runs to view the status of each Pipeline Run.
+<img src="images/pipeline-run-ocp.png">
+
+Lastely, click on the piperun name and you can see all the details and steps of the Pipeline.  If your are curious, also click on logs and view the logs of the different tasks that were ran.
+<img src="images/pipeline-run-details-ocp.png">
+
