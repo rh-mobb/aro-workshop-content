@@ -11,6 +11,7 @@ How can you allow Internet access to an application running on your private clus
 * a unique USER ID
 * Azure Database for PostgreSQL
 * Azure Container Registry Instance and Password
+* A public GitHub id ( only required for the Pipeline Part )
 <br>
 
 ## Deploy an application
@@ -535,7 +536,16 @@ We will be using OpenShift Pipelines which is based on the Open Source Tekton pr
  
 If you would like to read more about OpenShift Pipelines, click [here](https://docs.openshift.com/container-platform/4.11/cicd/pipelines/understanding-openshift-pipelines.html)
 
-The first thing we need to do is import common Tekton tasks that our pipeline will use.  These common tasks are designed to be reused across multiple pipelines.
+The first thing you need to do is fork the code repositories so that you can make changes to the code base and then OpenShift pipelines will build and deploy the new code.
+
+Opening your browser, go to the following github repos 
+https://github.com/rh-mobb/common-java-dependencies
+https://github.com/rh-mobb/aro-hackaton-app
+
+For each of the repositories, click Fork and then choose your own Git Account.
+<img src="images/fork-git.png">
+
+The next thing we need to do is import common Tekton tasks that our pipeline will use.  These common tasks are designed to be reused across multiple pipelines.
 
 Let's start by taking a look at the reusable Tasks that we will be using.  From your cloud shell, change directorys to ~/aro-hackaton-app/pipeline and list the files.
 
@@ -567,8 +577,46 @@ oc apply -f ~/aro-hackaton-app/pipeline/tasks
 expected output:
 <img src="images/apply-pipeline-tasks.png">
 
-Next, we need to create a secret to push and pull images into Azure Container Registry.  Each attendee has their own Azure Container Registry service assigned to them, with the naming convention <USERID>.azurecr.io
+Next, we need to create a secret to push and pull images into Azure Container Registry.  Each attendee has their own Azure Container Registry service assigned to them, with the naming convention <USERID>acr.azurecr.io
 
+```bash
 ACRPWD=$(az acr credential show -n ${USERID}acr -g $ARORG --query 'passwords[0].value' -o tsv)
-oc create secret docker-registry --docker-server=${USERID}acr.azurecr.io --docker-username=${USERID}acr --docker-password=$ACRPWD --docker-email=unused acr-secret
 
+oc create secret docker-registry --docker-server=${USERID}acr.azurecr.io --docker-username=${USERID}acr --docker-password=$ACRPWD --docker-email=unused acr-secret
+```
+
+Create the pipeline service account and permissions that the pipeline tasks will run under:
+
+```bash
+oc create -f ~/aro-hackaton-app/pipeline/1-pipeline-account.yaml
+```
+
+Expected output:
+<img src="images/create-pipeline-account.png">
+
+Link the acr-secret you just created to it can mount and pull images
+
+```bash
+oc secrets link pipeline acr-secret --for=pull,mount
+```
+
+Make sure the secret is linked to the pipeline service account.
+
+```bash
+oc describe sa pipeline
+```
+
+expected output: 
+<img src="images/pipeline-sa-secret.png">
+
+Create a PVC that the pipeline will use to storage the build images:
+
+```bash
+oc create -f ~/aro-hackaton-app/pipeline/2-pipeline-pvc.yaml
+```
+
+Next we need to create the pipeline definition.  Before we actually create the pipeline, lets take a look at the pipeline definition.
+
+
+
+and Finally 
