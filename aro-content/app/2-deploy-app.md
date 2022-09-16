@@ -603,7 +603,18 @@ git commit -am 'updated leaderboard title'
 git push
 ```
 
+Pushing the change to the your git repository will kick of the event listener which will start the pipeline.
+
+As a bonus, if you want to look at the logs of the event listener, you can use the tekton (tkn) cli.
+
+```bash
+tkn eventlistener logs minesweeper-el
+```
+<img src="images/tkn.png">
+
+
 Quickly switch over to your OpenShift Console, and watch the pipeline run.
+
 <img src="images/watch-pipeline.png">
 
 Once the pipeline finishes, check out the change.

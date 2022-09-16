@@ -23,3 +23,8 @@ chmod +x envsubst
 mkdir envsub
 mv envsubst envsub/
 echo 'export PATH=$PATH:~/envsub' >> ~/.bashrc && source ~/.bashrc
+
+wget https://mirror.openshift.com/pub/openshift-v4/clients/pipeline/latest/tkn-linux-amd64.tar.gz
+mkdir tkn
+tar -xvf tkn-linux-amd64.tar.gz -C tkn 
+echo 'export PATH=$PATH:~/tkn' >> ~/.bashrc && source ~/.bashrc
