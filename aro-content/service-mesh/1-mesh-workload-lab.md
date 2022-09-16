@@ -10,20 +10,24 @@
 * An account with the cluster-admin role.
 
 ### Deploying the Service Mesh control plane from the web console
-You can deploy a basic ServiceMeshControlPlane by using the web console. In this example, bookinfo-mesh is the name of the Service Mesh control plane project.
+You can deploy a basic ServiceMeshControlPlane by using the web console. In this example, istio-system is the name of the Service Mesh control plane project.
 
 1. Create a project named istio-system.
    ```bash
-   oc new-project bookinfo-mesh
+   oc new-project istio-system
    ```
-2. Create a ServiceMeshControlPlane. The version of the Service Mesh control plane determines the features available regardless of the version of the Operator.
+2. CLI to create the bookinfo project.
+```
+oc new-project bookinfo
+```
+4. Create a ServiceMeshControlPlane. The version of the Service Mesh control plane determines the features available regardless of the version of the Operator.
 ```
 cat <<EOF | oc apply -f - 
 apiVersion: maistra.io/v2
 kind: ServiceMeshControlPlane
 metadata:
   name: basic
-  namespace: bookinfo-mesh
+  namespace: istio-system
 spec:
   version: v2.2
   tracing:
@@ -42,15 +46,15 @@ spec:
       enabled: true
    EOF
 ```
-3. To watch the progress of the pod deployment, run the following command:
+4. To watch the progress of the pod deployment, run the following command:
 ```bash
-oc get pods -n bookinfo-mesh -w
+oc get pods -n istio-system -w
 ```
 ### Validating your SMCP installation with the CLI
 You can validate the creation of the ServiceMeshControlPlane from the command line.
-1. Run the following command to verify the Service Mesh control plane installation, where bookinfo-mesh is the namespace where you installed the Service Mesh control plane.
+1. Run the following command to verify the Service Mesh control plane installation, where istio-system is the namespace where you installed the Service Mesh control plane.
 ```bash
-oc get smcp -n bookinfo-mesh
+oc get smcp -n istio-system
 ```
 ### Deploying Workloads
 #### Creating the member roll from the CLI
@@ -60,23 +64,23 @@ You can add a project to the ServiceMeshMemberRoll from the command line.
 * An installed, verified Red Hat OpenShift Service Mesh Operator.
 * List of projects to add to the service mesh.
 * Access to the OpenShift CLI (oc).
-1. To add your projects as members, modify the following example YAML. You can add any number of projects, but a project can only belong to one ServiceMeshMemberRoll resource. In this example, bookinfo-mesh is the name of the Service Mesh control plane project.
+1. To add your projects as members, modify the following example YAML. You can add any number of projects, but a project can only belong to one ServiceMeshMemberRoll resource. In this example, istio-system is the name of the Service Mesh control plane project.
 ```
 cat <<EOF | oc apply -f - 
 apiVersion: maistra.io/v1
 kind: ServiceMeshMember
 metadata:
-  namespace: bookinfo-mesh
+  namespace: istio-system
   name: default
 spec:
   controlPlaneRef:
     name: basic
-    namespace: bookinfo-mesh
+    namespace:  istio-system
    EOF
 ```
 2. Run the following command to verify the ServiceMeshMemberRoll was created successfully.
 ```bash
-oc get smmr -n bookinfo-mesh default
+oc get smmr -n istio-system default
 ```
 3. From the CLI, deploy the Bookinfo application in the `bookinfo` project by applying the bookinfo.yaml file:
 ```bash
@@ -99,5 +103,10 @@ service/productpage created
 serviceaccount/bookinfo-productpage created
 deployment.apps/productpage-v1 created
 ```
+4. Create the ingress gateway by applying the bookinfo-gateway.yaml file:
+```
+oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-2.2/samples/bookinfo/networking/bookinfo-gateway.yaml
+```
+
 ### Traffic Management
 ### Metrics, Logs, and Traces
