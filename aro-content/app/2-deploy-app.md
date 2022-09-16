@@ -553,26 +553,30 @@ Let's start by taking a look at the reusable Tasks that we will be using.  From 
 cd ~/aro-hackaton-app/pipeline/tasks
 ls
 ```
-Expected output:
+# TODO Update Picture
+Expected output:<br>
 <img src="images/pipeline-tasks.png">
 
-1-git-clone.yaml
+**1-git-clone.yaml** <br>
 Clones a given GitHub Repo.
 
-2-mvn.yaml
+**2-mvn.yaml** <br>
 This Task can be used to run a Maven build
 
-3-mvn-build-image.yaml
+**3-mvn-build-image.yaml** <br>
 Packages source with maven builds and into a container image, then pushes it to a container registry. Builds source into a container image using Project Atomic's Buildah build tool. It uses Buildah's support for building from Dockerfiles, using its buildah bud command.This command executes the directives in the Dockerfile to assemble a container image, then pushes that image to a container registry.
 
-4-apply-manifest.yaml
+**4-apply-manifest.yaml** <br>
 Applied manifest files to the cluster
 
-5-update-deployment.yaml
+**5-update-deployment.yaml** <br>
 Updates a deployment with the new container image.
 
 From the Cloud Shell, we need to apply all of these tasks to our cluster.  Run the following command:
+
+```bash
 oc apply -f ~/aro-hackaton-app/pipeline/tasks
+``` 
 
 expected output:
 <img src="images/apply-pipeline-tasks.png">
@@ -634,16 +638,16 @@ Now that we have the source code forked, we need to copy the properties file we 
 
 Using the cloud shell, run the following commands.
 ```bash
-mkdir ~/$USER
-cd $USER
+mkdir ~/$USERID
+cd $USERID
 cp ../aro-hackaton-app/src/main/resources/application.properties aro-hackaton-app/src/main/resources/application.properties 
 ```
 
 Setup git and push changes to the properties file
 
 ```bash
-git config --global user.email "kmcolli@gmail.com"
-git config --global user.name “kmcolli”
+git config --global user.email "<your github email>"
+git config --global user.name “<your github username>”
 git init
 
 git add *
@@ -652,11 +656,11 @@ git push
 ```
 * when prompted log in with your git user name ( email ) and git token.  If you need a git token, please refer to this [document](https://catalyst.zoho.com/help/tutorials/githubbot/generate-access-token.html)
 
-While you have your github userid and secret handy, let's also create a secret containing your github credentials that we will need later.  First set GIT envrionment variables and then run a script to create the secret.
+While you have your github userid and secret handy, let's also create a secret containing your github credentials that we will need later.  First set git envrionment variables and then run a script to create the secret.
 
 ```bash
-GIT_USER=<your git email>
-GIT_TOKEN=<your git token>
+export GIT_USER=<your git email>
+export GIT_TOKEN=<your git token>
 ~/aro-hackaton-app/pipeline/0-github-secret.sh
 ```
 
@@ -670,10 +674,19 @@ and Finally we will create a pipeline run that will execute the pipeline, which 
 
 There are a couple settings in the pipeline run that we will need to update.
 
-Edit the ~/aro-hackaton-app/pipeline/4-pipeline-run.yaml file.  The three things to change is the:
-* dependency-git-url - to point to your personal git repository
-* application-git-url - to point to your personal git repository
-* image-name - change this to reflect to the ACR Registry created for you ... this should be $USERID.azurecr.io/minesweeper
+Before we can actually run the pipeline that will update the deployment, we need to tell the deployment to use the ACR pull secret we created in the previous step.
+
+To do so, run the following command.
+
+```bash
+oc patch deploy/microsweeper-appservice --patch-file ~/aro-hackaton-app/pipeline/4-deployment-patch.yaml
+```
+
+
+Edit the ~/$USERID/aro-hackaton-app/pipeline/4-pipeline-run.yaml file.  The three things to change is the:
+* **dependency-git-url** - to point to your personal git repository
+* **application-git-url** - to point to your personal git repository
+* **image-name** - change this to reflect to the ACR Registry created for you ... this should be $USERIDacr.azurecr.io/minesweeper
 
 <img src="images/pipeline-run.png">
 
@@ -698,11 +711,11 @@ Next, lets look at the Pipeline.   Click on Pipelines.  Notice that that last ru
 On the following screen, click on Pipeline Runs to view the status of each Pipeline Run.
 <img src="images/pipeline-run-ocp.png">
 
-Lastely, click on the piperun name and you can see all the details and steps of the Pipeline.  If your are curious, also click on logs and view the logs of the different tasks that were ran.
+Lastely, click on the PipeRun name and you can see all the details and steps of the Pipeline.  If your are curious, also click on logs and view the logs of the different tasks that were ran.
 <img src="images/pipeline-run-details-ocp.png">
 
 # Event Triggering 
-So now we can successfully build and deploy new code by manually runnning a pipeline run.  But how can we configure the pipeline to run automatically when we commit code with GIT?  We can do so with an Event Listener and a Trigger!
+So now we can successfully build and deploy new code by manually runnning a pipeline run.  But how can we configure the pipeline to run automatically when we commit code with git?  We can do so with an Event Listener and a Trigger!
 
 Let's start by looking at the resources we will be creating to create our event listener and trigger.
 
@@ -738,7 +751,7 @@ As a reminder, each attendee has their own Azure Container Registry service assi
   value: <CHANGE-ME>.azurecr.io/minesweeper
 ```
 
-To learn more about TriggerBindings, click [here](https://tekton.dev/docs/triggers/triggertemplates/)
+To learn more about TriggerTemplates, click [here](https://tekton.dev/docs/triggers/triggertemplates/)
 
 **3-web-trigger.yaml**
 The next file we have is the Trigger.  The Trigger specifies what should happen when the EventListener detects an Event.  Looking at this file, you will see that we are looking for 'Push' events that will create an instance of the TriggerTemplate that we just created.  This in turn will start the PipelineRun.
@@ -775,7 +788,7 @@ oc get svc
 expected output:
 <img src="images/ocp-svc.png">
 
-Expose the service so that Git is able to connect to the event listener.
+Expose the service so that Git is able to connect to the event listener.<br>
 *Note - since this is public cluster, we can simply use the included OpenShift Ingress Controller as it is exposed to the Internet.  For a private cluster, you can follow the same process as we did above in exposing the minesweeper application with Front Door!
 
 To get the url of the Event Listener Route that we just created, run the following command:
@@ -797,6 +810,72 @@ On the next screen, click on webhooks.
 
 Click on add webhook
 <img src="images/git-add-webhook.png">
+
+On the next screen, enter the following settings:
+**PayloadURL** - enter http://<event listener hostname you got above>
+**ContentType** - select application/json
+**Secret** - this your github token 
+
+Where does this secret value come from?
+Refer to the ~/$USERID/aro-hackaton-app/pipeline/tasks/event-listener/web-trigger.yaml file.
+
+You will see the following snippet that contains the secret to access git.
+
+```bash
+  interceptors:
+    - ref:
+        name: "github"
+      params:
+        - name: "secretRef"
+          value:
+            secretName: gitsecret
+            secretKey: secretToken
+        - name: "eventTypes"
+          value: ["push"]
+```
+
+The secret you enter here for the git webhook, needs to match the value for the *secretToken* key of the a secret named gitsecret.  If you remember in the previous step, we create this secret and used your git token as this value.
+
+Keep the remaining defaults, and click Add webhook
+
+<img src="images/add-webhook.png">
+
+## Test it out!!
+
+Now that we have our trigger, eventlistener and git webhook setup, lets test it out.
+
+Make sure you are in the directory for your personal git repo where the application is, and edit the */src/main/resources/META-INF/resources/index.html* file.
+
+Search for Leaderboard and change it to \<YOUR NAME\> Leaderboard.
+
+```bash
+cd ~/$USERID/aro-hackaton-app
+vi /src/main/resources/META-INF/resources/index.html
+```
+
+<img src="images/html-edit.png">
+
+Now commit and push the change
+
+```bash
+git commit -am 'updated leaderboard title'
+git push
+```
+
+Quickly switch over to your OpenShift Console, and watch the pipeline run.
+<img src="images/watch-pipeline.png">
+
+Once the pipeline finishes, check out the change.
+
+From the OpenShift Console, click on Networking and the Routes.
+<img src="images/route-2.png">
+
+and drum roll ...  you should see the updated application with a new title for the leaderboard.
+<img src="images/updated-minesweeper.png">
+
+
+
+
 
 
 
