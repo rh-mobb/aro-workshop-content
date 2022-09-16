@@ -652,6 +652,13 @@ git push
 ```
 * when prompted log in with your git user name ( email ) and git token.  If you need a git token, please refer to this [document](https://catalyst.zoho.com/help/tutorials/githubbot/generate-access-token.html)
 
+While you have your github userid and secret handy, let's also create a secret containing your github credentials that we will need later.  First set GIT envrionment variables and then run a script to create the secret.
+
+```bash
+GIT_USER=<your git email>
+GIT_TOKEN=<your git token>
+~/aro-hackaton-app/pipeline/0-github-secret.sh
+```
 
 Now create the pipeline definition on your cluster:
 
@@ -694,7 +701,103 @@ On the following screen, click on Pipeline Runs to view the status of each Pipel
 Lastely, click on the piperun name and you can see all the details and steps of the Pipeline.  If your are curious, also click on logs and view the logs of the different tasks that were ran.
 <img src="images/pipeline-run-details-ocp.png">
 
-So now we can successfully build and deploy new code by manually runnning a pipeline run.  But how can we configure the pipeline to run automatically when we commit code with GIT?  We can do so with Triggers!
+# Event Triggering 
+So now we can successfully build and deploy new code by manually runnning a pipeline run.  But how can we configure the pipeline to run automatically when we commit code with GIT?  We can do so with an Event Listener and a Trigger!
+
+Let's start by looking at the resources we will be creating to create our event listener and trigger.
+
+```bash
+ls ~/$USER/aro-hackaton-app/pipeline/tasks/event-listener | tr “” “\n”
+```
+
+expected output:
+<img src="images/event-listener-files.png">
+
+Take a look at the files listed:
+
+**1-web-trigger-binding.yaml**
+This TriggerBinding allows you to extract fields, such as the git repository name, git commit number, and the git repository URL in this case.
+To learn more about TriggerBindings, click [here](https://tekton.dev/docs/triggers/triggerbindings/)
+
+**2-web-trigger-template.yaml**
+The TriggerTemplate specifies how the pipeline should be run.  Browsing the file above, you will see there is a definition of the PipelineRun that looks exactly like the PipelineRun you create in the previous step.  This is by design! ... it should be the same.
+
+You will need to edit this file so it points to your git repository and acr image repository.  Change the following entries to point to your GIT Repository.
+
+```bash
+- name: dependency-git-url
+  value: https://github.com/<YOUR-GITHUB-ID>/common-java-dependencies
+- name: application-git-url
+   value: https://github.com/<YOUR-GITHUB-ID>/aro-hackaton-app
+```
+
+As a reminder, each attendee has their own Azure Container Registry service assigned to them, with the naming convention <USERID>acr.azurecr.io 
+
+```bash
+- name: image-name
+  value: <CHANGE-ME>.azurecr.io/minesweeper
+```
+
+To learn more about TriggerBindings, click [here](https://tekton.dev/docs/triggers/triggertemplates/)
+
+**3-web-trigger.yaml**
+The next file we have is the Trigger.  The Trigger specifies what should happen when the EventListener detects an Event.  Looking at this file, you will see that we are looking for 'Push' events that will create an instance of the TriggerTemplate that we just created.  This in turn will start the PipelineRun.
+
+To learn more about Triggers, click [here](https://tekton.dev/docs/triggers/triggers/)
+
+**4-event-listenter.yaml**
+The last file we have is the Event Listener.  An EventListener is a Kubernetes object that listens for events at a specified port on your OpenShift cluster. It exposes an OpenShift Route that receives incoming event and specifies one or more Triggers. 
+
+To learn more about EventListeners, click [here](https://tekton.dev/docs/triggers/eventlisteners/)
+
+Now that you have reviewed all the files, let's apply them to our cluster.
+
+```bash
+oc create -f ~/$USER/aro-hackaton-app/pipeline/tasks/event-listener
+```
+
+Before we test out our EventListener and Trigger, lets review what was created in OpenShift.
+
+From the OpenShift console, under Pipelines, click on Triggers.
+
+Browse the EventListener, TriggerTemplate and TriggerBindings that you just created.
+<img src="images/ocp-triggers.png">
+
+The next thing we need to do, is connect our EventListener with Git.  When an action, such as a git push, happens, git will need to call our EventListner to start the build and deploy process.
+
+The first thing we need to do is exposing our EventListner service.
+
+From the Cloud Shell, let's start by looking at the event listener service.
+```bash
+oc get svc
+```
+
+expected output:
+<img src="images/ocp-svc.png">
+
+Expose the service so that Git is able to connect to the event listener.
+*Note - since this is public cluster, we can simply use the included OpenShift Ingress Controller as it is exposed to the Internet.  For a private cluster, you can follow the same process as we did above in exposing the minesweeper application with Front Door!
+
+To get the url of the Event Listener Route that we just created, run the following command:
+
+```bash
+oc get route el-minesweeper-el
+```
+
+expected output:
+<img src="images/el-route.png">
+
+The last step we need to do, is configure git to call this event listner URL when events occur.
+
+From your browser, go to your personal GitHub aro-hackaton-app repository, and click on Settings.
+<img src="images/git-settings.png">
+
+On the next screen, click on webhooks.
+<img src="images/git-settings-webhook.png">
+
+Click on add webhook
+<img src="images/git-add-webhook.png">
+
 
 
 
