@@ -8,19 +8,16 @@
 * logged in to ARO cluster
 * The Red Hat OpenShift Service Mesh Operator must be installed.
 * An account with the cluster-admin role.
+* Control Plane istio-system
 
 ### Deploying the Service Mesh control plane from the web console
 You can deploy a basic ServiceMeshControlPlane by using the web console. In this example, istio-system is the name of the Service Mesh control plane project.
 
 1. Create a project named istio-system.
-   ```bash
+```bash
    oc new-project istio-system
-   ```
-2. CLI to create the bookinfo project.
 ```
-oc new-project bookinfo
-```
-4. Create a ServiceMeshControlPlane. The version of the Service Mesh control plane determines the features available regardless of the version of the Operator.
+2. Create a ServiceMeshControlPlane. The version of the Service Mesh control plane determines the features available regardless of the version of the Operator.
 ```
 cat <<EOF | oc apply -f - 
 apiVersion: maistra.io/v2
@@ -46,7 +43,7 @@ spec:
       enabled: true
    EOF
 ```
-4. To watch the progress of the pod deployment, run the following command:
+3. To watch the progress of the pod deployment, run the following command:
 ```bash
 oc get pods -n istio-system -w
 ```
@@ -64,18 +61,22 @@ You can add a project to the ServiceMeshMemberRoll from the command line.
 * An installed, verified Red Hat OpenShift Service Mesh Operator.
 * List of projects to add to the service mesh.
 * Access to the OpenShift CLI (oc).
-1. To add your projects as members, modify the following example YAML. You can add any number of projects, but a project can only belong to one ServiceMeshMemberRoll resource. In this example, istio-system is the name of the Service Mesh control plane project.
+1. CLI to create the bookinfo project.
+```
+oc new-project bookinfo
+```
+2. To add your projects as members, modify the following example YAML. You can add any number of projects, but a project can only belong to one ServiceMeshMemberRoll resource. In this example, istio-system is the name of the Service Mesh control plane project.
 ```
 cat <<EOF | oc apply -f - 
 apiVersion: maistra.io/v1
-kind: ServiceMeshMember
+kind: ServiceMeshMemberRoll
 metadata:
-  namespace: istio-system
   name: default
+  namespace: istio-system
 spec:
-  controlPlaneRef:
-    name: basic
-    namespace:  istio-system
+  members:
+    # a list of projects joined into the service mesh
+    - bookinfo
    EOF
 ```
 2. Run the following command to verify the ServiceMeshMemberRoll was created successfully.
@@ -104,14 +105,14 @@ serviceaccount/bookinfo-productpage created
 deployment.apps/productpage-v1 created
 ```
 4. Create the ingress gateway by applying the bookinfo-gateway.yaml file:
-```
+```bash
 oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-2.2/samples/bookinfo/networking/bookinfo-gateway.yaml
 ```
 You should see output similar to the following:
 ```
 gateway.networking.istio.io/bookinfo-gateway created
 virtualservice.networking.istio.io/bookinfo created
-``
+```
 5. Set the value for the GATEWAY_URL parameter:
 ```
 export GATEWAY_URL=$(oc -n istio-system get route istio-ingressgateway -o jsonpath='{.spec.host}')
@@ -119,7 +120,7 @@ export GATEWAY_URL=$(oc -n istio-system get route istio-ingressgateway -o jsonpa
 #### Adding default destination rules
 Before you can use the Bookinfo application, you must first add default destination rules.
 1. To add destination rules, run the following commands:
-```
+```bash
 oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-2.2/samples/bookinfo/networking/destination-rule-all.yaml
 ```
 You should see output similar to the following:
@@ -129,10 +130,10 @@ destinationrule.networking.istio.io/reviews created
 destinationrule.networking.istio.io/ratings created
 destinationrule.networking.istio.io/details created
 ```
-#### Verifying the Bookinfo installation
+### Verifying the Bookinfo installation
 To confirm that the sample Bookinfo application was successfully deployed, perform the following steps.
 1. Verify that all pods are ready with this command:
-```
+```bash
 oc get pods -n bookinfo
 ```
 All pods should have a status of Running. You should see output similar to the following:
@@ -146,7 +147,7 @@ reviews-v2-5b64f47978-cvssp       2/2     Running   0          12m
 reviews-v3-6dfd49b55b-vcwpf       2/2     Running   0          12m
 ```
 2. Run the following command to retrieve the URL for the product page:
-```
+```bash
 echo "http://$GATEWAY_URL/productpage"
 ```
 3. Copy and paste the output in a web browser to verify the Bookinfo product page is deployed.
@@ -154,12 +155,17 @@ echo "http://$GATEWAY_URL/productpage"
 
 ### Traffic Management
 ### Metrics, Logs, and Traces
+
 ### Delete the Bookinfo project
-```
+
+1. Delete the Bookinfo project
+```bash
 oc delete project bookinfo
 ```
+
 ### Remove the Bookinfo project from the Service Mesh member roll
-you can run this command using the CLI to remove the bookinfo project from the ServiceMeshMemberRoll. In this example, istio-system is the name of the Service Mesh control plane project.
-```
+
+You can run this command using the CLI to remove the bookinfo project from the ServiceMeshMemberRoll. In this example, istio-system is the name of the Service Mesh control plane project.
+```bash
 oc -n istio-system patch --type='json' smmr default -p '[{"op": "remove", "path": "/spec/members", "value":["'"bookinfo"'"]}]'
 ```
