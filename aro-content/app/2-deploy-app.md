@@ -57,7 +57,7 @@ export ARORG=<The Azure Resource Group a facilitator gave you>
    quarkus ext add openshift
    ```
 
-1. Edit microsweeper-quarkus/src/main/resources/application.properties
+1. Edit aro-hackaton-app/src/main/resources/application.properties
 
    Make sure your file looks like the one below, changing the IP address on line 3 to the private ip address of your postgres instance.  You should have gotten your PostgreSQL private IP in the previous step when you created the database instance.
 
@@ -629,6 +629,29 @@ https://github.com/rh-mobb/aro-hackaton-app/blob/main/pipeline/3-pipeline.yaml
 
 Browse through the file and notice all the tasks that are being executed.  These are the tasks we imported in the previous step.  The pipeline definition simply says which order the tasks are run and what parameters should be passed between tasks.
 <img src="images/pipeline-yaml.png">
+
+Now that we have the source code forked, we need to copy the properties file we created earlier to our new code base.  Let's create a new directory, clone the repo and copy the file.
+
+Using the cloud shell, run the following commands.
+```bash
+mkdir ~/$USER
+cd $USER
+cp ../aro-hackaton-app/src/main/resources/application.properties aro-hackaton-app/src/main/resources/application.properties 
+```
+
+Setup git and push changes to the properties file
+
+```bash
+git config --global user.email "kmcolli@gmail.com"
+git config --global user.name “kmcolli”
+git init
+
+git add *
+git commit -am "Update Propereties File"
+git push
+```
+* when prompted log in with your git user name ( email ) and git token.  If you need a git token, please refer to this [document](https://catalyst.zoho.com/help/tutorials/githubbot/generate-access-token.html)
+
 
 Now create the pipeline definition on your cluster:
 
