@@ -13,14 +13,10 @@
 You can deploy a basic ServiceMeshControlPlane by using the web console. In this example, istio-system is the name of the Service Mesh control plane project.
 
 1. Create a project named istio-system.
-   ```bash
+```bash
    oc new-project istio-system
-   ```
-2. CLI to create the bookinfo project.
 ```
-oc new-project bookinfo
-```
-4. Create a ServiceMeshControlPlane. The version of the Service Mesh control plane determines the features available regardless of the version of the Operator.
+2. Create a ServiceMeshControlPlane. The version of the Service Mesh control plane determines the features available regardless of the version of the Operator.
 ```
 cat <<EOF | oc apply -f - 
 apiVersion: maistra.io/v2
@@ -46,7 +42,7 @@ spec:
       enabled: true
    EOF
 ```
-4. To watch the progress of the pod deployment, run the following command:
+3. To watch the progress of the pod deployment, run the following command:
 ```bash
 oc get pods -n istio-system -w
 ```
@@ -64,18 +60,22 @@ You can add a project to the ServiceMeshMemberRoll from the command line.
 * An installed, verified Red Hat OpenShift Service Mesh Operator.
 * List of projects to add to the service mesh.
 * Access to the OpenShift CLI (oc).
-1. To add your projects as members, modify the following example YAML. You can add any number of projects, but a project can only belong to one ServiceMeshMemberRoll resource. In this example, istio-system is the name of the Service Mesh control plane project.
+1. CLI to create the bookinfo project.
+```
+oc new-project bookinfo
+```
+2. To add your projects as members, modify the following example YAML. You can add any number of projects, but a project can only belong to one ServiceMeshMemberRoll resource. In this example, istio-system is the name of the Service Mesh control plane project.
 ```
 cat <<EOF | oc apply -f - 
 apiVersion: maistra.io/v1
-kind: ServiceMeshMember
+kind: ServiceMeshMemberRoll
 metadata:
-  namespace: istio-system
   name: default
+  namespace: istio-system
 spec:
-  controlPlaneRef:
-    name: basic
-    namespace:  istio-system
+  members:
+    # a list of projects joined into the service mesh
+    - bookinfo
    EOF
 ```
 2. Run the following command to verify the ServiceMeshMemberRoll was created successfully.
