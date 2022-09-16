@@ -8,6 +8,7 @@
 * logged in to ARO cluster
 * The Red Hat OpenShift Service Mesh Operator must be installed.
 * An account with the cluster-admin role.
+* Control Plane istio-system
 
 ### Deploying the Service Mesh control plane from the web console
 You can deploy a basic ServiceMeshControlPlane by using the web console. In this example, istio-system is the name of the Service Mesh control plane project.
@@ -129,7 +130,7 @@ destinationrule.networking.istio.io/reviews created
 destinationrule.networking.istio.io/ratings created
 destinationrule.networking.istio.io/details created
 ```
-#### Verifying the Bookinfo installation
+### Verifying the Bookinfo installation
 To confirm that the sample Bookinfo application was successfully deployed, perform the following steps.
 1. Verify that all pods are ready with this command:
 ```bash
