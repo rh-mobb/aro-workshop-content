@@ -66,18 +66,8 @@ You can add a project to the ServiceMeshMemberRoll from the command line.
 oc new-project bookinfo
 ```
 2. To add your projects as members, modify the following example YAML. You can add any number of projects, but a project can only belong to one ServiceMeshMemberRoll resource. In this example, istio-system is the name of the Service Mesh control plane project.
-```
-cat <<EOF | oc apply -f - 
-apiVersion: maistra.io/v1
-kind: ServiceMeshMemberRoll
-metadata:
-  name: default
-  namespace: istio-system
-spec:
-  members:
-    # a list of projects joined into the service mesh
-    - bookinfo
-   EOF
+```bash
+oc apply -f https://github.com/rh-mobb/aro-hackathon-content/blob/main/aro-content/assets/smmr.yaml
 ```
 2. Run the following command to verify the ServiceMeshMemberRoll was created successfully.
 ```bash
