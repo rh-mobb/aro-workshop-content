@@ -62,21 +62,21 @@ export ARORG=<The Azure Resource Group a facilitator gave you>
    Make sure your file looks like the one below, changing the IP address on line 3 to the private ip address of your postgres instance.  You should have gotten your PostgreSQL private IP in the previous step when you created the database instance.
 
    Also change the following line to represent the database that has been configured for you:
-   %prod.quarkus.datasource.username=quarkus@<USERID>-microsweeper-database
+   **%prod.quarkus.datasource.username=quarkus@/<USERID/>-microsweeper-database**
  
    Also note the options in OpenShift Configurations.
 
-   *%prod.quarkus.openshift.deployment-kind=Deployment*
+   **%prod.quarkus.openshift.deployment-kind=Deployment**
    We will be creating a deployment for the application. 
 
-   *%prod.quarkus.openshift.build-strategy=docker* 
+   **%prod.quarkus.openshift.build-strategy=docker**
    The application will be built uisng Docker.
 
-   %prod.quarkus.container-image.group=minesweeper
+   **%prod.quarkus.container-image.group=minesweeper**
    The application will use minesweeper project that we previously created.
 
-   *%prod.quarkus.openshift.expose=true*
-   We will expose the route using the default openshift router domain - apps.<cluster-id>.eastus.aroapp.io
+   **%prod.quarkus.openshift.expose=true**
+   We will expose the route using the default openshift router domain - apps./<cluster-id/>.eastus.aroapp.io
 
 
    Sample microsweeper-quarkus/src/main/resources/application.properties
@@ -693,4 +693,8 @@ On the following screen, click on Pipeline Runs to view the status of each Pipel
 
 Lastely, click on the piperun name and you can see all the details and steps of the Pipeline.  If your are curious, also click on logs and view the logs of the different tasks that were ran.
 <img src="images/pipeline-run-details-ocp.png">
+
+So now we can successfully build and deploy new code by manually runnning a pipeline run.  But how can we configure the pipeline to run automatically when we commit code with GIT?  We can do so with Triggers!
+
+
 
