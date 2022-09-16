@@ -6,11 +6,11 @@
 # spec:
 #   location: eastus
 ---
-apiVersion : v1
-kind : Secret
-metadata : 
-  name : server-admin-pw
-  namespace : default
+apiVersion: v1
+kind: Secret
+metadata: 
+  name: server-admin-pw
+  namespace: default
 data:
   password: aGFja2F0aG9uUGFzcw== # hackathonPass
 type: Opaque

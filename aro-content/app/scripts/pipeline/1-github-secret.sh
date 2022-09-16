@@ -8,5 +8,5 @@ metadata:
 type: kubernetes.io/basic-auth
 stringData:
   username: $GIT_USER
-  password: $GIT_TOKEN
+  secretToken: $GIT_TOKEN
 EOF
