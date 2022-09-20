@@ -33,7 +33,7 @@ export ARORG=<The Azure Resource Group a facilitator gave you>
 1. The first thing we need to do is get a copy of the code that we will build and deploy to our clusters.  Clone the git repository
 
    ```bash
-   git clone -b ARO https://github.com/rh-mobb/aro-hackaton-app
+   git clone https://github.com/rh-mobb/aro-hackaton-app
    ```
 
 1. change to the root directory
@@ -61,32 +61,14 @@ export ARORG=<The Azure Resource Group a facilitator gave you>
 
    Make sure your file looks like the one below, changing the IP address on line 3 to the private ip address of your postgres instance.  You should have gotten your PostgreSQL private IP in the previous step when you created the database instance.
 
-   Also change the following line to represent the database that has been configured for you:
-   **%prod.quarkus.datasource.username=quarkus@\<USERID\>-microsweeper-database** <br>
- 
-   Also note the options in OpenShift Configurations.
-
-   **%prod.quarkus.openshift.deployment-kind=Deployment** <br>
-   We will be creating a deployment for the application. 
-
-   **%prod.quarkus.openshift.build-strategy=docker** <br>
-   The application will be built uisng Docker.
-
-   **%prod.quarkus.container-image.group=minesweeper** <br>
-   The application will use minesweeper project that we previously created.
-
-   **%prod.quarkus.openshift.expose=true** <br>
-   We will expose the route using the default openshift router domain - apps.\<cluster-id\>.eastus.aroapp.io
-
-
    Sample microsweeper-quarkus/src/main/resources/application.properties
 
    ```
    # Database configurations
    %prod.quarkus.datasource.db-kind=postgresql
-   %prod.quarkus.datasource.jdbc.url=jdbc:postgresql://<CHANGE TO PRIVATE IP>:5432/score
+   %prod.quarkus.datasource.jdbc.url=jdbc:postgresql://<USERID>-minesweeper-database:5432/score
    %prod.quarkus.datasource.jdbc.driver=org.postgresql.Driver
-   %prod.quarkus.datasource.username=quarkus@<USERID>microsweeper-database
+   %prod.quarkus.datasource.username=quarkus
    %prod.quarkus.datasource.password=r3dh4t1!
    %prod.quarkus.hibernate-orm.database.generation=drop-and-create
    %prod.quarkus.hibernate-orm.database.generation=update
@@ -108,6 +90,24 @@ export ARORG=<The Azure Resource Group a facilitator gave you>
    # macOS configurations
    #%prod.quarkus.native.container-build=true
    ```
+
+   Change the following line to represent the database that has been configured for you:
+   **%prod.quarkus.datasource.jdbc.url=jdbc:postgresql://<USERID>-minesweeper-database:5432/score** <br>
+ 
+   Note the options in OpenShift Configurations.
+
+   **%prod.quarkus.openshift.deployment-kind=Deployment** <br>
+   We will be creating a deployment for the application. 
+
+   **%prod.quarkus.openshift.build-strategy=docker** <br>
+   The application will be built uisng Docker.
+
+   **%prod.quarkus.container-image.group=minesweeper** <br>
+   The application will use minesweeper project that we previously created.
+
+   **%prod.quarkus.openshift.expose=true** <br>
+   We will expose the route using the default openshift router domain - apps.\<cluster-id\>.eastus.aroapp.io
+
 
 1. Build and deploy the quarkus application to OpenShift.  One of the great things about OpenShift is the concept of Source to Image, where you simply point to your source code and OpenShift will build and deploy your application.  
 

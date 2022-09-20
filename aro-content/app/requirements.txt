@@ -1,5 +1,9 @@
 A Public Cluster
 OpenShift Pipelines installed on the Cluster
+user has been given access to the internal registry.
+# Note: replace "<user>" with the identity you need to access the registry
+oc policy add-role-to-user -n openshift-image-registry registry-viewer <user>
+oc policy add-role-to-user -n openshift-image-registry registry-editor <user>
 
 A $USERID unique user / developer id
 
