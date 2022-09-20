@@ -145,7 +145,7 @@ In order to see ARO resource inside Azure Arc, you need to create a service acco
 oc project azure-arc
 oc create serviceaccount azure-arc-observability
 oc create clusterrolebinding azure-arc-observability-rb --clusterrole cluster-admin --serviceaccount azure-arc:azure-arc-observability
-````
+```
 
 ```bash
 apiVersion: v1
