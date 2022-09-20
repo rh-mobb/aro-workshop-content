@@ -81,7 +81,7 @@ export ARORG=<The Azure Resource Group a facilitator gave you>
    %prod.quarkus.openshift.build-strategy=docker
    %prod.quarkus.openshift.expose=true
    %prod.quarkus.openshift.deployment-kind=Deployment
-   %prod.quarkus.container-image.group=minesweeper
+   %prod.quarkus.container-image.group=<CHANGE TO YOUR NAMESPACE>
 
    # Serverless configurations
    #%prod.quarkus.container-image.group=microsweeper-%prod.quarkus
@@ -103,7 +103,7 @@ export ARORG=<The Azure Resource Group a facilitator gave you>
    The application will be built uisng Docker.
 
    **%prod.quarkus.container-image.group=minesweeper** <br>
-   The application will use minesweeper project that we previously created.
+   The application will use the namespace your facilitator assigned to you.
 
    **%prod.quarkus.openshift.expose=true** <br>
    We will expose the route using the default openshift router domain - apps.\<cluster-id\>.eastus.aroapp.io
@@ -120,16 +120,17 @@ In this first example, we will be using source to image and build configs that c
 Let's take a look at what this did along with everything that was created in your cluster.
 
 ### Container Images
-<img src="images/image-stream-list.png">
 Log into the OpenShift Console and from the Administrator perspective, expand Builds and then Image Streams, and select the minesweeper Project.
+
+<img src="images/image-stream-list.png">
 
 You will see two images that were created on your behalf when you ran the quarkus build command.  There is one for openjdk-11 that comes with OpenShift as a Universal Base Image (UBI) that the application will run under. With UBI, you get highly optimized and secure container images that you can build your applications with.   For more information on UBI please read this [article](https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image)
 
 The second image you see is the the microsweeper-appservice image.  This is the image for the application that was build automatically for you and pushed to the container registry that comes with OpenShift.
 
 ### Image Build
+How did those images get built you ask?   Back on the OpenShift Console, click on Build Configs and then the microsweeper-appservice entry.
 <img src="images/build-config-list.png">
-How did those images get built you ask?   Back on the OpenShift Console, *Click* on Build Configs and then the microsweeper-appservice entry.
 
 When you ran the quarkus build command, this created the build config you can see here.  In our quarkus settings, we set the deployment strategy to build the image using Docker.  The Dockerfile file from the git repo that we cloned ~/microsweeper-quarkus/Dockerfile was used for this Build Config.  
 
@@ -138,7 +139,7 @@ A build configuration describes a single build definition and a set of triggers 
 ```
 You can read more about BuildConfigs [here](https://docs.openshift.com/container-platform/4.11/cicd/builds/understanding-buildconfigs.html)
 
-Once the BuildConfig was created, the source to image process kicked off a Build of that build config.  The build is what actually does the work in building and deploying the image.  So we started with defining what to be built with the BuildConfig and then actuall did the work with the Build.
+Once the BuildConfig was created, the source to image process kicked off a Build of that build config.  The build is what actually does the work in building and deploying the image.  We started with defining what to be built with the BuildConfig and then actually did the work with the Build.
 You can read more about Builds [here](https://docs.openshift.com/container-platform/4.11/cicd/builds/understanding-image-builds.html)
 
 To look at what the build actually did, click on Builds tab and then into the first Build in the list.
@@ -157,7 +158,7 @@ Explore around the deployment screen, check out the different tabs, look at the 
 Look at the pod the deployment created, and see that it is running.
 <img src="images/deployment-pod.png">
 
-The last thing we will look at is the Route that was created for our application.  In the quarkus properties file, we specified that the application should be exposed to the Internet.  When you create a Route, you have the option to specify a hostname.  To start with, we will just use the default domain that comes with ARO.  In next section, we will expose the same appplication to a custom domain leverage Azure Front Door.
+The last thing we will look at is the Route that was created for our application.  In the quarkus properties file, we specified that the application should be exposed to the Internet.  When you create a Route, you have the option to specify a hostname.  To start with, we will just use the default domain that comes with ARO.  In next section, we will expose the same appplication to a custom domain leveraging Azure Front Door.
 
 You can read more about Routes [here](https://docs.openshift.com/container-platform/4.11/networking/routes/route-configuration.html)
 
@@ -174,7 +175,7 @@ You can also get the the url for your application using the command line:
 oc get routes -o json | jq -r '.items[0].spec.host'
 ```
 
-Point your broswer to the application!!
+Point your browser to the application!!
 <img src="images/minesweeper.png">
 
 ### Application IP 
@@ -205,7 +206,7 @@ On the next screen, click on Frontend IP configuration.  Notice the IP address o
 <img src="images/load-balancers.png">
 
 For the fun of it, we can also look at what backends this load balancer is connected to. Click into the 2nd load balancer on the list above, and then click into the first rule.
-<img src="images/load-balancers-balancer-used-by.png">
+<img src="images/load-balancers-usedby.png">
 
 On the next screen, notice the Backend pool.  This is the subnet that contains all the workers.  And the best part is all of this came with OpenShift and ARO!
 <img src="images/load-balancers-backendpool.png">
