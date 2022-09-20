@@ -76,9 +76,15 @@ You should see output similar to the following:
 ```
 http://istio-ingressgateway-istio-system.apps.qybf0l2n.eastus.aroapp.io/productpage
 ```
-
 1. Copy and paste the output in a web browser to verify the Bookinfo product page is deployed.
 
+### Traffic Management
+#### Weighted Traffic
+***Weighted routing policy – Use to route traffic to multiple resources in proportions that you specify.***
+1. Apply a new rule that only sends traffic to v2 (black) and v3 (red) ratings API.
+```
+oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-2.2/samples/bookinfo/networking/virtual-service-reviews-v2-v3.yaml
+```
 1. Delete the Bookinfo project
 ```bash
 oc delete project bookinfo
