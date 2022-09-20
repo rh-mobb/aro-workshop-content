@@ -90,7 +90,7 @@ spec:
 
 Create PDB object
 ```
-oc apply -f pdb.yaml
+oc apply -f aro-content/assets/pdb.yaml
 poddisruptionbudget.policy/frontend-js-pdb created
 ```
 
@@ -145,7 +145,7 @@ spec:
 
 create CPU HPA for frontend-js app 
 ```
-oc create -f frontend-js-cpu-hpa.yaml -n frontend-js
+oc create -f aro-content/assets/hpa.yaml -n frontend-js
 ```
 
 Check HPA status
@@ -167,4 +167,20 @@ wait for a minute and check the status of Horizontal Pod Autoscaler. Your app sh
 watch oc get horizontalpodautoscaler/frontend-js-cpu -n frontend-js
 NAME              REFERENCE                TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
 frontend-js-cpu   Deployment/frontend-js   118%/50%   2         4         4          7m26s
+```
+
+Now kill the seige command using ```ctrl+c``` key combination or using the following command 
+
+```bash
+sohaibazed@Sohaibs-MBP-2 ~ % ps aux | grep siege
+sohaibazed        1325  15.6  0.4 409647280  62576 s000  S+    9:38AM   0:01.66 siege -c 60 google.com
+
+kill -9 1325
+```
+After you kill/stop the seige command, the traffic going to frontend-js service will cool down and after a 60sec cool down period you will see the replica count going down from 4 to 2
+
+```bash 
+watch oc get horizontalpodautoscaler/frontend-js-cpu -n frontend-js
+NAME              REFERENCE                TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+frontend-js-cpu   Deployment/frontend-js   0%/50%   2         4         2          7m26s
 ```
