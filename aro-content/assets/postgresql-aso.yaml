@@ -1,10 +1,10 @@
-apiVersion: resources.azure.com/v1alpha1api20200601
-kind: ResourceGroup
-metadata:
-  name: user1-rg
-  namespace: default
-spec:
-  location: eastus
+# apiVersion: resources.azure.com/v1alpha1api20200601
+# kind: ResourceGroup
+# metadata:
+#   name: wksp-rg
+#   namespace: default
+# spec:
+#   location: eastus
 ---
 apiVersion: v1
 kind: Secret
@@ -12,7 +12,7 @@ metadata:
   name: server-admin-pw
   namespace: default
 data:
-  password: cjNkaDR0MSE= # hackathonPass
+  password: aGFja2F0aG9uUGFzcw== # hackathonPass
 type: Opaque
 
 --- 
@@ -24,7 +24,7 @@ metadata:
 spec:
   location: eastus
   owner:
-    name: user1-rg
+    name: wksp-rg
   version: "13"
   sku:
     name: Standard_B1ms
@@ -32,7 +32,7 @@ spec:
 #    family: Gen5
 #    size: "51200"
 #    capacity: 2
-  administratorLogin: quarkus
+  administratorLogin: myAdmin
   administratorLoginPassword: # This is the name/key of a Kubernetes secret in the same namespace
     name: server-admin-pw
     key: password
