@@ -1,4 +1,5 @@
 ## Installing the Bookinfo application
+This tutorial walks you through how to create a sample application by deploying the Bookinfo application to a project, and viewing the running application in Service Mesh.
 1. From the CLI, deploy the Bookinfo application in the `bookinfo` project by applying the bookinfo.yaml file:
 ```bash
 oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-2.2/samples/bookinfo/platform/kube/bookinfo.yaml
