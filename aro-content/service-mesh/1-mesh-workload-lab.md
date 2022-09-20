@@ -70,6 +70,11 @@ reviews-v3-6dfd49b55b-vcwpf       2/2     Running   0          12m
 ```bash
 echo "http://$GATEWAY_URL/productpage"
 ```
+You should see output similar to the following:
+```
+http://istio-ingressgateway-istio-system.apps.qybf0l2n.eastus.aroapp.io/productpage
+```
+
 1. Copy and paste the output in a web browser to verify the Bookinfo product page is deployed.
 
 
