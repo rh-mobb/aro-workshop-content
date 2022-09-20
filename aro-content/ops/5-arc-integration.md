@@ -1,16 +1,16 @@
 # Integrating Azure ARC with ARO
 In this section of the workshop, we will integrate ARO cluster with Azure Arc-enabled Kubernetes. When you connect a Kubernetes/OpenShift cluster with Azure Arc, it will:
-* Be represented in Azure Resource Manager with a unique ID
-* Be place in an Azure subscription and resource group 
-* Receive tags just like any otherAzure resource
+- Be represented in Azure Resource Manager with a unique ID
+- Be place in an Azure subscription and resource group 
+- Receive tags just like any otherAzure resource
 
 Azure Arc-enabled Kubernetes supports the following scenarios for connected clusters:
-* Connect Kubernetes running outside of Azure for inventory, grouping, and tagging.
-* Deploy applications and apply configuration using GitOps-based configuration management.
-* View and monitor your clusters using Azure Monitor for containers.
-* Enforce threat protection using Microsoft Defender for Kubernetes.
-* Apply policy definitions using Azure Policy for Kubernetes.
-* Use Azure Active Directory for authentication and authorization checks on your cluster
+- Connect Kubernetes running outside of Azure for inventory, grouping, and tagging.
+- Deploy applications and apply configuration using GitOps-based configuration management.
+- View and monitor your clusters using Azure Monitor for containers.
+- Enforce threat protection using Microsoft Defender for Kubernetes.
+- Apply policy definitions using Azure Policy for Kubernetes.
+- Use Azure Active Directory for authentication and authorization checks on your cluster
 
 
 
@@ -164,11 +164,11 @@ Select Namespaces from the left side menu and paste the token in "Service accoun
 ![Image](Images/aro-arc-integration-image1.png)
 
 Now you can see all of your ARO rearouses inside ARC UI. you can see the following resources inside Azure ARC portal:
-* Namespaces
-* Workloads
-* Services and Ingress
-* Storage
-* Configurations
+- Namespaces
+- Workloads
+- Services and Ingress
+- Storage
+- Configurations
 
 
 ## Access Secrets from Azure Key Vault
@@ -363,9 +363,9 @@ Now you can go see logs and metrics for your cluster.
 
 ## Monitor ARO cluster against Goverance Policies
 Azure Policy extends Gatekeeper v3, an admission controller webhook for Open Policy Agent (OPA), to apply at-scale enforcements and safeguards on your clusters in a centralized, consistent manner. Azure Policy makes it possible to manage and report on the compliance state of your Kubernetes clusters from one place. The add-on enacts the following functions:
-* Checks with Azure Policy service for policy assignments to the cluster.
-* Deploys policy definitions into the cluster as constraint template and constraint custom resources.
-* Reports auditing and compliance details back to Azure Policy service.
+- Checks with Azure Policy service for policy assignments to the cluster.
+- Deploys policy definitions into the cluster as constraint template and constraint custom resources.
+- Reports auditing and compliance details back to Azure Policy service.
 
 Azure policy plugin is enabled when you connect your ARO cluster with Azure ARC. 
 ![Image](Images/aro-arc-integration-image4.png)
