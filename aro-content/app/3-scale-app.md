@@ -172,7 +172,7 @@ frontend-js-cpu   Deployment/frontend-js   118%/50%   2         4         4     
 Now kill the seige command using ```ctrl+c``` key combination or using the following command 
 
 ```bash
-sohaibazed@Sohaibs-MBP-2 ~ % ps aux | grep siege
+ps aux | grep siege
 sohaibazed        1325  15.6  0.4 409647280  62576 s000  S+    9:38AM   0:01.66 siege -c 60 google.com
 
 kill -9 1325
