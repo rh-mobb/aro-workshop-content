@@ -28,3 +28,8 @@ wget https://mirror.openshift.com/pub/openshift-v4/clients/pipeline/latest/tkn-l
 mkdir tkn
 tar -xvf tkn-linux-amd64.tar.gz -C tkn 
 echo 'export PATH=$PATH:~/tkn' >> ~/.bashrc && source ~/.bashrc
+
+wget http://download.joedog.org/siege/siege-latest.tar.gz
+mkdir siege
+tar -xvf siege-latest.tar.gz -C siege
+echo 'export PATH=$PATH:~/siege' >> ~/.bashrc && source ~/.bashrc
