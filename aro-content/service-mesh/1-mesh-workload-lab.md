@@ -79,12 +79,6 @@ http://istio-ingressgateway-istio-system.apps.qybf0l2n.eastus.aroapp.io/productp
 
 1. Copy and paste the output in a web browser to verify the Bookinfo product page is deployed.
 
-
-### Traffic Management
-### Metrics, Logs, and Traces
-
-### Delete the Bookinfo project
-
 1. Delete the Bookinfo project
 ```bash
 oc delete project bookinfo
