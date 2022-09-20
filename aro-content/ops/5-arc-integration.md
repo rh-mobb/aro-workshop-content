@@ -20,18 +20,23 @@ Azure Arc-enabled Kubernetes supports the following scenarios for connected clus
 * azure cli 
 * oc cli
 * An identity (user or service principal) which can be used to log in to Azure CLI and connect your cluster to Azure Arc.
-* Install the connectedk8s Azure Cli extension of version >= 1.2.0
-  * ```bash
-    az extension add --name "connectedk8s"
-    az extension add --name "k8s-configuration"
-    az extension add --name "k8s-extension"
-    ```
-* Register providers for Azure Arc-enabled Kubernetes. Registration may take up to 10 minutes.
-  * ```bash 
-    az provider register --namespace Microsoft.Kubernetes
-    az provider register --namespace Microsoft.KubernetesConfiguration
-    az provider register --namespace Microsoft.ExtendedLocation
-    ```
+
+
+## Enable Extensions and Plugins
+Install the connectedk8s Azure Cli extension of version >= 1.2.0
+
+```bash
+az extension add --name "connectedk8s"
+az extension add --name "k8s-configuration"
+az extension add --name "k8s-extension"
+```
+Register providers for Azure Arc-enabled Kubernetes. Registration may take up to 5 minutes.
+
+```bash 
+az provider register --namespace Microsoft.Kubernetes
+az provider register --namespace Microsoft.KubernetesConfiguration
+az provider register --namespace Microsoft.ExtendedLocation
+```
 
 ## Connect an existing ARO cluster
 Make sure you are logged into your ARO cluster
