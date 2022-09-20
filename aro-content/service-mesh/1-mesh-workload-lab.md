@@ -1,3 +1,4 @@
+## Installing the Bookinfo application
 1. From the CLI, deploy the Bookinfo application in the `bookinfo` project by applying the bookinfo.yaml file:
 ```bash
 oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-2.2/samples/bookinfo/platform/kube/bookinfo.yaml
