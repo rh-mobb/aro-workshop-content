@@ -71,7 +71,8 @@ A PodDisruptionBudget object’s configuration consists of the following key par
   * maxUnavailable is the number of pods can be unavailable during a disruption.
 
 
-**NOTE** A maxUnavailable of 0% or 0 or a minAvailable of 100% or equal to the number of replicas is permitted but can block nodes from being drained.
+!!! note
+    A maxUnavailable of 0% or 0 or a minAvailable of 100% or equal to the number of replicas is permitted but can block nodes from being drained.
 
 
 Create PBD.yaml file with the following yaml.
@@ -106,7 +107,8 @@ frontend-js-pdb   2               N/A               1                     7m39s
 
 As a developer, you can use a horizontal pod autoscaler (HPA) to specify how OpenShift Container Platform should automatically increase or decrease the scale of a replication controller or deployment configuration, based on metrics collected from the pods that belong to that replication controller or deployment configuration. You can create an HPA for any any deployment, deployment config, replica set, replication controller, or stateful set.
 
-In this exercise we will scale frontend application based on CPU utilization
+In this exercise we will scale frontend application based on CPU utilization:
+
 * Scale out when average CPU utilization is greater than 80% of CPU limit
 * Maximum pods is 5
 * Scale down to min replicas if utilization is lower than threshold for 60 sec
