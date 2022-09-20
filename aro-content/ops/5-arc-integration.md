@@ -49,17 +49,6 @@ apiServer=$(az aro show -g <<resource group name>> -n <<cluster name>> --query a
 oc login $apiServer -u kubeadmin -p $kubeadmin_password
 ```
 
-OpenShift Prep before connecting 
-```bash
-
-oc adm policy add-scc-to-user nonroot system:serviceaccount:flux-system:kustomize-controller
-oc adm policy add-scc-to-user nonroot system:serviceaccount:flux-system:helm-controller
-oc adm policy add-scc-to-user nonroot system:serviceaccount:flux-system:source-controller
-oc adm policy add-scc-to-user nonroot system:serviceaccount:flux-system:notification-controller
-oc adm policy add-scc-to-user nonroot system:serviceaccount:flux-system:image-automation-controller
-oc adm policy add-scc-to-user nonroot system:serviceaccount:flux-system:image-reflector-controller
-```
-
 Run the following command:
 ```bash
 az connectedk8s connect --resource-group $resourceGroupName --name $clusterName --distribution openshift --infrastructure auto
