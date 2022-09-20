@@ -225,13 +225,7 @@ There are several advantages of this approach, namely your cluster and all the r
 
 As you can see in the diagram, Azure Front Door sits on the edge of the Microsoft network and is connected to the cluster via a private link service.  With a private cluster, this means all traffic goes through Front Door and is secured at the edge.  Front Door is then connected to your cluster through a private connection over the Microsoft backbone.
 
-Setting up and configuring Azure Front Door for the minesweeper application is typically something the operations team would do.  If you are interested in going through the steps, you can do so here.  Or simply run this [script] (/scripts/frontdoor-install-config.sh)
-
-```bash
-frontdoor-install-config.sh <ARO Resource Group> <ARO Cluster Name> <Your User ID>
-```
-
-For detailed instructions on setting up please follow the guide [here](../ops/6-front-door.md)
+Setting up and configuring Azure Front Door for the minesweeper application is typically something the operations team would do.  If you are interested in going through the steps, you can do so [here](../ops/6-front-door.md)  
 
 
 ## Configure the application to use Front Door
