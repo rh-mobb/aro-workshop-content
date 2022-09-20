@@ -148,7 +148,6 @@ oc create clusterrolebinding azure-arc-observability-rb --clusterrole cluster-ad
 ````
 
 ```bash
-oc apply -f - <<EOF
 apiVersion: v1
 kind: Secret
 metadata:
@@ -157,7 +156,11 @@ metadata:
   annotations:
     kubernetes.io/service-account.name: azure-arc-observability
 type: kubernetes.io/service-account-token
-EOF
+
+```
+
+```bash
+oc apply -f aro-content/assets/azure-arc-secret.yaml
 ```
 
 ```bash
@@ -309,6 +312,10 @@ spec:
     tenantId: <tenant-Id>                
 ```
 
+```bash
+oc apply -f aro-content/assets/azure-arc-secretproviderclass.yaml
+```
+
 Create a pod with the following YAML, filling in the name of your identity
 
 ```bash
@@ -336,6 +343,10 @@ spec:
           secretProviderClass: "akvprovider-demo"
         nodePublishSecretRef:                       
           name: secrets-store-creds
+```
+
+```bash
+oc apply -f aro-content/assets/azure-arc-pod.yaml
 ```
 
 ### Validate the secrets
