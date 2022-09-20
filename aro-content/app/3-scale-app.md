@@ -9,9 +9,10 @@ In this section of the workshop, we will deploy an application to an ARO cluster
 
 
 You will need to use the provided Virtual Machine to build and deploy the application.  This VM has the following required CLIs and development environment already installed:
+
 * az cli
 * oc cli
-* siege (yum install siege -y)
+* siege
 
 ## Deploy an application
 Let's deploy an application!  
