@@ -5,12 +5,16 @@ Proxies connect with the control plane and provide [Service Mesh functionality](
 Automatically providing metrics, logs and traces is a major feature of the sidecar.
 In the previous steps we enabled automatuc sidecar injection in **travel-control**.
 The application is still missing visibility from other workloads.
-**Click** graph type and **select** Workload graph/
-Next **select** multiple namespaces to identify missing sidecars in the Travel Demo a\Application
+
+1. **Click** graph type
+
+1. **Select** Workload graph
+
+1. Next **select** multiple namespaces to identify missing sidecars in the Travel Demo a\Application
 
 ![Missing Sidecars](./images/missing-sidecars.png)
 
-That *control* workload provides good visibility of its traffic, but telemetry is partially enabled, as *travel-portal* and *travel-agency* workloads don't have sidecar proxies.
+The *control* workload provides good visibility of its traffic, but telemetry is partially enabled, as *travel-portal* and *travel-agency* workloads don't have sidecar proxies.
 
 Enable proxy injection in *travel-portal* and *travel-agency* namespaces
 
