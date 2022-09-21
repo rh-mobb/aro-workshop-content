@@ -1,7 +1,7 @@
 ## Enable Sidecars in all workloads
 
 An Istio sidecar proxy adds a workload into the mesh.
-Proxies connect with the control plane and provide [Service Mesh functionality](https://istio.io/latest/about/service-mesh/#what-is-istio).
+Proxies connect with the control plane and provide [Service Mesh functionality](https://docs.openshift.com/container-platform/4.11/service_mesh/v2x/ossm-about.html).
 Automatically providing metrics, logs and traces is a major feature of the sidecar.
 In the previous steps we have added a sidecar only in the *travel-control* namespace's *control* workload.
 We have added new powerful features but the application is still missing visibility from other workloads.
