@@ -35,6 +35,6 @@ oc rollout restart deploy -n travel-agency
 
 ![Updated Workloads](./images/updated-workloads.png)
 
-**Verify** updated telemetry for **travel-portal** and **travel-agency** namespaces
+**Verify** updated graph for **travel-portal** and **travel-agency** namespaces
 
 ![Updated Telemetry](./images/updated-telemetry.png)
