@@ -20,11 +20,11 @@ In this tutorial, we will add namespaces and workloads into the ServiceMesh indi
 This will help you to understand how Istio sidecar proxies work and how applications can use Istio's features.
 We are going to start with the *control* workload deployed into the *travel-control* namespace:
 
-Enable Auto Injection on the *travel-control* namespace
+**Enable** Auto Injection for **travel-control** namespace
 
 ![Enable Auto Injection per Namespace](./images/travel-control-namespace.png)
 
-Enable Auto Injection for *control* workload
+**Enable** Auto Injection for **control** workload
 
 ![Enable Auto Injection per Workkload](./images/control-workload.png)
 
