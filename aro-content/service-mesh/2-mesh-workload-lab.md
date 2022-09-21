@@ -1,4 +1,4 @@
-## Understanding proxy injection and Gateways
+## Understanding proxy injection
 ### Missing Sidcars
 The Travel Demo has been deployed in the previous step but without installing any Istio sidecar proxy.
 In that case, the application won’t connect to the control plane and won’t take advantage of Istio’s features.
