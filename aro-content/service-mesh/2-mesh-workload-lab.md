@@ -1,16 +1,18 @@
 ## Understanding proxy injection
 ### Missing Sidcars
-The Travel Demo has been deployed in the previous step but without installing any Istio sidecar proxy.
-In that case, the application won’t connect to the control plane and won’t take advantage of Istio’s features.
-In Kiali, we will see the new namespaces in the overview page:
+The Travel Demo has been deployed without installing sidecar proxy.
+Without a sidecar the application will not connect to the control plane and won’t take advantage of Istio’s features.
+In Kiali, **click** **overview** to see the all namespaces in the overview page:
 
 ![Overview](./images/overview.png)
 
-But we won't see any traffic in the graph page for any of these new namespaces:
+1. Next **click** Graph.
+
+We don't see traffic for namespaces without the sidecar injection enabled.
 
 ![Empty Graph](./images/empty-graph.png)
 
-If we examine the Applications, Workloads or Services page, it will confirm that there are missing sidecars:
+The applications, workloads and services page will confirm that that workloads and namespaces are missing sidecars:
 
 ![Missing Sidecar](./images/missing-sidecar.png)
 
@@ -18,21 +20,29 @@ If we examine the Applications, Workloads or Services page, it will confirm that
 
 In this tutorial, we will add namespaces and workloads into the ServiceMesh individually step by step.
 This will help you to understand how Istio sidecar proxies work and how applications can use Istio's features.
-We are going to start with the *control* workload deployed into the *travel-control* namespace:
+We are going to start with the **control** workload deployed into the **travel-control** namespace:
 
-**Enable** Auto Injection for **travel-control** namespace
-1.**Click** overview
-1.**Click 3 dots on the right of **travel-control**
-1.**Click** **Enable Auto Injection**
+**Enable** Auto Injection for **travel-control** namespace.
+
+1. **Click** overview.
+
+1. **Click** 3 dots on the right of **travel-control**.
+
+1. **Click** **Enable Auto Injection**.
 
 ![Enable Auto Injection per Namespace](./images/travel-control-namespace.png)
 
-**Enable** Auto Injection for **control** workload
-1.**Click** Workloard.
-1.**Filter** for **travel-control** namespace.
-1.**Click** control
-1.**Click** Action
-1.**Click** **Enable Auto Injection**
+**Enable** Auto Injection for **control** workload.
+
+1. **Click** Workloard.
+
+1. **Filter** for **travel-control** namespace.
+
+1. **Click** control.
+
+1. **Click** Action.
+
+1. **Click** **Enable Auto Injection**.
 
 ![Enable Auto Injection per Workkload](./images/control-workload.png)
 
