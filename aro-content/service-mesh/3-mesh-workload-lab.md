@@ -3,9 +3,10 @@
 An Istio sidecar proxy adds a workload into the mesh.
 Proxies connect with the control plane and provide [Service Mesh functionality](https://docs.openshift.com/container-platform/4.11/service_mesh/v2x/ossm-about.html).
 Automatically providing metrics, logs and traces is a major feature of the sidecar.
-In the previous steps we have added a sidecar only in the *travel-control* namespace's *control* workload.
-We have added new powerful features but the application is still missing visibility from other workloads.
-Switch to the Workload graph and select multiple namespaces to identify missing sidecars in the Travel Demo application
+In the previous steps we enabled automatuc sidecar injection in *travel-control*.
+The application is still missing visibility from other workloads.
+*Click* graph type and *select* Workload graph/
+Next *select* multiple namespaces to identify missing sidecars in the Travel Demo a\Application
 
 ![Missing Sidecars](./images/missing-sidecars.png)
 
