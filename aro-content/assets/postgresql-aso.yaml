@@ -12,7 +12,7 @@ metadata:
   name: server-admin-pw
   namespace: default
 data:
-  password: r3dh4t1! # hackathonPass
+  password: cjNkaDR0MSE= # hackathonPass
 type: Opaque
 
 --- 
