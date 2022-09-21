@@ -18,7 +18,7 @@ That *control* workload provides good visibility of its traffic, but telemetry i
 
 Enable proxy injection in *travel-portal* and *travel-agency* namespaces
 
-In the First Steps of this tutorial we didn't inject the sidecar proxies on purpose to show a scenario where only some workloads may have sidecars.
+In 2-mesh-workload-lab.md of this tutorial we didn't inject the sidecar proxies on purpose to show a scenario where only some workloads may have sidecars.
 
 Typically, Istio users annotate namespaces before the deployment to allow Istio to automatically add the sidecar when the application is rolled out into the cluster. Perform
 the following commands:
