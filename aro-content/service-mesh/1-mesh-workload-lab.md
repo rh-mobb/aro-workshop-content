@@ -1,91 +1,42 @@
-## Installing the Bookinfo application
-This tutorial walks you through how to create a sample application by deploying the Bookinfo application to a project, and viewing the running application in Service Mesh.
-1. From the CLI, deploy the Bookinfo application in the `bookinfo` project by applying the bookinfo.yaml file:
-```bash
-oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-2.2/samples/bookinfo/platform/kube/bookinfo.yaml
-```
-You should see output similar to the following:
-```
-service/details created
-serviceaccount/bookinfo-details created
-deployment.apps/details-v1 created
-service/ratings created
-serviceaccount/bookinfo-ratings created
-deployment.apps/ratings-v1 created
-service/reviews created
-serviceaccount/bookinfo-reviews created
-deployment.apps/reviews-v1 created
-deployment.apps/reviews-v2 created
-deployment.apps/reviews-v3 created
-service/productpage created
-serviceaccount/bookinfo-productpage created
-deployment.apps/productpage-v1 created
-```
-1. Create the ingress gateway by applying the bookinfo-gateway.yaml file.
+# Red Hat OpenShift Service Mesh
+A microservice architecture breaks up the monolith application into many smaller pieces and introduces new communication patterns between services like fault tolerance and dynamic routing.One of the major challenges with the management of a microservices architecture is trying to understand how services are composed, how they are connected and how all the individual components operate, from global perspective and drilling down into particular detail.
 
-***An Istio Gateway describes a LoadBalancer operating at either side of the service mesh. Istio Gateways are of two types. Istio Ingress Gateway: Controlling the traffic coming inside the Mesh. Istio Egress Gateway: Controlling the traffic going outside the Mesh.***
+Besides the advantages of breaking down services into micro services (like agility, scalability, increased reusability, better testability and easy upgrades and versioning), this paradigm also increases the complexity of securing them due to a shift of the method calls via in-process communication into many separate network requests which need to be secured. Every new service you introduce needs to be protected from man-in-the-middle attacks and data leaks, manage access control, and audit who is using which resources and when. Not forgetting the fact that each service can be written in different programming languages. A Service Mesh like Istio provides traffic control and communication security capabilities at the platform level and frees the application writers from those tasks, allowing them to focus on business logic.
+
+But just because the Service Mesh helps to offload the extra coding, developers still need to observe and manage how the services are communicating as they deploy an application.  With the OpenShift Service Mesh, Kiali has been packaged along with Istio to make that task easier. In this post we will show how to use Kiali capabilities to observe and manage an Istio Service Mesh.
+
+## Install Travel Demo
+This demo application will deploy several services grouped into three namespaces.
 
 ```bash
-oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-2.2/samples/bookinfo/networking/bookinfo-gateway.yaml
-```
-You should see output similar to the following:
-```
-gateway.networking.istio.io/bookinfo-gateway created
-virtualservice.networking.istio.io/bookinfo created
-```
-1. Set the value for the GATEWAY_URL parameter:
-```
-export GATEWAY_URL=$(oc -n istio-system get route istio-ingressgateway -o jsonpath='{.spec.host}')
-```
-#### Adding default destination rules
+oc create namespace travel-agency
+oc create namespace travel-portal
+oc create namespace travel-control
 
-***DestinationRule defines policies that apply to traffic intended for a service after routing has occurred. These rules specify configuration for load balancing, connection pool size from the sidecar, and outlier detection settings to detect and evict unhealthy hosts from the load balancing pool. Before you can use the Bookinfo application, you must first add default destination rules.***
+oc apply -f <(curl -L https://raw.githubusercontent.com/kiali/demos/master/travels/travel_agency.yaml) -n travel-agency
+oc apply -f <(curl -L https://raw.githubusercontent.com/kiali/demos/master/travels/travel_portal.yaml) -n travel-portal
+oc apply -f <(curl -L https://raw.githubusercontent.com/kiali/demos/master/travels/travel_control.yaml) -n travel-control
+```
+Check that all deployments rolled out as expected:
+```bash
+$ oc get deployments -n travel-control
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+control   1/1     1            1           67m
 
-1. To add destination rules, run the following commands:
-```bash
-oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-2.2/samples/bookinfo/networking/destination-rule-all.yaml
-```
-You should see output similar to the following:
-```
-destinationrule.networking.istio.io/productpage created
-destinationrule.networking.istio.io/reviews created
-destinationrule.networking.istio.io/ratings created
-destinationrule.networking.istio.io/details created
-```
-### Verifying the Bookinfo installation
-To confirm that the sample Bookinfo application was successfully deployed, perform the following steps.
-1. Verify that all pods are ready with this command:
-```bash
-oc get pods -n bookinfo
-```
-All pods should have a status of Running. You should see output similar to the following:
-```
-NAME                              READY   STATUS    RESTARTS   AGE
-details-v1-55b869668-jh7hb        2/2     Running   0          12m
-productpage-v1-6fc77ff794-nsl8r   2/2     Running   0          12m
-ratings-v1-7d7d8d8b56-55scn       2/2     Running   0          12m
-reviews-v1-868597db96-bdxgq       2/2     Running   0          12m
-reviews-v2-5b64f47978-cvssp       2/2     Running   0          12m
-reviews-v3-6dfd49b55b-vcwpf       2/2     Running   0          12m
-```
-1. Run the following command to retrieve the URL for the product page:
-```bash
-echo "http://$GATEWAY_URL/productpage"
-```
-You should see output similar to the following:
-```
-http://istio-ingressgateway-istio-system.apps.qybf0l2n.eastus.aroapp.io/productpage
-```
-1. Copy and paste the output in a web browser to verify the Bookinfo product page is deployed.
+$ oc get deployments -n travel-portal
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+travels   1/1     1            1           67m
+viaggi    1/1     1            1           67m
+voyages   1/1     1            1           67m
 
-### Traffic Management
-#### Weighted Traffic
-***Weighted routing policy – Use to route traffic to multiple resources in proportions that you specify.***
-1. Apply a new rule that only sends traffic to v2 (black) and v3 (red) ratings API.
-```
-oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-2.2/samples/bookinfo/networking/virtual-service-reviews-v2-v3.yaml
-```
-1. Delete the Bookinfo project
-```bash
-oc delete project bookinfo
+$ oc get deployments -n travel-agency
+NAME            READY   UP-TO-DATE   AVAILABLE   AGE
+cars-v1         1/1     1            1           68m
+discounts-v1    1/1     1            1           68m
+flights-v1      1/1     1            1           68m
+hotels-v1       1/1     1            1           68m
+insurances-v1   1/1     1            1           68m
+mysqldb-v1      1/1     1            1           68m
+travels-v1      1/1     1            1           68m
+
 ```
