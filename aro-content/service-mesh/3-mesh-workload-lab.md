@@ -31,10 +31,10 @@ oc rollout restart deploy -n travel-portal
 oc rollout restart deploy -n travel-agency
 ```
 
-Verify that *travel-control*, *travel-portal* and *travel-agency* workloads have sidecars deployed:
+**Verify** that ***travel-control**, **travel-portal** and **travel-agency** workloads have sidecars enabled.
 
 ![Updated Workloads](./images/updated-workloads.png)
 
-**Verify** updated telemetry for *travel-portal* and *travel-agency* namespaces
+**Verify** updated telemetry for **travel-portal** and **travel-agency** namespaces
 
 ![Updated Telemetry](./images/updated-telemetry.png)
