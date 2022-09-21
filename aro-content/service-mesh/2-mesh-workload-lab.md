@@ -28,6 +28,6 @@ Enable Auto Injection for *control* workload
 
 ![Enable Auto Injection per Workkload](./images/03-02-control-workload.png)
 
-[Sidecar Injection](https://istio.io/latest/docs/setup/additional-setup/sidecar-injection/)
+[Sidecar Injection](https://docs.openshift.com/container-platform/4.11/service_mesh/v2x/prepare-to-deploy-applications-ossm.html)
 
-[Automatic Sidecar Injection](https://istio.io/latest/docs/setup/additional-setup/sidecar-injection/#automatic-sidecar-injection)
+[Automatic Sidecar Injection](https://docs.openshift.com/container-platform/4.11/service_mesh/v2x/prepare-to-deploy-applications-ossm.html)
