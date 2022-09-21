@@ -109,4 +109,9 @@ Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gi
         --set azureClientID=$AZURE_CLIENT_ID \
         --set azureClientSecret=$AZURE_CLIENT_SECRET
    ```
-**Note: issuing certificate takes up to 5 min for ASO operator.**
+**Note: It takes up to 5 min for ASO operator to be up and running.**
+There is a pods in the azureserviceoperator-system namespace with two containers, run the following command to check the logs will likely show a string of ‘TLS handshake error’ messages as the operator waits for a Certificate to be issued, but when they stop, the operator will be ready
+   ```
+      ASOPODNAME=$(oc get po -n azureserviceoperator-system -o json | jq -r .items[0].metadata.name)
+      oc logs $ASOPODNAME  -n azureserviceoperator-system --timestamps -f
+   ```
