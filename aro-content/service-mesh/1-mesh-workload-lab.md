@@ -10,13 +10,13 @@ oc create namespace travel-agency
 oc create namespace travel-portal
 oc create namespace travel-control
 ```
-1. **Deploy** application.
+2. **Deploy** application.
 ```bash
 oc apply -f <(curl -L https://raw.githubusercontent.com/kiali/demos/master/travels/travel_agency.yaml) -n travel-agency
 oc apply -f <(curl -L https://raw.githubusercontent.com/kiali/demos/master/travels/travel_portal.yaml) -n travel-portal
 oc apply -f <(curl -L https://raw.githubusercontent.com/kiali/demos/master/travels/travel_control.yaml) -n travel-control
 ```
-Check that all deployments rolled out as expected:
+3. **Check** that all deployments rolled out as expected:
 ```bash
 $ oc get deployments -n travel-control
 NAME      READY   UP-TO-DATE   AVAILABLE   AGE
