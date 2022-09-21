@@ -7,7 +7,7 @@ In the previous steps we have added a sidecar only in the *travel-control* names
 We have added new powerful features but the application is still missing visibility from other workloads.
 Switch to the Workload graph and select multiple namespaces to identify missing sidecars in the Travel Demo application
 
-![Missing Sidecars](./images/04-01-missing-sidecars.png)
+![Missing Sidecars](./images/missing-sidecars.png)
 
 That *control* workload provides good visibility of its traffic, but telemetry is partially enabled, as *travel-portal* and *travel-agency* workloads don't have sidecar proxies.
 
@@ -28,8 +28,8 @@ oc rollout restart deploy -n travel-agency
 
 Verify that *travel-control*, *travel-portal* and *travel-agency* workloads have sidecars deployed:
 
-![Updated Workloads](./images/04-01-updated-workloads.png)
+![Updated Workloads](./images/updated-workloads.png)
 
 Verify updated telemetry for *travel-portal* and *travel-agency* namespaces
 
-![Updated Telemetry](./images/04-01-updated-telemetry.png)
+![Updated Telemetry](./images/updated-telemetry.png)
