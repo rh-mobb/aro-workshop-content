@@ -21,10 +21,18 @@ This will help you to understand how Istio sidecar proxies work and how applicat
 We are going to start with the *control* workload deployed into the *travel-control* namespace:
 
 **Enable** Auto Injection for **travel-control** namespace
+1.**Click** overview
+1.**Click 3 dots on the right of **travel-control**
+1.**Click** **Enable Auto Injection**
 
 ![Enable Auto Injection per Namespace](./images/travel-control-namespace.png)
 
 **Enable** Auto Injection for **control** workload
+1.**Click** Workloard.
+1.**Filter** for **travel-control** namespace.
+1.**Click** control
+1.**Click** Action
+1.**Click** **Enable Auto Injection**
 
 ![Enable Auto Injection per Workkload](./images/control-workload.png)
 
