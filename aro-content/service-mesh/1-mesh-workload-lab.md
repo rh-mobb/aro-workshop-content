@@ -31,14 +31,14 @@ oc apply -f <(curl -L https://raw.githubusercontent.com/kiali/demos/master/trave
 ```
 3. **Check** that all deployments rolled out as expected:
 ```bash
-$ oc get deployments -n travel-control
+oc get deployments -n travel-control
 ```
 ```bash
 NAME      READY   UP-TO-DATE   AVAILABLE   AGE
 control   1/1     1            1           67m
 ```
 ```bash
-$ oc get deployments -n travel-portal
+oc get deployments -n travel-portal
 ```
 ```bash
 NAME      READY   UP-TO-DATE   AVAILABLE   AGE
@@ -47,7 +47,7 @@ viaggi    1/1     1            1           67m
 voyages   1/1     1            1           67m
 ```
 ```bash
-$ oc get deployments -n travel-agency
+oc get deployments -n travel-agency
 ```
 ```bash
 NAME            READY   UP-TO-DATE   AVAILABLE   AGE
