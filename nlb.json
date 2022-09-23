@@ -1,0 +1,1245 @@
+[
+  {
+    "backendAddressPools": [
+      {
+        "backendIpConfigurations": [
+          {
+            "applicationGatewayBackendAddressPools": null,
+            "applicationSecurityGroups": null,
+            "etag": null,
+            "gatewayLoadBalancer": null,
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-master0-nic/ipConfigurations/pipConfig",
+            "loadBalancerBackendAddressPools": null,
+            "loadBalancerInboundNatRules": null,
+            "name": null,
+            "primary": null,
+            "privateIpAddress": null,
+            "privateIpAddressVersion": null,
+            "privateIpAllocationMethod": null,
+            "privateLinkConnectionProperties": null,
+            "provisioningState": null,
+            "publicIpAddress": null,
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": null,
+            "virtualNetworkTaps": null
+          },
+          {
+            "applicationGatewayBackendAddressPools": null,
+            "applicationSecurityGroups": null,
+            "etag": null,
+            "gatewayLoadBalancer": null,
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-master2-nic/ipConfigurations/pipConfig",
+            "loadBalancerBackendAddressPools": null,
+            "loadBalancerInboundNatRules": null,
+            "name": null,
+            "primary": null,
+            "privateIpAddress": null,
+            "privateIpAddressVersion": null,
+            "privateIpAllocationMethod": null,
+            "privateLinkConnectionProperties": null,
+            "provisioningState": null,
+            "publicIpAddress": null,
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": null,
+            "virtualNetworkTaps": null
+          },
+          {
+            "applicationGatewayBackendAddressPools": null,
+            "applicationSecurityGroups": null,
+            "etag": null,
+            "gatewayLoadBalancer": null,
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-master1-nic/ipConfigurations/pipConfig",
+            "loadBalancerBackendAddressPools": null,
+            "loadBalancerInboundNatRules": null,
+            "name": null,
+            "primary": null,
+            "privateIpAddress": null,
+            "privateIpAddressVersion": null,
+            "privateIpAllocationMethod": null,
+            "privateLinkConnectionProperties": null,
+            "provisioningState": null,
+            "publicIpAddress": null,
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": null,
+            "virtualNetworkTaps": null
+          },
+          {
+            "applicationGatewayBackendAddressPools": null,
+            "applicationSecurityGroups": null,
+            "etag": null,
+            "gatewayLoadBalancer": null,
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-worker-eastus3-4tswn-nic/ipConfigurations/pipConfig",
+            "loadBalancerBackendAddressPools": null,
+            "loadBalancerInboundNatRules": null,
+            "name": null,
+            "primary": null,
+            "privateIpAddress": null,
+            "privateIpAddressVersion": null,
+            "privateIpAllocationMethod": null,
+            "privateLinkConnectionProperties": null,
+            "provisioningState": null,
+            "publicIpAddress": null,
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": null,
+            "virtualNetworkTaps": null
+          },
+          {
+            "applicationGatewayBackendAddressPools": null,
+            "applicationSecurityGroups": null,
+            "etag": null,
+            "gatewayLoadBalancer": null,
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-worker-eastus1-6x6h7-nic/ipConfigurations/pipConfig",
+            "loadBalancerBackendAddressPools": null,
+            "loadBalancerInboundNatRules": null,
+            "name": null,
+            "primary": null,
+            "privateIpAddress": null,
+            "privateIpAddressVersion": null,
+            "privateIpAllocationMethod": null,
+            "privateLinkConnectionProperties": null,
+            "provisioningState": null,
+            "publicIpAddress": null,
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": null,
+            "virtualNetworkTaps": null
+          },
+          {
+            "applicationGatewayBackendAddressPools": null,
+            "applicationSecurityGroups": null,
+            "etag": null,
+            "gatewayLoadBalancer": null,
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-worker-eastus2-zz29h-nic/ipConfigurations/pipConfig",
+            "loadBalancerBackendAddressPools": null,
+            "loadBalancerInboundNatRules": null,
+            "name": null,
+            "primary": null,
+            "privateIpAddress": null,
+            "privateIpAddressVersion": null,
+            "privateIpAllocationMethod": null,
+            "privateLinkConnectionProperties": null,
+            "provisioningState": null,
+            "publicIpAddress": null,
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": null,
+            "virtualNetworkTaps": null
+          }
+        ],
+        "drainPeriodInSeconds": null,
+        "etag": "W/\"bdbdc515-2230-452a-9308-b5f148fe1244\"",
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/backendAddressPools/arohack-9f49h",
+        "inboundNatRules": null,
+        "loadBalancerBackendAddresses": [
+          {
+            "adminState": null,
+            "etag": "W/\"bdbdc515-2230-452a-9308-b5f148fe1244\"",
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/backendAddressPools/arohack-9f49h/loadBalancerBackendAddresses/aro-ffc4otrb_arohack-9f49h-master0-nicpipConfig",
+            "inboundNatRulesPortMapping": [],
+            "ipAddress": null,
+            "loadBalancerFrontendIpConfiguration": null,
+            "name": "aro-ffc4otrb_arohack-9f49h-master0-nicpipConfig",
+            "networkInterfaceIpConfiguration": {
+              "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-master0-nic/ipConfigurations/pipConfig",
+              "resourceGroup": "aro-ffc4otrb"
+            },
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": "Microsoft.Network/loadBalancers/backendAddressPools/loadBalancerBackendAddresses",
+            "virtualNetwork": null
+          },
+          {
+            "adminState": null,
+            "etag": "W/\"bdbdc515-2230-452a-9308-b5f148fe1244\"",
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/backendAddressPools/arohack-9f49h/loadBalancerBackendAddresses/aro-ffc4otrb_arohack-9f49h-master2-nicpipConfig",
+            "inboundNatRulesPortMapping": [],
+            "ipAddress": null,
+            "loadBalancerFrontendIpConfiguration": null,
+            "name": "aro-ffc4otrb_arohack-9f49h-master2-nicpipConfig",
+            "networkInterfaceIpConfiguration": {
+              "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-master2-nic/ipConfigurations/pipConfig",
+              "resourceGroup": "aro-ffc4otrb"
+            },
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": "Microsoft.Network/loadBalancers/backendAddressPools/loadBalancerBackendAddresses",
+            "virtualNetwork": null
+          },
+          {
+            "adminState": null,
+            "etag": "W/\"bdbdc515-2230-452a-9308-b5f148fe1244\"",
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/backendAddressPools/arohack-9f49h/loadBalancerBackendAddresses/aro-ffc4otrb_arohack-9f49h-master1-nicpipConfig",
+            "inboundNatRulesPortMapping": [],
+            "ipAddress": null,
+            "loadBalancerFrontendIpConfiguration": null,
+            "name": "aro-ffc4otrb_arohack-9f49h-master1-nicpipConfig",
+            "networkInterfaceIpConfiguration": {
+              "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-master1-nic/ipConfigurations/pipConfig",
+              "resourceGroup": "aro-ffc4otrb"
+            },
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": "Microsoft.Network/loadBalancers/backendAddressPools/loadBalancerBackendAddresses",
+            "virtualNetwork": null
+          },
+          {
+            "adminState": null,
+            "etag": "W/\"bdbdc515-2230-452a-9308-b5f148fe1244\"",
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/backendAddressPools/arohack-9f49h/loadBalancerBackendAddresses/aro-ffc4otrb_arohack-9f49h-worker-eastus3-4tswn-nicpipConfig",
+            "inboundNatRulesPortMapping": [],
+            "ipAddress": null,
+            "loadBalancerFrontendIpConfiguration": null,
+            "name": "aro-ffc4otrb_arohack-9f49h-worker-eastus3-4tswn-nicpipConfig",
+            "networkInterfaceIpConfiguration": {
+              "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-worker-eastus3-4tswn-nic/ipConfigurations/pipConfig",
+              "resourceGroup": "aro-ffc4otrb"
+            },
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": "Microsoft.Network/loadBalancers/backendAddressPools/loadBalancerBackendAddresses",
+            "virtualNetwork": null
+          },
+          {
+            "adminState": null,
+            "etag": "W/\"bdbdc515-2230-452a-9308-b5f148fe1244\"",
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/backendAddressPools/arohack-9f49h/loadBalancerBackendAddresses/aro-ffc4otrb_arohack-9f49h-worker-eastus1-6x6h7-nicpipConfig",
+            "inboundNatRulesPortMapping": [],
+            "ipAddress": null,
+            "loadBalancerFrontendIpConfiguration": null,
+            "name": "aro-ffc4otrb_arohack-9f49h-worker-eastus1-6x6h7-nicpipConfig",
+            "networkInterfaceIpConfiguration": {
+              "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-worker-eastus1-6x6h7-nic/ipConfigurations/pipConfig",
+              "resourceGroup": "aro-ffc4otrb"
+            },
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": "Microsoft.Network/loadBalancers/backendAddressPools/loadBalancerBackendAddresses",
+            "virtualNetwork": null
+          },
+          {
+            "adminState": null,
+            "etag": "W/\"bdbdc515-2230-452a-9308-b5f148fe1244\"",
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/backendAddressPools/arohack-9f49h/loadBalancerBackendAddresses/aro-ffc4otrb_arohack-9f49h-worker-eastus2-zz29h-nicpipConfig",
+            "inboundNatRulesPortMapping": [],
+            "ipAddress": null,
+            "loadBalancerFrontendIpConfiguration": null,
+            "name": "aro-ffc4otrb_arohack-9f49h-worker-eastus2-zz29h-nicpipConfig",
+            "networkInterfaceIpConfiguration": {
+              "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-worker-eastus2-zz29h-nic/ipConfigurations/pipConfig",
+              "resourceGroup": "aro-ffc4otrb"
+            },
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": "Microsoft.Network/loadBalancers/backendAddressPools/loadBalancerBackendAddresses",
+            "virtualNetwork": null
+          }
+        ],
+        "loadBalancingRules": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/loadBalancingRules/api-internal-v4",
+            "resourceGroup": "aro-ffc4otrb"
+          },
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/loadBalancingRules/ab6d7acfbe3db4d33a629e029c67dcac-TCP-80",
+            "resourceGroup": "aro-ffc4otrb"
+          },
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/loadBalancingRules/ab6d7acfbe3db4d33a629e029c67dcac-TCP-443",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "location": null,
+        "name": "arohack-9f49h",
+        "outboundRule": null,
+        "outboundRules": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/outboundRules/outbound-rule-v4",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "provisioningState": "Succeeded",
+        "resourceGroup": "aro-ffc4otrb",
+        "tunnelInterfaces": null,
+        "type": "Microsoft.Network/loadBalancers/backendAddressPools"
+      }
+    ],
+    "etag": "W/\"bdbdc515-2230-452a-9308-b5f148fe1244\"",
+    "extendedLocation": null,
+    "frontendIpConfigurations": [
+      {
+        "etag": "W/\"bdbdc515-2230-452a-9308-b5f148fe1244\"",
+        "gatewayLoadBalancer": null,
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/frontendIPConfigurations/public-lb-ip-v4",
+        "inboundNatPools": null,
+        "inboundNatRules": null,
+        "loadBalancingRules": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/loadBalancingRules/api-internal-v4",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "name": "public-lb-ip-v4",
+        "outboundRules": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/outboundRules/outbound-rule-v4",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "privateIpAddress": null,
+        "privateIpAddressVersion": null,
+        "privateIpAllocationMethod": "Dynamic",
+        "provisioningState": "Succeeded",
+        "publicIpAddress": {
+          "ddosSettings": null,
+          "deleteOption": null,
+          "dnsSettings": null,
+          "etag": null,
+          "extendedLocation": null,
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/publicIPAddresses/arohack-9f49h-pip-v4",
+          "idleTimeoutInMinutes": null,
+          "ipAddress": null,
+          "ipConfiguration": null,
+          "ipTags": null,
+          "linkedPublicIpAddress": null,
+          "location": null,
+          "migrationPhase": null,
+          "name": null,
+          "natGateway": null,
+          "provisioningState": null,
+          "publicIpAddressVersion": null,
+          "publicIpAllocationMethod": null,
+          "publicIpPrefix": null,
+          "resourceGroup": "aro-ffc4otrb",
+          "resourceGuid": null,
+          "servicePublicIpAddress": null,
+          "sku": null,
+          "tags": null,
+          "type": null,
+          "zones": null
+        },
+        "publicIpPrefix": null,
+        "resourceGroup": "aro-ffc4otrb",
+        "subnet": null,
+        "type": "Microsoft.Network/loadBalancers/frontendIPConfigurations",
+        "zones": null
+      },
+      {
+        "etag": "W/\"bdbdc515-2230-452a-9308-b5f148fe1244\"",
+        "gatewayLoadBalancer": null,
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/frontendIPConfigurations/ab6d7acfbe3db4d33a629e029c67dcac",
+        "inboundNatPools": null,
+        "inboundNatRules": null,
+        "loadBalancingRules": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/loadBalancingRules/ab6d7acfbe3db4d33a629e029c67dcac-TCP-80",
+            "resourceGroup": "aro-ffc4otrb"
+          },
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/loadBalancingRules/ab6d7acfbe3db4d33a629e029c67dcac-TCP-443",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "name": "ab6d7acfbe3db4d33a629e029c67dcac",
+        "outboundRules": null,
+        "privateIpAddress": null,
+        "privateIpAddressVersion": null,
+        "privateIpAllocationMethod": "Dynamic",
+        "provisioningState": "Succeeded",
+        "publicIpAddress": {
+          "ddosSettings": null,
+          "deleteOption": null,
+          "dnsSettings": null,
+          "etag": null,
+          "extendedLocation": null,
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/publicIPAddresses/arohack-9f49h-default-v4",
+          "idleTimeoutInMinutes": null,
+          "ipAddress": null,
+          "ipConfiguration": null,
+          "ipTags": null,
+          "linkedPublicIpAddress": null,
+          "location": null,
+          "migrationPhase": null,
+          "name": null,
+          "natGateway": null,
+          "provisioningState": null,
+          "publicIpAddressVersion": null,
+          "publicIpAllocationMethod": null,
+          "publicIpPrefix": null,
+          "resourceGroup": "aro-ffc4otrb",
+          "resourceGuid": null,
+          "servicePublicIpAddress": null,
+          "sku": null,
+          "tags": null,
+          "type": null,
+          "zones": null
+        },
+        "publicIpPrefix": null,
+        "resourceGroup": "aro-ffc4otrb",
+        "subnet": null,
+        "type": "Microsoft.Network/loadBalancers/frontendIPConfigurations",
+        "zones": null
+      }
+    ],
+    "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h",
+    "inboundNatPools": [],
+    "inboundNatRules": [],
+    "loadBalancingRules": [
+      {
+        "backendAddressPool": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/backendAddressPools/arohack-9f49h",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "backendAddressPools": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/backendAddressPools/arohack-9f49h",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "backendPort": 6443,
+        "disableOutboundSnat": true,
+        "enableFloatingIp": false,
+        "enableTcpReset": false,
+        "etag": "W/\"bdbdc515-2230-452a-9308-b5f148fe1244\"",
+        "frontendIpConfiguration": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/frontendIPConfigurations/public-lb-ip-v4",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "frontendPort": 6443,
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/loadBalancingRules/api-internal-v4",
+        "idleTimeoutInMinutes": 30,
+        "loadDistribution": "Default",
+        "name": "api-internal-v4",
+        "probe": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/probes/api-internal-probe",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "protocol": "Tcp",
+        "provisioningState": "Succeeded",
+        "resourceGroup": "aro-ffc4otrb",
+        "type": "Microsoft.Network/loadBalancers/loadBalancingRules"
+      },
+      {
+        "backendAddressPool": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/backendAddressPools/arohack-9f49h",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "backendAddressPools": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/backendAddressPools/arohack-9f49h",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "backendPort": 80,
+        "disableOutboundSnat": false,
+        "enableFloatingIp": true,
+        "enableTcpReset": true,
+        "etag": "W/\"bdbdc515-2230-452a-9308-b5f148fe1244\"",
+        "frontendIpConfiguration": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/frontendIPConfigurations/ab6d7acfbe3db4d33a629e029c67dcac",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "frontendPort": 80,
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/loadBalancingRules/ab6d7acfbe3db4d33a629e029c67dcac-TCP-80",
+        "idleTimeoutInMinutes": 4,
+        "loadDistribution": "Default",
+        "name": "ab6d7acfbe3db4d33a629e029c67dcac-TCP-80",
+        "probe": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/probes/ab6d7acfbe3db4d33a629e029c67dcac-TCP-80",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "protocol": "Tcp",
+        "provisioningState": "Succeeded",
+        "resourceGroup": "aro-ffc4otrb",
+        "type": "Microsoft.Network/loadBalancers/loadBalancingRules"
+      },
+      {
+        "backendAddressPool": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/backendAddressPools/arohack-9f49h",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "backendAddressPools": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/backendAddressPools/arohack-9f49h",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "backendPort": 443,
+        "disableOutboundSnat": false,
+        "enableFloatingIp": true,
+        "enableTcpReset": true,
+        "etag": "W/\"bdbdc515-2230-452a-9308-b5f148fe1244\"",
+        "frontendIpConfiguration": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/frontendIPConfigurations/ab6d7acfbe3db4d33a629e029c67dcac",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "frontendPort": 443,
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/loadBalancingRules/ab6d7acfbe3db4d33a629e029c67dcac-TCP-443",
+        "idleTimeoutInMinutes": 4,
+        "loadDistribution": "Default",
+        "name": "ab6d7acfbe3db4d33a629e029c67dcac-TCP-443",
+        "probe": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/probes/ab6d7acfbe3db4d33a629e029c67dcac-TCP-443",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "protocol": "Tcp",
+        "provisioningState": "Succeeded",
+        "resourceGroup": "aro-ffc4otrb",
+        "type": "Microsoft.Network/loadBalancers/loadBalancingRules"
+      }
+    ],
+    "location": "eastus",
+    "name": "arohack-9f49h",
+    "outboundRules": [
+      {
+        "allocatedOutboundPorts": 1024,
+        "backendAddressPool": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/backendAddressPools/arohack-9f49h",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "enableTcpReset": false,
+        "etag": "W/\"bdbdc515-2230-452a-9308-b5f148fe1244\"",
+        "frontendIpConfigurations": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/frontendIPConfigurations/public-lb-ip-v4",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/outboundRules/outbound-rule-v4",
+        "idleTimeoutInMinutes": 30,
+        "name": "outbound-rule-v4",
+        "protocol": "All",
+        "provisioningState": "Succeeded",
+        "resourceGroup": "aro-ffc4otrb",
+        "type": "Microsoft.Network/loadBalancers/outboundRules"
+      }
+    ],
+    "probes": [
+      {
+        "etag": "W/\"bdbdc515-2230-452a-9308-b5f148fe1244\"",
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/probes/api-internal-probe",
+        "intervalInSeconds": 5,
+        "loadBalancingRules": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/loadBalancingRules/api-internal-v4",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "name": "api-internal-probe",
+        "numberOfProbes": 2,
+        "port": 6443,
+        "protocol": "Https",
+        "provisioningState": "Succeeded",
+        "requestPath": "/readyz",
+        "resourceGroup": "aro-ffc4otrb",
+        "type": "Microsoft.Network/loadBalancers/probes"
+      },
+      {
+        "etag": "W/\"bdbdc515-2230-452a-9308-b5f148fe1244\"",
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/probes/ab6d7acfbe3db4d33a629e029c67dcac-TCP-80",
+        "intervalInSeconds": 5,
+        "loadBalancingRules": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/loadBalancingRules/ab6d7acfbe3db4d33a629e029c67dcac-TCP-80",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "name": "ab6d7acfbe3db4d33a629e029c67dcac-TCP-80",
+        "numberOfProbes": 2,
+        "port": 30346,
+        "protocol": "Http",
+        "provisioningState": "Succeeded",
+        "requestPath": "/healthz",
+        "resourceGroup": "aro-ffc4otrb",
+        "type": "Microsoft.Network/loadBalancers/probes"
+      },
+      {
+        "etag": "W/\"bdbdc515-2230-452a-9308-b5f148fe1244\"",
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/probes/ab6d7acfbe3db4d33a629e029c67dcac-TCP-443",
+        "intervalInSeconds": 5,
+        "loadBalancingRules": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h/loadBalancingRules/ab6d7acfbe3db4d33a629e029c67dcac-TCP-443",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "name": "ab6d7acfbe3db4d33a629e029c67dcac-TCP-443",
+        "numberOfProbes": 2,
+        "port": 30346,
+        "protocol": "Http",
+        "provisioningState": "Succeeded",
+        "requestPath": "/healthz",
+        "resourceGroup": "aro-ffc4otrb",
+        "type": "Microsoft.Network/loadBalancers/probes"
+      }
+    ],
+    "provisioningState": "Succeeded",
+    "resourceGroup": "aro-ffc4otrb",
+    "resourceGuid": "85620068-e448-4a79-acac-69040f9ef89a",
+    "sku": {
+      "name": "Standard",
+      "tier": "Regional"
+    },
+    "tags": null,
+    "type": "Microsoft.Network/loadBalancers"
+  },
+  {
+    "backendAddressPools": [
+      {
+        "backendIpConfigurations": [
+          {
+            "applicationGatewayBackendAddressPools": null,
+            "applicationSecurityGroups": null,
+            "etag": null,
+            "gatewayLoadBalancer": null,
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-master0-nic/ipConfigurations/pipConfig",
+            "loadBalancerBackendAddressPools": null,
+            "loadBalancerInboundNatRules": null,
+            "name": null,
+            "primary": null,
+            "privateIpAddress": null,
+            "privateIpAddressVersion": null,
+            "privateIpAllocationMethod": null,
+            "privateLinkConnectionProperties": null,
+            "provisioningState": null,
+            "publicIpAddress": null,
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": null,
+            "virtualNetworkTaps": null
+          },
+          {
+            "applicationGatewayBackendAddressPools": null,
+            "applicationSecurityGroups": null,
+            "etag": null,
+            "gatewayLoadBalancer": null,
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-master2-nic/ipConfigurations/pipConfig",
+            "loadBalancerBackendAddressPools": null,
+            "loadBalancerInboundNatRules": null,
+            "name": null,
+            "primary": null,
+            "privateIpAddress": null,
+            "privateIpAddressVersion": null,
+            "privateIpAllocationMethod": null,
+            "privateLinkConnectionProperties": null,
+            "provisioningState": null,
+            "publicIpAddress": null,
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": null,
+            "virtualNetworkTaps": null
+          },
+          {
+            "applicationGatewayBackendAddressPools": null,
+            "applicationSecurityGroups": null,
+            "etag": null,
+            "gatewayLoadBalancer": null,
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-master1-nic/ipConfigurations/pipConfig",
+            "loadBalancerBackendAddressPools": null,
+            "loadBalancerInboundNatRules": null,
+            "name": null,
+            "primary": null,
+            "privateIpAddress": null,
+            "privateIpAddressVersion": null,
+            "privateIpAllocationMethod": null,
+            "privateLinkConnectionProperties": null,
+            "provisioningState": null,
+            "publicIpAddress": null,
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": null,
+            "virtualNetworkTaps": null
+          }
+        ],
+        "drainPeriodInSeconds": null,
+        "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/arohack-9f49h",
+        "inboundNatRules": null,
+        "loadBalancerBackendAddresses": [
+          {
+            "adminState": null,
+            "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/arohack-9f49h/loadBalancerBackendAddresses/aro-ffc4otrb_arohack-9f49h-master0-nicpipConfig",
+            "inboundNatRulesPortMapping": [],
+            "ipAddress": null,
+            "loadBalancerFrontendIpConfiguration": null,
+            "name": "aro-ffc4otrb_arohack-9f49h-master0-nicpipConfig",
+            "networkInterfaceIpConfiguration": {
+              "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-master0-nic/ipConfigurations/pipConfig",
+              "resourceGroup": "aro-ffc4otrb"
+            },
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": "Microsoft.Network/loadBalancers/backendAddressPools/loadBalancerBackendAddresses",
+            "virtualNetwork": null
+          },
+          {
+            "adminState": null,
+            "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/arohack-9f49h/loadBalancerBackendAddresses/aro-ffc4otrb_arohack-9f49h-master2-nicpipConfig",
+            "inboundNatRulesPortMapping": [],
+            "ipAddress": null,
+            "loadBalancerFrontendIpConfiguration": null,
+            "name": "aro-ffc4otrb_arohack-9f49h-master2-nicpipConfig",
+            "networkInterfaceIpConfiguration": {
+              "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-master2-nic/ipConfigurations/pipConfig",
+              "resourceGroup": "aro-ffc4otrb"
+            },
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": "Microsoft.Network/loadBalancers/backendAddressPools/loadBalancerBackendAddresses",
+            "virtualNetwork": null
+          },
+          {
+            "adminState": null,
+            "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/arohack-9f49h/loadBalancerBackendAddresses/aro-ffc4otrb_arohack-9f49h-master1-nicpipConfig",
+            "inboundNatRulesPortMapping": [],
+            "ipAddress": null,
+            "loadBalancerFrontendIpConfiguration": null,
+            "name": "aro-ffc4otrb_arohack-9f49h-master1-nicpipConfig",
+            "networkInterfaceIpConfiguration": {
+              "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-master1-nic/ipConfigurations/pipConfig",
+              "resourceGroup": "aro-ffc4otrb"
+            },
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": "Microsoft.Network/loadBalancers/backendAddressPools/loadBalancerBackendAddresses",
+            "virtualNetwork": null
+          }
+        ],
+        "loadBalancingRules": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/api-internal-v4",
+            "resourceGroup": "aro-ffc4otrb"
+          },
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/sint-v4",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "location": null,
+        "name": "arohack-9f49h",
+        "outboundRule": null,
+        "outboundRules": null,
+        "provisioningState": "Succeeded",
+        "resourceGroup": "aro-ffc4otrb",
+        "tunnelInterfaces": null,
+        "type": "Microsoft.Network/loadBalancers/backendAddressPools"
+      },
+      {
+        "backendIpConfigurations": [
+          {
+            "applicationGatewayBackendAddressPools": null,
+            "applicationSecurityGroups": null,
+            "etag": null,
+            "gatewayLoadBalancer": null,
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-master0-nic/ipConfigurations/pipConfig",
+            "loadBalancerBackendAddressPools": null,
+            "loadBalancerInboundNatRules": null,
+            "name": null,
+            "primary": null,
+            "privateIpAddress": null,
+            "privateIpAddressVersion": null,
+            "privateIpAllocationMethod": null,
+            "privateLinkConnectionProperties": null,
+            "provisioningState": null,
+            "publicIpAddress": null,
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": null,
+            "virtualNetworkTaps": null
+          }
+        ],
+        "drainPeriodInSeconds": null,
+        "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/ssh-0",
+        "inboundNatRules": null,
+        "loadBalancerBackendAddresses": [
+          {
+            "adminState": null,
+            "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/ssh-0/loadBalancerBackendAddresses/aro-ffc4otrb_arohack-9f49h-master0-nicpipConfig",
+            "inboundNatRulesPortMapping": [],
+            "ipAddress": null,
+            "loadBalancerFrontendIpConfiguration": null,
+            "name": "aro-ffc4otrb_arohack-9f49h-master0-nicpipConfig",
+            "networkInterfaceIpConfiguration": {
+              "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-master0-nic/ipConfigurations/pipConfig",
+              "resourceGroup": "aro-ffc4otrb"
+            },
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": "Microsoft.Network/loadBalancers/backendAddressPools/loadBalancerBackendAddresses",
+            "virtualNetwork": null
+          }
+        ],
+        "loadBalancingRules": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/ssh-0",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "location": null,
+        "name": "ssh-0",
+        "outboundRule": null,
+        "outboundRules": null,
+        "provisioningState": "Succeeded",
+        "resourceGroup": "aro-ffc4otrb",
+        "tunnelInterfaces": null,
+        "type": "Microsoft.Network/loadBalancers/backendAddressPools"
+      },
+      {
+        "backendIpConfigurations": [
+          {
+            "applicationGatewayBackendAddressPools": null,
+            "applicationSecurityGroups": null,
+            "etag": null,
+            "gatewayLoadBalancer": null,
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-master1-nic/ipConfigurations/pipConfig",
+            "loadBalancerBackendAddressPools": null,
+            "loadBalancerInboundNatRules": null,
+            "name": null,
+            "primary": null,
+            "privateIpAddress": null,
+            "privateIpAddressVersion": null,
+            "privateIpAllocationMethod": null,
+            "privateLinkConnectionProperties": null,
+            "provisioningState": null,
+            "publicIpAddress": null,
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": null,
+            "virtualNetworkTaps": null
+          }
+        ],
+        "drainPeriodInSeconds": null,
+        "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/ssh-1",
+        "inboundNatRules": null,
+        "loadBalancerBackendAddresses": [
+          {
+            "adminState": null,
+            "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/ssh-1/loadBalancerBackendAddresses/aro-ffc4otrb_arohack-9f49h-master1-nicpipConfig",
+            "inboundNatRulesPortMapping": [],
+            "ipAddress": null,
+            "loadBalancerFrontendIpConfiguration": null,
+            "name": "aro-ffc4otrb_arohack-9f49h-master1-nicpipConfig",
+            "networkInterfaceIpConfiguration": {
+              "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-master1-nic/ipConfigurations/pipConfig",
+              "resourceGroup": "aro-ffc4otrb"
+            },
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": "Microsoft.Network/loadBalancers/backendAddressPools/loadBalancerBackendAddresses",
+            "virtualNetwork": null
+          }
+        ],
+        "loadBalancingRules": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/ssh-1",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "location": null,
+        "name": "ssh-1",
+        "outboundRule": null,
+        "outboundRules": null,
+        "provisioningState": "Succeeded",
+        "resourceGroup": "aro-ffc4otrb",
+        "tunnelInterfaces": null,
+        "type": "Microsoft.Network/loadBalancers/backendAddressPools"
+      },
+      {
+        "backendIpConfigurations": [
+          {
+            "applicationGatewayBackendAddressPools": null,
+            "applicationSecurityGroups": null,
+            "etag": null,
+            "gatewayLoadBalancer": null,
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-master2-nic/ipConfigurations/pipConfig",
+            "loadBalancerBackendAddressPools": null,
+            "loadBalancerInboundNatRules": null,
+            "name": null,
+            "primary": null,
+            "privateIpAddress": null,
+            "privateIpAddressVersion": null,
+            "privateIpAllocationMethod": null,
+            "privateLinkConnectionProperties": null,
+            "provisioningState": null,
+            "publicIpAddress": null,
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": null,
+            "virtualNetworkTaps": null
+          }
+        ],
+        "drainPeriodInSeconds": null,
+        "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/ssh-2",
+        "inboundNatRules": null,
+        "loadBalancerBackendAddresses": [
+          {
+            "adminState": null,
+            "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/ssh-2/loadBalancerBackendAddresses/aro-ffc4otrb_arohack-9f49h-master2-nicpipConfig",
+            "inboundNatRulesPortMapping": [],
+            "ipAddress": null,
+            "loadBalancerFrontendIpConfiguration": null,
+            "name": "aro-ffc4otrb_arohack-9f49h-master2-nicpipConfig",
+            "networkInterfaceIpConfiguration": {
+              "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/networkInterfaces/arohack-9f49h-master2-nic/ipConfigurations/pipConfig",
+              "resourceGroup": "aro-ffc4otrb"
+            },
+            "resourceGroup": "aro-ffc4otrb",
+            "subnet": null,
+            "type": "Microsoft.Network/loadBalancers/backendAddressPools/loadBalancerBackendAddresses",
+            "virtualNetwork": null
+          }
+        ],
+        "loadBalancingRules": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/ssh-2",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "location": null,
+        "name": "ssh-2",
+        "outboundRule": null,
+        "outboundRules": null,
+        "provisioningState": "Succeeded",
+        "resourceGroup": "aro-ffc4otrb",
+        "tunnelInterfaces": null,
+        "type": "Microsoft.Network/loadBalancers/backendAddressPools"
+      }
+    ],
+    "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+    "extendedLocation": null,
+    "frontendIpConfigurations": [
+      {
+        "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+        "gatewayLoadBalancer": null,
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/frontendIPConfigurations/internal-lb-ip-v4",
+        "inboundNatPools": null,
+        "inboundNatRules": null,
+        "loadBalancingRules": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/api-internal-v4",
+            "resourceGroup": "aro-ffc4otrb"
+          },
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/sint-v4",
+            "resourceGroup": "aro-ffc4otrb"
+          },
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/ssh-0",
+            "resourceGroup": "aro-ffc4otrb"
+          },
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/ssh-1",
+            "resourceGroup": "aro-ffc4otrb"
+          },
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/ssh-2",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "name": "internal-lb-ip-v4",
+        "outboundRules": null,
+        "privateIpAddress": "10.1.0.4",
+        "privateIpAddressVersion": "IPv4",
+        "privateIpAllocationMethod": "Dynamic",
+        "provisioningState": "Succeeded",
+        "publicIpAddress": null,
+        "publicIpPrefix": null,
+        "resourceGroup": "aro-ffc4otrb",
+        "subnet": {
+          "addressPrefix": null,
+          "addressPrefixes": null,
+          "applicationGatewayIpConfigurations": null,
+          "delegations": null,
+          "etag": null,
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/arohack/providers/Microsoft.Network/virtualNetworks/arohack-vnet/subnets/arohack-control-subnet",
+          "ipAllocations": null,
+          "ipConfigurationProfiles": null,
+          "ipConfigurations": null,
+          "name": null,
+          "natGateway": null,
+          "networkSecurityGroup": null,
+          "privateEndpointNetworkPolicies": null,
+          "privateEndpoints": null,
+          "privateLinkServiceNetworkPolicies": null,
+          "provisioningState": null,
+          "purpose": null,
+          "resourceGroup": "arohack",
+          "resourceNavigationLinks": null,
+          "routeTable": null,
+          "serviceAssociationLinks": null,
+          "serviceEndpointPolicies": null,
+          "serviceEndpoints": null,
+          "type": null
+        },
+        "type": "Microsoft.Network/loadBalancers/frontendIPConfigurations",
+        "zones": null
+      }
+    ],
+    "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal",
+    "inboundNatPools": [],
+    "inboundNatRules": [],
+    "loadBalancingRules": [
+      {
+        "backendAddressPool": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/arohack-9f49h",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "backendAddressPools": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/arohack-9f49h",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "backendPort": 6443,
+        "disableOutboundSnat": true,
+        "enableFloatingIp": false,
+        "enableTcpReset": false,
+        "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+        "frontendIpConfiguration": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/frontendIPConfigurations/internal-lb-ip-v4",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "frontendPort": 6443,
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/api-internal-v4",
+        "idleTimeoutInMinutes": 30,
+        "loadDistribution": "Default",
+        "name": "api-internal-v4",
+        "probe": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/probes/api-internal-probe",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "protocol": "Tcp",
+        "provisioningState": "Succeeded",
+        "resourceGroup": "aro-ffc4otrb",
+        "type": "Microsoft.Network/loadBalancers/loadBalancingRules"
+      },
+      {
+        "backendAddressPool": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/arohack-9f49h",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "backendAddressPools": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/arohack-9f49h",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "backendPort": 22623,
+        "disableOutboundSnat": false,
+        "enableFloatingIp": false,
+        "enableTcpReset": false,
+        "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+        "frontendIpConfiguration": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/frontendIPConfigurations/internal-lb-ip-v4",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "frontendPort": 22623,
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/sint-v4",
+        "idleTimeoutInMinutes": 30,
+        "loadDistribution": "Default",
+        "name": "sint-v4",
+        "probe": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/probes/sint-probe",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "protocol": "Tcp",
+        "provisioningState": "Succeeded",
+        "resourceGroup": "aro-ffc4otrb",
+        "type": "Microsoft.Network/loadBalancers/loadBalancingRules"
+      },
+      {
+        "backendAddressPool": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/ssh-0",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "backendAddressPools": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/ssh-0",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "backendPort": 22,
+        "disableOutboundSnat": true,
+        "enableFloatingIp": false,
+        "enableTcpReset": false,
+        "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+        "frontendIpConfiguration": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/frontendIPConfigurations/internal-lb-ip-v4",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "frontendPort": 2200,
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/ssh-0",
+        "idleTimeoutInMinutes": 30,
+        "loadDistribution": "Default",
+        "name": "ssh-0",
+        "probe": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/probes/ssh",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "protocol": "Tcp",
+        "provisioningState": "Succeeded",
+        "resourceGroup": "aro-ffc4otrb",
+        "type": "Microsoft.Network/loadBalancers/loadBalancingRules"
+      },
+      {
+        "backendAddressPool": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/ssh-1",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "backendAddressPools": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/ssh-1",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "backendPort": 22,
+        "disableOutboundSnat": true,
+        "enableFloatingIp": false,
+        "enableTcpReset": false,
+        "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+        "frontendIpConfiguration": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/frontendIPConfigurations/internal-lb-ip-v4",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "frontendPort": 2201,
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/ssh-1",
+        "idleTimeoutInMinutes": 30,
+        "loadDistribution": "Default",
+        "name": "ssh-1",
+        "probe": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/probes/ssh",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "protocol": "Tcp",
+        "provisioningState": "Succeeded",
+        "resourceGroup": "aro-ffc4otrb",
+        "type": "Microsoft.Network/loadBalancers/loadBalancingRules"
+      },
+      {
+        "backendAddressPool": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/ssh-2",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "backendAddressPools": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/backendAddressPools/ssh-2",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "backendPort": 22,
+        "disableOutboundSnat": true,
+        "enableFloatingIp": false,
+        "enableTcpReset": false,
+        "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+        "frontendIpConfiguration": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/frontendIPConfigurations/internal-lb-ip-v4",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "frontendPort": 2202,
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/ssh-2",
+        "idleTimeoutInMinutes": 30,
+        "loadDistribution": "Default",
+        "name": "ssh-2",
+        "probe": {
+          "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/probes/ssh",
+          "resourceGroup": "aro-ffc4otrb"
+        },
+        "protocol": "Tcp",
+        "provisioningState": "Succeeded",
+        "resourceGroup": "aro-ffc4otrb",
+        "type": "Microsoft.Network/loadBalancers/loadBalancingRules"
+      }
+    ],
+    "location": "eastus",
+    "name": "arohack-9f49h-internal",
+    "outboundRules": [],
+    "probes": [
+      {
+        "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/probes/api-internal-probe",
+        "intervalInSeconds": 5,
+        "loadBalancingRules": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/api-internal-v4",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "name": "api-internal-probe",
+        "numberOfProbes": 2,
+        "port": 6443,
+        "protocol": "Https",
+        "provisioningState": "Succeeded",
+        "requestPath": "/readyz",
+        "resourceGroup": "aro-ffc4otrb",
+        "type": "Microsoft.Network/loadBalancers/probes"
+      },
+      {
+        "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/probes/sint-probe",
+        "intervalInSeconds": 5,
+        "loadBalancingRules": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/sint-v4",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "name": "sint-probe",
+        "numberOfProbes": 2,
+        "port": 22623,
+        "protocol": "Https",
+        "provisioningState": "Succeeded",
+        "requestPath": "/healthz",
+        "resourceGroup": "aro-ffc4otrb",
+        "type": "Microsoft.Network/loadBalancers/probes"
+      },
+      {
+        "etag": "W/\"a1219a60-3495-46bf-a902-256085aa3585\"",
+        "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/probes/ssh",
+        "intervalInSeconds": 5,
+        "loadBalancingRules": [
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/ssh-0",
+            "resourceGroup": "aro-ffc4otrb"
+          },
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/ssh-1",
+            "resourceGroup": "aro-ffc4otrb"
+          },
+          {
+            "id": "/subscriptions/e7f88b1a-04fc-4d00-ace9-eec077a5d6af/resourceGroups/aro-ffc4otrb/providers/Microsoft.Network/loadBalancers/arohack-9f49h-internal/loadBalancingRules/ssh-2",
+            "resourceGroup": "aro-ffc4otrb"
+          }
+        ],
+        "name": "ssh",
+        "numberOfProbes": 2,
+        "port": 22,
+        "protocol": "Tcp",
+        "provisioningState": "Succeeded",
+        "requestPath": null,
+        "resourceGroup": "aro-ffc4otrb",
+        "type": "Microsoft.Network/loadBalancers/probes"
+      }
+    ],
+    "provisioningState": "Succeeded",
+    "resourceGroup": "aro-ffc4otrb",
+    "resourceGuid": "e871dcc9-d587-474c-abd5-4e4557439693",
+    "sku": {
+      "name": "Standard",
+      "tier": "Regional"
+    },
+    "tags": null,
+    "type": "Microsoft.Network/loadBalancers"
+  }
+]

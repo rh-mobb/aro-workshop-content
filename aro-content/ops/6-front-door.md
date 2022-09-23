@@ -7,7 +7,7 @@ The first step is to export three environment variables for the Resource Group A
 ```bash
 export ARORG=(ARO Resource Group Name)
 export AROCLUSTER=(ARO Cluster Name)
-export USER=(Your User ID)
+export USERID=(Your User ID)
 ```
 
 Next we, need to get the name of the VNET ARO is in
@@ -63,8 +63,12 @@ Get the internal load balancer name, id and ip that the private link service wil
 
 ```bash
 INTERNAL_LBNAME=$(az network lb list --resource-group $ARO_RGNAME --query "[? contains(name, 'internal')].name" -o tsv)
-LBCONFIG_ID=$(az network lb frontend-ip list -g $ARO_RGNAME --lb-name $INTERNAL_LBNAME --query "[? contains(subnet.id,'$WORKER_SUBNET_ID')].id" -o tsv)
-LBCONFIG_IP=$(az network lb frontend-ip list -g $ARO_RGNAME --lb-name $INTERNAL_LBNAME --query "[? contains(subnet.id,'$WORKER_SUBNET_ID')].privateIpAddress" -o tsv)
+# LBCONFIG_ID=$(az network lb frontend-ip list -g $ARO_RGNAME --lb-name $INTERNAL_LBNAME --query "[? contains(subnet.id,'$WORKER_SUBNET_ID')].id" -o tsv)
+#LBCONFIG_IP=$(az network lb frontend-ip list -g $ARO_RGNAME --lb-name $INTERNAL_LBNAME --query "[? contains(subnet.id,'$WORKER_SUBNET_ID')].privateIpAddress" -o tsv)
+
+LBCONFIG_ID=$(az network lb frontend-ip list -g $ARO_RGNAME --lb-name $INTERNAL_LBNAME --query "[0].id" -o tsv)
+LBCONFIG_IP=$(az network lb frontend-ip list -g $ARO_RGNAME --lb-name $INTERNAL_LBNAME --query "[0].privateIpAddress" -o tsv)
+
 ```
 
 Set the following DNS variables for the workshop so we can add DNS records to the azure.mobb.ninja domain
@@ -79,9 +83,9 @@ ARO_APP_FQDN is the fully qualified url for your minesweeper application
 ARO_MINE_CUSTOM_DOMAIN_NAME is the name of the DNS entry.
 
 ```bash
-DOMAIN=$USER.azure.mobb.ninja
-ARO_APP_FQDN=minesweeper.$USER.azure.mobb.ninja
-AFD_MINE_CUSTOM_DOMAIN_NAME=minesweeper-$USER-azure-mobb-ninja
+DOMAIN=$USERID.azure.mobb.ninja
+ARO_APP_FQDN=minesweeper.$USERID.azure.mobb.ninja
+AFD_MINE_CUSTOM_DOMAIN_NAME=minesweeper-$USERID-azure-mobb-ninja
 ```
 
 Now that we have all the required variables set, we can start creating the Front Door service and everything it needs.
@@ -158,6 +162,20 @@ az afd origin create \
 --profile-name $AFD_NAME \
 --resource-group $ARORG
 ```
+```bash
+az afd origin create \
+--weight 1000 \
+--priority 1 \
+--http-port 80 \
+--https-port 443 \
+--origin-group-name 'afdorigin' \
+--enabled-state Enabled \
+--host-name $LBCONFIG_IP \
+--origin-name 'afdorigin' \
+--profile-name $AFD_NAME \
+--resource-group $ARORG
+```
+
 
 Approve the private link connection
 
@@ -187,7 +205,7 @@ Create an Azure Front Door endpoint for your custom domain
 az afd endpoint create \
 --resource-group $ARORG \
 --enabled-state Enabled \
---endpoint-name 'aro-mine-'$UNIQUEID \
+--endpoint-name 'aro-mine-'$UNIQUE \
 --profile-name $AFD_NAME
 ```
 
@@ -195,7 +213,7 @@ Add an Azure Front Door route for your custom domain
 
 ```bash
 az afd route create \
---endpoint-name 'aro-mine-'$UNIQUEID \
+--endpoint-name 'aro-mine-'$UNIQUE \
 --forwarding-protocol HttpOnly \
 --https-redirect Disabled \
 --origin-group 'afdorigin' \

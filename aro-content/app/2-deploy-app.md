@@ -251,7 +251,6 @@ metadata:
     app.kubernetes.io/version: 1.0.0-SNAPSHOT
     app.openshift.io/runtime: quarkus
   name: microsweeper-appservice
-  namespace: minesweeper
 spec:
   host: $ARO_APP_FQDN
   to:
@@ -281,15 +280,23 @@ https://github.com/rh-mobb/aro-hackaton-app
 For each of the repositories, click Fork and then choose your own Git Account.
 <img src="images/fork-git.png">
 
+Next, we will need to make a directory and clone your personal github repository that you just forked to.
+
+```bash
+mkdir $USERID
+cd $USERID
+git clone https://github.com/<YOUR GITHUB USER ID>/common-java-dependencies
+git clone https://github.com/kmcolli/aro-hackaton-app
+
 The next thing we need to do is import common Tekton tasks that our pipeline will use.  These common tasks are designed to be reused across multiple pipelines.
 
 Let's start by taking a look at the reusable Tasks that we will be using.  From your cloud shell, change directorys to ~/aro-hackaton-app/pipeline and list the files.
 
 ```bash
 cd ~/aro-hackaton-app/pipeline/tasks
-ls
+ls | tr “” “\n”
 ```
-# TODO Update Picture
+
 Expected output:<br>
 <img src="images/pipeline-tasks.png">
 
@@ -374,8 +381,7 @@ Now that we have the source code forked, we need to copy the properties file we 
 
 Using the cloud shell, run the following commands.
 ```bash
-mkdir ~/$USERID
-cd $USERID
+cd ~/$USERID
 cp ../aro-hackaton-app/src/main/resources/application.properties aro-hackaton-app/src/main/resources/application.properties 
 ```
 
@@ -386,6 +392,7 @@ git config --global user.email "<your github email>"
 git config --global user.name “<your github username>”
 git init
 
+cd aro-hackaton-app
 git add *
 git commit -am "Update Propereties File"
 git push
@@ -415,7 +422,7 @@ Before we can actually run the pipeline that will update the deployment, we need
 To do so, run the following command.
 
 ```bash
-oc patch deploy/microsweeper-appservice --patch-file ~/aro-hackaton-app/pipeline/4-deployment-patch.yaml
+oc patch deploy/microsweeper-appservice --patch-file ~/aro-hackaton-app/pipeline/5-deployment-patch.yaml
 ```
 
 
@@ -429,7 +436,7 @@ Edit the ~/$USERID/aro-hackaton-app/pipeline/4-pipeline-run.yaml file.  The thre
 After editing the file, now create the pipeline run.
 
 ```bash
-oc create -f ~/aro-hackaton-app/pipeline/4-pipeline-run.yaml
+oc create -f ~/$USERID/aro-hackaton-app/pipeline/4-pipeline-run.yaml
 ```
 
 This will start a pipeline run and redeploy the minesweeper application, but this time will build the code from your github repository and the pipeline will deploy the application as well to OpenShift.
@@ -526,6 +533,10 @@ expected output:
 
 Expose the service so that Git is able to connect to the event listener.<br>
 *Note - since this is public cluster, we can simply use the included OpenShift Ingress Controller as it is exposed to the Internet.  For a private cluster, you can follow the same process as we did above in exposing the minesweeper application with Front Door!
+```bash
+oc expose svc el-minesweeper-el
+```
+
 
 To get the url of the Event Listener Route that we just created, run the following command:
 
@@ -586,7 +597,7 @@ Search for Leaderboard and change it to \<YOUR NAME\> Leaderboard.
 
 ```bash
 cd ~/$USERID/aro-hackaton-app
-vi /src/main/resources/META-INF/resources/index.html
+vi src/main/resources/META-INF/resources/index.html
 ```
 
 <img src="images/html-edit.png">
