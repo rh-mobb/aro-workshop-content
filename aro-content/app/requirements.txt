@@ -16,3 +16,6 @@ $USERID Domain - see Front Door setup
 
 $USER-minesweeper-database instance on shared Postgresql Service
 
+User needs permissions to run:
+oc adm policy add-scc-to-user anyuid -z pipeline
+oc adm policy add-scc-to-user privileged -z pipeline

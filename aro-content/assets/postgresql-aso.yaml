@@ -1,10 +1,10 @@
-# apiVersion: resources.azure.com/v1alpha1api20200601
-# kind: ResourceGroup
-# metadata:
-#   name: wksp-rg
-#   namespace: default
-# spec:
-#   location: eastus
+apiVersion: resources.azure.com/v1alpha1api20200601
+kind: ResourceGroup
+metadata:
+  name: user1-wksp-rg
+  namespace: default
+spec:
+  location: eastus
 ---
 apiVersion: v1
 kind: Secret
@@ -12,19 +12,19 @@ metadata:
   name: server-admin-pw
   namespace: default
 data:
-  password: aGFja2F0aG9uUGFzcw== # hackathonPass
+  password: cjNkaDR0MSE= # hackathonPass
 type: Opaque
 
 --- 
 apiVersion: dbforpostgresql.azure.com/v1beta20210601
 kind: FlexibleServer
 metadata:
-  name: wksp-pqslserver
+  name: user1-minesweeper-database
   namespace: default
 spec:
   location: eastus
   owner:
-    name: wksp-rg
+    name: user1-wksp-rg
   version: "13"
   sku:
     name: Standard_B1ms
@@ -32,7 +32,7 @@ spec:
 #    family: Gen5
 #    size: "51200"
 #    capacity: 2
-  administratorLogin: myAdmin
+  administratorLogin: quarkus
   administratorLoginPassword: # This is the name/key of a Kubernetes secret in the same namespace
     name: server-admin-pw
     key: password
@@ -46,7 +46,7 @@ metadata:
   namespace: default
 spec:
   owner:
-    name: wksp-pqslserver
+    name: user1-minesweeper-database
   azureName: pgaudit.log
   source: user-override
   value: READ
@@ -54,20 +54,20 @@ spec:
 apiVersion: dbforpostgresql.azure.com/v1beta20210601
 kind: FlexibleServersDatabase
 metadata:
-  name: wksp-db
+  name: score
   namespace: default
 spec:
   owner:
-    name: wksp-pqslserver
+    name: user1-minesweeper-database
   charset: utf8
 ---
 apiVersion: dbforpostgresql.azure.com/v1beta20210601
 kind: FlexibleServersFirewallRule
 metadata:
-  name: wksp-fw-rule
+  name: user1-minesweeper-database-fw-rule
   namespace: default
 spec:
   owner:
-    name: wksp-pqslserver
+    name: user1-minesweeper-database
   startIpAddress: 0.0.0.0
   endIpAddress: 255.255.255.255
