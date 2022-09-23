@@ -1,91 +1,68 @@
-## Installing the Bookinfo application
-This tutorial walks you through how to create a sample application by deploying the Bookinfo application to a project, and viewing the running application in Service Mesh.
-1. From the CLI, deploy the Bookinfo application in the `bookinfo` project by applying the bookinfo.yaml file:
-```bash
-oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-2.2/samples/bookinfo/platform/kube/bookinfo.yaml
-```
-You should see output similar to the following:
-```
-service/details created
-serviceaccount/bookinfo-details created
-deployment.apps/details-v1 created
-service/ratings created
-serviceaccount/bookinfo-ratings created
-deployment.apps/ratings-v1 created
-service/reviews created
-serviceaccount/bookinfo-reviews created
-deployment.apps/reviews-v1 created
-deployment.apps/reviews-v2 created
-deployment.apps/reviews-v3 created
-service/productpage created
-serviceaccount/bookinfo-productpage created
-deployment.apps/productpage-v1 created
-```
-1. Create the ingress gateway by applying the bookinfo-gateway.yaml file.
+# Red Hat OpenShift Service Mesh
+A microservice architecture breaks up the monolith application into many smaller pieces and introduces new communication patterns between services like fault tolerance and dynamic routing.One of the major challenges with the management of a microservices architecture is trying to understand how services are composed, how they are connected and how all the individual components operate, from global perspective and drilling down into particular detail.
 
-***An Istio Gateway describes a LoadBalancer operating at either side of the service mesh. Istio Gateways are of two types. Istio Ingress Gateway: Controlling the traffic coming inside the Mesh. Istio Egress Gateway: Controlling the traffic going outside the Mesh.***
+## Install Travel Demo
+This demo application will deploy several services grouped into three namespaces.
 
+1. **Create** application namespace.
 ```bash
-oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-2.2/samples/bookinfo/networking/bookinfo-gateway.yaml
+oc create namespace travel-agency
+oc create namespace travel-portal
+oc create namespace travel-control
 ```
-You should see output similar to the following:
+2. **Deploy** application.
+```bash
+oc apply -f <(curl -L https://raw.githubusercontent.com/kiali/demos/master/travels/travel_agency.yaml) -n travel-agency
+oc apply -f <(curl -L https://raw.githubusercontent.com/kiali/demos/master/travels/travel_portal.yaml) -n travel-portal
+oc apply -f <(curl -L https://raw.githubusercontent.com/kiali/demos/master/travels/travel_control.yaml) -n travel-control
 ```
-gateway.networking.istio.io/bookinfo-gateway created
-virtualservice.networking.istio.io/bookinfo created
-```
-1. Set the value for the GATEWAY_URL parameter:
-```
-export GATEWAY_URL=$(oc -n istio-system get route istio-ingressgateway -o jsonpath='{.spec.host}')
-```
-#### Adding default destination rules
+3. **Check** that all deployments rolled out as expected:
+```bash
+$ oc get deployments -n travel-control
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+control   1/1     1            1           67m
 
-***DestinationRule defines policies that apply to traffic intended for a service after routing has occurred. These rules specify configuration for load balancing, connection pool size from the sidecar, and outlier detection settings to detect and evict unhealthy hosts from the load balancing pool. Before you can use the Bookinfo application, you must first add default destination rules.***
+$ oc get deployments -n travel-portal
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+travels   1/1     1            1           67m
+viaggi    1/1     1            1           67m
+voyages   1/1     1            1           67m
 
-1. To add destination rules, run the following commands:
-```bash
-oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-2.2/samples/bookinfo/networking/destination-rule-all.yaml
-```
-You should see output similar to the following:
-```
-destinationrule.networking.istio.io/productpage created
-destinationrule.networking.istio.io/reviews created
-destinationrule.networking.istio.io/ratings created
-destinationrule.networking.istio.io/details created
-```
-### Verifying the Bookinfo installation
-To confirm that the sample Bookinfo application was successfully deployed, perform the following steps.
-1. Verify that all pods are ready with this command:
-```bash
-oc get pods -n bookinfo
-```
-All pods should have a status of Running. You should see output similar to the following:
-```
-NAME                              READY   STATUS    RESTARTS   AGE
-details-v1-55b869668-jh7hb        2/2     Running   0          12m
-productpage-v1-6fc77ff794-nsl8r   2/2     Running   0          12m
-ratings-v1-7d7d8d8b56-55scn       2/2     Running   0          12m
-reviews-v1-868597db96-bdxgq       2/2     Running   0          12m
-reviews-v2-5b64f47978-cvssp       2/2     Running   0          12m
-reviews-v3-6dfd49b55b-vcwpf       2/2     Running   0          12m
-```
-1. Run the following command to retrieve the URL for the product page:
-```bash
-echo "http://$GATEWAY_URL/productpage"
-```
-You should see output similar to the following:
-```
-http://istio-ingressgateway-istio-system.apps.qybf0l2n.eastus.aroapp.io/productpage
-```
-1. Copy and paste the output in a web browser to verify the Bookinfo product page is deployed.
+$ oc get deployments -n travel-agency
+NAME            READY   UP-TO-DATE   AVAILABLE   AGE
+cars-v1         1/1     1            1           68m
+discounts-v1    1/1     1            1           68m
+flights-v1      1/1     1            1           68m
+hotels-v1       1/1     1            1           68m
+insurances-v1   1/1     1            1           68m
+mysqldb-v1      1/1     1            1           68m
+travels-v1      1/1     1            1           68m
 
-### Traffic Management
-#### Weighted Traffic
-***Weighted routing policy – Use to route traffic to multiple resources in proportions that you specify.***
-1. Apply a new rule that only sends traffic to v2 (black) and v3 (red) ratings API.
 ```
-oc apply -n bookinfo -f https://raw.githubusercontent.com/Maistra/istio/maistra-2.2/samples/bookinfo/networking/virtual-service-reviews-v2-v3.yaml
-```
-1. Delete the Bookinfo project
-```bash
-oc delete project bookinfo
-```
+## Understanding the demo application
+**Travel Portal Namespace**
+The Travel Demo application simulates two business domains organized in different namespaces.
+In a first namespace called travel-portal there will be deployed several travel shops, where users can search for and book flights, hotels, cars or insurance.
+The shop applications can behave differently based on request characteristics like channel (web or mobile) or user (new or existing).
+These workloads may generate different types of traffic to imitate different real scenarios.
+All the portals consume a service called travels deployed in the travel-agency namespace.
+
+**Travel Agency Namespace**
+A second namespace called travel-agency will host a set of services created to provide quotes for travel.
+A main travels service will be the business entry point for the travel agency. It receives a destination city and a user as parameters and it calculates all elements that compose a travel budget: airfare, lodging, car reservation and travel insurance.
+Each service can provide an independent quote and the travels service must then aggregate them into a single response.
+Additionally, some users, like registered users, can have access to special discounts, managed as well by an external service.
+Service relations between namespaces can be described in the following diagram:
+![Demo Diagram](./images/travels-demo-design.png)
+
+**Travel Portal and Travel Agency flow**
+A typical flow consists of the following steps:
+
+A portal queries the travels service for available destinations. . Travels service queries the available hotels and returns to the portal shop. . A user selects a destination and a type of travel, which may include a flight and/or a car, hotel and insurance. . Cars, Hotels and Flights may have available discounts depending on user type.
+
+**Travel Control Namespace**
+The travel-control namespace runs a business dashboard with two key features:
+
+Allow setting changes for every travel shop simulator (traffic ratio, device, user and type of travel).
+Provide a business view of the total requests generated from the travel-portal namespace to the travel-agency services, organized by business criteria as grouped per shop, per type of traffic and per city.
+![Travel Dashboard](./images/travels-dashboard.png)
