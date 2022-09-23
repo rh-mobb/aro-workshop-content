@@ -65,6 +65,7 @@ A Pod disruption Budget (PBD) allows you to limit the disruption to your applica
 For example, frontend-js deployed as part of the last step contains two replicas distributed evenly across two nodes. We can tolerate losing one pods but not two, so we create a PDB that requires a minimum of two replicas.
 
 A PodDisruptionBudget object’s configuration consists of the following key partsi:
+
 - A label selector, which is a label query over a set of pods.
 - An availability level, which specifies the minimum number of pods that must be available simultaneously, either:
   - minAvailable is the number of pods must always be available, even during a disruption.
