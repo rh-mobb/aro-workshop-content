@@ -15,12 +15,16 @@ oc create namespace travel-portal
 oc create namespace travel-control
 ```
 2. **Deploy** application.
+
+**travel-agency**
 ```bash
 oc apply -f <(curl -L https://raw.githubusercontent.com/kiali/demos/master/travels/travel_agency.yaml) -n travel-agency
 ```
+**travel-portal**
 ```bash
 oc apply -f <(curl -L https://raw.githubusercontent.com/kiali/demos/master/travels/travel_portal.yaml) -n travel-portal
 ```
+**travel-control**
 ```bash
 oc apply -f <(curl -L https://raw.githubusercontent.com/kiali/demos/master/travels/travel_control.yaml) -n travel-control
 ```
