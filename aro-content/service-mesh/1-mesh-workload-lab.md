@@ -7,28 +7,44 @@ This demo application will deploy several services grouped into three namespaces
 1. **Create** application namespace.
 ```bash
 oc create namespace travel-agency
+```
+```bash
 oc create namespace travel-portal
+```
+```bash
 oc create namespace travel-control
 ```
 2. **Deploy** application.
 ```bash
 oc apply -f <(curl -L https://raw.githubusercontent.com/kiali/demos/master/travels/travel_agency.yaml) -n travel-agency
+```
+```bash
 oc apply -f <(curl -L https://raw.githubusercontent.com/kiali/demos/master/travels/travel_portal.yaml) -n travel-portal
+```
+```bash
 oc apply -f <(curl -L https://raw.githubusercontent.com/kiali/demos/master/travels/travel_control.yaml) -n travel-control
 ```
 3. **Check** that all deployments rolled out as expected:
 ```bash
 $ oc get deployments -n travel-control
+```
+```bash
 NAME      READY   UP-TO-DATE   AVAILABLE   AGE
 control   1/1     1            1           67m
-
+```
+```bash
 $ oc get deployments -n travel-portal
+```
+```bash
 NAME      READY   UP-TO-DATE   AVAILABLE   AGE
 travels   1/1     1            1           67m
 viaggi    1/1     1            1           67m
 voyages   1/1     1            1           67m
-
+```
+```bash
 $ oc get deployments -n travel-agency
+```
+```bash
 NAME            READY   UP-TO-DATE   AVAILABLE   AGE
 cars-v1         1/1     1            1           68m
 discounts-v1    1/1     1            1           68m
