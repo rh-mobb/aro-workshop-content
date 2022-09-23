@@ -6,6 +6,7 @@ Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gi
 
 
 We deploy ASO on an ARO cluster to provision and manage Azure resources. In the next parts we use ASO to provision a postgre databse and a VM. To install ASO we need:
+
 1.  A SP(service principal) with right permission.  
 2.  A certificate: We use cert-manager to issue certificate 
 
