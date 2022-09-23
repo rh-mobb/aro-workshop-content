@@ -1,5 +1,5 @@
 # Red Hat OpenShift Service Mesh
-A microservice architecture breaks up the monolith application into many smaller pieces and introduces new communication patterns between services like fault tolerance and dynamic routing.One of the major challenges with the management of a microservices architecture is trying to understand how services are composed, how they are connected and how all the individual components operate, from global perspective and drilling down into particular detail.
+Based on the open source Istio project, Red Hat OpenShift Service Mesh adds a transparent layer on existing distributed applications without requiring any changes to the service code. You add Red Hat OpenShift Service Mesh support to services by deploying a special sidecar proxy to relevant services in the mesh that intercepts all network communication between microservices. You configure and manage the Service Mesh using the Service Mesh control plane features.
 
 ## Install Travel Demo
 This demo application will deploy several services grouped into three namespaces.
