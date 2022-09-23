@@ -7,13 +7,13 @@ This demo application will deploy several services grouped into three namespaces
 
 1. **Create** application namespace.
 ```bash
-oc create namespace travel-agency
+oc new-project travel-agency
 ```
 ```bash
-oc create namespace travel-portal
+oc new-project travel-portal
 ```
 ```bash
-oc create namespace travel-control
+oc new-project travel-control
 ```
 2. **Deploy** application.
 
