@@ -64,11 +64,11 @@ A Pod disruption Budget (PBD) allows you to limit the disruption to your applica
 
 For example, frontend-js deployed as part of the last step contains two replicas distributed evenly across two nodes. We can tolerate losing one pods but not two, so we create a PDB that requires a minimum of two replicas.
 
-A PodDisruptionBudget object’s configuration consists of the following key parts:
-* A label selector, which is a label query over a set of pods.
-* An availability level, which specifies the minimum number of pods that must be available simultaneously, either:
-  * minAvailable is the number of pods must always be available, even during a disruption.
-  * maxUnavailable is the number of pods can be unavailable during a disruption.
+A PodDisruptionBudget object’s configuration consists of the following key partsi:
+- A label selector, which is a label query over a set of pods.
+- An availability level, which specifies the minimum number of pods that must be available simultaneously, either:
+  - minAvailable is the number of pods must always be available, even during a disruption.
+  - maxUnavailable is the number of pods can be unavailable during a disruption.
 
 
 !!! note
@@ -110,7 +110,7 @@ As a developer, you can use a horizontal pod autoscaler (HPA) to specify how Ope
 In this exercise we will scale frontend application based on CPU utilization:
 
 * Scale out when average CPU utilization is greater than 80% of CPU limit
-* Maximum pods is 5
+* Maximum pods is 4
 * Scale down to min replicas if utilization is lower than threshold for 60 sec
 
 ```
