@@ -43,8 +43,9 @@ oc create -n istio-system -f https://raw.githubusercontent.com/rh-mobb/aro-hacka
 ```
 5. To watch the progress of the pod deployment, run the following command:
 
-'''bash
+```
 oc get pods -n istio-system -w
+
 ```
 You should see output similar to the following:
 ```
@@ -58,6 +59,7 @@ kiali-6476c7656c-x5msp                 1/1     Running   0          43m
 prometheus-58954b8d6b-m5std            2/2     Running   0          66m
 wasm-cacher-basic-8c986c75-vj2cd       1/1     Running   0          65m
 ```
+
 ### Validating your SMCP installation with the CLI
   
 6. Run the following command to verify the Service Mesh control plane installation, where istio-system is the namespace where you installed the Service Mesh control plane.
@@ -65,9 +67,10 @@ wasm-cacher-basic-8c986c75-vj2cd       1/1     Running   0          65m
 ```bash
 oc get smcp -n istio-system
 ```
+
 The installation has finished successfully when the STATUS column is ComponentsReady
 
 ```bash
 NAME    READY   STATUS            PROFILES      VERSION   AGE
 basic   10/10   ComponentsReady   ["default"]   2.1.1     66m  
-```
+````
