@@ -35,3 +35,5 @@ spec:
  ```bash
  oc get deployment -n bookinfo ratings-v1 -o yaml
  ```
+### Verify in Kiali
+ [Kiali Dashboard](https://github.com/rh-mobb/aro-hackathon-content/blob/main/aro-content/service-meshv2/access_kiali_dashboard.md)
