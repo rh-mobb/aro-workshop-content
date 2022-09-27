@@ -1,3 +1,4 @@
+## Deploy control plane
 
 1. Log in to the OpenShift Container Platform CLI
 
