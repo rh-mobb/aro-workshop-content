@@ -1,0 +1,9 @@
+apiVersion: maistra.io/v2
+kind: ServiceMeshMember
+metadata:
+  namespace: istio-system
+  name: default
+spec:
+  controlPlaneRef:
+    name: basic
+    namespace: istio-system
