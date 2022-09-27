@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ratings-v1
+  namespace: bookinfo
+  labels:
+    app: ratings
+    version: v1
+spec:
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: 'true'
