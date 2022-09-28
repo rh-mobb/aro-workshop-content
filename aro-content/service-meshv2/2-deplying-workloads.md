@@ -2,6 +2,7 @@
 1. Create project.
 ```bash
 oc new-project bookinfo
+oc label namespace bookinfo istio-injection=enabled
 ```
 2. Run the following command 
 ```bash
