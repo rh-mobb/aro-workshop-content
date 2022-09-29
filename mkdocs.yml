@@ -22,7 +22,7 @@ nav:
     - Deploy and Expose and App: app/2-deploy-app.md
     - Make Applications Resilient: app/3-scale-app.md
     - Service Mesh:
-      - Deploy Service Mesh Operator: service-meshv2/1-mesh-workload-lab.md
+      - Deploy Service Mesh Operator: service-meshv2/0-infrastructure_operator_install.md
 
 
 # Theme Configuration
