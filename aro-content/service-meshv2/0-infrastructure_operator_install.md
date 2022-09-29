@@ -1,5 +1,5 @@
 ## Operator Overview
-
+![Azure Portal Cloud Shell](../assets/images/overview-cloudshell-icon.png)
 ### Red Hat OpenShift Service Mesh requires the following four Operators:
 
 1. **OpenShift Elasticsearch** - (Optional) Provides database storage for tracing and logging with the distributed tracing platform. It is based on the open source Elasticsearch project.
