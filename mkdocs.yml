@@ -23,6 +23,10 @@ nav:
     - Make Applications Resilient: app/3-scale-app.md
     - Service Mesh:
       - Deploy Service Mesh Operator: service-meshv2/0-infrastructure_operator_install.md
+      - Deploy Control Plane: service-meshv2/1-deploy-control-plane.md
+      - Deploy Workloads: service-meshv2/2-deplying-workloads.md
+      - Deploy Weighte Routing: service-meshv2/3-weighted-routing.md
+      - Access Kiali Dashboard: service-meshv2/access_kiali_dashboard.md
 
 
 # Theme Configuration
