@@ -1,6 +1,5 @@
 ## Kiali Web Console
 ### Obtain the address for the Kiali web console.
-***Under Mesh Project***
 
 1. **Login** to the OpenShift Container Platform web console as a user with cluster-admin rights. If you use Red Hat OpenShift Dedicated, you must have an account with the dedicated-admin role.
 
