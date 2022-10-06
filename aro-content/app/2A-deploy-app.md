@@ -5,13 +5,15 @@ When you create a cluster on ARO you have several options in making the cluster 
 
 How can you allow Internet access to an application running on your private cluster where the .apps endpoint is private? This document will guide you through using Azure Frontdoor to expose your applications to the Internet. There are several advantages of this approach, namely your cluster and all the resources in your Azure account can remain private, providing you an extra layer of security. Azure FrontDoor operates at the edge so we are controlling traffic before it even gets into your Azure account. On top of that, Azure FrontDoor also offers WAF and DDoS protection, certificate management and SSL Offloading just to name a few benefits.
 
-*Note: in this workshop we are using public clusters to simplify connectity to the environment.  Even though we are using a public cluster, the same methodology applies to expose an application to the Internet from a private cluster.
+!!! note 
+
+    In this workshop we are using public clusters to simplify connectity to the environment.  Even though we are using a public cluster, the same methodology applies to expose an application to the Internet from a private cluster.  To similate a private cluster, we will be creating a 2nd private Ingress Controller.
 
 ## Prerequisites
 * a unique USER ID
 * Azure Database for PostgreSQL
 * Azure Container Registry Instance and Password
-* A public GitHub id ( only required for the Pipeline Part )
+* A public GitHub id ( only required for the 'Automate Deploying the App' )
 <br>
 
 ## Deploy an application
@@ -20,7 +22,9 @@ We will be deploying a Java based application called [microsweeper](https://gith
 
 Prerequisites - this part of the workshop assumes you have already created a Azure Database for PostgreSQL database named <USERID>-microsweeper-database that you created and configured in a previous step.
 
-1. Throughout this tutorial, we will be distinguishing your application and resources based on a USERID assigned to you.  Please see a facilitator if they have not given you a USER ID.
+!!! note
+    
+    Throughout this tutorial, we will be distinguishing your application and resources based on a USERID assigned to you.  Please see a facilitator if they have not given you a USER ID.
 
 From the Azure Cloud Shell, set an environment variable for your user id and the Azure Resource Group given to you by the facilitor:
 
@@ -30,36 +34,56 @@ export ARORG=<The Azure Resource Group a facilitator gave you>
 export ARO_APP_FQDN=minesweeper.$USERID.azure.mobb.ninja
 ```
 
-1. The first thing we need to do is get a copy of the code that we will build and deploy to our clusters.  Clone the git repository
+1. **Clone the git repository** 
+
+The first thing we need to do is get a copy of the code that we will build and deploy to our clusters.  
 
    ```bash
    git clone https://github.com/rh-mobb/aro-hackaton-app
    ```
 
-1. change to the root directory
+2. **Change to the root directory**
 
    ```bash
    cd aro-hackaton-app
    ```
 
 
-1. Log into your openshift cluster with Azure Cloud Shell
+3. **Log into your openshift cluster with Azure Cloud Shell**
 
-1. Switch to your OpenShift Project
+4. **Switch to your OpenShift Project**
 
    ```bash
    oc project <USER ID>
    ```
+  !!! info
+      
+      As part of the workshop setup, an OpenShift project has been created using your USERID as the name of the project
 
-1. add the openshift extension to quarkus
+5. **Add the OpenShift extension to quarkus**
 
    ```bash
    quarkus ext add openshift
    ```
 
-1. Edit aro-hackaton-app/src/main/resources/application.properties
+6. **Edit aro-hackaton-app/src/main/resources/application.properties**
 
-   Make sure your file looks like the one below, changing the IP address on line 3 to the private ip address of your postgres instance.  You should have gotten your PostgreSQL private IP in the previous step when you created the database instance.
+   Make sure your file looks like the one below, changing the following lines:
+  
+  - **%prod.quarkus.datasource.jdbc.url=jdbc:postgresql://<USERID>-minesweeper-database:5432/score** <br>
+    Change the above line with your USERID for the database that has been configured for you:
+  
+  !!! Info
+  
+    Note the options in OpenShift Configurations.
+    - **%prod.quarkus.openshift.deployment-kind=Deployment** <br>
+      We will be creating a deployment for the application. 
+    - **%prod.quarkus.openshift.build-strategy=docker** <br>
+      The application will be built uisng Docker.
+    - **%prod.quarkus.container-image.group=minesweeper** <br>
+      The application will use the namespace your facilitator assigned to you.
+    - **%prod.quarkus.openshift.expose=true** <br>
+      We will expose the route using the default openshift router domain - apps.\<cluster-id\>.eastus.aroapp.io
 
    Sample microsweeper-quarkus/src/main/resources/application.properties
 
@@ -91,22 +115,7 @@ export ARO_APP_FQDN=minesweeper.$USERID.azure.mobb.ninja
    #%prod.quarkus.native.container-build=true
    ```
 
-   Change the following line to represent the database that has been configured for you:
-   **%prod.quarkus.datasource.jdbc.url=jdbc:postgresql://<USERID>-minesweeper-database:5432/score** <br>
- 
-   Note the options in OpenShift Configurations.
-
-   **%prod.quarkus.openshift.deployment-kind=Deployment** <br>
-   We will be creating a deployment for the application. 
-
-   **%prod.quarkus.openshift.build-strategy=docker** <br>
-   The application will be built uisng Docker.
-
-   **%prod.quarkus.container-image.group=minesweeper** <br>
-   The application will use the namespace your facilitator assigned to you.
-
-   **%prod.quarkus.openshift.expose=true** <br>
-   We will expose the route using the default openshift router domain - apps.\<cluster-id\>.eastus.aroapp.io
+   
 
 
 1. Build and deploy the quarkus application to OpenShift.  One of the great things about OpenShift is the concept of Source to Image, where you simply point to your source code and OpenShift will build and deploy your application.  
