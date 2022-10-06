@@ -57,7 +57,7 @@ export ARO_APP_FQDN=minesweeper.$USERID.azure.mobb.ninja
    oc project <USER ID>
    ```
   
-  !!! info
+!!! info
       
       As part of the workshop setup, an OpenShift project has been created using your USERID as the name of the project
 
@@ -74,17 +74,17 @@ export ARO_APP_FQDN=minesweeper.$USERID.azure.mobb.ninja
   - **%prod.quarkus.datasource.jdbc.url=jdbc:postgresql://<USERID>-minesweeper-database:5432/score** <br>
     Change the above line with your USERID for the database that has been configured for you:
   
-  !!! info
+!!! info
   
-      Note the options in OpenShift Configurations.
-      - **%prod.quarkus.openshift.deployment-kind=Deployment** <br>
-        We will be creating a deployment for the application. 
-      - **%prod.quarkus.openshift.build-strategy=docker** <br>
-        The application will be built uisng Docker.
-      - **%prod.quarkus.container-image.group=minesweeper** <br>
-        The application will use the namespace your facilitator assigned to you.
-      - **%prod.quarkus.openshift.expose=true** <br>
-        We will expose the route using the default openshift router domain - apps.\<cluster-id\>.eastus.aroapp.io
+    Note the options in OpenShift Configurations.
+    - **%prod.quarkus.openshift.deployment-kind=Deployment** <br>
+      We will be creating a deployment for the application. 
+    - **%prod.quarkus.openshift.build-strategy=docker** <br>
+      The application will be built uisng Docker.
+    - **%prod.quarkus.container-image.group=minesweeper** <br>
+      The application will use the namespace your facilitator assigned to you.
+    - **%prod.quarkus.openshift.expose=true** <br>
+      We will expose the route using the default openshift router domain - apps.\<cluster-id\>.eastus.aroapp.io
 
    Sample microsweeper-quarkus/src/main/resources/application.properties
 
