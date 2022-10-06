@@ -23,6 +23,9 @@
    --resource-group $AZR_RESOURCE_GROUP \
    -o tsv
 ```
+1. Refresh URL atleast 10 times in the browser to generate traffic for your graph.
+![URL](../assets/images/product-page.PNG)
+
 1. Kiali Console.
 ![Kiali Console](../assets/images/verify-overiview-bookinfoapp.PNG)
 
@@ -37,12 +40,11 @@
 1. Click Display idle nodes from the Display menu.
 ![Kiali Console](../assets/images/kiali-click-display-idlenodes-graph-tab.PNG)
 
-1. Refresh URL in the browser to generate traffic for your graph.
-![URL](../assets/images/product-page.PNG)
+1. View Graph
+1. Change display settings to add or remove information from the graph.
+![Kiali Console](../assets/images/graph-example.PNG)
 
 1. **Click** Workload tab
-![Kiali Console Time Change](../assets/images/clik-workload-tab-click inividual-workloads.PNG)
-
 1. **Select** Details Workload
 ![Kiali Console](../assets/images/example-details-workload.PNG)
 
