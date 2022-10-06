@@ -77,7 +77,7 @@ The following step will walk you through configuring a secret for the database, 
             
    2. **Create DB server**
       
-      Notice here the apiVersion denotes a custom resource definition that will be used as an Openshift API extension to interact with the controller to create and or update the azure Postgres DB resource  
+      Notice here the apiVersion denotes a custom resource definition that will be used as an YAMl representation of the Azure resource you want to create. The openshift controller will then that that YAML CRD and initate the creation of the resource with Msft Azure.  
 
       Heres a brief description of the fields in the manifest below
       
