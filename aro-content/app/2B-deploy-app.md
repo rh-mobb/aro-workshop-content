@@ -99,7 +99,7 @@ nslookup minesweeper.arohack.azure.mobb.ninja
 ```
 
 Notice how the results show traffic coming from *.t-msedge.net
-![Image](images/secure-fd.png)
+![Image](images/nslookup-edge.png)
 
 Congratulations, you now have an application exposed with Front Door using a custom domain.
 Continue to [Part 3](2C-deploy-app.md) of Deploy and Expose an App to now automate provisioning the application using OpenShift Pipelines.
