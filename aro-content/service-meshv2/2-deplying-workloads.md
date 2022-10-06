@@ -1,5 +1,7 @@
 ## Deploying Workloads
+
 1. Create project.
+
 ```bash
 oc new-project bookinfo
 oc label namespace bookinfo istio-injection=enabled
