@@ -1,7 +1,7 @@
 ## Deploy Database for Minesweeper application through ASO
 Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gives you the ability to provision and manages Azure resources such as compute, databases, resoure group, vnet, subnet,... within the Kubernetes plane by using familiar Kubernetes tooling and primitives. ASO consists of:
 1. Custom Resource Definitions (CRDs) for each of the Azure services that a Kubernetes user can provision.
-2. A Kubernetes controller that manages the Azure resources represented by the user-specified Custom Resources. The controller attempts to synchronize the desired state in the user-specified Custom Resource with the actual state of that resource in Azure, creating it if it doesn't exist, updating it if it has been changed, or deleting it.
+1. A Kubernetes controller that manages the Azure resources represented by the user-specified Custom Resources. The controller attempts to synchronize the desired state in the user-specified Custom Resource with the actual state of that resource in Azure, creating it if it doesn't exist, updating it if it has been changed, or deleting it.
 
 In this task, we use ASO to provision a PostgreSQL DB and connect applications to Azure resources from within Kubernetes
 
@@ -33,7 +33,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
    ```
 1. **Provision PostgreSQL flexible server**
 
-   1. **Create a secret for the DB server**
+    1. **Create a secret for the DB server**
       
       **NOTE: You can update password in base64 format**
       ```
@@ -49,7 +49,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
       EOF
       ```
             
-   2. **Create DB server**
+    1. **Create DB server**
       
       ```
       cat <<EOF | oc apply -f -
@@ -75,7 +75,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
       EOF
       ```
       
-   3. **Create Server configuration**
+    1. **Create Server configuration**
       ```
       cat  <<EOF | oc apply -f -
       apiVersion: dbforpostgresql.azure.com/v1beta20210601
@@ -91,7 +91,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
         value: READ
       EOF
       ```
-   4. **Create a firewall rule for the database**
+    1. **Create a firewall rule for the database**
       ```
       cat  <<EOF | oc apply -f -
       apiVersion: dbforpostgresql.azure.com/v1beta20210601
@@ -127,13 +127,13 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
    ```
 
 
-2. **check provisioning is done**
+1. **check provisioning is done**
    ```
    while [ $(oc get flexibleservers.dbforpostgresql.azure.com wksp-pqslserver -o json | jq -r .status.conditions[0].type) != Ready ]; do  date; echo "wait";  sleep 10; done
    ```
    
 
-3. **Check connection to DB server**
+1. **Check connection to DB server**
    ```
    psql "host=wksp-pqslserver.postgres.database.azure.com port=5432 dbname=wksp-db user=myAdmin password=<password> sslmode=require"
    ```
