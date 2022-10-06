@@ -16,10 +16,10 @@ In this task, we will use ASO to provision a PostgreSQL DB and connect applicati
   
 ## Provision DB for Minesweeper APP
 
-In order to provision a PostgreSQL DB you need to create the following objects in your cluster:
+In order to provis  ion a PostgreSQL DB you need to create the following objects in your cluster:
  - ResourceGroup  
  - FlexibleServer  
- - FlexibleServersDatabase 
+ - FlexibleServersDatabase
  - FlexibleServersFirewallRule
 
 1. **ResourceGroup**  **(if you don't have Resource Group)**
@@ -46,11 +46,13 @@ To view the resource group you can navigsate the azure portal to your resource g
   az group show --resource-group <resource_group>
 ```
 
+
 2. **Provision PostgreSQL flexible server**
 
 An Azure Flexible Server is a fully managed PostgreSQL DB as a service offering that provides a HA solution.
 
 The following step will walk you through configuring a secret for the database, creating the server that will host the database, and then the firewall rules to allow external traffic to reach the DB. 
+
 
    1. **Create a secret for the DB server**
       
@@ -70,7 +72,8 @@ The following step will walk you through configuring a secret for the database, 
 
     You should be able to see the secret in the cluster's web console
 
-    [!DB Server Secret](Images/DB_Secret_creation.png)
+    ![DB Server Secret](Images/DB_Secret_creation.png)
+
             
    2. **Create DB server**
       
@@ -116,7 +119,8 @@ The following step will walk you through configuring a secret for the database, 
         oc get crd -o json #filter for "FelxibleServer"
       ```
 
-      [!FlexibleServer CRD](Images/flexserver-crd.png)
+      ![FlexibleServer CRD](Images/flexserver-crd.png)
+
 
    3. **Create Server configuration**
       ```
@@ -137,7 +141,9 @@ The following step will walk you through configuring a secret for the database, 
 
       Looks like this in the console
 
-      [!FlexibleServersConfiguration CRD](Images/flexserversconfig-crd.png)
+      ![FlexibleServersConfiguration CRD](Images/flexserversconfig-crd.png)
+
+
    4. **Create a firewall rule for the database**
 
     In this manifest, the owner is expected to be a reference to a dbforpostgresql.azure.com/FlexibleServer resource, here it is the name of the server
@@ -159,7 +165,9 @@ The following step will walk you through configuring a secret for the database, 
       ```
 
 
-      [!FlexibleServersfirewallrules CRD](Images/flexserverFWrule-crd.png)
+      ![FlexibleServersfirewallrules CRD](Images/flexserverFWrule-crd.png)
+
+
 **Note: it takes about 10 minutes for the database to be operational and running** 
 
  
@@ -182,7 +190,7 @@ The following step will walk you through configuring a secret for the database, 
    EOF
    ```
 
-   
+
 
 **NOTE: provisioning this server takes about 10 min**
 1. check provisioning is done
