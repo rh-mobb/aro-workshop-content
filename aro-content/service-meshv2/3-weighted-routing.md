@@ -1,4 +1,4 @@
-## Deploy Weighted Load Balancing
+## Weighted Load Balancing
 Weighted: Requests are forwarded to instances in the pool according to a specific percentage.
 
  1. Deploy virtual service.
