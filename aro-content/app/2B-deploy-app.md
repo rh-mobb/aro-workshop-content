@@ -99,10 +99,11 @@ The output of this command should show that a route-internal-private and a route
 Expected Output:
 ![Image](images/LoadBalancer-Services.png)
 
-**Extra Credit**
+**Extra Credit**<br>
+
 Validate the Load Balancer using the Azure Portal.
 
-From the Azure Portal, search for Load Balancers and then click on the /<cluster name -  id/>-internal Load Balancer
+From the Azure Portal, search for Load Balancers and then click on the \<cluster name -  id\>-internal Load Balancer
 ![Image](images/LoadBalancerPortal-List.png)
 
 On the next screen click on Frontend IP configuration and note the IP address matches the LoadBalancer service you just retrieved with the CLI.
