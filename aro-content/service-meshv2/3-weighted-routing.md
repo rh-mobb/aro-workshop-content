@@ -4,8 +4,8 @@ Weighted: Requests are forwarded to instances in the pool according to a specifi
  1. Deploy virtual service.
  
  ***virtual-service-reviews-80-20.yaml***
- 
- ```bash
+
+```bash
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -23,8 +23,7 @@ spec:
         host: reviews
         subset: v2
       weight: 20
-  ```
-  
-  ```bash
-     oc apply -f https://raw.githubusercontent.com/rh-mobb/aro-hackathon-content/main/aro-content/assets/virtual-service-reviews-80-20.yaml
-  ```
+```
+```bash
+oc apply -f https://raw.githubusercontent.com/rh-mobb/aro-hackathon-content/main/aro-content/assets/virtual-service-reviews-80-20.yaml
+```
