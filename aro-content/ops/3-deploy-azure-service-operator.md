@@ -27,7 +27,7 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
 1. **Create an Azure Service Principal to grant ASO permissions to create resources in your subscription**
  
    An Azure service principal is an identity created for use with applications, hosted services, and automated tools to access Azure resources.
-```bash
+   ```bash
    #!/bin/sh
 
    AZURE_TENANT_ID="$(az account show -o tsv --query tenantId)"
