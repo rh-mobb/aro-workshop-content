@@ -59,7 +59,7 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
    EOF
    ```
    
-2. **Install cert-manager operator**
+1. **Install cert-manager operator**
 
    1. **Create Namespace for cert-manager-operator**
       ```bash
@@ -71,7 +71,7 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
       EOF
       ```
       
-   2. **Create operator group**
+   1. **Create operator group**
       ```bash
       cat <<EOF | oc apply -f -
       apiVersion: operators.coreos.com/v1
@@ -82,7 +82,7 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
       spec: {}  
       EOF
       ```
-   3. **Create subscription**
+   1. **Create subscription**
       ```bash
       cat <<EOF | oc apply -f -
       apiVersion: operators.coreos.com/v1alpha1
@@ -100,13 +100,13 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
       EOF
       ```
 
-   4. **Wait for cert-manager operator to be up and running**
+   1. **Wait for cert-manager operator to be up and running**
       ```bash
       while [[ $(oc get pods -l app=cert-manager -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager pod" && sleep 1; done
       while [[ $(oc get pods -l app=webhook -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager webhook pod" && sleep 1; done
       ```
       
-3. **deploy ASO **v2 on **the **ARO**** cluster****
+1. **deploy ASO **v2 on **the **ARO**** cluster****
    ```bash
    helm repo add aso2 https://raw.githubusercontent.com/Azure/azure-service-operator/main/v2/charts
    helm upgrade --install --devel aso2 aso2/azure-service-operator \
