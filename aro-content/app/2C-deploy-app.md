@@ -1,4 +1,4 @@
-# Automate deploying the application with OpenShift Pipelines
+# Automate deploying the application with OpenShift Pipelines ( Part 3 )
 
 We will be using OpenShift Pipelines which is based on the Open Source Tekton project to automatically deploy our application using a CI/CD pipeline.
  
@@ -20,6 +20,7 @@ mkdir $USERID
 cd $USERID
 git clone https://github.com/<YOUR GITHUB USER ID>/common-java-dependencies
 git clone https://github.com/kmcolli/aro-hackaton-app
+```
 
 The next thing we need to do is import common Tekton tasks that our pipeline will use.  These common tasks are designed to be reused across multiple pipelines.
 
@@ -33,20 +34,20 @@ ls | tr “” “\n”
 Expected output:<br>
 ![Image](images/pipeline-tasks.png)
 
-**1-git-clone.yaml** <br>
-Clones a given GitHub Repo.
+- **1-git-clone.yaml** <br>
+  Clones a given GitHub Repo.
 
-**2-mvn.yaml** <br>
-This Task can be used to run a Maven build
+- **2-mvn.yaml** <br>
+  This Task can be used to run a Maven build
 
-**3-mvn-build-image.yaml** <br>
-Packages source with maven builds and into a container image, then pushes it to a container registry. Builds source into a container image using Project Atomic's Buildah build tool. It uses Buildah's support for building from Dockerfiles, using its buildah bud command.This command executes the directives in the Dockerfile to assemble a container image, then pushes that image to a container registry.
+- **3-mvn-build-image.yaml** <br>
+  Packages source with maven builds and into a container image, then pushes it to a container registry. Builds source into a container image using Project Atomic's Buildah build tool. It uses Buildah's support for building from Dockerfiles, using its buildah bud command.This command executes the directives in the Dockerfile to assemble a container image, then pushes that image to a container registry.
 
-**4-apply-manifest.yaml** <br>
-Applied manifest files to the cluster
+- **4-apply-manifest.yaml** <br>
+  Applied manifest files to the cluster
 
-**5-update-deployment.yaml** <br>
-Updates a deployment with the new container image.
+- **5-update-deployment.yaml** <br>
+  Updates a deployment with the new container image.
 
 From the Cloud Shell, we need to apply all of these tasks to our cluster.  Run the following command:
 

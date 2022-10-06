@@ -102,4 +102,4 @@ Notice how the results show traffic coming from *.t-msedge.net
 ![Image](images/nslookup-edge.png)
 
 Congratulations, you now have an application exposed with Front Door using a custom domain.
-Continue to [Part 3](2C-deploy-app.md) of Deploy and Expose an App to now automate provisioning the application using OpenShift Pipelines.
+Continue to [Part 3](2C-deploy-app.md) of Deploy and Expose an App to automate provisioning the application using OpenShift Pipelines.
