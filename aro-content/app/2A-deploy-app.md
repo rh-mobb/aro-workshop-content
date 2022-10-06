@@ -5,7 +5,7 @@ When you create a cluster on ARO you have several options in making the cluster 
 
 How can you allow Internet access to an application running on your private cluster where the .apps endpoint is private? This document will guide you through using Azure Frontdoor to expose your applications to the Internet. There are several advantages of this approach, namely your cluster and all the resources in your Azure account can remain private, providing you an extra layer of security. Azure FrontDoor operates at the edge so we are controlling traffic before it even gets into your Azure account. On top of that, Azure FrontDoor also offers WAF and DDoS protection, certificate management and SSL Offloading just to name a few benefits.
 
-!!! note 
+!!! info 
 
     In this workshop we are using public clusters to simplify connectity to the environment.  Even though we are using a public cluster, the same methodology applies to expose an application to the Internet from a private cluster.  To similate a private cluster, we will be creating a 2nd private Ingress Controller.
 
@@ -22,7 +22,7 @@ We will be deploying a Java based application called [microsweeper](https://gith
 
 Prerequisites - this part of the workshop assumes you have already created a Azure Database for PostgreSQL database named <USERID>-microsweeper-database that you created and configured in a previous step.
 
-!!! note
+!!! info
     
     Throughout this tutorial, we will be distinguishing your application and resources based on a USERID assigned to you.  Please see a facilitator if they have not given you a USER ID.
 
@@ -199,10 +199,7 @@ nslookup <route host name>
 
 i.e. nslookup microsweeper-appservice-minesweeper.apps.fiehcjr1.eastus.aroapp.io
 ```
-Note: you can get the host name with:
-```bash
-oc get routes -o json | jq -r '.items[0].spec.host'
-```
+
 You should see results like the following:
 ![Image](images/nslookup.png)
 
