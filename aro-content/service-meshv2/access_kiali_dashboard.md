@@ -37,7 +37,7 @@
 1. **Select** bookinfo from the Namespace list, and App graph from the Graph Type list.
 ![Kiali Console](../assets/images/select-bookinfo-from-kiali-dropdown-graph-tab.PNG)
 
-1. **Click** Display idle nodes from the Display menu.
+1. **Click** Display idle nodes.
 ![Kiali Console](../assets/images/kiali-click-display-idlenodes-graph-tab.PNG)
 
 1. **View** Graph and change display settings to add or remove information from the graph.
