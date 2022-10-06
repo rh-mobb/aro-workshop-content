@@ -34,7 +34,7 @@ export ARORG=<The Azure Resource Group a facilitator gave you>
 export ARO_APP_FQDN=minesweeper.$USERID.azure.mobb.ninja
 ```
 
-1.  **Clone the git repository** 
+**Clone the git repository** 
 
   The first thing we need to do is get a copy of the code that we will build and deploy to our clusters.  
 
@@ -42,16 +42,16 @@ export ARO_APP_FQDN=minesweeper.$USERID.azure.mobb.ninja
    git clone https://github.com/rh-mobb/aro-hackaton-app
    ```
 
-2.  **Change to the root directory**
+**Change to the root directory**
 
    ```bash
    cd aro-hackaton-app
    ```
 
 
-3.  **Log into your openshift cluster with Azure Cloud Shell**
+**Log into your openshift cluster with Azure Cloud Shell**
 
-4.  **Switch to your OpenShift Project**
+**Switch to your OpenShift Project**
 
    ```bash
    oc project <USER ID>
@@ -61,28 +61,28 @@ export ARO_APP_FQDN=minesweeper.$USERID.azure.mobb.ninja
       
       As part of the workshop setup, an OpenShift project has been created using your USERID as the name of the project
 
-5. **Add the OpenShift extension to quarkus**
+**Add the OpenShift extension to quarkus**
 
    ```bash
    quarkus ext add openshift
    ```
 
-6. **Edit aro-hackaton-app/src/main/resources/application.properties**
+**Edit aro-hackaton-app/src/main/resources/application.properties**
 
-   Make sure your file looks like the one below, changing the following lines:
+  Make sure your file looks like the one below, changing the following line:
   
   - **%prod.quarkus.datasource.jdbc.url=jdbc:postgresql://<USERID>-minesweeper-database:5432/score** <br>
     Change the above line with your USERID for the database that has been configured for you:
   
 !!! info
   
-    Note the options in OpenShift Configurations.
+    Note the options in OpenShift Configurations.<br>
     - **%prod.quarkus.openshift.deployment-kind=Deployment** <br>
-      We will be creating a deployment for the application. 
+      We will be creating a deployment for the application.<br><br>
     - **%prod.quarkus.openshift.build-strategy=docker** <br>
-      The application will be built uisng Docker.
+      The application will be built uisng Docker.<br><br>
     - **%prod.quarkus.container-image.group=minesweeper** <br>
-      The application will use the namespace your facilitator assigned to you.
+      The application will use the namespace your facilitator assigned to you.<br><br>
     - **%prod.quarkus.openshift.expose=true** <br>
       We will expose the route using the default openshift router domain - apps.\<cluster-id\>.eastus.aroapp.io
 
