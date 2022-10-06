@@ -126,14 +126,14 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
    EOF
    ```
 
-**NOTE: provisioning this server takes about 10 min**
-1. check provisioning is done
+
+2. **check provisioning is done**
    ```
    while [ $(oc get flexibleservers.dbforpostgresql.azure.com wksp-pqslserver -o json | jq -r .status.conditions[0].type) != Ready ]; do  date; echo "wait";  sleep 10; done
    ```
    
 
-1. **Check connection to DB server**
+3. **Check connection to DB server**
    ```
    psql "host=wksp-pqslserver.postgres.database.azure.com port=5432 dbname=wksp-db user=myAdmin password=<password> sslmode=require"
    ```
