@@ -89,4 +89,4 @@ echo "http://$GATEWAY_URL/productpage"
 10. Copy and paste the output in a web browser to verify the Bookinfo product page is deployed.
 
 ### Verify in Kiali
- [Kiali Dashboard](https://github.com/rh-mobb/aro-hackathon-content/blob/main/aro-content/service-meshv2/access_kiali_dashboard.md)
+ [Kiali Dashboard](https://rh-mobb.github.io/aro-hackathon-content/service-meshv2/access_kiali_dashboard/)
