@@ -69,6 +69,9 @@ metadata:
   name: microsweeper-appservice-fd
 spec:
   host: $ARO_APP_FQDN
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
   to:
     kind: Service
     name: microsweeper-appservice
@@ -78,3 +81,25 @@ spec:
   wildcardPolicy: None
 EOF
 ```
+
+**Validate the Custom Domain**
+From the OpenShift Console, click on Networking, Routes and then click on the url next to the newly create microsweeper-appservice-fd route.
+
+![Image](images/route-list2.png)
+
+Notice that the application is secured! This is done automatically for us by Front Door.
+![Image](images/secure-fd.png)
+
+The last thing we will validate it where is your custom domain coming from.  If you remember, one of the benefits of using Azure Front Door is that traffic is sent through and secured at the Microsoft edge rather than your application.
+
+To check where the traffic is coming from run the following command from your cloudshell:
+
+```bash 
+nslookup minesweeper.arohack.azure.mobb.ninja
+```
+
+Notice how the results show traffic coming from *.t-msedge.net
+![Image](images/secure-fd.png)
+
+Congratulations, you now have an application exposed with Front Door using a custom domain.
+Continue to [Part 3](2C-deploy-app.md) of Deploy and Expose an App to now automate provisioning the application using OpenShift Pipelines.
