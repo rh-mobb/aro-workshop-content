@@ -103,17 +103,18 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
       ```
 
    4. **Wait for cert-manager operator to be up and running**
-      ```
+      ```bash
       while [[ $(oc get pods -l app=cert-manager -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager pod" && sleep 1; done
       while [[ $(oc get pods -l app=webhook -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager webhook pod" && sleep 1; done
       ```
       
 4. **deploy ASO **v2 on **the **ARO**** cluster****
-   ```
+   ```bash
    helm repo add aso2 https://raw.githubusercontent.com/Azure/azure-service-operator/main/v2/charts
-   ‍‍‍```
-   
    ```
+   
+
+   ```bash
    helm upgrade --install --devel aso2 aso2/azure-service-operator \
         --create-namespace \
         --namespace=azureserviceoperator-system \
@@ -122,9 +123,11 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
         --set azureClientID=$AZURE_CLIENT_ID \
         --set azureClientSecret=$AZURE_CLIENT_SECRET
    ```
+   
+
 **Note: It takes up to 5 min for ASO operator to be up and running.**
 There is a pods in the azureserviceoperator-system namespace with two containers, run the following command to check the logs will likely show a string of ‘TLS handshake error’ messages as the operator waits for a Certificate to be issued, but when they stop, the operator will be ready
-   ```
+   ```bash
    ASOPODNAME=$(oc get po -n azureserviceoperator-system -o json | jq -r .items[0].metadata.name)
    oc logs $ASOPODNAME  -n azureserviceoperator-system --timestamps -f
    ```
