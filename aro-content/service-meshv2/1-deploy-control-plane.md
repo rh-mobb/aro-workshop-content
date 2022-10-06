@@ -2,7 +2,7 @@
 
 Based on the open source Istio project, Red Hat OpenShift Service Mesh adds a transparent layer on existing distributed applications without requiring any changes to the service code. You add Red Hat OpenShift Service Mesh support to services by deploying a special sidecar proxy to relevant services in the mesh that intercepts all network communication between microservices. You configure and manage the Service Mesh using the Service Mesh control plane features.
 
-### oc login
+## Cli Login
 
 1. **Click Dropdown**
 ![Azure Portal Cloud Shell](../assets/images/click-kubeadmin-dropdown.PNG)
