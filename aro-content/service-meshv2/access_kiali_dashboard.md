@@ -6,7 +6,7 @@
 
 1. **Navigate** to project to Networking → Routes.
 
-1. On the Routes page, select the Service Mesh control plane project, for example istio-system, from the Namespace menu.
+1. **Click** on the Routes tab, **select** the Service Mesh control plane project, for example istio-system, from the Namespace menu.
 ![Project Network Route](../assets/images/click-network-under-project-view-kiali-route.PNG)
 
 1. The Location column displays the linked address for each route.
