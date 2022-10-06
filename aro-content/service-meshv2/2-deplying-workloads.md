@@ -4,7 +4,11 @@
 oc new-project bookinfo
 oc label namespace bookinfo istio-injection=enabled
 ```
-2. Run the following command 
+2. Run the following command to create the Service Mesh Member Roll
+
+The ServiceMeshMemberRoll lists the projects that belong to the Service Mesh control plane. Only projects listed in the ServiceMeshMemberRoll are affected by the control plane. A project does not belong to a service mesh until you add it to the member roll for a particular control plane deployment.
+
+You must create a ServiceMeshMemberRoll resource named default in the same project as the ServiceMeshControlPlane, for example istio-system.
 ```bash
 oc create -n istio-system -f https://raw.githubusercontent.com/rh-mobb/aro-hackathon-content/main/aro-content/assets/servicemeshmemberroll-default.yaml
 ```
