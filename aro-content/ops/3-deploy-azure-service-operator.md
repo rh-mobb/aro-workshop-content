@@ -123,7 +123,7 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
 
 There is a pods in the azureserviceoperator-system namespace with two containers, run the following command to check the logs will likely show a string of ‘TLS handshake error’ messages as the operator waits for a Certificate to be issued, but when they stop, the operator will be ready
 
-1. **Check ASO operator**
+**Check ASO operator**
 
    ```bash
    ASOPODNAME=$(oc get po -n azureserviceoperator-system -o json | jq -r .items[0].metadata.name)
