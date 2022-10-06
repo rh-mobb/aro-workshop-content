@@ -44,6 +44,7 @@
 ![Kiali Console](../assets/images/graph-example.PNG)
 
 1. **Click Workload tab**
+
 1. **Select Details Workload**
 ![Kiali Console](../assets/images/example-details-workload.PNG)
 
