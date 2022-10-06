@@ -27,4 +27,3 @@ spec:
   ```bash
   oc apply -f https://raw.githubusercontent.com/rh-mobb/aro-hackathon-content/main/aro-content/assets/virtual-service-reviews-80-20.yaml
   ```
-  
