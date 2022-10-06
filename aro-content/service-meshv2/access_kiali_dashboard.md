@@ -4,15 +4,25 @@
 
 1. Log in to the OpenShift Container Platform web console as a user with cluster-admin rights. If you use Red Hat OpenShift Dedicated, you must have an account with the dedicated-admin role.
 
-1. Navigate to Networking → Routes.
+1. Navigate to project to Networking → Routes.
 
 1. On the Routes page, select the Service Mesh control plane project, for example istio-system, from the Namespace menu.
+![Project Network Route](../assets/images/click-network-under-project-view-kiali-route.PNG)
 
 1. The Location column displays the linked address for each route.
 
 1. Click the link in the Location column for Kiali.
 
 1. Click Log In With OpenShift. The Kiali Overview screen presents tiles for each project namespace.
+![Kiali Login](../assets/images/kiali-login-with-cluster-credentials.PNG)
+
+1. Use Cluster Credentials to login.
+```bash
+ az aro list-credentials \
+   --name $AZR_CLUSTER \
+   --resource-group $AZR_RESOURCE_GROUP \
+   -o tsv
+```
 
 1. In Kiali, click Graph.
 
