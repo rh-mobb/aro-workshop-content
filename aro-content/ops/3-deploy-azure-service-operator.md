@@ -1,7 +1,7 @@
 ## Deploy Azure Service Operator
 Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gives you the ability to provision and manages Azure resources such as compute, databases, resoure group, vnet, subnet,... within the Kubernetes plane by using familiar Kubernetes tooling and primitives. ASO consists of:
 1. Custom Resource Definitions (CRDs) for each of the Azure services that a Kubernetes user can provision.
-2. A Kubernetes controller that manages the Azure resources represented by the user-specified Custom Resources. The controller attempts to synchronize the desired state in the user-specified Custom Resource with the actual state of that resource in Azure, creating it if it doesn't exist, updating it if it has been changed, or deleting it.
+1. A Kubernetes controller that manages the Azure resources represented by the user-specified Custom Resources. The controller attempts to synchronize the desired state in the user-specified Custom Resource with the actual state of that resource in Azure, creating it if it doesn't exist, updating it if it has been changed, or deleting it.
 
 ![Azure-Service-operator](../assets/images/aso-schematic.png)
 
@@ -9,8 +9,8 @@ Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gi
 
 We deploy ASO on an ARO cluster to provision and manage Azure resources. In the next parts we use ASO to provision a postgre databse and a VM. To install ASO we need:
 
-1.  A SP(service principal) with right permission.  
-2.  A certificate: We use cert-manager to issue certificate 
+1. A SP(service principal) with right permission.  
+1. A certificate: We use cert-manager to issue certificate 
 
 ### Prerequisites
 
@@ -59,7 +59,7 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
    EOF
    ```
    
-1. **Install cert-manager operator**
+2. **Install cert-manager operator**
 
    1. **Create Namespace for cert-manager-operator**
       ```bash
@@ -71,7 +71,7 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
       EOF
       ```
       
-   1. **Create operator group**
+   2. **Create operator group**
       ```bash
       cat <<EOF | oc apply -f -
       apiVersion: operators.coreos.com/v1
@@ -82,7 +82,7 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
       spec: {}  
       EOF
       ```
-   1. **Create subscription**
+   3. **Create subscription**
       ```bash
       cat <<EOF | oc apply -f -
       apiVersion: operators.coreos.com/v1alpha1
@@ -100,13 +100,13 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
       EOF
       ```
 
-   1. **Wait for cert-manager operator to be up and running**
+   4. **Wait for cert-manager operator to be up and running**
       ```bash
       while [[ $(oc get pods -l app=cert-manager -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager pod" && sleep 1; done
       while [[ $(oc get pods -l app=webhook -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager webhook pod" && sleep 1; done
       ```
       
-1. **deploy ASO **v2 on **the **ARO**** cluster****
+3. **deploy ASO **v2 on **the **ARO**** cluster****
    ```bash
    helm repo add aso2 https://raw.githubusercontent.com/Azure/azure-service-operator/main/v2/charts
    helm upgrade --install --devel aso2 aso2/azure-service-operator \
@@ -120,6 +120,7 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
    
 
 **Note: It takes up to 5 min for ASO operator to be up and running.**
+
 There is a pods in the azureserviceoperator-system namespace with two containers, run the following command to check the logs will likely show a string of ‘TLS handshake error’ messages as the operator waits for a Certificate to be issued, but when they stop, the operator will be ready
 
    ```bash
