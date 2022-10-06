@@ -87,4 +87,4 @@ The installation has finished successfully when the STATUS column is ComponentsR
 ```bash
 NAME    READY   STATUS            PROFILES      VERSION   AGE
 basic   10/10   ComponentsReady   ["default"]   2.1.1     66m  
-````
+```
