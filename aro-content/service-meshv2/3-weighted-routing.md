@@ -33,4 +33,4 @@ spec:
 oc apply -f https://raw.githubusercontent.com/rh-mobb/aro-hackathon-content/main/aro-content/assets/virtual-service-reviews-80-20.yaml
 ```
 
-1. **Refresh** Bookinfo URL and view changes in traffic for reviews app on the **Graph tab** in **Kiali.**
+2. **Refresh** Bookinfo URL and view changes in traffic for reviews app on the **Graph tab** in **Kiali.**
