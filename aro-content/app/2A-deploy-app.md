@@ -27,7 +27,7 @@ From the Azure Cloud Shell, set an environment variable for your user id and the
 ```bash
 export USERID=<The user ID a facilitator gave you>
 export ARORG=<The Azure Resource Group a facilitator gave you>
-
+export ARO_APP_FQDN=minesweeper.$USERID.azure.mobb.ninja
 ```
 
 1. The first thing we need to do is get a copy of the code that we will build and deploy to our clusters.  Clone the git repository
@@ -250,7 +250,8 @@ metadata:
     app.kubernetes.io/name: microsweeper-appservice
     app.kubernetes.io/version: 1.0.0-SNAPSHOT
     app.openshift.io/runtime: quarkus
-  name: microsweeper-appservice
+    type: private
+  name: microsweeper-appservice-fd
 spec:
   host: $ARO_APP_FQDN
   to:

@@ -13,7 +13,6 @@ ARO_RGNAME=$(az aro show -n $AROCLUSTER -g $ARORG --query "clusterProfile.resour
 LOCATION=$(az aro show --name $AROCLUSTER --resource-group $ARORG --query location -o tsv)
 WORKER_SUBNET_NAME=$(az aro show --name $AROCLUSTER --resource-group $ARORG --query 'workerProfiles[0].subnetId' -o tsv | sed 's/.*\///')
 WORKER_SUBNET_ID=$(az aro show --name $AROCLUSTER --resource-group $ARORG --query 'workerProfiles[0].subnetId' -o tsv)
-privatelink_id=$(az network private-link-service show -n $AROCLUSTER-pls -g $ARORG --query 'id' -o tsv)
 INTERNAL_LBNAME=$(az network lb list --resource-group $ARO_RGNAME --query "[? contains(name, 'internal')].name" -o tsv)
 LBCONFIG_ID=$(az network lb frontend-ip list -g $ARO_RGNAME --lb-name $INTERNAL_LBNAME --query "[? contains(subnet.id,'$WORKER_SUBNET_ID')].id" -o tsv)
 LBCONFIG_IP=$(az network lb frontend-ip list -g $ARO_RGNAME --lb-name $INTERNAL_LBNAME --query "[? contains(subnet.id,'$WORKER_SUBNET_ID')].privateIpAddress" -o tsv)
@@ -47,7 +46,7 @@ afd_id=$(az afd profile show -g $ARORG --profile-name $AFD_NAME --query 'id' -o 
 az afd endpoint create \
 --resource-group $ARORG \
 --enabled-state Enabled \
---endpoint-name 'aro-ilb'$UNIQUEID \
+--endpoint-name 'aro-ilb'$UNIQUE \
 --profile-name $AFD_NAME
 
 # Create a Front Door Origin Group that will point to the ARO Internal Loadbalancer
@@ -65,6 +64,7 @@ az afd origin-group create \
 --additional-latency-in-milliseconds 50
 
 # Create a Front Door Origin with the above Origin Group that will point to the ARO Internal Loadbalancer
+privatelink_id=$(az network private-link-service show -n $AROCLUSTER-pls -g $ARORG --query 'id' -o tsv)
 
 az afd origin create \
 --enable-private-link true \
@@ -105,13 +105,13 @@ az afd custom-domain create \
 az afd endpoint create \
 --resource-group $ARORG \
 --enabled-state Enabled \
---endpoint-name 'aro-mine-'$UNIQUEID \
+--endpoint-name 'aro-mine-'$UNIQUE \
 --profile-name $AFD_NAME
 
 # Add an Azure Front Door route for your custom domain
 
 az afd route create \
---endpoint-name 'aro-mine-'$UNIQUEID \
+--endpoint-name 'aro-mine-'$UNIQUE \
 --forwarding-protocol HttpOnly \
 --https-redirect Disabled \
 --origin-group 'afdorigin' \
@@ -162,7 +162,7 @@ az afd custom-domain list -g $ARORG --profile-name $AFD_NAME --query "[? contain
 
 # Get the Azure Front Door endpoint:
 
-afdEndpoint=$(az afd endpoint show -g $ARORG --profile-name $AFD_NAME --endpoint-name aro-mine-$UNIQUEID --query "hostName" -o tsv)
+afdEndpoint=$(az afd endpoint show -g $ARORG --profile-name $AFD_NAME --endpoint-name aro-mine-$UNIQUE --query "hostName" -o tsv)
 
 # Create a cname record for the application
 
@@ -181,7 +181,8 @@ metadata:
     app.kubernetes.io/name: microsweeper-appservice
     app.kubernetes.io/version: 1.0.0-SNAPSHOT
     app.openshift.io/runtime: quarkus
-  name: microsweeper-appservice
+    type: private
+  name: microsweeper-appservice-fd
   namespace: minesweeper
 spec:
   host: $ARO_APP_FQDN
