@@ -40,8 +40,7 @@
 1. Click Display idle nodes from the Display menu.
 ![Kiali Console](../assets/images/kiali-click-display-idlenodes-graph-tab.PNG)
 
-1. View Graph
-1. Change display settings to add or remove information from the graph.
+1. View Graph  and change display settings to add or remove information from the graph.
 ![Kiali Console](../assets/images/graph-example.PNG)
 
 1. **Click** Workload tab
