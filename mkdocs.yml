@@ -19,7 +19,7 @@ nav:
     - Azure ARC Integration: ops/5-arc-integration.md
   - App Dev:
     - Setup: app/1-account-setup.md
-    - Deploy and Expose and App: 
+    - Deploy and Expose an App: 
       - Deploy the App: app/2A-deploy-app.md
       - Expose the App with Front Door: app/2B-deploy-app.md
       - Automate Deploying the App: app/2C-deploy-app.md
