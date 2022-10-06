@@ -1,4 +1,4 @@
-## Deplying Workloads
+## Deploying Workloads
 1. Create project.
 ```bash
 oc new-project bookinfo
