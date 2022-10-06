@@ -4,9 +4,9 @@ Based on the open source Istio project, Red Hat OpenShift Service Mesh adds a tr
 
 ## cli-login
 
-1. **Click drop-down**
+1. **Click kubeadmin drop-down**
 ![Azure Portal Cloud Shell](../assets/images/click-kubeadmin-dropdown.PNG)
-1. **Click Display Token**
+1. **Click display token**
 ![Azure Portal Cloud Shell](../assets/images/console-click-display-token.PNG)
 1. **Copy oc login command into terminal**
 ![Azure Portal Cloud Shell](../assets/images/cp-oclogin-to-cli.PNG)
