@@ -57,7 +57,7 @@ Your operations team has already configured Front Door for you with a custom dom
 All we have to do is create a new route with our custom domain:
 
 ```bash
-cat << EOF | oc apply -f -
+envsubst << EOF | oc apply -f -
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
