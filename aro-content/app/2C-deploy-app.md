@@ -11,7 +11,7 @@ https://github.com/rh-mobb/common-java-dependencies
 https://github.com/rh-mobb/aro-hackaton-app
 
 For each of the repositories, click Fork and then choose your own Git Account.
-<img src="images/fork-git.png">
+![Image](images/fork-git.png)
 
 Next, we will need to make a directory and clone your personal github repository that you just forked to.
 
@@ -31,7 +31,7 @@ ls | tr “” “\n”
 ```
 
 Expected output:<br>
-<img src="images/pipeline-tasks.png">
+![Image](images/pipeline-tasks.png)
 
 **1-git-clone.yaml** <br>
 Clones a given GitHub Repo.
@@ -55,7 +55,7 @@ oc apply -f ~/aro-hackaton-app/pipeline/tasks
 ``` 
 
 expected output:
-<img src="images/apply-pipeline-tasks.png">
+![Image](images/apply-pipeline-tasks.png)
 
 Next, we need to create a secret to push and pull images into Azure Container Registry.  Each attendee has their own Azure Container Registry service assigned to them, with the naming convention <USERID>acr.azurecr.io
 
@@ -72,7 +72,7 @@ oc create -f ~/aro-hackaton-app/pipeline/1-pipeline-account.yaml
 ```
 
 Expected output:
-<img src="images/create-pipeline-account.png">
+![Image](images/create-pipeline-account.png)
 
 Link the acr-secret you just created to it can mount and pull images
 
@@ -87,7 +87,7 @@ oc describe sa pipeline
 ```
 
 expected output: 
-<img src="images/pipeline-sa-secret.png">
+![Image](images/pipeline-sa-secret.png)
 
 We also need to give the pipeline permission for certain security context constraints to that it can execute.
 
@@ -108,7 +108,7 @@ Open a browser to the git repo to browse the pipeline.yaml file.
 https://github.com/rh-mobb/aro-hackaton-app/blob/main/pipeline/3-pipeline.yaml
 
 Browse through the file and notice all the tasks that are being executed.  These are the tasks we imported in the previous step.  The pipeline definition simply says which order the tasks are run and what parameters should be passed between tasks.
-<img src="images/pipeline-yaml.png">
+![Image](images/pipeline-yaml.png)
 
 Now that we have the source code forked, we need to copy the properties file we created earlier to our new code base.  Let's create a new directory, clone the repo and copy the file.
 
@@ -164,7 +164,7 @@ Edit the ~/$USERID/aro-hackaton-app/pipeline/4-pipeline-run.yaml file.  The thre
 * **application-git-url** - to point to your personal git repository
 * **image-name** - change this to reflect to the ACR Registry created for you ... this should be $USERIDacr.azurecr.io/minesweeper
 
-<img src="images/pipeline-run.png">
+![Image](images/pipeline-run.png)
 
 After editing the file, now create the pipeline run.
 
@@ -177,18 +177,18 @@ This will start a pipeline run and redeploy the minesweeper application, but thi
 Let's take a look at the OpenShift console to see what was created and if the application was successfully deployed.
 
 From the OpenShift Conole - Administrator view, click on Pipelines and then Tasks.
-<img src="images/pipeline-tasks-ocp.png">
+![Image](images/pipeline-tasks-ocp.png)
 
 Notice the 5 tasks that we imported and click into them to view the yaml defitions.
 
 Next, lets look at the Pipeline.   Click on Pipelines.  Notice that that last run was successful.  Click on maven-pipeline to view the pipeline details.
-<img src="images/pipeline-ocp.png">
+![Image](images/pipeline-ocp.png)
 
 On the following screen, click on Pipeline Runs to view the status of each Pipeline Run.
-<img src="images/pipeline-run-ocp.png">
+![Image](images/pipeline-run-ocp.png)
 
 Lastely, click on the PipeRun name and you can see all the details and steps of the Pipeline.  If your are curious, also click on logs and view the logs of the different tasks that were ran.
-<img src="images/pipeline-run-details-ocp.png">
+![Image](images/pipeline-run-details-ocp.png)
 
 # Event Triggering 
 So now we can successfully build and deploy new code by manually runnning a pipeline run.  But how can we configure the pipeline to run automatically when we commit code with git?  We can do so with an Event Listener and a Trigger!
@@ -200,7 +200,7 @@ ls ~/$USER/aro-hackaton-app/pipeline/tasks/event-listener | tr “” “\n”
 ```
 
 expected output:
-<img src="images/event-listener-files.png">
+![Image](images/event-listener-files.png)
 
 Take a look at the files listed:
 
@@ -250,7 +250,7 @@ Before we test out our EventListener and Trigger, lets review what was created i
 From the OpenShift console, under Pipelines, click on Triggers.
 
 Browse the EventListener, TriggerTemplate and TriggerBindings that you just created.
-<img src="images/ocp-triggers.png">
+![Image](images/ocp-triggers.png)
 
 The next thing we need to do, is connect our EventListener with Git.  When an action, such as a git push, happens, git will need to call our EventListner to start the build and deploy process.
 
@@ -262,7 +262,7 @@ oc get svc
 ```
 
 expected output:
-<img src="images/ocp-svc.png">
+![Image](images/ocp-svc.png)
 
 Expose the service so that Git is able to connect to the event listener.<br>
 *Note - since this is public cluster, we can simply use the included OpenShift Ingress Controller as it is exposed to the Internet.  For a private cluster, you can follow the same process as we did above in exposing the minesweeper application with Front Door!
@@ -278,18 +278,18 @@ oc get route el-minesweeper-el
 ```
 
 expected output:
-<img src="images/el-route.png">
+![Image](images/el-route.png)
 
 The last step we need to do, is configure git to call this event listner URL when events occur.
 
 From your browser, go to your personal GitHub aro-hackaton-app repository, and click on Settings.
-<img src="images/git-settings.png">
+![Image](images/git-settings.png)
 
 On the next screen, click on webhooks.
-<img src="images/git-settings-webhook.png">
+![Image](images/git-settings-webhook.png)
 
 Click on add webhook
-<img src="images/git-add-webhook.png">
+![Image](images/git-add-webhook.png)
 
 On the next screen, enter the following settings:
 **PayloadURL** - enter http://<event listener hostname you got above>
@@ -318,7 +318,7 @@ The secret you enter here for the git webhook, needs to match the value for the 
 
 Keep the remaining defaults, and click Add webhook
 
-<img src="images/add-webhook.png">
+![Image](images/add-webhook.png)
 
 ## Test it out!!
 
@@ -333,7 +333,7 @@ cd ~/$USERID/aro-hackaton-app
 vi src/main/resources/META-INF/resources/index.html
 ```
 
-<img src="images/html-edit.png">
+![Image](images/html-edit.png)
 
 Now commit and push the change
 
@@ -349,20 +349,20 @@ As a bonus, if you want to look at the logs of the event listener, you can use t
 ```bash
 tkn eventlistener logs minesweeper-el
 ```
-<img src="images/tkn.png">
+![Image](images/tkn.png)
 
 
 Quickly switch over to your OpenShift Console, and watch the pipeline run.
 
-<img src="images/watch-pipeline.png">
+![Image](images/watch-pipeline.png)
 
 Once the pipeline finishes, check out the change.
 
 From the OpenShift Console, click on Networking and the Routes.
-<img src="images/route-2.png">
+![Image](images/route-2.png)
 
 and drum roll ...  you should see the updated application with a new title for the leaderboard.
-<img src="images/updated-minesweeper.png">
+![Image](images/updated-minesweeper.png)
 
 
 

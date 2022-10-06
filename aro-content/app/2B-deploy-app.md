@@ -6,7 +6,7 @@ Up to this point, we have deployed the minesweeper app using the publically avai
 In the following section of the workshop, we will go through setting up Azure Front Door and then exposing our minesweeper application with Azure Front Door using a custom domain.
 
 The following diagram shows what we will configure.
-<img src="images/aro-frontdoor.png">
+![Image](images/aro-frontdoor.png)
 
 There are several advantages of this approach, namely your cluster and all the resources in your Azure account can remain private, providing you an extra layer of security. Azure FrontDoor operates at the edge so we are controlling traffic before it even gets into your Azure account. On top of that, Azure FrontDoor also offers WAF and DDoS protection, certificate management and SSL Offloading just to name a few benefits.
 

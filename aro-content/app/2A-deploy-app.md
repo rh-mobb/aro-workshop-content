@@ -122,7 +122,7 @@ Let's take a look at what this did along with everything that was created in you
 ### Container Images
 Log into the OpenShift Console and from the Administrator perspective, expand Builds and then Image Streams, and select the minesweeper Project.
 
-<img src="images/image-stream-list.png">
+![Image](images/image-stream-list.png)
 
 You will see two images that were created on your behalf when you ran the quarkus build command.  There is one for openjdk-11 that comes with OpenShift as a Universal Base Image (UBI) that the application will run under. With UBI, you get highly optimized and secure container images that you can build your applications with.   For more information on UBI please read this [article](https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image)
 
@@ -130,7 +130,7 @@ The second image you see is the the microsweeper-appservice image.  This is the 
 
 ### Image Build
 How did those images get built you ask?   Back on the OpenShift Console, click on Build Configs and then the microsweeper-appservice entry.
-<img src="images/build-config-list.png">
+![Image](images/build-config-list.png)
 
 When you ran the quarkus build command, this created the build config you can see here.  In our quarkus settings, we set the deployment strategy to build the image using Docker.  The Dockerfile file from the git repo that we cloned ~/microsweeper-quarkus/Dockerfile was used for this Build Config.  
 
@@ -143,32 +143,32 @@ Once the BuildConfig was created, the source to image process kicked off a Build
 You can read more about Builds [here](https://docs.openshift.com/container-platform/4.11/cicd/builds/understanding-image-builds.html)
 
 To look at what the build actually did, click on Builds tab and then into the first Build in the list.
-<img src="images/build-list.png">
+![Image](images/build-list.png)
 
 On the next screen, explore around and look at the YAML definition of the build, Logs to see what the build actually did.  If you build failed for some reason, logs is a great first place to start to look at to debug what happened.
-<img src="images/build-logs.png">
+![Image](images/build-logs.png)
 
 ### Image Deployment
 After the image was built, the S2I process then deployed the application for us.  In the quarkus properties file, we specified that a deployment should be created.  You can view the deployment under Workloads, Deployments, and then click on the Deployment name.
-<img src="images/deployment-list.png">
+![Image](images/deployment-list.png)
 
 Explore around the deployment screen, check out the different tabs, look at the YAML that was created.
-<img src="images/deployment-view.png">
+![Image](images/deployment-view.png)
 
 Look at the pod the deployment created, and see that it is running.
-<img src="images/deployment-pod.png">
+![Image](images/deployment-pod.png)
 
 The last thing we will look at is the Route that was created for our application.  In the quarkus properties file, we specified that the application should be exposed to the Internet.  When you create a Route, you have the option to specify a hostname.  To start with, we will just use the default domain that comes with ARO.  In next section, we will expose the same appplication to a custom domain leveraging Azure Front Door.
 
 You can read more about Routes [here](https://docs.openshift.com/container-platform/4.11/networking/routes/route-configuration.html)
 
 From the OpenShift menu, click on Networking, Routes, and the microsweeper-appservice route.
-<img src="images/route-list.png">
+![Image](images/route-list.png)
 
 
 ## Test the application
 While in the Route section of the OpenShift UI, click the url under location:
-<img src="images/route.png">
+![Image](images/route.png)
 
 You can also get the the url for your application using the command line:
 ```bash
@@ -176,7 +176,7 @@ oc get routes -o json | jq -r '.items[0].spec.host'
 ```
 
 Point your browser to the application!!
-<img src="images/minesweeper.png">
+![Image](images/minesweeper.png)
 
 ### Application IP 
 Let's take a quick look at what IP the application resolves to.  Back in your Cloud Shell environment, run
@@ -190,26 +190,26 @@ Note: you can get the host name with:
 oc get routes -o json | jq -r '.items[0].spec.host'
 ```
 You should see results like the following:
-<img src="images/nslookup.png">
+![Image](images/nslookup.png)
 
 Notice the IP address - can you guess where it comes from?
 
 It comes from the ARO Load Balancer.  In this workshop, we are using a Public Cluster which means the load balancer is exposed to the Internet.  If this was a private cluster, you would have to have connectivity to the VNET ARO is running on whether that be VPN, Express Route, or something else.
 
 To view the ARO load balancer, on the Azure Portal, Search for 'Load Balancers' and click on the Load balancers service.
-<img src="images/load-balancers-search.png">
+![Image](images/load-balancers-search.png)
 
 Scroll down the list of load balancers until you see the one with your cluster name.  You will notice two load balancers, one that has -internal in the name and one that does not.  The '*-internal' load balancer is used for the OpenShift API.  The other load balancer ( without -internal ) in the name is used for applications.  Click into the load balancer for applications.
-<img src="images/load-balancer-list.png">
+![Image](images/load-balancer-list.png)
 
 On the next screen, click on Frontend IP configuration.  Notice the IP address of the 2nd load balancer on the list.  This IP address matches what you found with the nslookup command.
-<img src="images/load-balancers.png">
+![Image](images/load-balancers.png)
 
 For the fun of it, we can also look at what backends this load balancer is connected to. Click into the 2nd load balancer on the list above, and then click into the first rule.
-<img src="images/load-balancers-usedby.png">
+![Image](images/load-balancers-usedby.png)
 
 On the next screen, notice the Backend pool.  This is the subnet that contains all the workers.  And the best part is all of this came with OpenShift and ARO!
-<img src="images/load-balancers-backendpool.png">
+![Image](images/load-balancers-backendpool.png)
 
 
 
@@ -219,7 +219,7 @@ Up to this point, we have deployed the minesweeper app using the publically avai
 In the following section of the workshop, we will go through setting up Azure Front Door and then exposing our minesweeper application with Azure Front Door using a custom domain.
 
 The following diagram shows what we will configure.
-<img src="images/aro-frontdoor.png">
+![Image](images/aro-frontdoor.png)
 
 There are several advantages of this approach, namely your cluster and all the resources in your Azure account can remain private, providing you an extra layer of security. Azure FrontDoor operates at the edge so we are controlling traffic before it even gets into your Azure account. On top of that, Azure FrontDoor also offers WAF and DDoS protection, certificate management and SSL Offloading just to name a few benefits.
 
@@ -279,7 +279,7 @@ https://github.com/rh-mobb/common-java-dependencies
 https://github.com/rh-mobb/aro-hackaton-app
 
 For each of the repositories, click Fork and then choose your own Git Account.
-<img src="images/fork-git.png">
+![Image](images/fork-git.png)
 
 Next, we will need to make a directory and clone your personal github repository that you just forked to.
 
@@ -299,7 +299,7 @@ ls | tr “” “\n”
 ```
 
 Expected output:<br>
-<img src="images/pipeline-tasks.png">
+![Image](images/pipeline-tasks.png)
 
 **1-git-clone.yaml** <br>
 Clones a given GitHub Repo.
@@ -323,7 +323,7 @@ oc apply -f ~/aro-hackaton-app/pipeline/tasks
 ``` 
 
 expected output:
-<img src="images/apply-pipeline-tasks.png">
+![Image](images/apply-pipeline-tasks.png)
 
 Next, we need to create a secret to push and pull images into Azure Container Registry.  Each attendee has their own Azure Container Registry service assigned to them, with the naming convention <USERID>acr.azurecr.io
 
@@ -340,7 +340,7 @@ oc create -f ~/aro-hackaton-app/pipeline/1-pipeline-account.yaml
 ```
 
 Expected output:
-<img src="images/create-pipeline-account.png">
+![Image](images/create-pipeline-account.png)
 
 Link the acr-secret you just created to it can mount and pull images
 
@@ -355,7 +355,7 @@ oc describe sa pipeline
 ```
 
 expected output: 
-<img src="images/pipeline-sa-secret.png">
+![Image](images/pipeline-sa-secret.png)
 
 We also need to give the pipeline permission for certain security context constraints to that it can execute.
 
@@ -376,7 +376,7 @@ Open a browser to the git repo to browse the pipeline.yaml file.
 https://github.com/rh-mobb/aro-hackaton-app/blob/main/pipeline/3-pipeline.yaml
 
 Browse through the file and notice all the tasks that are being executed.  These are the tasks we imported in the previous step.  The pipeline definition simply says which order the tasks are run and what parameters should be passed between tasks.
-<img src="images/pipeline-yaml.png">
+![Image](images/pipeline-yaml.png)
 
 Now that we have the source code forked, we need to copy the properties file we created earlier to our new code base.  Let's create a new directory, clone the repo and copy the file.
 
@@ -432,7 +432,7 @@ Edit the ~/$USERID/aro-hackaton-app/pipeline/4-pipeline-run.yaml file.  The thre
 * **application-git-url** - to point to your personal git repository
 * **image-name** - change this to reflect to the ACR Registry created for you ... this should be $USERIDacr.azurecr.io/minesweeper
 
-<img src="images/pipeline-run.png">
+![Image](images/pipeline-run.png)
 
 After editing the file, now create the pipeline run.
 
@@ -445,18 +445,18 @@ This will start a pipeline run and redeploy the minesweeper application, but thi
 Let's take a look at the OpenShift console to see what was created and if the application was successfully deployed.
 
 From the OpenShift Conole - Administrator view, click on Pipelines and then Tasks.
-<img src="images/pipeline-tasks-ocp.png">
+![Image](images/pipeline-tasks-ocp.png)
 
 Notice the 5 tasks that we imported and click into them to view the yaml defitions.
 
 Next, lets look at the Pipeline.   Click on Pipelines.  Notice that that last run was successful.  Click on maven-pipeline to view the pipeline details.
-<img src="images/pipeline-ocp.png">
+![Image](images/pipeline-ocp.png)
 
 On the following screen, click on Pipeline Runs to view the status of each Pipeline Run.
-<img src="images/pipeline-run-ocp.png">
+![Image](images/pipeline-run-ocp.png)
 
 Lastely, click on the PipeRun name and you can see all the details and steps of the Pipeline.  If your are curious, also click on logs and view the logs of the different tasks that were ran.
-<img src="images/pipeline-run-details-ocp.png">
+![Image](images/pipeline-run-details-ocp.png)
 
 # Event Triggering 
 So now we can successfully build and deploy new code by manually runnning a pipeline run.  But how can we configure the pipeline to run automatically when we commit code with git?  We can do so with an Event Listener and a Trigger!
@@ -468,7 +468,7 @@ ls ~/$USER/aro-hackaton-app/pipeline/tasks/event-listener | tr “” “\n”
 ```
 
 expected output:
-<img src="images/event-listener-files.png">
+![Image](images/event-listener-files.png)
 
 Take a look at the files listed:
 
@@ -518,7 +518,7 @@ Before we test out our EventListener and Trigger, lets review what was created i
 From the OpenShift console, under Pipelines, click on Triggers.
 
 Browse the EventListener, TriggerTemplate and TriggerBindings that you just created.
-<img src="images/ocp-triggers.png">
+![Image](images/ocp-triggers.png)
 
 The next thing we need to do, is connect our EventListener with Git.  When an action, such as a git push, happens, git will need to call our EventListner to start the build and deploy process.
 
@@ -530,7 +530,7 @@ oc get svc
 ```
 
 expected output:
-<img src="images/ocp-svc.png">
+![Image](images/ocp-svc.png)
 
 Expose the service so that Git is able to connect to the event listener.<br>
 *Note - since this is public cluster, we can simply use the included OpenShift Ingress Controller as it is exposed to the Internet.  For a private cluster, you can follow the same process as we did above in exposing the minesweeper application with Front Door!
@@ -546,18 +546,18 @@ oc get route el-minesweeper-el
 ```
 
 expected output:
-<img src="images/el-route.png">
+![Image](images/el-route.png)
 
 The last step we need to do, is configure git to call this event listner URL when events occur.
 
 From your browser, go to your personal GitHub aro-hackaton-app repository, and click on Settings.
-<img src="images/git-settings.png">
+![Image](images/git-settings.png)
 
 On the next screen, click on webhooks.
-<img src="images/git-settings-webhook.png">
+![Image](images/git-settings-webhook.png)
 
 Click on add webhook
-<img src="images/git-add-webhook.png">
+![Image](images/git-add-webhook.png)
 
 On the next screen, enter the following settings:
 **PayloadURL** - enter http://<event listener hostname you got above>
@@ -586,7 +586,7 @@ The secret you enter here for the git webhook, needs to match the value for the 
 
 Keep the remaining defaults, and click Add webhook
 
-<img src="images/add-webhook.png">
+![Image](images/add-webhook.png)
 
 ## Test it out!!
 
@@ -601,7 +601,7 @@ cd ~/$USERID/aro-hackaton-app
 vi src/main/resources/META-INF/resources/index.html
 ```
 
-<img src="images/html-edit.png">
+![Image](images/html-edit.png)
 
 Now commit and push the change
 
@@ -617,20 +617,20 @@ As a bonus, if you want to look at the logs of the event listener, you can use t
 ```bash
 tkn eventlistener logs minesweeper-el
 ```
-<img src="images/tkn.png">
+![Image](images/tkn.png)
 
 
 Quickly switch over to your OpenShift Console, and watch the pipeline run.
 
-<img src="images/watch-pipeline.png">
+![Image](images/watch-pipeline.png)
 
 Once the pipeline finishes, check out the change.
 
 From the OpenShift Console, click on Networking and the Routes.
-<img src="images/route-2.png">
+![Image](images/route-2.png)
 
 and drum roll ...  you should see the updated application with a new title for the leaderboard.
-<img src="images/updated-minesweeper.png">
+![Image](images/updated-minesweeper.png)
 
 
 
