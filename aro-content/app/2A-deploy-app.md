@@ -1,4 +1,4 @@
-# Deploy and Expose an Application
+# Deploy and Expose an Application ( Part 1 )
 Securing exposing an Internet facing application with an ARO Cluster.
 
 When you create a cluster on ARO you have several options in making the cluster public or private. With a public cluster you are allowing Internet traffic to the api and *.apps endpoints. With a private cluster you can make either or both the api and .apps endpoints private.
