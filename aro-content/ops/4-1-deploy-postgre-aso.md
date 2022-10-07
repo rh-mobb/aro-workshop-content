@@ -36,61 +36,61 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
     1. **Create a secret for the DB server**
       
       **NOTE: You can update password in base64 format**
-      ```
-      cat <<EOF | oc apply -f -
-      apiVersion : v1
-      kind : Secret
-      metadata : 
-        name : server-admin-pw
-        namespace : default
-      data:
-        password: aGFja2F0aG9uUGFzcw==
-      type: Opaque
-      EOF
-      ```
+       ```
+       cat <<EOF | oc apply -f -
+       apiVersion : v1
+       kind : Secret
+       metadata : 
+         name : server-admin-pw
+         namespace : default
+       data:
+         password: aGFja2F0aG9uUGFzcw==
+       type: Opaque
+       EOF
+       ```
             
     1. **Create DB server**
       
-      ```
-      cat <<EOF | oc apply -f -
-      apiVersion: dbforpostgresql.azure.com/v1beta20210601
-      kind: FlexibleServer
-      metadata:
-        name: wksp-pqslserver
-        namespace: default
-      spec:
-        location: eastus
-        owner:
-          name: wksp-rg
-        version: "13"
-        sku:
-          name: Standard_B1ms
-          tier: Burstable
-        administratorLogin: myAdmin
-        administratorLoginPassword: # This is the name/key of a Kubernetes secret in the same namespace
-          name: server-admin-pw
-          key: password
-        storage:
-          storageSizeGB: 32
-      EOF
-      ```
+       ```
+       cat <<EOF | oc apply -f -
+       apiVersion: dbforpostgresql.azure.com/v1beta20210601
+       kind: FlexibleServer
+       metadata:
+         name: wksp-pqslserver
+         namespace: default
+       spec:
+         location: eastus
+         owner:
+           name: wksp-rg
+         version: "13"
+         sku:
+           name: Standard_B1ms
+           tier: Burstable
+         administratorLogin: myAdmin
+         administratorLoginPassword: # This is the name/key of a Kubernetes secret in the same namespace
+           name: server-admin-pw
+           key: password
+         storage:
+           storageSizeGB: 32
+       EOF
+       ```
       
     1. **Create Server configuration**
-      ```
-      cat  <<EOF | oc apply -f -
-      apiVersion: dbforpostgresql.azure.com/v1beta20210601
-      kind: FlexibleServersConfiguration
-      metadata:
-        name: pgaudit
-        namespace: default
-      spec:
-        owner:
-          name: wksp-pqslserver
-        azureName: pgaudit.log
-        source: user-override
-        value: READ
-      EOF
-      ```
+       ```
+       cat  <<EOF | oc apply -f -
+       apiVersion: dbforpostgresql.azure.com/v1beta20210601
+       kind: FlexibleServersConfiguration
+       metadata:
+         name: pgaudit
+         namespace: default
+       spec:
+         owner:
+           name: wksp-pqslserver
+         azureName: pgaudit.log
+         source: user-override
+         value: READ
+       EOF
+       ```
     1. **Create a firewall rule for the database**
       ```
       cat  <<EOF | oc apply -f -
