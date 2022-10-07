@@ -2,13 +2,15 @@
 Azure Service Operator(ASO) is an open-source project by Microsoft Azure. ASO gives you the ability to provision and manages Azure resources such as compute, databases, resoure group, vnet, subnet,... within the Kubernetes plane by using familiar Kubernetes tooling and primitives. ASO consists of:
 1. Custom Resource Definitions (CRDs) for each of the Azure services that a Kubernetes user can provision.
 2. A Kubernetes controller that manages the Azure resources represented by the user-specified Custom Resources. The controller attempts to synchronize the desired state in the user-specified Custom Resource with the actual state of that resource in Azure, creating it if it doesn't exist, updating it if it has been changed, or deleting it.
-<img src="images/aso-schematic.png">
+
+![Azure-Service-operator](../assets/images/aso-schematic.png)
+
 
 
 We deploy ASO on an ARO cluster to provision and manage Azure resources. In the next parts we use ASO to provision a postgre databse and a VM. To install ASO we need:
 
-1.  A SP(service principal) with right permission.  
-2.  A certificate: We use cert-manager to issue certificate 
+1. A SP(service principal) with right permission.  
+2. A certificate: We use cert-manager to issue certificate 
 
 ### Prerequisites
 
@@ -25,16 +27,14 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
 1. **Create an Azure Service Principal to grant ASO permissions to create resources in your subscription**
  
    An Azure service principal is an identity created for use with applications, hosted services, and automated tools to access Azure resources.
-   ```
+   ```bash
    #!/bin/sh
-   
+
    AZURE_TENANT_ID="$(az account show -o tsv --query tenantId)"
    echo "Azure Tenant ID $AZURE_TENANT_ID"
    AZURE_SUBSCRIPTION_ID="$(az account show -o tsv --query id)"
    echo "Azure subscription ID $AZURE_SUBSCRIPTION_ID"
-   #export IDENTITY_CLIENT_ID="$(az identity show -g ${IDENTITY_RESOURCE_GROUP} -n ${IDENTITY_NAME} > --query clientId -otsv)"
-   #export IDENTITY_RESOURCE_ID="$(az identity show -g ${IDENTITY_RESOURCE_GROUP} -n ${IDENTITY_NAME} > --query id -otsv)"
-   AZURE_SP="$(az ad sp create-for-rbac -n wksp-sp-$RANDOM --role contributor  --scopes /subscriptions/$AZURE_SUBSCRIPTION_ID -o json )"
+   AZURE_SP="$(az ad sp create-for-rbac -n wksp-sp-$RANDOM --role contributor  --scopes subscriptions  $AZURE_SUBSCRIPTION_ID -o json )"
    echo " Azure SP ID/SECRET $AZURE_SP"
    AZURE_CLIENT_ID="$(echo $AZURE_SP | jq -r '.appId')"
    echo "SP ID $AZURE_CLIENT_ID"
@@ -42,8 +42,8 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
    echo "SP SECRET $AZURE_CLIENT_SECRET"
    ```
 
-2. **Create a secret for ASO** 
-   ```
+1. **Create a secret for ASO** 
+   ```bash
    cat <<EOF | oc apply -f - 
    apiVersion: v1
    kind: Secret
@@ -59,10 +59,10 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
    EOF
    ```
    
-3. **Install cert-manager operator**
+1. **Install cert-manager operator**
 
-   1. **Create Namespace for cert-manager-operator**
-      ```
+    1. **Create Namespace for cert-manager-operator**
+      ```bash
       cat <<EOF | oc apply -f -
       kind: Namespace
       apiVersion: v1
@@ -71,8 +71,8 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
       EOF
       ```
       
-   2. **Create operator group**
-      ```
+    1. **Create operator group**
+      ```bash
       cat <<EOF | oc apply -f -
       apiVersion: operators.coreos.com/v1
       kind: OperatorGroup
@@ -82,8 +82,8 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
       spec: {}  
       EOF
       ```
-   3. **Create subscription**
-      ```
+    1. **Create subscription**
+      ```bash
       cat <<EOF | oc apply -f -
       apiVersion: operators.coreos.com/v1alpha1
       kind: Subscription
@@ -100,14 +100,14 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
       EOF
       ```
 
-   4. **Wait for cert-manager operator to be up and running**
-      ```
+    1. **Wait for cert-manager operator to be up and running**
+      ```bash
       while [[ $(oc get pods -l app=cert-manager -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager pod" && sleep 1; done
       while [[ $(oc get pods -l app=webhook -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager webhook pod" && sleep 1; done
       ```
       
-4. **deploy ASO **v2 on **the **ARO**** cluster****
-   ```
+1. **deploy ASO **v2 on **the **ARO**** cluster****
+   ```bash
    helm repo add aso2 https://raw.githubusercontent.com/Azure/azure-service-operator/main/v2/charts
    helm upgrade --install --devel aso2 aso2/azure-service-operator \
         --create-namespace \
@@ -117,11 +117,17 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
         --set azureClientID=$AZURE_CLIENT_ID \
         --set azureClientSecret=$AZURE_CLIENT_SECRET
    ```
+   
+
 **Note: It takes up to 5 min for ASO operator to be up and running.**
+
 There is a pods in the azureserviceoperator-system namespace with two containers, run the following command to check the logs will likely show a string of ‘TLS handshake error’ messages as the operator waits for a Certificate to be issued, but when they stop, the operator will be ready
-   ```
-      ASOPODNAME=$(oc get po -n azureserviceoperator-system -o json | jq -r .items[0].metadata.name)
-      oc logs $ASOPODNAME  -n azureserviceoperator-system --timestamps -f
+
+**Check ASO operator**
+
+   ```bash
+   ASOPODNAME=$(oc get po -n azureserviceoperator-system -o json | jq -r .items[0].metadata.name)
+   oc logs $ASOPODNAME  -n azureserviceoperator-system --timestamps -f
    ```
 
    This command only works in a bash shell, zsh command would be:

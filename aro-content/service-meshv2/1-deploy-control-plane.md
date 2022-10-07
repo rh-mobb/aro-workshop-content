@@ -2,9 +2,18 @@
 
 Based on the open source Istio project, Red Hat OpenShift Service Mesh adds a transparent layer on existing distributed applications without requiring any changes to the service code. You add Red Hat OpenShift Service Mesh support to services by deploying a special sidecar proxy to relevant services in the mesh that intercepts all network communication between microservices. You configure and manage the Service Mesh using the Service Mesh control plane features.
 
-## Deploy control plane
+## Terminal Login
 
-1. Log in to the OpenShift Container Platform CLI
+1. **Click** kubeadmin drop-down.
+![Azure Portal Cloud Shell](../assets/images/click-kubeadmin-dropdown.PNG)
+1. **Click** display token.
+![Azure Portal Cloud Shell](../assets/images/console-click-display-token.PNG)
+1. Copy **oc login** command into terminal.
+![Azure Portal Cloud Shell](../assets/images/cp-oclogin-to-cli.PNG)
+
+## Deploy Control Plane
+
+1. Log in to the OpenShift Container Platform CLI.
 
 ```bash
  oc login https://<HOSTNAME>:6443
@@ -15,7 +24,7 @@ Based on the open source Istio project, Red Hat OpenShift Service Mesh adds a tr
 ```bash
 oc new-project istio-system
 ```
-3. Create a ServiceMeshControlPlane file named istio-installation.yaml
+3. Create a ServiceMeshControlPlane file named istio-installation.yaml.
 
   ***Example version 2.2 istio-installation.yaml***
 ```bash
@@ -41,7 +50,7 @@ spec:
     grafana:
       enabled: true
 ```
-4. Run the following command to deploy the Service Mesh control plane
+4. Run the following command to deploy the Service Mesh control plane.
 
 ```bash
 oc create -n istio-system -f https://raw.githubusercontent.com/rh-mobb/aro-hackathon-content/main/aro-content/assets/istio_installation.yaml
@@ -78,4 +87,4 @@ The installation has finished successfully when the STATUS column is ComponentsR
 ```bash
 NAME    READY   STATUS            PROFILES      VERSION   AGE
 basic   10/10   ComponentsReady   ["default"]   2.1.1     66m  
-````
+```

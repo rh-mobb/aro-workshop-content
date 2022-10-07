@@ -16,17 +16,21 @@ nav:
     - Setup: ops/1-account-setup.md
     - ARO Day 2 Operations: ops/2-aro-day-2-operations.md
     - Azure Service Operator: ops/3-deploy-azure-service-operator.md
-    - Azure DB Deployment w/ ASO: ops/4-1-deploy-postgre-aso.md
+    - Deploy PostgreSQL Database: ops/4-1-deploy-postgre-aso.md
+    - Deploy a VM (optional): ops/4-2-deploy-vm-aso.md
     - Azure ARC Integration: ops/5-arc-integration.md
   - App Dev:
     - Setup: app/1-account-setup.md
-    - Deploy and Expose and App: app/2-deploy-app.md
+    - Deploy and Expose an App: 
+      - Deploy the App: app/2A-deploy-app.md
+      - Expose the App with Front Door: app/2B-deploy-app.md
+      - Automate Deploying the App: app/2C-deploy-app.md
     - Make Applications Resilient: app/3-scale-app.md
     - Service Mesh:
       - Deploy Service Mesh Operator: service-meshv2/0-infrastructure_operator_install.md
       - Deploy Control Plane: service-meshv2/1-deploy-control-plane.md
       - Deploy Workloads: service-meshv2/2-deplying-workloads.md
-      - Deploy Weighted Routing: service-meshv2/3-weighted-routing.md
+      - Deploy Weighted Load Balancing: service-meshv2/3-weighted-routing.md
       - Access Kiali Dashboard: service-meshv2/access_kiali_dashboard.md
 
 
