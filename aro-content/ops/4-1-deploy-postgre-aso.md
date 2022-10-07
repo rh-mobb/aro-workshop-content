@@ -25,7 +25,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
     apiVersion: resources.azure.com/v1beta20200601
     kind: ResourceGroup
     metadata:
-      name: wksp-rg
+      name: user1-wksp-rg
       namespace: default
     spec:
       location: eastus
@@ -56,12 +56,12 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
         apiVersion: dbforpostgresql.azure.com/v1beta20210601
         kind: FlexibleServer
         metadata:
-          name: wksp-pqslserver
+          name: user1-minesweeper-database
           namespace: default
         spec:
           location: eastus
           owner:
-            name: wksp-rg
+            name: user1-wksp-rg
           version: "13"
           sku:
             name: Standard_B1ms
@@ -85,7 +85,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
           namespace: default
         spec:
           owner:
-            name: wksp-pqslserver
+            name: user1-minesweeper-database
           azureName: pgaudit.log
           source: user-override
           value: READ
@@ -101,7 +101,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
           namespace: default
         spec:
           owner:
-            name: wksp-pqslserver
+            name: user1-minesweeper-database
           startIpAddress: 0.0.0.0
           endIpAddress: 255.255.255.255
         EOF
@@ -116,11 +116,11 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
     apiVersion: dbforpostgresql.azure.com/v1beta20210601
     kind: FlexibleServersDatabase
     metadata:
-      name: wksp-db
+      name: score
       namespace: default
     spec:
       owner:
-        name: wksp-pqslserver
+        name: user1-minesweeper-database
       charset: utf8
     
     EOF
@@ -129,13 +129,13 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
 
 1. **check provisioning is done**
     ```bash
-    while [ $(oc get flexibleservers.dbforpostgresql.azure.com wksp-pqslserver -o json | jq -r .status.conditions[0].type) != Ready ]; do  date; echo "wait";  sleep 10; done
+    while [ $(oc get flexibleservers.dbforpostgresql.azure.com user1-minesweeper-database -o json | jq -r .status.conditions[0].type) != Ready ]; do  date; echo "wait";  sleep 10; done
     ```
    
 
 1. **Check connection to DB server**
     ```bash
-    psql "host=wksp-pqslserver.postgres.database.azure.com port=5432 dbname=wksp-db user=myAdmin password=<password> sslmode=require"
+    psql "host=user1-minesweeper-database.postgres.database.azure.com port=5432 dbname=score user=myAdmin password=hackathonPass sslmode=require"
     ```
 
 
