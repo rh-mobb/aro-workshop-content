@@ -34,7 +34,7 @@ We deploy ASO on an ARO cluster to provision and manage Azure resources. In the 
    echo "Azure Tenant ID $AZURE_TENANT_ID"
    AZURE_SUBSCRIPTION_ID="$(az account show -o tsv --query id)"
    echo "Azure subscription ID $AZURE_SUBSCRIPTION_ID"
-   AZURE_SP="$(az ad sp create-for-rbac -n wksp-sp-$RANDOM --role contributor  --scopes /subscriptions/  $AZURE_SUBSCRIPTION_ID -o json )"
+   AZURE_SP="$(az ad sp create-for-rbac -n wksp-sp-$RANDOM --role contributor  --scopes /subscriptions/$AZURE_SUBSCRIPTION_ID -o json )"
    echo " Azure SP ID/SECRET $AZURE_SP"
    AZURE_CLIENT_ID="$(echo $AZURE_SP | jq -r '.appId')"
    echo "SP ID $AZURE_CLIENT_ID"
