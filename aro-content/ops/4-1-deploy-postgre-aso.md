@@ -36,7 +36,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
 
     1. **Create a secret for the DB server**
       
-       **NOTE: You can update password in base64 format**
+        **NOTE: You can update password in base64 format**
        
         ```bash
         cat <<EOF | oc apply -f -
