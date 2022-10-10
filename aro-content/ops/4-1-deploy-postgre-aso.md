@@ -32,7 +32,11 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
       location: eastus
     EOF
     ```
-1. **Provision PostgreSQL flexible server**
+
+    check resource group in Azure portal 
+    ![Azure Resource Group](../assets/images/resource-group.png)
+
+2. **Provision PostgreSQL flexible server**
 
     1. **Create a secret for the DB server**
       
