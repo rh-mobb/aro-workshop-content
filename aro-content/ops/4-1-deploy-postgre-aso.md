@@ -133,7 +133,9 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
     ```bash
     while [ $(oc get flexibleservers.dbforpostgresql.azure.com user1-minesweeper-database -o json | jq -r .status.conditions[0].status) != True ]; do  date; echo "wait";  sleep 10; done
     ```
-   
+
+    check server in Azure portal
+    ![Azure PostgreSQL flexible server](../assets/images/azure-flexible-server.png)   
 
 1. **Check connection to DB server**
     ```bash
