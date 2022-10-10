@@ -46,12 +46,12 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
           name : server-admin-pw
           namespace : default
         data:
-          password: aGFja2F0aG9uUGFzcw==
+          password: cjNkaDR0MSE=
         type: Opaque
         EOF
         ```
             
-    1. **Create DB server**
+    2. **Create DB server**
       
         ```bash
         cat <<EOF | oc apply -f -
@@ -77,7 +77,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
         EOF
         ```
       
-    1. **Create Server configuration**
+    3. **Create Server configuration**
         ```bash
         cat  <<EOF | oc apply -f -
         apiVersion: dbforpostgresql.azure.com/v1beta20210601
@@ -93,7 +93,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
           value: READ
         EOF
         ```
-    1.  **Create a firewall rule for the database**
+    4.  **Create a firewall rule for the database**
         ```bash
         cat  <<EOF | oc apply -f -
         apiVersion: dbforpostgresql.azure.com/v1beta20210601
@@ -139,7 +139,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
 
 1. **Check connection to DB server**
     ```bash
-    psql "host=user1-minesweeper-database.postgres.database.azure.com port=5432 dbname=score user=myAdmin password=hackathonPass sslmode=require"
+    psql "host=user1-minesweeper-database.postgres.database.azure.com port=5432 dbname=score user=myAdmin password=r3dh4t1! sslmode=require"
     ```
 
 
