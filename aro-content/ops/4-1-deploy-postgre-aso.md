@@ -10,6 +10,7 @@ In this task, we use ASO to provision a PostgreSQL DB and connect applications t
 * an ARO cluster
 * oc cli
 * Azure Service Operator(ASO) operator v2
+* optional: client tool for Postgres - psql , pgadmin
   
 ## Provision DB for Minesweeper APP
 
