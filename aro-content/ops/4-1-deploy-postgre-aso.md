@@ -131,7 +131,7 @@ to provision a PostgreSQL DB you need to create the following objects in your cl
 
 1. **check provisioning is done**
     ```bash
-    while [ $(oc get flexibleservers.dbforpostgresql.azure.com user1-minesweeper-database -o json | jq -r .status.conditions[0].type) != Ready ]; do  date; echo "wait";  sleep 10; done
+    while [ $(oc get flexibleservers.dbforpostgresql.azure.com user1-minesweeper-database -o json | jq -r .status.conditions[0].status) != True ]; do  date; echo "wait";  sleep 10; done
     ```
    
 
