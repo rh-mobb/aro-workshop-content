@@ -3,7 +3,7 @@
 ## What is Red Hat Service Mesh?
 As your applications evolve into collections of decentralized microservices, monitoring and managing the network communications and security among those multiple services becomes more challenging.
 
-Red Hat OpenShift Service Mesh—based on the open source project Istio —provides a uniform way to connect, manage, and observe microservices-based applications. It provides behavioral insight into—and control of—the networked microservices in your service mesh.
+Red Hat OpenShift Service Mesh is based on the open source project Istio. It provides a uniform way to connect, manage, and observe microservices based applications. It provides behavioral insight into and control of the networked microservices in your service mesh.
 
 ## Why Redhat Service Mesh?
 Applications are changing from monoliths into collections of small, independent, and loosely coupled services often referred to as cloud-native applications. These services are organized in a microservices architecture.
