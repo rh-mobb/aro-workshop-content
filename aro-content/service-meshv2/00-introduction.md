@@ -48,5 +48,5 @@ Based on the open source Istio project, Red Hat OpenShift Service Mesh provides 
 * OpenShift Service Mesh extends Role Based Access Control (RBAC) features
 * OpenShift Service Mesh replaces BoringSSL with OpenSSL
 * Kiali and Jaeger are enabled by default in OpenShift Service Mesh
-## What is th advantage of choosing Red Hat Service Mesh?
+## What is the advantage of choosing Red Hat Service Mesh?
 Red Hat helps you get started faster because OpenShift Service Mesh is engineered to be ready for production. With OpenShift Service Mesh developers can increase productivity by integrating communication policies without changing application code or integrating language-specific libraries. OpenShift Service Mesh can also make things easier for operations because it installs easily on Red Hat OpenShift, has been tested with other Red Hat products, and comes with access to award-winning support. 
