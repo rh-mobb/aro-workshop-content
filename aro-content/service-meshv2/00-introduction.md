@@ -39,7 +39,10 @@ Based on the open source Istio project, Red Hat OpenShift Service Mesh provides 
 * Apply/Enforce Policies
 * Fair Resource Distribution
 ### Observe
-
+* Layer 7 Visibility
+* Monitoring
+* Logging
+* Distributed Tracing
 ## Difference Bewteen Istio
 * OpenShift Service Mesh installs a multi-tenant control plane by default
 * OpenShift Service Mesh extends Role Based Access Control (RBAC) features
