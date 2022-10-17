@@ -23,28 +23,13 @@ Red Hat OpenShift Service Mesh provides comprehensive application networking sec
 ### Based on open source
 Based on the open source Istio project, Red Hat OpenShift Service Mesh provides additional functionality with the inclusion of other open source projects like Kiali (Istio console) and Jaeger (distributed tracing), which supports collaboration with leading members of the Istio community.
 ## Use Cases
-Connectivity
-  * Connect Traffic Flow
-  * Blue/Green Deployments
-  * Circut Breaking
-  * Virtual Services
+* Connectivity: Connect Traffic Flow, Blue/Green Deployments, Circut Breaking, Virtual Services
 
-Security
-  * Data-in-transit Encryption
-  * Authentication
-  * Authorization
-  * Secure Naming
+* Security: Data-in-transit Encryption, Authentication, Authorization, Secure Naming
 
-Control
-  * Configuration
-  * Apply/Enforce Policies
-  * Fair Resource Distribution
+* Control: Configuration, Apply/Enforce Policies, Fair Resource Distribution
 
-Observability
-  * Layer 7 Visibility
-  * Monitoring
-  * Logging
-  * Distributed Tracing
+* Observability: Layer 7 Visibility, Monitoring, Logging, Distributed Tracing
 ## Difference Bewteen Istio
 * OpenShift Service Mesh installs a multi-tenant control plane by default
 * OpenShift Service Mesh extends Role Based Access Control (RBAC) features
