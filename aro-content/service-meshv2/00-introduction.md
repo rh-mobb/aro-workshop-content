@@ -25,4 +25,8 @@ Red Hat OpenShift Service Mesh provides comprehensive application networking sec
 Based on the open source Istio project, Red Hat OpenShift Service Mesh provides additional functionality with the inclusion of other open source projects like Kiali (Istio console) and Jaeger (distributed tracing), which supports collaboration with leading members of the Istio community.
 
 ## Difference Bewteen Istio
+* OpenShift Service Mesh installs a multi-tenant control plane by default
+* OpenShift Service Mesh extends Role Based Access Control (RBAC) features
+* OpenShift Service Mesh replaces BoringSSL with OpenSSL
+* Kiali and Jaeger are enabled by default in OpenShift Service Mesh
 ## What is th advantage of choosing Red Hat Service Mesh?
