@@ -1,6 +1,6 @@
 # ARO Hack-a-Thon Content
 
-This repository will be used to host public content for the ARO hack-a-thon on 21 Sept in Raleigh.
+This repository will be used to host public content for the ARO hack-a-thon on the 15th of November in Atlanta.
 
 **The detailed task instructions should NOT be psoted here, only the guidance for customers to complete each task!**
 
