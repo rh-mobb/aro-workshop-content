@@ -20,7 +20,6 @@ nav:
       - Labeling Nodes: ops/2-4-label-nodes.md
     - Azure Service Operator: ops/3-deploy-azure-service-operator.md
     - Deploy PostgreSQL Database: ops/4-1-deploy-postgre-aso.md
-    - Deploy a VM (optional): ops/4-2-deploy-vm-aso.md
     - Azure ARC Integration: ops/5-arc-integration.md
   - Development:
     - Deploy and Expose an App: 
