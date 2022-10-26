@@ -22,7 +22,7 @@ When selecting a Cloud Shell region you must select a backing storage account co
 
 When the storage setup prompt appears, `Create storage'.
 
-[Default Storage Settings](../assets/images/default-storage.png){ align=center }
+![Default Storage Settings](../assets/images/default-storage.png){ align=center }
 
 When your shell is ready and you are at the bash prompt, run the following commands:
 

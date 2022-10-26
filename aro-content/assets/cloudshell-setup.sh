@@ -13,8 +13,6 @@ oc completion bash > ~/openshift/oc_bash_completion
 
 echo 'source ~/openshift/oc_bash_completion' >> ~/.bashrc && source ~/.bashrc
 
-az account set --subscription 'my-subscription-name'
-
 curl -Ls https://sh.jbang.dev | bash -s - trust add https://repo1.maven.org/maven2/io/quarkus/quarkus-cli/
 curl -Ls https://sh.jbang.dev | bash -s - app install --fresh --force quarkus@quarkusio
 
@@ -33,3 +31,8 @@ wget http://download.joedog.org/siege/siege-latest.tar.gz
 mkdir siege
 tar -xvf siege-latest.tar.gz -C siege
 echo 'export PATH=$PATH:~/siege' >> ~/.bashrc && source ~/.bashrc
+
+az provider register -n Microsoft.RedHatOpenShift --wait
+az provider register -n Microsoft.Compute --wait
+az provider register -n Microsoft.Storage --wait
+az provider register -n Microsoft.Authorization --wait
