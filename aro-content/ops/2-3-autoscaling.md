@@ -14,19 +14,8 @@ For `metadata.name` give this machine autoscaler a name. Technically, this can b
 
 For `spec.ScaleTargetRef.name` enter the name of the exact MachineSet you want this to apply to. Below is an example of a completed file.
 
-```
-apiVersion: "autoscaling.openshift.io/v1beta1"
-kind: "MachineAutoscaler"
-metadata:
-  name: "ok0620-rq5tl-worker-westus21-autoscaler"
-  namespace: "openshift-machine-api"
-spec:
-  minReplicas: 1
-  maxReplicas: 7
-  scaleTargetRef:
-    apiVersion: machine.openshift.io/v1beta1
-    kind: MachineSet
-    name: ok0620-rq5tl-worker-westus21
+``` title="machine-autoscaler.yaml"
+--8<-- "machine-autoscaler.yaml"
 ```
 
 Save your file.
@@ -48,7 +37,11 @@ ok0620-rq5tl-worker-westus21   MachineSet   ok0620-rq5tl-worker-westus2   1     
 
 ### Create the Cluster Autoscaler
 
-This is the sample [ClusterAutoscaler resource definition](https://rh-mobb.github.io/aro-hackathon-content/assets/cluster-autoscaler.yaml) for this workshop.
+This is the sample [ClusterAutoscaler resource definition](https://rh-mobb.github.io/aro-hackathon-content/assets/cluster-autoscaler.yaml) for this workshop:
+
+``` title="cluster-autoscaler.yaml"
+--8<-- "cluster-autoscaler.yaml"
+```
 
 See the [documentation](https://docs.openshift.com/container-platform/latest/machine_management/applying-autoscaling.html#cluster-autoscaler-cr_applying-autoscaling) for a detailed explanation of each parameter. You shouldn't need to edit this file.
 
@@ -65,15 +58,21 @@ Now we will test this out. Create a new project where we will define a job with 
 
 Create a new project called "autoscale-ex":
 
-`oc new-project autoscale-ex`
+```bash
+oc new-project autoscale-ex
+```
 
 Create the job
 
-`oc create -f https://raw.githubusercontent.com/openshift/training/master/assets/job-work-queue.yaml`
+```bash
+oc create -f https://raw.githubusercontent.com/openshift/training/master/assets/job-work-queue.yaml
+```
 
 After a few seconds, run the following to see what pods have been created.
 
-`oc get pods`
+```bash
+oc get pods
+```
 
 
 ```
