@@ -85,7 +85,7 @@ ok0620-rq5tl-worker-westus23   2         2         1       1           73m
 
 If we check the machines in the clusters
 
-``bash
+```bash
 oc get machine -n openshift-machine-api
 ```
 
