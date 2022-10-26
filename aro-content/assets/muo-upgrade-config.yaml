@@ -1,0 +1,13 @@
+apiVersion: upgrade.managed.openshift.io/v1alpha1
+kind: UpgradeConfig
+metadata:
+  name: managed-upgrade-config
+  namespace: openshift-managed-upgrade-operator
+spec:
+  type: "ARO"
+  upgradeAt: $(date -u --iso-8601=seconds --date "+5 minutes")
+  PDBForceDrainTimeout: 60
+  capacityReservation: true
+  desired:
+    channel: "stable-4.10"
+    version: "4.10.28"
