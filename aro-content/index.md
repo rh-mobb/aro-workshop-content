@@ -22,4 +22,6 @@ Join Red Hat® and Microsoft for a hands-on workshop with Azure Red Hat OpenShif
 
 Get experience with, and an informed view of Azure Red Hat OpenShift. Confirm your spot in this workshop, register today to save your seat.
 
-**Prerequisites:** Access to an Azure subscription and Azure Red Hat OpenShift environment which will be provided during the lab. You will receive access at the beginning of the workshop.  Get a personal GitHub account. You can sign up for free here.
+**Prerequisites:** Access to an Azure subscription and Azure Red Hat OpenShift environment which will be provided during the lab. You will receive access at the beginning of the workshop.  Get a personal GitHub account. You can sign up for free [here](https://github.com/signup).
+
+**Registration:** [https://events.redhat.com/profile/form/index.cfm?PKformID=0x688979abcd](https://events.redhat.com/profile/form/index.cfm?PKformID=0x688979abcd)
