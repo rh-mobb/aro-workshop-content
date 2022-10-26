@@ -1,14 +1,12 @@
-## Workshop Setup and Access Instructions
-
-### Access Azure Portal and CLI
+## Access Azure Portal and CLI
 
 Access the Azure Portal through <https://portal.azure.com>
 
-#### Azure Credentials
+### Azure Credentials
 
 Azure credentials will be provided to you by the organizing staff on the day of the event.
 
-#### Access CloudShell and Attach Persistent Storage
+### Access CloudShell and Attach Persistent Storage
 
 Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for managing Azure resources.
 
@@ -20,19 +18,11 @@ Select the option to use Bash.
 
 ![Cloud Shell Choice](../assets/images/overview-choices.png){ align=center }
 
-By using the advanced option, you can associate existing resources. When selecting a Cloud Shell region you must select a backing storage account co-located in the same region.
+When selecting a Cloud Shell region you must select a backing storage account co-located in the same region.
 
-When the storage setup prompt appears, select Show advanced settings to view additional options. The populated storage options filter for locally redundant storage (LRS), geo-redundant storage (GRS), and zone-redundant storage (ZRS) accounts.
+When the storage setup prompt appears, `Create storage'.
 
-Mount your storage using the advanced option with the following settings:
-
-- Subscription: `Cloud Services Black Belts`
-- Cloud Shell Region: `East US`
-- Resource Group: `cs-shared-storage`
-- Storage Account: `cs-shared-storage`
-- File Share: `cs-shared-file-store`
-
-![Advanced Storage Settings](../assets/images/advanced-storage.png){ align=center }
+[Default Storage Settings](../assets/images/default-storage.png){ align=center }
 
 When your shell is ready and you are at the bash prompt, run the following commands:
 
@@ -44,12 +34,35 @@ chmod +x cloudshell-setup.sh
 ./cloudshell-setup.sh
 ```
 
-Your shell should now be ready to use for the workshop.
+## Access the OpenShift Console and CLI
 
-### Operations Content Workstream
+To access the OpenShift `oc` CLI and web console you will need to retrieve your cluster credentials. Use the cluster name and Resource Group name that were provided to you.
 
-Additional setup instructions for the Operations Workstream can be found here: <https://rh-mobb.github.io/aro-hackathon-content/ops/1-account-setup/>
+To retrieve the credentials run:
 
-### Development Content Workstream
+```bash
+az aro list-credentials --name <CLUSTER> --resource-group <RESOURCEGROUP>
+```
 
-Additional setup instructions for the Development Workstream can be found here: <https://rh-mobb.github.io/aro-hackathon-content/app/1-account-setup/>
+To retrieve the console URL run:
+
+```bash
+az aro show --name <CLUSTER> --resource-group <RESOURCEGROUP> -o tsv --query consoleProfile
+```
+
+Login to the console with the `kubeadmin` user through a browser.
+
+### OpenShift CLI Login
+
+Retrieve the API server's address.
+
+```bash
+apiServer=$(az aro show -g <RESOURCEGROUP> -n <CLUSTER> --query apiserverProfile.url -o tsv)
+```
+
+Login to the OpenShift cluster's API server using the following command. Replace <kubeadmin password> with the password you just retrieved.
+
+```bash
+oc login $apiServer -u kubeadmin -p <kubeadmin password>
+```
+
