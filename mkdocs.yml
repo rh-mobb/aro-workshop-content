@@ -1,5 +1,5 @@
 # Project Information
-site_name: ARO Workshop
+site_name: ARO Workshop Atlanta
 site_url: https://rh-mobb.github.io/aro-hackathon-content
 site_description: A choose-your-own-adventure workshop for Operations and Development teams on ARO.
 site_author: Red Hat
@@ -13,14 +13,12 @@ nav:
   - index.md
   - Workshop Setup: general/1-workshop-setup.md
   - Operations:
-    - Setup: ops/1-account-setup.md
     - ARO Day 2 Operations: ops/2-aro-day-2-operations.md
     - Azure Service Operator: ops/3-deploy-azure-service-operator.md
     - Deploy PostgreSQL Database: ops/4-1-deploy-postgre-aso.md
     - Deploy a VM (optional): ops/4-2-deploy-vm-aso.md
     - Azure ARC Integration: ops/5-arc-integration.md
   - App Dev:
-    - Setup: app/1-account-setup.md
     - Deploy and Expose an App: 
       - Deploy the App: app/2A-deploy-app.md
       - Expose the App with Front Door: app/2B-deploy-app.md
