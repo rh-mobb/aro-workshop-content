@@ -37,47 +37,16 @@ managed-upgrade-operator   1/1     1            1           2m2s
 
 ### Configure the Managed Upgrade Operator
 
-Next, configure the Managed Upgrade Operator by using the following YAML embedded into a bash command:
+Next, configure the Managed Upgrade Operator by using the following YAML:
 
+``` title="muo-config-map.yaml"
+--8<-- "../assets/muo-config-map.yaml
 ```
-cat << EOF | oc apply -f -
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: managed-upgrade-operator-config
-  namespace:  openshift-managed-upgrade-operator
-data:
-  config.yaml: |
-    configManager:
-      source: LOCAL
-      localConfigName: managed-upgrade-config
-      watchInterval: 1
-    maintenance:
-      controlPlaneTime: 90
-      ignoredAlerts:
-        controlPlaneCriticals:
-        - ClusterOperatorDown
-        - ClusterOperatorDegraded
-    upgradeWindow:
-      delayTrigger: 30
-      timeOut: 120
-    nodeDrain:
-      timeOut: 45
-      expectedNodeDrainTime: 8
-    scale:
-      timeOut: 30
-    healthCheck:
-      ignoredCriticals:
-      - PrometheusRuleFailures
-      - CannotRetrieveUpdates
-      - FluentdNodeDown
-      ignoredNamespaces:
-      - openshift-logging
-      - openshift-redhat-marketplace
-      - openshift-operators
-      - openshift-user-workload-monitoring
-      - openshift-pipelines
-EOF
+
+You can apply the ConfigMap with this command:
+
+```bash
+oc apply -f https://rh-mobb.github.io/aro-hackathon-content/assets/muo-config-map.yaml
 ```
 
 Restart the Managed Upgrade Operator
@@ -102,27 +71,23 @@ oc get clusterversion version -o jsonpath='{.status.availableUpdates}'
 ### Schedule an Upgrade
 
 !!! info
-    Set the Channel and Version to the desired values from the above list of available upgrades.
+    Set the Channel and Version in the UpgradeConfig file to the desired values from the above list of available upgrades.
 
 The configuration below will schedule an upgrade for the current date / time + 5 minutes, allow PDB-blocked nodes to drain for 60 minutes before a drain is forced, and sets a capacity reservation so that workloads are not interrupted during an upgrade.
 
-```bash
-cat << EOF | oc apply -f -
-apiVersion: upgrade.managed.openshift.io/v1alpha1
-kind: UpgradeConfig
-metadata:
-  name: managed-upgrade-config
-  namespace: openshift-managed-upgrade-operator
-spec:
-  type: "ARO"
-  upgradeAt: $(date -u --iso-8601=seconds --date "+5 minutes")
-  PDBForceDrainTimeout: 60
-  capacityReservation: true
-  desired:
-    channel: "stable-4.10"
-    version: "4.10.28"
-EOF
+``` title="muo-upgrade-config.yaml"
+--8<-- "../assets/muo-upgrade-config.yaml"
 ```
+
+To apply the UpgradeConfig you can run the following commands:
+
+```bash
+oc apply -f https://rh-mobb.github.io/aro-hackathon-content/assets/muo-upgrade-config.yaml
+```
+
+!!! warning
+    If the cluster is on the latest version, the upgrade will not apply.
+
 
 Check the status of the scheduled upgrade
 
