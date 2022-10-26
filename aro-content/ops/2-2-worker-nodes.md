@@ -10,7 +10,9 @@ Let's see which machine sets we have in our cluster.  If you are following this 
 
 From the terminal run:
 
-`oc get machinesets -n openshift-machine-api`
+```bash
+oc get machinesets -n openshift-machine-api
+```
 
 You will see a response like:
 
@@ -29,7 +31,9 @@ Let's see which machines (nodes) we have in our cluster.
 
 From the terminal run:
 
-`oc get machine -n openshift-machine-api`
+```bash
+oc get machine -n openshift-machine-api
+```
 
 You will see a response like:
 
@@ -52,7 +56,9 @@ Now that we know that we have 3 worker nodes, let's scale the cluster up to have
 
 From the terminal run the following to imperatively scale up a machine set to 2 worker nodes for a total of 4. Remember that each machine set is tied to an availability zone so with 3 machine sets with 1 machine each, in order to get to a TOTAL of 4 nodes we need to select one of the machine sets to scale up to 2 machines.
 
-`oc scale --replicas=2 machineset <machineset> -n openshift-machine-api`
+```bash
+oc scale --replicas=2 machineset <machineset> -n openshift-machine-api
+```
 
 For example:
 
@@ -63,7 +69,9 @@ machineset.machine.openshift.io/ok0620-rq5tl-worker-westus23 scaled
 
 View the machine set
 
-`oc get machinesets -n openshift-machine-api`
+```bash
+oc get machinesets -n openshift-machine-api
+```
 
 You will now see that the desired number of machines in the machine set we scaled is "2".
 
@@ -77,7 +85,9 @@ ok0620-rq5tl-worker-westus23   2         2         1       1           73m
 
 If we check the machines in the clusters
 
-`oc get machine -n openshift-machine-api`
+``bash
+oc get machine -n openshift-machine-api
+```
 
 You will see that one is in the "Provisioned" phase (and in the zone of the machineset we scaled) and will shortly be in "running" phase.
 
@@ -99,7 +109,7 @@ Now let's scale the cluster back down to a total of 3 worker nodes, but this tim
 
 Access your OpenShift web console from the relevant URL. If you need to find the URL you can run:
 
-```
+```bash
 az aro show \
    --name <CLUSTER-NAME> \
    --resource-group <RESOURCEGROUP> \
