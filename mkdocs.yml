@@ -10,7 +10,7 @@ repo_url: https://github.com/rh-mobb/aro-hackathon-content
 
 # Nav Menu Definition
 nav:
-  - Home: index.md
+  - index.md
   - Workshop Setup: general/1-workshop-setup.md
   - Operations:
     - Setup: ops/1-account-setup.md
