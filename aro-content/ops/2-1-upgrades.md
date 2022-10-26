@@ -40,7 +40,7 @@ managed-upgrade-operator   1/1     1            1           2m2s
 Next, configure the Managed Upgrade Operator by using the following YAML:
 
 ``` title="muo-config-map.yaml"
---8<-- "../assets/muo-config-map.yaml
+--8<-- "muo-config-map.yaml
 ```
 
 You can apply the ConfigMap with this command:
@@ -76,7 +76,7 @@ oc get clusterversion version -o jsonpath='{.status.availableUpdates}'
 The configuration below will schedule an upgrade for the current date / time + 5 minutes, allow PDB-blocked nodes to drain for 60 minutes before a drain is forced, and sets a capacity reservation so that workloads are not interrupted during an upgrade.
 
 ``` title="muo-upgrade-config.yaml"
---8<-- "../assets/muo-upgrade-config.yaml"
+--8<-- "muo-upgrade-config.yaml"
 ```
 
 To apply the UpgradeConfig you can run the following commands:
@@ -100,7 +100,7 @@ c -n openshift-managed-upgrade-operator get \
 !!! info
     The output of this command should show upgrades in progress
 
-```
+```json
 {
 "history": [
   {
@@ -118,10 +118,11 @@ c -n openshift-managed-upgrade-operator get \
 
 You can verify the upgrade has completed successfully via the following
 
-```
+```bash
 oc get clusterversion version
 ```
-```
+
+```bash
 NAME      VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 version   4.9.27    True        False         161m    Cluster version is 4.9.27
 ```
