@@ -40,7 +40,7 @@ managed-upgrade-operator   1/1     1            1           2m2s
 Next, configure the Managed Upgrade Operator by using the following YAML:
 
 ``` title="muo-config-map.yaml"
---8<-- "muo-config-map.yaml
+--8<-- "muo-config-map.yaml"
 ```
 
 You can apply the ConfigMap with this command:
