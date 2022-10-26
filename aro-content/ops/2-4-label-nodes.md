@@ -1,11 +1,11 @@
-### Adding node labels
+## Introduction
 
 To add a node label it is recommended to set the label in the machine set. While you can directly add a label the node, this is not recommended since nodes could be overwritten and then the label would disappear.  Once the machine set is modified to contain the desired label any new machines created from that set would have the newly added labels.  This means that existing machines (nodes) will not get the label.  Therefore, to make sure all nodes have the label, you should scale the machine set down to zero and then scale the machine set back up.
 
 Labels are a useful way to select which nodes / machine sets that an application will run on. If you have a memory intensitve application, you may choose to use a memory heavy node type to place that application on. By using labels on the machinesets and selectors on your pod / deployment specification, you ensure thats where the application lands.
 oc get pods
 
-##### Using the web console
+### Use the Web Console to Label Nodes
 
 Select "MachineSets" from the left menu.  You will see the list of machinesets.
 

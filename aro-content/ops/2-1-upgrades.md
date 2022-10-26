@@ -1,5 +1,5 @@
-### Managing Upgrades
-
+## Introduction
+ 
 The Managed Upgrade Operator has been created to manage the orchestration of automated in-place cluster upgrades.
 
 Whilst the operator's job is to invoke a cluster upgrade, it does not perform any activities of the cluster upgrade process itself. This remains the responsibility of the OpenShift Container Platform. The operator's goal is to satisfy the operating conditions that a managed cluster must hold, both pre- and post-invocation of the cluster upgrade.
@@ -13,6 +13,8 @@ Examples of activities that are not core to an OpenShift upgrade process but cou
 Configuring the Managed Upgrade Operator for ARO ensures that your cluster functions as you need it to during upgrades. The process of executing upgrades is shown here:
 
 ![MUO Upgrade Process](../assets/images/upgradecluster-flow.svg)
+
+### Enable the Managed Upgrade Operator
 
 Run this oc command to enable the Managed Upgrade Operator (MUO)
 
@@ -32,6 +34,8 @@ oc -n openshift-managed-upgrade-operator \
 NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
 managed-upgrade-operator   1/1     1            1           2m2s
 ```
+
+### Configure the Managed Upgrade Operator
 
 Next, configure the Managed Upgrade Operator by using the following YAML embedded into a bash command:
 
@@ -95,7 +99,7 @@ Look for available Upgrades
 oc get clusterversion version -o jsonpath='{.status.availableUpdates}'
 ```
 
-Schedule an Upgrade
+### Schedule an Upgrade
 
 !!! info
     Set the Channel and Version to the desired values from the above list of available upgrades.

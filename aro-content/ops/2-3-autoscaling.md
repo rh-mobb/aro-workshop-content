@@ -1,10 +1,10 @@
-### Cluster Autoscaling
+## Introduction
 
 The cluster autoscaler adjusts the size of an OpenShift Container Platform cluster to meet its current deployment needs. The cluster autoscaler increases the size of the cluster when there are pods that fail to schedule on any of the current worker nodes due to insufficient resources or when another node is necessary to meet deployment needs. The cluster autoscaler does not increase the cluster resources beyond the limits that you specify. To learn more visit the documentation for [cluster autoscaling](https://docs.openshift.com/container-platform/latest/machine_management/applying-autoscaling.html).
 
 A ClusterAutoscaler must have at least 1 machine autoscaler in order for the cluster autoscaler to scale the machines. The cluster autoscaler uses the annotations on machine sets that the machine autoscaler sets to determine the resources that it can scale. If you define a cluster autoscaler without also defining machine autoscalers, the cluster autoscaler will never scale your cluster.
 
-##### Create a Machine Autoscaler
+### Create a Machine Autoscaler
 
 This can be accomplished via the Web Console or through the CLI with a YAML file for the custom resource definition. We'll use the latter.
 
@@ -46,7 +46,7 @@ NAME                           REF KIND     REF NAME                      MIN   
 ok0620-rq5tl-worker-westus21   MachineSet   ok0620-rq5tl-worker-westus2   1     7     40s
 ```
 
-##### Create the Cluster Autoscaler
+### Create the Cluster Autoscaler
 
 This is the sample [ClusterAutoscaler resource definition](https://rh-mobb.github.io/aro-hackathon-content/assets/cluster-autoscaler.yaml) for this workshop.
 
@@ -59,7 +59,7 @@ $ oc create -f https://rh-mobb.github.io/aro-hackathon-content/assets/cluster-au
 clusterautoscaler.autoscaling.openshift.io/default created
 ```
 
-##### Test the Cluster Autoscaler
+### Test the Cluster Autoscaler
 
 Now we will test this out. Create a new project where we will define a job with a load that this cluster cannot handle. This should force the cluster to autoscale to handle the load.
 

@@ -1,10 +1,10 @@
-### Managing Worker Nodes
+## Introduction
 
 There may be times when you need to change aspects of your worker nodes. Things like scaling, changing the type, adding labels or taints to name a few. Most of these things are done through the use of machine sets. A machine is a unit that describes the host for a node and a machine set is a group of machines. Think of a machine set as a “template” for the kinds of machines that make up the worker nodes of your cluster. Similar to how a replicaset is to pods. A machine set allows users to manage many machines as a single entity though it is contained to a specific availability zone. If you'd like to learn more see [Overview of machine management](https://docs.openshift.com/container-platform/latest/machine_management/index.html)
 
-#### Scaling worker nodes
+## Scaling worker nodes
 
-##### View the machine sets that are in the cluster
+### View the machine sets that are in the cluster
 
 Let's see which machine sets we have in our cluster.  If you are following this lab, you should only have three so far (one for each availability zone).
 
@@ -23,7 +23,7 @@ ok0620-rq5tl-worker-westus23   1         1         1       1           72m
 ```
 This is telling us that there is a machine set defined for each availability zone in westus2 and that each has one machine.
 
-##### View the machines that are in the cluster
+### View the machines that are in the cluster
 
 Let's see which machines (nodes) we have in our cluster.
 
@@ -46,7 +46,7 @@ ok0620-rq5tl-worker-westus23-hzggb   Running   Standard_D4s_v3   westus2   3    
 
 As you can see we have 3 master nodes, 3 worker nodes, the types of nodes, and which region/zone they are in.
 
-##### Scale the number of nodes up via the CLI
+### Scale the number of nodes up via the CLI
 
 Now that we know that we have 3 worker nodes, let's scale the cluster up to have 4 worker nodes. We can accomplish this through the CLI or through the OpenShift Web Console. We'll explore both.
 
@@ -93,7 +93,7 @@ ok0620-rq5tl-worker-westus23-5fhm5   Provisioned   Standard_D4s_v3   westus2   3
 ok0620-rq5tl-worker-westus23-hzggb   Running       Standard_D4s_v3   westus2   3      74m
 ```
 
-##### Scale the number of nodes down via the Web Console
+### Scale the number of nodes down via the Web Console
 
 Now let's scale the cluster back down to a total of 3 worker nodes, but this time, from the web console. (If you need the URL or credentials in order to access it please go back to the relevant portion of Lab 1)
 
