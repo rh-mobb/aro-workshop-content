@@ -22,15 +22,23 @@ Save your file.
 
 Then create the resource in the cluster. Assuming you kept the same filename:
 
+```bash
+oc create -f machine-autoscaler.yaml
 ```
-$ oc create -f machine-autoscaler.yaml
+
+You will see the following output:
+```
 machineautoscaler.autoscaling.openshift.io/ok0620-rq5tl-worker-westus21-mautoscaler created
 ```
 
 You can also confirm this by checking the web console under "MachineAutoscalers" or by running:
 
+```bash
+oc get machineautoscaler -n openshift-machine-api
 ```
-$ oc get machineautoscaler -n openshift-machine-api
+
+You should see output similar to:
+```
 NAME                           REF KIND     REF NAME                      MIN   MAX   AGE
 ok0620-rq5tl-worker-westus21   MachineSet   ok0620-rq5tl-worker-westus2   1     7     40s
 ```
@@ -47,8 +55,12 @@ See the [documentation](https://docs.openshift.com/container-platform/latest/mac
 
 Create the resource in the cluster:
 
+```bash
+oc create -f https://rh-mobb.github.io/aro-hackathon-content/assets/cluster-autoscaler.yaml
 ```
-$ oc create -f https://rh-mobb.github.io/aro-hackathon-content/assets/cluster-autoscaler.yaml
+
+Output:
+```bash
 clusterautoscaler.autoscaling.openshift.io/default created
 ```
 
@@ -95,7 +107,11 @@ work-queue-28n9m-9ntxc   1/1     Running             0          53s
 
 We see a lot of pods in a pending state.  This should trigger the cluster autoscaler to create more machines using the MachineAutoscaler we created. If we check on the MachineSets:
 
+```bash
+oc get machinesets -n openshift-machine-api
 ```
+
+```bash
 $ oc get machinesets -n openshift-machine-api
 NAME                           DESIRED   CURRENT   READY   AVAILABLE   AGE
 ok0620-rq5tl-worker-westus21   5         5         1       1           7h17m
@@ -106,6 +122,10 @@ ok0620-rq5tl-worker-westus23   1         1         1       1           7h17m
 We see that the cluster autoscaler has already scaled the machine set up to 5 in our example. Though it is still waiting for those machines to be ready.
 
 If we check on the machines we should see that 4 are in a "Provisioned" state (there was 1 already existing from before for a total of 5 in this machine set).
+
+```bash
+oc get machines -n openshift-machine-api
+```
 
 ```
 $ oc get machines -n openshift-machine-api
@@ -124,6 +144,10 @@ ok0620-rq5tl-worker-westus23-hzggb   Running       Standard_D4s_v3   westus2   3
 
 After a few minutes we should see all 5 are provisioned.
 
+```bash
+oc get machinesets -n openshift-machine-api
+```
+
 ```
 $ oc get machinesets -n openshift-machine-api
 NAME                           DESIRED   CURRENT   READY   AVAILABLE   AGE
@@ -134,14 +158,23 @@ ok0620-rq5tl-worker-westus23   1         1         1       1           7h23m
 
 If we now wait a few more minutes for the pods to complete, we should see the cluster autoscaler begin scale down the machine set and thus delete machines.
 
+```bash
+oc get machinesets -n openshift-machine-api
+```
+
 ```
 $ oc get machinesets -n openshift-machine-api
 NAME                           DESIRED   CURRENT   READY   AVAILABLE   AGE
 ok0620-rq5tl-worker-westus21   4         4         4       4           7h27m
 ok0620-rq5tl-worker-westus22   1         1         1       1           7h27m
 ok0620-rq5tl-worker-westus23   1         1         1       1           7h27m
+```
 
+```bash
+oc get machines -n openshift-machine-api
+```
 
+```bash 
 $ oc get machines -n openshift-machine-api
 NAME                                 PHASE      TYPE              REGION    ZONE   AGE
 ok0620-rq5tl-master-0                Running    Standard_D8s_v3   westus2   1      7h28m
