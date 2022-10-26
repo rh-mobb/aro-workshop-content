@@ -1,1 +1,1 @@
-![home-page-image](../assets/images/home-page.png){ align=center }
+![home-page-image](./assets/images/home-page.png){ align=center }
