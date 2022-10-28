@@ -12,7 +12,7 @@ ASO consists of:
 We deploy ASO on an ARO cluster to provision and manage Azure resources. To install ASO we need:
 
 - An Azure Service Principal with Contributor permissions in the Azure Subscription. An Azure service principal is an identity created for use with applications, hosted services, and automated tools to access Azure resources.
-  - This will be provided to you by the event staff
+    - This will be provided to you by the event staff
 - A cert-manager operator instance
 
 ###  Install and run ASO on your ARO cluster
