@@ -18,8 +18,9 @@ nav:
       - Managing Worker Nodes: ops/2-2-worker-nodes.md
       - Cluster Autoscaling: ops/2-3-autoscaling.md
       - Labeling Nodes: ops/2-4-label-nodes.md
-    - Azure Service Operator: ops/3-deploy-azure-service-operator.md
-    - Deploy PostgreSQL Database: ops/4-1-deploy-postgre-aso.md
+    - Azure Service Operator:
+      - Deploy ASO: ops/3-deploy-azure-service-operator.md
+      - Deploy a Database using ASO: ops/4-1-deploy-postgre-aso.md
     - Azure ARC Integration: ops/5-arc-integration.md
   - Development:
     - Deploy and Expose an App: 
