@@ -102,7 +102,7 @@ while [[ $(oc get pods -l app=cert-manager -n openshift-cert-manager -o 'jsonpat
 while [[ $(oc get pods -l app=webhook -n openshift-cert-manager -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for cert-manager webhook pod" && sleep 1; done
 ```
 
-Install the latest ASOv2 Helm Chart:
+#### Install the latest ASOv2 Helm Chart
 
 ```bash
 helm repo add aso2 https://raw.githubusercontent.com/Azure/azure-service-operator/main/v2/charts
