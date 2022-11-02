@@ -110,7 +110,7 @@ As a developer, you can use a horizontal pod autoscaler (HPA) to specify how Ope
 
 In this exercise we will scale frontend application based on CPU utilization:
 
-* Scale out when average CPU utilization is greater than 80% of CPU limit
+* Scale out when average CPU utilization is greater than 50% of CPU limit
 * Maximum pods is 4
 * Scale down to min replicas if utilization is lower than threshold for 60 sec
 
