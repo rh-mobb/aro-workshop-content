@@ -1,0 +1,12 @@
+apiVersion: azure.microsoft.com/v1alpha1
+kind: RedisCache
+metadata:
+  name: azure-redis
+spec:
+  location: eastus
+  properties:
+    sku:
+      name: Basic
+      family: C
+      capacity: 1
+    enableNonSslPort: true
