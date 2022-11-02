@@ -23,7 +23,7 @@ nav:
       - Labeling Nodes: ops/2-4-label-nodes.md
     - Azure Service Operator:
       - Deploy ASO: ops/3-deploy-azure-service-operator.md
-      - Deploy a Database using ASO: ops/4-1-deploy-postgre-aso.md
+      - Deploy an Azure Service using ASO: ops/4-1-deploy-azure-votes-app.md
     - Azure ARC Integration: ops/5-arc-integration.md
   - Development:
     - Deploy and Expose an App: 
