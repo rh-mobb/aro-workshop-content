@@ -307,7 +307,7 @@ oc apply -f aro-content/assets/azure-arc-secretproviderclass.yaml
 
 Create a pod with the following YAML, filling in the name of your identity
 
-```bash
+```yaml
 kind: Pod
 apiVersion: v1
 metadata:
