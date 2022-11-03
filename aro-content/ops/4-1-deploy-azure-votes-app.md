@@ -68,6 +68,8 @@ This will take a couple of minutes to complete as well. Also note that there is 
 
 The Azure Voting App will be deployed from a pre-built container that is stored in the public Microsoft Azure Container Registry. It's environment variables are configured to use the URL of the Redis cache deployed in the last step, and a Kubernetes Secret that was created as part of the cache deployment.
 
+The application is exposed internal to the cluster using a service on port 80, and is exposed externally using an OpenShift Route with TLS termination through a public facing Azure Load Balancer.
+
 ```bash
 cat <<EOF | oc -n redis-demo apply -f -
 apiVersion: apps/v1
