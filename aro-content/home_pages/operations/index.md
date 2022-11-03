@@ -13,4 +13,5 @@
 
 * [Deploy ASO](../../ops/3-deploy-azure-service-operator.md)
 * [Deploy an Azure Service with ASO](../../ops/4-1-deploy-azure-votes-app.md)
-* [Azure ARC Integration](../../ops/5-arc-integration.md)
+
+### [Azure ARC Integration](../../ops/5-arc-integration.md)
