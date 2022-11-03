@@ -24,6 +24,7 @@ oc adm policy add-scc-to-user anyuid -z redis-demo
 
 The first step to deploying the application is to deploy the Redis cache. This also shows creating a random string as part of the hostname because the Azure DNS namespace is global, and a name like `sampleredis` is likely to be taken. Also make sure the location spec matches.
 
+Make sure to set `spec.owner.name` to your provided Resource Group.
 ```bash
 REDIS_HOSTNAME=redis-$(head -c24 < /dev/random | base64 | LC_CTYPE=C tr -dc 'a-z0-9' | cut -c -8)
 cat <<EOF | oc apply -f -
@@ -35,7 +36,7 @@ metadata:
 spec:
   location: eastus
   owner:
-    name: redis-demo
+    name: workshop-test
   sku:
     family: C
     name: Basic
