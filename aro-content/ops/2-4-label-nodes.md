@@ -11,7 +11,7 @@ Select "MachineSets" from the left menu.  You will see the list of machinesets.
 
 ![webconsollemachineset](../assets/images/43-machinesets.png)
 
-We'll select the first one "ok0620-rq5tl-worker-westus21"
+Select a machine set that was not used in the previous autoscaling example, for example: "ok0620-rq5tl-worker-westus21"
 
 Click on the second tab "YAML"
 
