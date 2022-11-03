@@ -11,7 +11,7 @@ The Azure Voting App that will be deployed consists of a front end web-app that 
 OpenShift uses Projects to separate application resources on the cluster. Create a project for the Azure Voting App:
 
 ```bash
-oc create project redis-demo
+oc new-project redis-demo
 ```
 
 Allow the Redis App to run as any user:
