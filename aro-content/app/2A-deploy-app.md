@@ -1,32 +1,29 @@
 # Deploy and Expose an Application ( Part 1 )
-Securing exposing an Internet facing application with an ARO Cluster.
 
-When you create a cluster on ARO you have several options in making the cluster public or private. With a public cluster you are allowing Internet traffic to the api and *.apps endpoints. With a private cluster you can make either or both the api and .apps endpoints private.
+It's time for us to put our cluster to work and install a workload. We're going to build an example Java application, [microsweeper](https://github.com/redhat-mw-demos/microsweeper-quarkus/tree/ARO) deploy it to your ARO cluster and securely expose this application over the internet using Azure Frontdoor.
 
-How can you allow Internet access to an application running on your private cluster where the .apps endpoint is private? This document will guide you through using Azure Frontdoor to expose your applications to the Internet. There are several advantages of this approach, namely your cluster and all the resources in your Azure account can remain private, providing you an extra layer of security. Azure FrontDoor operates at the edge so we are controlling traffic before it even gets into your Azure account. On top of that, Azure FrontDoor also offers WAF and DDoS protection, certificate management and SSL Offloading just to name a few benefits.
+The microsweeper application depends on a PostgreSQL database to store scores. Since ARO is a first class citizen in Azure, we'll use an Azure Database for PostgreSQL and connect it to our cluster with a private endpoint.
 
 !!! info 
+    For simplicity sake, we'll be using public clusters for this workshop. The Frontdoor ingress pattern works for public and private clusters.
 
-    In this workshop we are using public clusters to simplify connectity to the environment.  Even though we are using a public cluster, the same methodology applies to expose an application to the Internet from a private cluster.  To similate a private cluster, we will be creating a 2nd private Ingress Controller.
 
 ## Prerequisites
-* a unique USER ID
+* Your unique USERID
 * Azure Database for PostgreSQL
 * Azure Container Registry Instance and Password
 * A public GitHub id ( only required for the 'Automate Deploying the App' )
-<br>
 
-## Deploy an application
-Now the fun part, let's deploy an application!  
-We will be deploying a Java based application called [microsweeper](https://github.com/redhat-mw-demos/microsweeper-quarkus/tree/ARO).  This is an application that runs on OpenShift and uses a PostgreSQL database to store scores.  With ARO being a first class service on Azure, we will create an Azure Database for PostgreSQL service and connect it to our cluster with a private endpoint.
 
+## Create PostgreSQL
+
+<todo>
 Prerequisites - this part of the workshop assumes you have already created a Azure Database for PostgreSQL database named <USERID>-microsweeper-database that you created and configured in a previous step.
+<todo>
 
-!!! info
-    
-    Throughout this tutorial, we will be distinguishing your application and resources based on a USERID assigned to you.  Please see a facilitator if they have not given you a USER ID.
+## Deploy Application
 
-From the Azure Cloud Shell, set an environment variable for your user id and the Azure Resource Group given to you by the facilitor:
+From the Azure Cloud Shell, set an environment variable for your user id and the Azure Resource Group given to you by the facilitator:
 
 ```bash
 export USERID=<The user ID a facilitator gave you>
@@ -36,13 +33,13 @@ export ARO_APP_FQDN=minesweeper.$USERID.azure.mobb.ninja
 
 **Clone the git repository** 
 
-  The first thing we need to do is get a copy of the code that we will build and deploy to our clusters.  
+  Clone the application from github. 
 
    ```bash
    git clone https://github.com/rh-mobb/aro-hackaton-app
    ```
 
-**Change to the root directory**
+**Change to the application root directory**
 
    ```bash
    cd aro-hackaton-app
@@ -51,10 +48,12 @@ export ARO_APP_FQDN=minesweeper.$USERID.azure.mobb.ninja
 
 **Log into your openshift cluster with Azure Cloud Shell**
 
+<login command??>
+
 **Switch to your OpenShift Project**
 
    ```bash
-   oc project <USER ID>
+   oc project $USERID
    ```
   
 !!! info
@@ -78,14 +77,14 @@ export ARO_APP_FQDN=minesweeper.$USERID.azure.mobb.ninja
   
 !!! info
   
-    Note the options in OpenShift Configurations.<br>
-    - **%prod.quarkus.openshift.deployment-kind=Deployment** <br>
-      We will be creating a deployment for the application.<br><br>
-    - **%prod.quarkus.openshift.build-strategy=docker** <br>
-      The application will be built uisng Docker.<br><br>
-    - **%prod.quarkus.container-image.group=minesweeper** <br>
-      The application will use the namespace your facilitator assigned to you.<br><br>
-    - **%prod.quarkus.openshift.expose=true** <br>
+    Note the options in OpenShift Configurations.
+    - **%prod.quarkus.openshift.deployment-kind=Deployment**
+      We will be creating a deployment for the application.
+    - **%prod.quarkus.openshift.build-strategy=docker**
+      The application will be built uisng Docker.
+    - **%prod.quarkus.container-image.group=minesweeper**
+      The application will use the namespace your facilitator assigned to you.
+    - **%prod.quarkus.openshift.expose=true**
       We will expose the route using the default openshift router domain - apps.\<cluster-id\>.eastus.aroapp.io
 
    Sample microsweeper-quarkus/src/main/resources/application.properties
@@ -118,14 +117,12 @@ export ARO_APP_FQDN=minesweeper.$USERID.azure.mobb.ninja
    #%prod.quarkus.native.container-build=true
    ```
 
-   
-
 
 **Build and deploy the quarkus application to OpenShift.**
 
 One of the great things about OpenShift is the concept of Source to Image, where you simply point to your source code and OpenShift will build and deploy your application.  
 
-In this first example, we will be using source to image and build configs that come built in with Quarkus and OpenShift.  To start the build ( and deploy ) process simply run the following command.
+For our minesweeper application we will be using source to image and build configs that come built in with Quarkus and OpenShift.  To start the build ( and deploy ) process simply run the following command.
 
    ```bash
    quarkus build --no-tests
