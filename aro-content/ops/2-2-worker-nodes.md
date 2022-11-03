@@ -111,8 +111,8 @@ Access your OpenShift web console from the relevant URL. If you need to find the
 
 ```bash
 az aro show \
-   --name <CLUSTER-NAME> \
-   --resource-group <RESOURCEGROUP> \
+   --name $USERID \
+   --resource-group $USERID \
    --query "consoleProfile.url" -o tsv
 ```
 
