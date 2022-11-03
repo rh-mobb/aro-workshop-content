@@ -20,11 +20,26 @@ Allow the Redis App to run as any user:
 oc adm policy add-scc-to-user anyuid -z redis-demo
 ```
 
+Create an Azure Resource Group to hold project resources. Make sure the namespace matches the project name, and that the location is in the same region the cluster is:
+
+```bash
+cat <<EOF | oc apply -f -
+apiVersion: resources.azure.com/v1beta20200601
+kind: ResourceGroup
+metadata:
+  name: redis-demo
+  namespace: redis-demo
+spec:
+  location: eastus
+EOF
+```
+
 ### Deploy an Azure Cache for Redis Instance
 
 The first step to deploying the application is to deploy the Redis cache. This also shows creating a random string as part of the hostname because the Azure DNS namespace is global, and a name like `sampleredis` is likely to be taken. Also make sure the location spec matches.
 
 Make sure to set `spec.owner.name` to your provided Resource Group.
+
 ```bash
 REDIS_HOSTNAME=redis-$(head -c24 < /dev/random | base64 | LC_CTYPE=C tr -dc 'a-z0-9' | cut -c -8)
 cat <<EOF | oc apply -f -
@@ -36,7 +51,7 @@ metadata:
 spec:
   location: eastus
   owner:
-    name: workshop-test
+    name: redis-demo
   sku:
     family: C
     name: Basic
