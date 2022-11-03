@@ -8,7 +8,6 @@ Examples of activities that are not core to an OpenShift upgrade process but cou
 
 - Pre and post-upgrade health checks.
 - Worker capacity scaling during the upgrade period.
-- Alerting silence window management.
 
 Configuring the Managed Upgrade Operator for ARO ensures that your cluster functions as you need it to during upgrades. The process of executing upgrades is shown here:
 
