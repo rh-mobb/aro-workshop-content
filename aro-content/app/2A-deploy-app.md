@@ -1,11 +1,11 @@
 # Deploy and Expose an Application ( Part 1 )
 
-It's time for us to put our cluster to work and install a workload. We're going to build an example Java application, [microsweeper](https://github.com/redhat-mw-demos/microsweeper-quarkus/tree/ARO) deploy it to your ARO cluster and securely expose this application over the internet.
+It's time for us to put our cluster to work and install a workload. We're going to build an example Java application, [microsweeper](https://github.com/redhat-mw-demos/microsweeper-quarkus/tree/ARO) deploy it to your ARO cluster and securely expose this application over the internet using Azure Frontdoor.
 
 The microsweeper application depends on a PostgreSQL database to store scores. Since ARO is a first class citizen in Azure, we'll use an Azure Database for PostgreSQL and connect it to our cluster with a private endpoint.
 
 !!! info 
-    For simplicity sake, we'll be using public clusters for our guides. The Frontdoor ingress pattern works for public and private clusters.
+    For simplicity sake, we'll be using public clusters for this workshop. The Frontdoor ingress pattern works for public and private clusters.
 
 
 ## Prerequisites
