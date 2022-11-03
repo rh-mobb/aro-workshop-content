@@ -11,78 +11,135 @@ The Azure Voting App that will be deployed consists of a front end web-app that 
 OpenShift uses Projects to separate application resources on the cluster. Create a project for the Azure Voting App:
 
 ```bash
-oc create project azure-voting-app
+oc create project redis-demo
+```
+
+Allow the Redis App to run as any user:
+
+```bash
+oc adm policy add-scc-to-user anyuid -z redis-demo
 ```
 
 ### Deploy an Azure Cache for Redis Instance
 
-The first step to deploying the application is to deploy the Redis cache. The manifest file shown below creates a Basic instance in the US East 1 region:
-
-``` title="redis-cache.yaml"
---8<-- "redis-cache.yaml"
-```
-
-To create the cache, run the following command from your Azure Cloud Shell terminal:
+The first step to deploying the application is to deploy the Redis cache. This also shows creating a random string as part of the hostname because the Azure DNS namespace is global, and a name like `sampleredis` is likely to be taken. Also make sure the location spec matches.
 
 ```bash
-oc apply -f https://rh-mobb.github.io/aro-hackathon-content/assets/redis-cache.yaml
+REDIS_HOSTNAME=redis-$(head -c24 < /dev/random | base64 | LC_CTYPE=C tr -dc 'a-z0-9' | cut -c -8)
+cat <<EOF | oc apply -f -
+apiVersion: cache.azure.com/v1beta20201201
+kind: Redis
+metadata:
+  name: $REDIS_HOSTNAME
+  namespace: redis-demo
+spec:
+  location: eastus
+  owner:
+    name: redis-demo
+  sku:
+    family: C
+    name: Basic
+    capacity: 0
+  enableNonSslPort: true
+  redisConfiguration:
+    maxmemory-delta: "10"
+    maxmemory-policy: allkeys-lru
+  redisVersion: "6"
+  operatorSpec:
+    secrets:
+      primaryKey:
+        name: redis-secret
+        key: primaryKey
+      secondaryKey:
+        name: redis-secret
+        key: secondaryKey
+      hostName:
+        name: redis-secret
+        key: hostName
+      port:
+        name: redis-secret
+        key: port
+EOF
 ```
 
-Verify that the cache is ready by running:
-
-```bash
-oc get TODO
-```
-
-```bash
-OUTPUT
-```
+This will take a couple of minutes to complete as well. Also note that there is typically a bit of lag between a resource being created and showing up in the Azure Portal.
 
 ### Deploy the Azure Voting App
 
 The Azure Voting App will be deployed from a pre-built container that is stored in the public Microsoft Azure Container Registry. It's environment variables are configured to use the URL of the Redis cache deployed in the last step, and a Kubernetes Secret that was created as part of the cache deployment.
 
-``` title="vote-app-deployment.yaml"
---8<-- "vote-app-deployment.yaml"
+```bash
+cat <<EOF | oc -n redis-demo apply -f -
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azure-vote-front
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azure-vote-front
+  template:
+    metadata:
+      labels:
+        app: azure-vote-front
+    spec:
+      containers:
+      - name: azure-vote-front
+        image: mcr.microsoft.com/azuredocs/azure-vote-front:v1
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 80
+        env:
+        - name: REDIS
+          valueFrom:
+            secretKeyRef:
+              name: redis-secret
+              key: hostName
+        - name: REDIS_NAME
+          value: $REDIS_HOSTNAME
+        - name: REDIS_PWD
+          valueFrom:
+            secretKeyRef:
+              name: redis-secret
+              key: primaryKey
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-vote-front
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: azure-vote-front
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: azure-vote
+spec:
+  port:
+    targetPort: 80
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: azure-vote-front
+EOF
 ```
 
-To deploy the app, run the following command:
+### Access the Application
 
 ```bash
-oc apply -f https://rh-mobb.github.io/aro-hackathon-content/assets/vote-app-deployment.yaml
+oc get route azure-vote
 ```
 
-### Expose the Application
-
-OpenShift Routes allow you to host your application at a public URL. This application uses an unsecured route to expose the voting application:
-
-``` title="vote-app-route.yaml"
---8<-- "vote-app-route.yaml"
-```
-
-To expose the app, run the following command:
-
-```bash
-oc apply -f https://rh-mobb.github.io/aro-hackathon-content/assets/vote-app-route.yaml
-```
-
-To verify the application is up and running, retrieve the route and visit the URL in a browser:
-
-```bash
-oc get route vote-route
-```
-
-```bash
-OUTPUT
-```
-
-
-
-
-
-
-
-
-
-
-
+Browse to the URL provided by the previous command and validate that the app is working

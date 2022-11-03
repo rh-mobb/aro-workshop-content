@@ -54,6 +54,18 @@ helm upgrade --install --devel aso2 aso2/azure-service-operator \
 --set azureClientID=$AZURE_CLIENT_ID \
 --set azureClientSecret=$AZURE_CLIENT_SECRET
 ```
+
+You should see the following output immediately:
+
+```bash
+Release "aso2" has been upgraded. Happy Helming!
+NAME: aso2
+LAST DEPLOYED: Thu Nov  3 12:57:15 2022
+NAMESPACE: azureserviceoperator-system
+STATUS: deployed
+REVISION: 4
+TEST SUITE: None
+```
    
 !!! info
     It takes up to 5 min for ASO operator to be up and running
