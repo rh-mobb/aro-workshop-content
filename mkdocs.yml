@@ -11,11 +11,13 @@ repo_url: https://github.com/rh-mobb/aro-hackathon-content
 # Nav Menu Definition
 nav:
   - index.md
-  - Workshop Setup: 
+  - Workshop Setup:
+    - home_pages/workshop-setup/index.md
     - Environment Setup: setup/1-environment-setup.md
     - Cluster Creation: setup/2-cluster-creation.md
     - Access Your Cluster: setup/3-access-cluster.md
   - Operations:
+    - home_pages/operations/index.md
     - ARO Day 2 Operations:
       - Managing Upgrades: ops/2-1-upgrades.md
       - Managing Worker Nodes: ops/2-2-worker-nodes.md
@@ -26,6 +28,7 @@ nav:
       - Deploy an Azure Service using ASO: ops/4-1-deploy-azure-votes-app.md
     - Azure ARC Integration: ops/5-arc-integration.md
   - Development:
+    - home_pages/development/index.md
     - Deploy and Expose an App: 
       - Deploy the App: app/2A-deploy-app.md
       - Expose the App with Front Door: app/2B-deploy-app.md
@@ -55,6 +58,10 @@ theme:
   logo: favicon.ico
   favicon: favicon.ico
 docs_dir: aro-content
+
+# plugins
+plugins:
+- section-index
 
 # Extensions
 markdown_extensions:
