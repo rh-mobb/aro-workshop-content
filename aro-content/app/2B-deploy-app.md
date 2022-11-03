@@ -1,21 +1,27 @@
 # Deploy and Expose an Application ( Part 2)
 
 ## Expose the application with Front Door
-Up to this point, we have deployed the minesweeper app using the publically available Ingress Controller that comes with OpenShift.  Best practices for ARO clusters is to make them private ( both the api server and the ingress controller) and then exposing the application you need with something like Azure Front Door.
+Up to this point, we have deployed the minesweeper app using the publicly available Ingress Controller that comes with OpenShift.
 
-In the following section of the workshop, we will go through setting up Azure Front Door and then exposing our minesweeper application with Azure Front Door using a custom domain.
+In the following section of the workshop, we will set up Azure Front Door and expose our minesweeper application with a custom domain over a private ingres controller.
 
-The following diagram shows what we will configure.
+Frontdoor to private cluster:
 ![Image](images/aro-frontdoor.png)
 
-There are several advantages of this approach, namely your cluster and all the resources in your Azure account can remain private, providing you an extra layer of security. Azure FrontDoor operates at the edge so we are controlling traffic before it even gets into your Azure account. On top of that, Azure FrontDoor also offers WAF and DDoS protection, certificate management and SSL Offloading just to name a few benefits.
+There are several advantages of this approach:
 
-As you can see in the diagram, Azure Front Door sits on the edge of the Microsoft network and is connected to the cluster via a private link service.  With a private cluster, this means all traffic goes through Front Door and is secured at the edge.  Front Door is then connected to your cluster through a private connection over the Microsoft backbone.
+* ARO cluster and all the resources in your Azure account can be private.
+* Azure FrontDoor operates at the edge so we are controlling traffic before it gets into your Azure account. 
+* Azure FrontDoor offers WAF and DDoS protection, certificate management and SSL Offloading just to name a few benefits.
 
+As you can see in the diagram, Azure Front Door sits on the edge of the Microsoft network and is connected to the cluster via a private link service.
+
+<todo>
 Setting up and configuring Azure Front Door for the minesweeper application is typically something the operations team would do.  If you are interested in going through the steps, you can do so [here](../ops/6-front-door.md)  
+<todo>
 
 ## Verify the private Ingress Controller
-As you will remember in Part 1, this workshop uses a public cluster where the API and default Applications endpoints are exposed to the Internet.  To similate a private environment for the applications endpoint, a second Ingress Controller only exposed to the private network of our cluster has been created for you.
+This workshop uses a public cluster where the API and default Applications endpoints are exposed to the Internet.  To simulate a private environment for the applications endpoint, a second Ingress Controller only exposed to the private network of our cluster has been created for you.
 
 
 Let's check to make sure the IngressController has been created.
