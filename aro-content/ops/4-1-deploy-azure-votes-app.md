@@ -102,7 +102,7 @@ spec:
     spec:
       containers:
       - name: azure-vote-front
-        image: mcr.microsoft.com/azuredocs/azure-vote-front:v1
+        image: aroworkshop.azurecr.io/azure-vote:latest
         resources:
           requests:
             cpu: 100m
@@ -111,7 +111,7 @@ spec:
             cpu: 250m
             memory: 256Mi
         ports:
-        - containerPort: 80
+        - containerPort: 8080
         env:
         - name: REDIS
           valueFrom:
@@ -132,7 +132,8 @@ metadata:
   name: azure-vote-front
 spec:
   ports:
-  - port: 80
+  - port: 8080
+    targetPort: 8080
   selector:
     app: azure-vote-front
 ---
@@ -142,13 +143,15 @@ metadata:
   name: azure-vote
 spec:
   port:
-    targetPort: 80
-  tls:
-    insecureEdgeTerminationPolicy: Redirect
-    termination: edge
+    targetPort: 8080
   to:
     kind: Service
     name: azure-vote-front
+    weight: 100
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  wildcardPolicy: None
 EOF
 ```
 
