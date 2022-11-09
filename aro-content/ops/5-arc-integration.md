@@ -59,7 +59,7 @@ After running the commnad. grant the following permissions and restart kube-aad-
 oc project azure-arc
 oc adm policy add-scc-to-user privileged system:serviceaccount:azure-arc:azure-arc-kube-aad-proxy-sa
 
-oc get pod | grep
+oc get pod | grep kube-aad-proxy
 kube-aad-proxy-6d9b66b9cd-g27xr              0/2     ContainerCreating   0          26s
 
 oc delete pod kube-aad-proxy-6d9b66b9cd-g27xr  
@@ -153,7 +153,7 @@ oc apply -f aro-content/assets/azure-arc-secret.yaml
 ```
 
 ```bash
-TOKEN=$(oc get secret azure-arc-observability-secret -o jsonpath='{$.data.token}' | base64 -d | sed 's/$/\\n/g')
+TOKEN=$(oc get secret azure-arc-observability-secret -o jsonpath='{$.data.token}' | base64 -d | sed 's/$/\n/g')
 echo $TOKEN
 ```
 
