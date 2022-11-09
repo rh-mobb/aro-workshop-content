@@ -91,7 +91,7 @@ oc apply -f https://rh-mobb.github.io/aro-hackathon-content/assets/muo-upgrade-c
 Check the status of the scheduled upgrade
 
 ```bash
-c -n openshift-managed-upgrade-operator get \
+oc -n openshift-managed-upgrade-operator get \
  upgradeconfigs.upgrade.managed.openshift.io \
  managed-upgrade-config -o jsonpath='{.status}' | jq
 ```

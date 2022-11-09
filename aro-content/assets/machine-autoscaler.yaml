@@ -1,7 +1,7 @@
 apiVersion: "autoscaling.openshift.io/v1beta1"
 kind: "MachineAutoscaler"
 metadata:
-  name: "tstacey-01-6fnwk-worker-eastus1-autoscaler"
+  name: <name of your Machine set>
   namespace: "openshift-machine-api"
 spec:
   minReplicas: 1
@@ -9,4 +9,4 @@ spec:
   scaleTargetRef:
     apiVersion: machine.openshift.io/v1beta1
     kind: MachineSet
-    name: tstacey-01-6fnwk-worker-eastus1
+    name: <name of your Machine set>

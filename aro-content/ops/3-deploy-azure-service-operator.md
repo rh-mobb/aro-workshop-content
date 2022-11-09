@@ -2,6 +2,7 @@
 Azure Service Operator (ASO) is an open-source project by Microsoft Azure. ASO gives you the ability to provision and manage Azure resources such as compute, databases, resource groups, networking, etc. as objects in Kubernetes using declarative Kubernetes manifests.
 
 ASO consists of:
+
 - Custom Resource Definitions (CRDs) for each of the Azure services that a Kubernetes user can provision.
 - A Kubernetes controller that manages the Azure resources represented by the user-specified Custom Resources. The controller attempts to synchronize the desired state in the user-specified Custom Resource with the actual state of that resource in Azure, creating it if it doesn't exist, updating it if it has been changed, or deleting it.
 
@@ -23,8 +24,8 @@ First, set the required environment variables for your environment, be sure to r
 ```bash
 AZURE_TENANT_ID="$(az account show -o tsv --query tenantId)"
 AZURE_SUBSCRIPTION_ID="$(az account show -o tsv --query id)"
-CLUSTER_NAME="workshop"
-AZURE_RESOURCE_GROUP="workshop-test"
+CLUSTER_NAME=$USERID
+AZURE_RESOURCE_GROUP=$USERID
 AZURE_CLIENT_ID=<your-client-id> # This is the appID from the service principal provided to you.
 AZURE_CLIENT_SECRET=<your-client-secret> # This is the password from the service principal we created.
 ```
@@ -73,7 +74,7 @@ TEST SUITE: None
 There is a pod in the azureserviceoperator-system namespace with two containers, when both are running the controller is installed and ready:
 
 ```bash
-oc get po -n azureserviceoperator-system
+oc get pod -n azureserviceoperator-system
 ```
 
 ```bash
