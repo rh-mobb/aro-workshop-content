@@ -27,8 +27,3 @@ echo 'export PATH=$PATH:~/siege:~/openshift:~/envsub:~/tkn' >> ~/.bashrc
 source ~/.bashrc
 
 oc completion bash > ~/openshift/oc_bash_completion
-
-az provider register -n Microsoft.RedHatOpenShift --wait
-az provider register -n Microsoft.Compute --wait
-az provider register -n Microsoft.Storage --wait
-az provider register -n Microsoft.Authorization --wait
