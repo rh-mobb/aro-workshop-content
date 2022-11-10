@@ -32,4 +32,6 @@ wget https://rh-mobb.github.io/aro-hackathon-content/assets/cloudshell-setup.sh
 chmod +x cloudshell-setup.sh
 
 ./cloudshell-setup.sh
+
+source .bashrc
 ```
