@@ -320,7 +320,7 @@ Save your file and apply it to your ARO cluster using `oc apply`.
 oc apply -f aro-content/assets/azure-arc-secretproviderclass.yaml
 ```
 
-Now we can create a pod using the following YAML, filling in the name of your identity.
+Now we can create a pod using the following YAML, filling in the name of your `SecretProviderClass`, `akvprovider-demo` in this example.
 
 ```yaml
 kind: Pod
