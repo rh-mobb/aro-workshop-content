@@ -92,8 +92,8 @@ Check the status of the scheduled upgrade
 
 ```bash
 oc -n openshift-managed-upgrade-operator get \
- upgradeconfigs.upgrade.managed.openshift.io \
- managed-upgrade-config -o jsonpath='{.status}' | jq
+upgradeconfigs.upgrade.managed.openshift.io \
+managed-upgrade-config -o jsonpath='{.status}' | jq
 ```
 
 !!! info
