@@ -19,7 +19,7 @@ jobs:
         with:
           python-version: 3.x
       - name: Install MkDocs and Plugins
-        run: pip install mkdocs-material mkdocs-glightbox
+        run: pip install mkdocs-material mkdocs-glightbox mkdocs-section-index
         # 
         # CAUTION !!
         #
