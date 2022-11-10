@@ -1,32 +1,41 @@
 ## Access the OpenShift Console and CLI
 
+Ensure that your workshop environment has our helper variables configured
+
+```bash
+env | grep -E  'AZ_|OCP'
+```
+
+You should see a list of variables including `AZ_USER` and `OCP_CONSOLE`
+
 To access the OpenShift `oc` CLI and web console you will need to retrieve your cluster credentials. Use the cluster name and Resource Group name that were provided to you.
 
 To retrieve the credentials run:
 
 ```bash
-az aro list-credentials --name $USERID --resource-group $USERID
+az aro list-credentials --name "${AZ_ARO}" --resource-group "${AZ_RG}"
 ```
 
 To retrieve the console URL run:
 
 ```bash
-az aro show --name $USERID --resource-group $USERID -o tsv --query consoleProfile
+az aro show --name "${AZ_ARO}" --resource-group \
+  "${AZ_RG}" -o tsv --query consoleProfile
 ```
 
-Login to the console with the `kubeadmin` user through a browser.
+Login to the console with the provided credentials through a browser.
 
 ### OpenShift CLI Login
 
-Retrieve the API server's address.
+To retrieve the API server's address.
 
 ```bash
-apiServer=$(az aro show -g $USERID -n $USERID --query apiserverProfile.url -o tsv)
+az aro show -g "${AZ_RG}" -n "${AZ_ARO}" --query apiserverProfile.url -o tsv
 ```
 
-Login to the OpenShift cluster's API server using the following command. Replace <kubeadmin password> with the password you just retrieved.
+Login to the OpenShift cluster's API server using the following command.
 
 ```bash
-oc login $apiServer -u kubeadmin -p <kubeadmin password>
+oc login "${OCP_API}" -u "${OCP_USER}" -p "${OCP_PASS}"
 ```
 

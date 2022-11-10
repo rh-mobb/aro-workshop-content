@@ -1,29 +1,73 @@
 #!/usr/bin/env bash
 
+mkdir -p ~/scratch
+cd ~/scratch
+
+echo "Installing OC cli"
+
+if ! which oc > /dev/null; then
+  curl -Ls https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz | tar xzf -
+
+  install oc ~/bin
+  install kubectl ~/bin
+fi
+
+echo "Configure OC bash completion"
+oc completion bash > ~/bin/oc_bash_completion
+
+
+echo "Installing Quarkus"
+if ! which quarkus > /dev/null; then
+  curl -Ls https://sh.jbang.dev | bash -s - trust add https://repo1.maven.org/maven2/io/quarkus/quarkus-cli/
+  curl -Ls https://sh.jbang.dev | bash -s - app install --fresh --force quarkus@quarkusio
+fi
+
+echo "Installing envsubst"
+if ! which envsubst > /dev/null; then
+  curl -Ls https://github.com/a8m/envsubst/releases/download/v1.2.0/envsubst-`uname -s`-`uname -m` -o envsubst
+  install envsubst ~/bin
+fi
+
+echo "Installing tekton cli"
+if ! which quarkus > /dev/null; then
+  curl -Ls https://mirror.openshift.com/pub/openshift-v4/clients/pipeline/latest/tkn-linux-amd64.tar.gz | tar xzf -
+  install tkn ~/bin
+fi
+
+echo "Installing Siege"
+if ! which siege > /dev/null; then
+  curl -Ls http://download.joedog.org/siege/siege-4.1.5.tar.gz | tar xzf -
+  cd siege-4.1.5
+  ./configure --prefix=${HOME} --with-ssl
+  make
+  make install
+  siege.config
+fi
+
+echo "Configuring Environment specific variables"
+cat <<"EOF" > ~/.workshoprc
+source ~/bin/oc_bash_completion
+export AZ_USER=$(az ad signed-in-user show --query "userPrincipalName" -o tsv | cut -d @ -f1)
+export USERID="${AZ_USER}"
+export AZ_PASS="R3dH4t1!"
+
+export AZ_RG="${AZ_USER}-rg"
+export AZ_ARO="${AZ_USER}-cluster"
+
+export OCP_PASS=$(az aro list-credentials --name "${AZ_ARO}" --resource-group "${AZ_RG}" \
+  --query="kubeadminPassword" -o tsv)
+export OCP_USER="kubeadmin"
+export OCP_CONSOLE="$(az aro show --name ${AZ_ARO} --resource-group ${AZ_RG} \
+  -o tsv --query consoleProfile)"
+export OCP_API="$(az aro show --name ${AZ_ARO} --resource-group ${AZ_RG} \
+  --query apiserverProfile.url -o tsv)"
+EOF
+
+echo "source ~/.workshoprc" >> ~/.bashrc
+
 cd ~
-curl https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz > openshift-client-linux.tar.gz
+echo "******SETUP COMPLETE *******"
+echo
+echo
+echo "Run '. ~/.workshoprc' to enable bash completion and load environment specific variables"
 
-mkdir openshift
-
-tar -zxvf openshift-client-linux.tar.gz -C openshift
-
-curl -Ls https://sh.jbang.dev | bash -s - trust add https://repo1.maven.org/maven2/io/quarkus/quarkus-cli/
-curl -Ls https://sh.jbang.dev | bash -s - app install --fresh --force quarkus@quarkusio
-
-curl -L https://github.com/a8m/envsubst/releases/download/v1.2.0/envsubst-`uname -s`-`uname -m` -o envsubst
-chmod +x envsubst
-mkdir envsub
-mv envsubst envsub/
-
-wget https://mirror.openshift.com/pub/openshift-v4/clients/pipeline/latest/tkn-linux-amd64.tar.gz
-mkdir tkn
-tar -xvf tkn-linux-amd64.tar.gz -C tkn 
-
-wget http://download.joedog.org/siege/siege-latest.tar.gz
-mkdir siege
-tar -xvf siege-latest.tar.gz -C siege
-
-echo 'export PATH=$PATH:~/siege:~/openshift:~/envsub:~/tkn' >> ~/.bashrc
-source ~/.bashrc
-
-oc completion bash > ~/openshift/oc_bash_completion
