@@ -79,4 +79,7 @@ markdown_extensions:
   - pymdownx.snippets:
       base_path: 'aro-content/assets/'
 
+extra_css:
+  - assets/css/custom.css
+
 # Google Analytics

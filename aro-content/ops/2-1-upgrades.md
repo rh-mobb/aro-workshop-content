@@ -1,5 +1,23 @@
 ## Introduction
- 
+
+Azure Red Hat Openshift can be upgraded from inside the OpenShift Console, or by utilizing the Managed Upgrade Operator which allows you to set an upgrade schedule.
+
+### OpenShift Console
+
+Log in to your OpenShift Console
+
+Using the menu on the left Select **Administration** -> **Cluster Settings**.
+
+!!! warn
+    If the Channel is not set, set it to `stable-4.10`and it should update to show available upgrade paths.
+
+!!! info
+    From here you could click "Select a version" and upgrade the cluster, or you could follow the instructions below to use the Managed Upgrade Operator.
+
+![screenshot of aro console upgrade screen](Images/aro-console-upgrade.png)
+
+### Managed Upgrade Operator
+
 The Managed Upgrade Operator has been created to manage the orchestration of automated in-place cluster upgrades.
 
 Whilst the operator's job is to invoke a cluster upgrade, it does not perform any activities of the cluster upgrade process itself. This remains the responsibility of the OpenShift Container Platform. The operator's goal is to satisfy the operating conditions that a managed cluster must hold, both pre- and post-invocation of the cluster upgrade.
@@ -29,7 +47,8 @@ Wait a few moments to ensure the Management Upgrade Operator is ready, the statu
 oc -n openshift-managed-upgrade-operator \
   get deployment managed-upgrade-operator
 ```
-```
+
+```{ .text .no-copy }
 NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
 managed-upgrade-operator   1/1     1            1           2m2s
 ```
@@ -52,10 +71,7 @@ Restart the Managed Upgrade Operator
 
 ```
 oc -n openshift-managed-upgrade-operator \
-  scale deployment managed-upgrade-operator --replicas=0
-
-oc -n openshift-managed-upgrade-operator \
-  scale deployment managed-upgrade-operator --replicas=1
+  rollout restart deployment managed-upgrade-operator
 ```
 
 Look for available Upgrades
@@ -64,7 +80,7 @@ Look for available Upgrades
     If the output is `nil` there are no available upgrades and you cannot continue.
 
 ```bash
-oc get clusterversion version -o jsonpath='{.status.availableUpdates}'
+oc get clusterversion version -o jsonpath='{.status.availableUpdates}' | jq .
 ```
 
 ### Schedule an Upgrade
@@ -81,7 +97,8 @@ The configuration below will schedule an upgrade for the current date / time + 5
 To apply the UpgradeConfig you can run the following commands:
 
 ```bash
-oc apply -f https://rh-mobb.github.io/aro-hackathon-content/assets/muo-upgrade-config.yaml
+oc apply -f \
+  https://rh-mobb.github.io/aro-hackathon-content/assets/muo-upgrade-config.yaml
 ```
 
 !!! warning
@@ -93,13 +110,13 @@ Check the status of the scheduled upgrade
 ```bash
 oc -n openshift-managed-upgrade-operator get \
 upgradeconfigs.upgrade.managed.openshift.io \
-managed-upgrade-config -o jsonpath='{.status}' | jq
+managed-upgrade-config -o jsonpath='{.status}' | jq .
 ```
 
 !!! info
     The output of this command should show upgrades in progress
 
-```json
+```{ .json .no-copy }
 {
 "history": [
   {
