@@ -29,9 +29,7 @@ When your shell is ready and you are at the bash prompt, run the following comma
 ```
 wget https://rh-mobb.github.io/aro-hackathon-content/assets/cloudshell-setup.sh
 
-chmod +x cloudshell-setup.sh
+bash ./cloudshell-setup.sh
 
-./cloudshell-setup.sh
-
-source .bashrc
+source .workshoprc
 ```

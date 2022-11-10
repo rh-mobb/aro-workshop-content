@@ -8,7 +8,7 @@ env | grep -E  'AZ_|OCP'
 
 You should see a list of variables including `AZ_USER` and `OCP_CONSOLE`
 
-To access the OpenShift `oc` CLI and web console you will need to retrieve your cluster credentials. Use the cluster name and Resource Group name that were provided to you.
+To access the OpenShift `oc` CLI and web console you will need to retrieve your cluster credentials. The helper variables from above will make this simple!
 
 To retrieve the credentials run:
 

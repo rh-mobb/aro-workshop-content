@@ -14,7 +14,7 @@ nav:
   - Workshop Setup:
     - home_pages/workshop-setup/index.md
     - Environment Setup: setup/1-environment-setup.md
-    - Cluster Creation: setup/2-cluster-creation.md
+    # - Cluster Creation: setup/2-cluster-creation.md
     - Access Your Cluster: setup/3-access-cluster.md
   - Operations:
     - home_pages/operations/index.md
@@ -29,7 +29,7 @@ nav:
     - Azure ARC Integration: ops/5-arc-integration.md
   - Development:
     - home_pages/development/index.md
-    - Deploy and Expose an App: 
+    - Deploy and Expose an App:
       - Deploy the App: app/2A-deploy-app.md
       - Expose the App with Front Door: app/2B-deploy-app.md
       - Automate Deploying the App: app/2C-deploy-app.md
