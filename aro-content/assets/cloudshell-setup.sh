@@ -7,8 +7,6 @@ mkdir openshift
 
 tar -zxvf openshift-client-linux.tar.gz -C openshift
 
-oc completion bash > ~/openshift/oc_bash_completion
-
 curl -Ls https://sh.jbang.dev | bash -s - trust add https://repo1.maven.org/maven2/io/quarkus/quarkus-cli/
 curl -Ls https://sh.jbang.dev | bash -s - app install --fresh --force quarkus@quarkusio
 
@@ -27,6 +25,8 @@ tar -xvf siege-latest.tar.gz -C siege
 
 echo 'export PATH=$PATH:~/siege:~/openshift:~/envsub:~/tkn' >> ~/.bashrc
 source ~/.bashrc
+
+oc completion bash > ~/openshift/oc_bash_completion
 
 az provider register -n Microsoft.RedHatOpenShift --wait
 az provider register -n Microsoft.Compute --wait
