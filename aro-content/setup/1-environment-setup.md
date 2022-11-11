@@ -20,7 +20,8 @@ Select the option to use Bash.
 
 When selecting a Cloud Shell region you must select a backing storage account co-located in the same region.
 
-When the storage setup prompt appears, `Create storage'.
+!!! info
+    When the storage setup prompt appears, click **Show advanced settings** and enter `cloudshell` into the fileshare name then click **Create storage**.
 
 ![Default Storage Settings](../assets/images/default-storage.png){ align=center }
 

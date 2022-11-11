@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+mkdir -p ~/bin
 mkdir -p ~/scratch
 cd ~/scratch
 
@@ -36,12 +37,14 @@ fi
 
 echo "Installing Siege"
 if ! which siege > /dev/null; then
+  echo "Compiling Siege, this may take a few minutes..."
   curl -Ls http://download.joedog.org/siege/siege-4.1.5.tar.gz | tar xzf -
   cd siege-4.1.5
   ./configure --prefix=${HOME} --with-ssl
-  make
-  make install
-  siege.config
+  make > /dev/null
+  make install > /dev/null
+  mkdir -p ~/.siege
+  siege.config > /dev/null
 fi
 
 echo "Configuring Environment specific variables"
