@@ -157,7 +157,8 @@ az network dns record-set txt add-record \
 -z ${AZ_USER}.ws.mobb.cloud \
 -n _dnsauth.app \
 --value $(az afd custom-domain show -g ${AZ_RG} \
---profile-name ${AZ_USER}-afd-${UNIQUE} --custom-domain-name "app.${AZ_USER}.ws.mobb.cloud" \
+--profile-name ${AZ_USER}-afd-${UNIQUE} \
+--custom-domain-name "app.${AZ_USER}.ws.mobb.cloud" \
 --query "validationProperties.validationToken") \
 --record-set-name _dnsauth.app
 ```
