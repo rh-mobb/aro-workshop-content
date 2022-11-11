@@ -179,7 +179,9 @@ az network dns record-set cname set-record \
 -g ${AZ_RG} \
 -z ${USERID}.ws.mobb.cloud \
 -n "app" 
--c $(az afd endpoint show -g ${AZ_RG} --profile-name ${USERID}-afd-${UNIQUE} --endpoint-name ${USERID}-ilb-${UNIQUE} --query "hostName" -o tsv)
+-c $(az afd endpoint show -g ${AZ_RG} \
+--profile-name ${USERID}-afd-${UNIQUE} --endpoint-name ${USERID}-ilb-${UNIQUE} \
+--query "hostName" -o tsv)
 ```
 
 Congratulations! You've successfully configured Azure Front Door! 
