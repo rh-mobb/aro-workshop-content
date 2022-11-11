@@ -57,6 +57,7 @@ export AZ_PASS="R3dH4t1!"
 
 export AZ_RG="${AZ_USER}-rg"
 export AZ_ARO="${AZ_USER}-cluster"
+export AZ_LOCATION='eastus'
 
 export OCP_PASS=$(az aro list-credentials --name "${AZ_ARO}" --resource-group "${AZ_RG}" \
   --query="kubeadminPassword" -o tsv)
