@@ -42,10 +42,21 @@ Click on the cert-manager tile to show the details page, and follow the install 
 First, set the required environment variables for your environment, be sure to replace the ClientID and Client Secret with the values you were provided, and set the correct Resource Group and Cluster Name:
 
 ```bash
-AZURE_TENANT_ID="$(az account show -o tsv --query tenantId)"
-AZURE_SUBSCRIPTION_ID="$(az account show -o tsv --query id)"
-AZURE_CLIENT_ID="$(az ad sp list --show-mine --query "[0].{id:appId}" -o tsv)"
-AZURE_CLIENT_SECRET=$(az ad app credential reset --id $AZURE_CLIENT_ID --append -o tsv --query {password:password})
+export AZURE_TENANT_ID="$(az account show -o tsv --query tenantId)"
+export AZURE_SUBSCRIPTION_ID="$(az account show -o tsv --query id)"
+export AZURE_CLIENT_ID="$(az ad sp list --show-mine --query "[0].{id:appId}" -o tsv)"
+export AZURE_CLIENT_SECRET="$(az ad app credential reset --id $AZURE_CLIENT_ID --append -o tsv --query {password:password})"
+```
+
+Save these into your `.workshoprc` file in case the cloud shell session restarts
+
+```bash
+cat <<EOF >> ~/.workshoprc
+export AZURE_TENANT_ID="${AZURE_TENANT_ID}"
+export AZURE_SUBSCRIPTION_ID="${AZURE_SUBSCRIPTION_ID}"
+export AZURE_CLIENT_ID="${AZURE_CLIENT_ID}"
+export AZURE_CLIENT_SECRET="${AZURE_CLIENT_SECRET}"
+EOF
 ```
 
 
