@@ -155,7 +155,8 @@ Do note, this step takes about 5 minutes to propagate to the various global Azur
 
 Once we've added our custom domain to Azure Front Door, we now need to validate that we control it. To do so, we'll add a validation token to the domain in the form of a TXT record. To do so, run the following command:
 
-```az network dns record-set txt add-record \
+```bash
+az network dns record-set txt add-record \
 -g ${AZ_RG} \
 -z ${USERID}.ws.mobb.cloud \
 -n _dnsauth.app \
@@ -163,6 +164,7 @@ Once we've added our custom domain to Azure Front Door, we now need to validate 
 --profile-name ${USERID}-afd-${UNIQUE} --custom-domain-name "app.${USERID}.ws.mobb.cloud" \
 --query "validationProperties.validationToken") \
 --record-set-name _dnsauth.app
+```
 
 Now, we can check if the domain has been validated by Azure Front Door by running the following command, but do note it can take several minutes for Azure Front Door to validate your domain. 
 
