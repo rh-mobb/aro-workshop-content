@@ -36,7 +36,7 @@ First, we will create an Azure Private Link service that will allow Azure Front 
 ```bash
 az network private-link-service create \
 --name ${USERID}-pls \
---resource-group ${AZ_ARO} \
+--resource-group ${AZ_RG} \
 --private-ip-address-version IPv4 \
 --private-ip-allocation-method Dynamic \
 --vnet-name ${VNET_NAME} \
@@ -47,14 +47,14 @@ az network private-link-service create \
 Once the Private Link service has been created, let's grab the ID and store it for future use. To do so, run the following command:
 
 ```bash
-PL_ID=$(az network private-link-service show -n ${USERID}-pls -g ${AZ_ARO} --query 'id' -o tsv)
+PL_ID=$(az network private-link-service show -n ${USERID}-pls -g ${AZ_RG} --query 'id' -o tsv)
 ```
 
 Next, let's create an instance of Azure Front Door. To do so, run the following command:
 
 ```bash
 az afd profile create \
---resource-group ${AZ_ARO} \
+--resource-group ${AZ_RG} \
 --profile-name ${USERID}-afd-${UNIQUE} \
 --sku Premium_AzureFrontDoor
 ```
@@ -62,14 +62,14 @@ az afd profile create \
 Once the Front Door instance has been created, let's grab the ID and storage it for future use. To do so, run the following command: 
 
 ```bash
-export AFD_ID=$(az afd profile show -g ${AZ_ARO} --profile-name ${USERID}-afd-${UNIQUE} --query 'id' -o tsv)
+export AFD_ID=$(az afd profile show -g ${AZ_RG} --profile-name ${USERID}-afd-${UNIQUE} --query 'id' -o tsv)
 ```
 
 Next, we need to create an Azure Front Door endpoint for the ARO internal load balancer. This will allow Azure Front Door to send traffic directly to the ARO Load Balancer.
 
 ```bash
 az afd endpoint create \
---resource-group ${AZ_ARO} \
+--resource-group ${AZ_RG} \
 --enabled-state Enabled \
 --endpoint-name ${USERID}-ilb-${UNIQUE} \
 --profile-name ${USERID}-afd-${UNIQUE}
@@ -85,7 +85,7 @@ az afd origin-group create \
 --probe-request-type GET \
 --probe-interval-in-seconds 100 \
 --profile-name ${USERID}-afd-${UNIQUE} \
---resource-group ${AZ_ARO} \
+--resource-group ${AZ_RG} \
 --probe-interval-in-seconds 120 \
 --sample-size 4 \
 --successful-samples-required 3 \
@@ -119,7 +119,7 @@ Next, we need to approve the Private Link connection between Azure Front Door an
 ```bash
 az network private-endpoint-connection approve \
 --description 'Approved' \
---id $(az network private-link-service show -n ${USERID}-pls -g ${AZ_ARO} --query 'privateEndpointConnections[0].id' -o tsv)
+--id $(az network private-link-service show -n ${USERID}-pls -g ${AZ_RG} --query 'privateEndpointConnections[0].id' -o tsv)
 ```
 
 Now, we need to add your custom domain to Azure Front Door. For this workshop, your custom domain will be your username.ws.mobb.cloud (for example, user0 will use user0.ws.mobb.cloud). To do so, run the following command:
@@ -131,7 +131,7 @@ az afd custom-domain create \
 --host-name "app.${USERID}.ws.mobb.cloud" \
 --minimum-tls-version TLS12 \
 --profile-name ${USERID}-afd-${UNIQUE} \
---resource-group ${AZ_ARO}
+--resource-group ${AZ_RG}
 ```
 
 Do note, this step takes about 5 minutes to propagate to the various global Azure endpoints. 
@@ -139,26 +139,26 @@ Do note, this step takes about 5 minutes to propagate to the various global Azur
 Once we've added our custom domain to Azure Front Door, we now need to validate that we control it. To do so, we'll add a validation token to the domain in the form of a TXT record. To do so, run the following command:
 
 ```az network dns record-set txt add-record \
--g ${AZ_ARO} \
+-g ${AZ_RG} \
 -z ${USERID}.ws.mobb.cloud \
 -n _dnsauth.app \
---value $(az afd custom-domain show --resource-group ${AZ_ARO} --profile-name ${USERID}-afd-${UNIQUE} --custom-domain-name "app.${USERID}.ws.mobb.cloud" --query "validationProperties.validationToken") \
+--value $(az afd custom-domain show --resource-group ${AZ_RG} --profile-name ${USERID}-afd-${UNIQUE} --custom-domain-name "app.${USERID}.ws.mobb.cloud" --query "validationProperties.validationToken") \
 --record-set-name _dnsauth.app
 
 Now, we can check if the domain has been validated by Azure Front Door by running the following command, but do note it can take several minutes for Azure Front Door to validate your domain. 
 
 ```
-az afd custom-domain list -g ${AZ_ARO} --profile-name ${USERID}-afd-${UNIQUE} --query "[? contains(hostName, app.${USERID}.ws.mobb.cloud)].domainValidationState"
+az afd custom-domain list -g ${AZ_RG} --profile-name ${USERID}-afd-${UNIQUE} --query "[? contains(hostName, app.${USERID}.ws.mobb.cloud)].domainValidationState"
 ```
 
 Once your domain has been successfully validated, you'll need to create a CNAME record in your custom domain that points to the Azure Front Door endpoint. To do so, run the following command:
 
 ```bash
 az network dns record-set cname set-record \
--g ${AZ_ARO} \
+-g ${AZ_RG} \
 -z ${USERID}.ws.mobb.cloud \
 -n "app" 
--c $(az afd endpoint show -g ${AZ_ARO} --profile-name ${USERID}-afd-${UNIQUE} --endpoint-name ${USERID}-ilb-${UNIQUE} --query "hostName" -o tsv)
+-c $(az afd endpoint show -g ${AZ_RG} --profile-name ${USERID}-afd-${UNIQUE} --endpoint-name ${USERID}-ilb-${UNIQUE} --query "hostName" -o tsv)
 ```
 
 Congratulations! You've successfully configured Azure Front Door! 
