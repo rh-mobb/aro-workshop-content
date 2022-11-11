@@ -35,10 +35,19 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
 
 Run this oc command to enable the Managed Upgrade Operator (MUO)
 
-```
-oc patch cluster.aro.openshift.io cluster --patch \
- '{"spec":{"operatorflags":{"rh.srep.muo.enabled": "true","rh.srep.muo.managed": "true","rh.srep.muo.deploy.pullspec":"arosvc.azurecr.io/managed-upgrade-operator@sha256:f57615aa690580a12c1e5031ad7ea674ce249c3d0f54e6dc4d070e42a9c9a274"}}}' \
- --type=merge
+```json
+oc patch cluster.aro.openshift.io cluster --type=merge --patch \
+ '
+  {
+    "spec": {
+      "operatorflags": {
+        "rh.srep.muo.enabled": "true",
+        "rh.srep.muo.managed": "true",
+        "rh.srep.muo.deploy.pullspec": "arosvc.azurecr.io/managed-upgrade-operator@sha256:f57615aa690580a12c1e5031ad7ea674ce249c3d0f54e6dc4d070e42a9c9a274"
+      }
+    }
+  }
+ '
 ```
 
 Wait a few moments to ensure the Management Upgrade Operator is ready, the status of the operator can be verified with:
@@ -64,7 +73,8 @@ Next, configure the Managed Upgrade Operator by using the following YAML:
 You can apply the ConfigMap with this command:
 
 ```bash
-oc apply -f https://rh-mobb.github.io/aro-hackathon-content/assets/muo-config-map.yaml
+oc apply -f \
+  https://rh-mobb.github.io/aro-hackathon-content/assets/muo-config-map.yaml
 ```
 
 Restart the Managed Upgrade Operator
@@ -76,8 +86,8 @@ oc -n openshift-managed-upgrade-operator \
 
 Look for available Upgrades
 
-!!! info
-    If the output is `nil` there are no available upgrades and you cannot continue.
+!!! warn
+    If the output of the following command is `parse error: Invalid numeric literal at EOF at line 1, column 5` there are no available upgrades and you should skip the rest of these steps.
 
 ```bash
 oc get clusterversion version -o jsonpath='{.status.availableUpdates}' | jq .

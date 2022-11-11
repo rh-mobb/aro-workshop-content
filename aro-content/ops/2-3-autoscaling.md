@@ -8,37 +8,48 @@ A ClusterAutoscaler must have at least 1 machine autoscaler in order for the clu
 
 This can be accomplished via the Web Console or through the CLI with a YAML file for the custom resource definition. We'll use the latter.
 
-Download the sample [MachineAutoscaler resource definition](https://rh-mobb.github.io/aro-hackathon-content/assets/machine-autoscaler.yaml) and open it in your favorite editor.
+!!! info
+    This snippet will load a MachineSet into a variable and then write a MachineAutoscaler resource definition that we can apply later.
 
-For `metadata.name` give this machine autoscaler a name. Technically, this can be anything you want. But to make it easier to identify which machine set this machine autoscaler affects, specify or include the name of the machine set to scale. The machine set name takes the following form: clusterid-machineset-region-az.
-
-For `spec.ScaleTargetRef.name` enter the name of the exact MachineSet you want this to apply to. Below is an example of a completed file.
-
-``` title="machine-autoscaler.yaml"
---8<-- "machine-autoscaler.yaml"
+```bash
+MACHINE_SET=$(oc -n openshift-machine-api get machinesets \
+  -o name | cut -d / -f2 | head -1)
+cat <<EOF > machine-autoscaler.yaml
+apiVersion: "autoscaling.openshift.io/v1beta1"
+kind: "MachineAutoscaler"
+metadata:
+  name: "${MACHINE_SET}"
+  namespace: "openshift-machine-api"
+spec:
+  minReplicas: 1
+  maxReplicas: 3
+  scaleTargetRef:
+    apiVersion: machine.openshift.io/v1beta1
+    kind: MachineSet
+    name: "${MACHINE_SET}"
+EOF
 ```
 
-Save your file.
-
-Then create the resource in the cluster. Assuming you kept the same filename:
+Create the resource in the cluster. Assuming you kept the same filename:
 
 ```bash
 oc create -f machine-autoscaler.yaml
 ```
 
 You will see the following output:
-```
+``` {.text .no-copy}
 machineautoscaler.autoscaling.openshift.io/ok0620-rq5tl-worker-westus21-mautoscaler created
 ```
 
 You can also confirm this by checking the web console under "MachineAutoscalers" or by running:
 
 ```bash
-oc get machineautoscaler -n openshift-machine-api
+oc  -n openshift-machine-api get machineautoscaler
 ```
 
 You should see output similar to:
-```
+
+```{.text .no-copy}
 NAME                           REF KIND     REF NAME                      MIN   MAX   AGE
 ok0620-rq5tl-worker-westus21   MachineSet   ok0620-rq5tl-worker-westus2   1     7     40s
 ```
@@ -56,11 +67,12 @@ See the [documentation](https://docs.openshift.com/container-platform/latest/mac
 Create the resource in the cluster:
 
 ```bash
-oc create -f https://rh-mobb.github.io/aro-hackathon-content/assets/cluster-autoscaler.yaml
+oc create -f \
+  https://rh-mobb.github.io/aro-hackathon-content/assets/cluster-autoscaler.yaml
 ```
 
 Output:
-```bash
+```{.text .no-copy}
 clusterautoscaler.autoscaling.openshift.io/default created
 ```
 
@@ -74,10 +86,18 @@ Create a new project called "autoscale-ex":
 oc new-project autoscale-ex
 ```
 
+!!! info
+    This is the job resource definition that will exhaust the cluster's resources and cause it to scale more worker nodes
+
+``` title="job-work-queue.yaml"
+--8<-- "job-work-queue.yaml"
+```
+
 Create the job
 
 ```bash
-oc create -f https://raw.githubusercontent.com/openshift/training/master/assets/job-work-queue.yaml
+oc create -f \
+  https://rh-mobb.github.io/aro-hackathon-content/assets/job-work-queue.yaml
 ```
 
 After a few seconds, run the following to see what pods have been created.
@@ -87,8 +107,7 @@ oc get pods
 ```
 
 
-```
-$ oc get pods
+```{.text .no-copy}
 NAME                     READY   STATUS              RESTARTS   AGE
 work-queue-28n9m-29qgj   1/1     Running             0          53s
 work-queue-28n9m-2c9rm   0/1     Pending             0          53s
@@ -108,11 +127,10 @@ work-queue-28n9m-9ntxc   1/1     Running             0          53s
 We see a lot of pods in a pending state.  This should trigger the cluster autoscaler to create more machines using the MachineAutoscaler we created. If we check on the MachineSets:
 
 ```bash
-oc get machinesets -n openshift-machine-api
+oc -n openshift-machine-api get machinesets
 ```
 
-```bash
-$ oc get machinesets -n openshift-machine-api
+```{.text .no-copy}
 NAME                           DESIRED   CURRENT   READY   AVAILABLE   AGE
 ok0620-rq5tl-worker-westus21   5         5         1       1           7h17m
 ok0620-rq5tl-worker-westus22   1         1         1       1           7h17m
@@ -124,15 +142,12 @@ We see that the cluster autoscaler has already scaled the machine set up to 5 in
 If we check on the machines we should see that 4 are in a "Provisioned" state (there was 1 already existing from before for a total of 5 in this machine set).
 
 ```bash
-oc get machines -n openshift-machine-api
+oc -n openshift-machine-api get machines \
+  -l "machine.openshift.io/cluster-api-machine-role=worker"
 ```
 
-```
-$ oc get machines -n openshift-machine-api
+```{.text .no-copy}
 NAME                                 PHASE         TYPE              REGION    ZONE   AGE
-ok0620-rq5tl-master-0                Running       Standard_D8s_v3   westus2   1      7h18m
-ok0620-rq5tl-master-1                Running       Standard_D8s_v3   westus2   2      7h18m
-ok0620-rq5tl-master-2                Running       Standard_D8s_v3   westus2   3      7h18m
 ok0620-rq5tl-worker-westus21-7hqgz   Provisioned   Standard_D4s_v3   westus2   1      72s
 ok0620-rq5tl-worker-westus21-7j22r   Provisioned   Standard_D4s_v3   westus2   1      73s
 ok0620-rq5tl-worker-westus21-7n7nf   Provisioned   Standard_D4s_v3   westus2   1      72s
@@ -145,41 +160,25 @@ ok0620-rq5tl-worker-westus23-hzggb   Running       Standard_D4s_v3   westus2   3
 After a few minutes we should see all 5 are provisioned.
 
 ```bash
-oc get machinesets -n openshift-machine-api
+oc -n openshift-machine-api get machinesets
 ```
 
-```
-$ oc get machinesets -n openshift-machine-api
+```{.text .no-copy}
 NAME                           DESIRED   CURRENT   READY   AVAILABLE   AGE
 ok0620-rq5tl-worker-westus21   5         5         5       5           7h23m
 ok0620-rq5tl-worker-westus22   1         1         1       1           7h23m
 ok0620-rq5tl-worker-westus23   1         1         1       1           7h23m
 ```
 
-If we now wait a few more minutes for the pods to complete, we should see the cluster autoscaler begin scale down the machine set and thus delete machines.
+You can watch the cluster autoscaler create more machines and to accomodate the extra workload and then delete them again after the job has completed
 
 ```bash
-oc get machinesets -n openshift-machine-api
+watch oc -n openshift-machine-api get machines \
+  -l "machine.openshift.io/cluster-api-machine-role=worker"
 ```
 
-```
-$ oc get machinesets -n openshift-machine-api
-NAME                           DESIRED   CURRENT   READY   AVAILABLE   AGE
-ok0620-rq5tl-worker-westus21   4         4         4       4           7h27m
-ok0620-rq5tl-worker-westus22   1         1         1       1           7h27m
-ok0620-rq5tl-worker-westus23   1         1         1       1           7h27m
-```
-
-```bash
-oc get machines -n openshift-machine-api
-```
-
-```bash 
-$ oc get machines -n openshift-machine-api
+```{.text .no-copy}
 NAME                                 PHASE      TYPE              REGION    ZONE   AGE
-ok0620-rq5tl-master-0                Running    Standard_D8s_v3   westus2   1      7h28m
-ok0620-rq5tl-master-1                Running    Standard_D8s_v3   westus2   2      7h28m
-ok0620-rq5tl-master-2                Running    Standard_D8s_v3   westus2   3      7h28m
 ok0620-rq5tl-worker-westus21-7hqgz   Running    Standard_D4s_v3   westus2   1      10m
 ok0620-rq5tl-worker-westus21-7j22r   Running    Standard_D4s_v3   westus2   1      10m
 ok0620-rq5tl-worker-westus21-8m94b   Deleting   Standard_D4s_v3   westus2   1      10m

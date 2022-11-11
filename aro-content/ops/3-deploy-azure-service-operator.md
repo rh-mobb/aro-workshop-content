@@ -1,5 +1,9 @@
 ## Deploy Azure Service Operator
+
 Azure Service Operator (ASO) is an open-source project by Microsoft Azure. ASO gives you the ability to provision and manage Azure resources such as compute, databases, resource groups, networking, etc. as objects in Kubernetes using declarative Kubernetes manifests.
+
+!!!! warn
+    Azure Service Operator is in its second incarnation (v2) and is in Tech Preview, this means it is not fully operizationalized into Operator Hub and should not be used for Production. However it's really nifty and we like it.
 
 ASO consists of:
 
@@ -8,19 +12,17 @@ ASO consists of:
 
 ![Azure-Service-operator](../assets/images/aso-schematic.png)
 
+We will deploy ASO on an ARO cluster to provision and manage Azure resources. To install ASO we need:
 
+- An Azure Service Principal with Contributor permissions in the Azure Subscription. An Azure service principal is an identity created for use with applications, hosted services, and automated tools to access Azure resources. **This will be provided to you by the event staff**
 
-We deploy ASO on an ARO cluster to provision and manage Azure resources. To install ASO we need:
-
-- An Azure Service Principal with Contributor permissions in the Azure Subscription. An Azure service principal is an identity created for use with applications, hosted services, and automated tools to access Azure resources.
-    - This will be provided to you by the event staff
 - A cert-manager operator instance. ASO relies on having the CRDs provided by cert-manager so it can request self-signed certificates. By default, cert-manager creates an Issuer of type SelfSigned, so it will work for ASO out-of-the-box.
 
 ###  Install and run ASO on your ARO cluster
 
 #### Prepare your environment
 First, set the required environment variables for your environment, be sure to replace the ClientID and Client Secret with the values you were provided, and set the correct Resource Group and Cluster Name:
- 
+
 ```bash
 AZURE_TENANT_ID="$(az account show -o tsv --query tenantId)"
 AZURE_SUBSCRIPTION_ID="$(az account show -o tsv --query id)"
@@ -67,7 +69,7 @@ STATUS: deployed
 REVISION: 4
 TEST SUITE: None
 ```
-   
+
 !!! info
     It takes up to 5 min for ASO operator to be up and running
 
