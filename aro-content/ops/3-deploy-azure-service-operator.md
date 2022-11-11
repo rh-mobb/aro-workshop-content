@@ -39,19 +39,11 @@ Click on the cert-manager tile to show the details page, and follow the install 
 
 #### Prepare your environment
 
-Create a service principal for ASO to use
-
-```bash
-az ad sp create-for-rbac --display-name "aso"
-```
-
 First, set the required environment variables for your environment, be sure to replace the ClientID and Client Secret with the values you were provided, and set the correct Resource Group and Cluster Name:
 
 ```bash
 AZURE_TENANT_ID="$(az account show -o tsv --query tenantId)"
 AZURE_SUBSCRIPTION_ID="$(az account show -o tsv --query id)"
-CLUSTER_NAME="${AZ_ARO}"
-AZURE_RESOURCE_GROUP="${AZ_RG}"
 AZURE_CLIENT_ID="$(az ad sp list --show-mine --query "[0].{id:appId}" -o tsv)"
 AZURE_CLIENT_SECRET=$(az ad app credential reset --id $AZURE_CLIENT_ID --append -o tsv --query {password:password})
 ```
@@ -66,10 +58,10 @@ helm repo update
 helm upgrade --install --devel aso2 aso2/azure-service-operator \
   --create-namespace \
   --namespace=azureserviceoperator-system \
-  --set azureSubscriptionID=$AZURE_SUBSCRIPTION_ID \
-  --set azureTenantID=$AZURE_TENANT_ID \
-  --set azureClientID=$AZURE_CLIENT_ID \
-  --set azureClientSecret=$AZURE_CLIENT_SECRET
+  --set azureSubscriptionID="${AZURE_SUBSCRIPTION_ID}" \
+  --set azureTenantID="${AZURE_TENANT_ID}" \
+  --set azureClientID="${AZURE_CLIENT_ID}" \
+  --set azureClientSecret="${AZURE_CLIENT_SECRET}"
 ```
 
 You should see the following output immediately:

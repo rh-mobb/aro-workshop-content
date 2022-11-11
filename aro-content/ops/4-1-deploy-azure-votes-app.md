@@ -27,7 +27,7 @@ cat <<EOF | oc apply -f -
 apiVersion: resources.azure.com/v1beta20200601
 kind: ResourceGroup
 metadata:
-  name: ${AZ_RG}
+  name: "${AZ_RG}"
   namespace: redis-demo
 spec:
   location: eastus
@@ -44,12 +44,12 @@ cat <<EOF | oc apply -f -
 apiVersion: cache.azure.com/v1beta20201201
 kind: Redis
 metadata:
-  name: $REDIS_HOSTNAME
+  name: "${REDIS_HOSTNAME}"
   namespace: redis-demo
 spec:
   location: eastus
   owner:
-    name: redis-demo
+    name: "${AZ_RG}"
   sku:
     family: C
     name: Basic
@@ -77,6 +77,23 @@ EOF
 ```
 
 This will take a couple of minutes to complete as well. Also note that there is typically a bit of lag between a resource being created and showing up in the Azure Portal.
+
+You can view the resource being created in the Azure Portal by searching for "Redis"
+
+![screenshot of azure portal showing redis](./Images/azr-portal-redis.png)
+
+You can watch the progress in the Cloud Shell by running
+
+```bash
+watch ~/bin/oc get redis
+```
+
+Eventually it will show
+
+```{.text .no-copy}
+NAME             READY   SEVERITY   REASON      MESSAGE
+redis-tjgf1lwg   True               Succeeded
+```
 
 ### Deploy the Azure Voting App
 
@@ -119,7 +136,7 @@ spec:
               name: redis-secret
               key: hostName
         - name: REDIS_NAME
-          value: $REDIS_HOSTNAME
+          value: "${REDIS_HOSTNAME}"
         - name: REDIS_PWD
           valueFrom:
             secretKeyRef:
@@ -162,3 +179,5 @@ oc get route azure-vote
 ```
 
 Browse to the URL provided by the previous command and validate that the app is working
+
+![screenshot of the voting app](./Images/aro-voting-app.png)
