@@ -25,8 +25,8 @@ Since Azure Front Door connects to your Azure Red Hat OpenShift (ARO) cluster vi
 ```bash
 export WORKER_SUBNET_ID=$(az aro show -n ${AZ_ARO} -g ${AZ_RG} --query 'workerProfiles[0].subnetId' -o tsv)
 export INTERNAL_LBNAME=$(az network lb list -g ${CLUSTER_RG} --query "[? contains(name, 'internal')].name" -o tsv)
-export LBCONFIG_ID=$(az network lb frontend-ip list-g ${CLUSTER_RG} --lb-name ${INTERNAL_LBNAME} --query "[? contains(subnet.id,'${WORKER_SUBNET_ID}')].id" -o tsv)
-export LBCONFIG_IP=$(az network lb frontend-ip list-g ${CLUSTER_RG} --lb-name ${INTERNAL_LBNAME} --query "[? contains(subnet.id,'${WORKER_SUBNET_ID}')].privateIpAddress" -o tsv)
+export LBCONFIG_ID=$(az network lb frontend-ip list -g ${CLUSTER_RG} --lb-name ${INTERNAL_LBNAME} --query "[? contains(subnet.id,'${WORKER_SUBNET_ID}')].id" -o tsv)
+export LBCONFIG_IP=$(az network lb frontend-ip list -g ${CLUSTER_RG} --lb-name ${INTERNAL_LBNAME} --query "[? contains(subnet.id,'${WORKER_SUBNET_ID}')].privateIpAddress" -o tsv)
 ```
 
 Now that we have all the required information stored in our environment variables, we can begin the process of creating the Azure Front Door service and its associated dependencies.
