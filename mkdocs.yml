@@ -23,6 +23,9 @@ nav:
       - Managing Worker Nodes: ops/2-2-worker-nodes.md
       - Cluster Autoscaling: ops/2-3-autoscaling.md
       - Labeling Nodes: ops/2-4-label-nodes.md
+    - Azure Front Door:
+      - Create a Private Ingress Controller: ops/6-private-ingress.md
+      - Configure Azure Front Door: ops/7-front-door.md
     - Azure Service Operator:
       - Deploy ASO: ops/3-deploy-azure-service-operator.md
       - Deploy an Azure Service using ASO: ops/4-1-deploy-azure-votes-app.md
