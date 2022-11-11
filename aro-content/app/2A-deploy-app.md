@@ -4,7 +4,7 @@ It's time for us to put our cluster to work and install a workload. We're going 
 
 The microsweeper application depends on a PostgreSQL database to store scores. Since ARO is a first class citizen in Azure, we'll use an Azure Database for PostgreSQL and connect it to our cluster with a private endpoint.
 
-!!! info 
+!!! info
     For simplicity sake, we'll be using public clusters for this workshop. The Frontdoor ingress pattern works for public and private clusters.
 
 
@@ -19,244 +19,202 @@ The microsweeper application depends on a PostgreSQL database to store scores. S
 
 # Provision DB for Minesweeper APP
 
-to provision a PostgreSQL DB you need to create the following objects in your cluster:
- - ResourceGroup  
- - FlexibleServer  
- - FlexibleServersDatabase 
+To provision a PostgreSQL DB you need to create the following ASO objects in your cluster:
+
+ - ResourceGroup
+ - FlexibleServer
+ - FlexibleServersDatabase
  - FlexibleServersFirewallRule
 
-1. **ResourceGroup**  **(if you don't have Resource Group)**
-    ```bash
-    cat <<EOF | oc apply -f -
-    apiVersion: resources.azure.com/v1beta20200601
-    kind: ResourceGroup
-    metadata:
-      name: user1-wksp-rg
-      namespace: default
-    spec:
-      location: eastus
-    EOF
-    ```
+Create a project to deploy the application in
 
-    check resource group in Azure portal 
-    ![Azure Resource Group](../assets/images/resource-group.png)
+```bash
+oc new-project minesweeper
+```
 
-2. **Provision PostgreSQL flexible server**
+Create a ResourceGroup to inherit your Azure Resource Group
 
-    1. **Create a secret for the DB server**
-      
-        **NOTE: You can update password in base64 format**
-       
-        ```bash
-        cat <<EOF | oc apply -f -
-        apiVersion : v1
-        kind : Secret
-        metadata : 
-          name : server-admin-pw
-          namespace : default
-        data:
-          password: cjNkaDR0MSE=
-        type: Opaque
-        EOF
-        ```
-            
-    2. **Create DB server**
-      
-        ```bash
-        cat <<EOF | oc apply -f -
-        apiVersion: dbforpostgresql.azure.com/v1beta20210601
-        kind: FlexibleServer
-        metadata:
-          name: user1-minesweeper-database
-          namespace: default
-        spec:
-          location: eastus
-          owner:
-            name: user1-wksp-rg
-          version: "13"
-          sku:
-            name: Standard_B1ms
-            tier: Burstable
-          administratorLogin: myAdmin
-          administratorLoginPassword: # This is the name/key of a Kubernetes secret in the same namespace
-            name: server-admin-pw
-            key: password
-          storage:
-            storageSizeGB: 32
-        EOF
-        ```
-      
-    3. **Create Server configuration**
-        ```bash
-        cat  <<EOF | oc apply -f -
-        apiVersion: dbforpostgresql.azure.com/v1beta20210601
-        kind: FlexibleServersConfiguration
-        metadata:
-          name: pgaudit
-          namespace: default
-        spec:
-          owner:
-            name: user1-minesweeper-database
-          azureName: pgaudit.log
-          source: user-override
-          value: READ
-        EOF
-        ```
-    4.  **Create a firewall rule for the database**
-        ```bash
-        cat  <<EOF | oc apply -f -
-        apiVersion: dbforpostgresql.azure.com/v1beta20210601
-        kind: FlexibleServersFirewallRule
-        metadata:
-          name: wksp-fw-rule
-          namespace: default
-        spec:
-          owner:
-            name: user1-minesweeper-database
-          startIpAddress: 0.0.0.0
-          endIpAddress: 255.255.255.255
-        EOF
-        ```
- 
-**Note: it takes about 10 minutes for the database to be operational and running** 
+```bash
+cat <<EOF | oc apply -f -
+apiVersion: resources.azure.com/v1beta20200601
+kind: ResourceGroup
+metadata:
+  name: ${AZ_RG}
+spec:
+  location: ${AZ_LOCATION}
+EOF
+```
 
- 
+Create a secret for the Database
+
+```bash
+cat <<EOF | oc apply -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: server-admin-pw
+stringData:
+  password: "${AZ_PASS}"
+type: Opaque
+EOF
+```
+
+Create the Azure Postgres Flexible Server
+
+```bash
+cat <<EOF | oc apply -f -
+apiVersion: dbforpostgresql.azure.com/v1beta20210601
+kind: FlexibleServer
+metadata:
+  name: "${AZ_USER}-minesweeper-database"
+spec:
+  location: "${AZ_LOCATION}"
+  owner:
+    name: "${AZ_RG}"
+  version: "13"
+  sku:
+    name: Standard_B1ms
+    tier: Burstable
+  administratorLogin: myAdmin
+  administratorLoginPassword:
+    name: server-admin-pw
+    key: password
+  storage:
+    storageSizeGB: 32
+EOF
+```
+
+Create Server configuration
+
+```bash
+cat  <<EOF | oc apply -f -
+apiVersion: dbforpostgresql.azure.com/v1beta20210601
+kind: FlexibleServersConfiguration
+metadata:
+  name: pgaudit
+spec:
+  owner:
+    name: "${AZ_USER}-minesweeper-database"
+  azureName: pgaudit.log
+  source: user-override
+  value: READ
+EOF
+```
+
+Create a firewall rule for the database
+
+```bash
+cat  <<EOF | oc apply -f -
+apiVersion: dbforpostgresql.azure.com/v1beta20210601
+kind: FlexibleServersFirewallRule
+metadata:
+  name: wksp-fw-rule
+spec:
+  owner:
+    name: "${AZ_USER}-minesweeper-database"
+  startIpAddress: 0.0.0.0
+  endIpAddress: 255.255.255.255
+EOF
+```
+
 1. **Create a sample DB**
-    ```bash
-    cat  <<EOF | oc apply -f -
-    apiVersion: dbforpostgresql.azure.com/v1beta20210601
-    kind: FlexibleServersDatabase
-    metadata:
-      name: score
-      namespace: default
-    spec:
-      owner:
-        name: user1-minesweeper-database
-      charset: utf8
-    
-    EOF
-    ```
+```bash
+cat  <<EOF | oc apply -f -
+apiVersion: dbforpostgresql.azure.com/v1beta20210601
+kind: FlexibleServersDatabase
+metadata:
+  name: score
+spec:
+  owner:
+    name: "${AZ_USER}-minesweeper-database"
+  charset: utf8
+EOF
+```
 
+!!! warning
+    It takes about 10 minutes for the database to be operational and running
 
-1. **check provisioning is done**
-    ```bash
-    while [ $(oc get flexibleservers.dbforpostgresql.azure.com user1-minesweeper-database -o json | jq -r .status.conditions[0].status) != True ]; do  date; echo "wait";  sleep 10; done
-    ```
+Wait until the database is ready
 
-    check server in Azure portal
-    ![Azure PostgreSQL flexible server](../assets/images/azure-flexible-server.png)   
+```bash
+watch ~/bin/oc get flexibleservers.dbforpostgresql.azure.com \
+  ${AZ_USER}-minesweeper-database
+```
 
-1. **Check connection to DB server**
-    ```bash
-    psql "host=user1-minesweeper-database.postgres.database.azure.com port=5432 dbname=score user=myAdmin password=r3dh4t1! sslmode=require"
-    ```
+Eventually it will show as Succeeded
+
+```{.text .no-copy}
+NAME                         READY   SEVERITY   REASON      MESSAGE
+user3-minesweeper-database   True               Succeeded
+```
+
+check server in Azure portal
+
+![Azure PostgreSQL flexible server](../assets/images/azure-flexible-server.png)
+
+Check connection to DB server
+
+```bash
+psql \
+  "host=${AZ_USER}-minesweeper-database.postgres.database.azure.com port=5432 dbname=score user=myAdmin password=${AZ_PASS} sslmode=require" \
+  -c "select now();"
+```
 
 ## Deploy Application
 
 From the Azure Cloud Shell, set an environment variable for your user id and the Azure Resource Group given to you by the facilitator:
 
 ```bash
-export USERID=<The user ID a facilitator gave you>
-export ARORG=<The Azure Resource Group a facilitator gave you>
 export ARO_APP_FQDN=minesweeper.$USERID.azure.mobb.ninja
 ```
 
-**Clone the git repository** 
+Clone the application from github.
 
-  Clone the application from github. 
+```bash
+git clone https://github.com/rh-mobb/aro-hackaton-app
+```
 
-   ```bash
-   git clone https://github.com/rh-mobb/aro-hackaton-app
-   ```
+Change to the application root directory
 
-**Change to the application root directory**
+```bash
+cd aro-hackaton-app
+```
 
-   ```bash
-   cd aro-hackaton-app
-   ```
+Add the OpenShift extension to quarkus
 
+```bash
+quarkus ext add openshift
+```
 
-**Log into your openshift cluster with Azure Cloud Shell**
+Configure Quarkus to use the postgres database you created earlier
 
-<login command??>
+```bash
+cat <<EOF > ./src/main/resources/application.properties
+# Database configurations
+%prod.quarkus.datasource.db-kind=postgresql
+%prod.quarkus.datasource.jdbc.url=jdbc:postgresql://${AZ_USER}-minesweeper-database.postgres.database.azure.com:5432/score
+%prod.quarkus.datasource.jdbc.driver=org.postgresql.Driver
+%prod.quarkus.datasource.username=myAdmin
+%prod.quarkus.datasource.password=${AZ_PASS}
+%prod.quarkus.hibernate-orm.database.generation=drop-and-create
+%prod.quarkus.hibernate-orm.database.generation=update
 
-**Switch to your OpenShift Project**
-
-   ```bash
-   oc project $USERID
-   ```
-  
-!!! info
-      
-      As part of the workshop setup, an OpenShift project has been created using your USERID as the name of the project
-
-**Add the OpenShift extension to quarkus**
-
-   ```bash
-   quarkus ext add openshift
-   ```
-
-**Edit aro-hackaton-app/src/main/resources/application.properties**
-
-  Make sure your file looks like the one below, changing the following line:
-  
-  - **%prod.quarkus.datasource.jdbc.url=jdbc:postgresql://<USERID>-minesweeper-database:5432/score** <br>
-    Change the above line with your USERID for the database that has been already been configured for you<br><br>
-  - **%prod.quarkus.container-image.group=<CHANGE TO YOUR NAMESPACE>**
-    Change the above line with your USERID for the namespace to deploy the application to
-  
-!!! info
-  
-    Note the options in OpenShift Configurations.
-    - **%prod.quarkus.openshift.deployment-kind=Deployment**
-      We will be creating a deployment for the application.
-    - **%prod.quarkus.openshift.build-strategy=docker**
-      The application will be built uisng Docker.
-    - **%prod.quarkus.container-image.group=minesweeper**
-      The application will use the namespace your facilitator assigned to you.
-    - **%prod.quarkus.openshift.expose=true**
-      We will expose the route using the default openshift router domain - apps.\<cluster-id\>.eastus.aroapp.io
-
-   Sample microsweeper-quarkus/src/main/resources/application.properties
-
-   ```
-   # Database configurations
-   %prod.quarkus.datasource.db-kind=postgresql
-   %prod.quarkus.datasource.jdbc.url=jdbc:postgresql://<USERID>-minesweeper-database:5432/score
-   %prod.quarkus.datasource.jdbc.driver=org.postgresql.Driver
-   %prod.quarkus.datasource.username=quarkus
-   %prod.quarkus.datasource.password=r3dh4t1!
-   %prod.quarkus.hibernate-orm.database.generation=drop-and-create
-   %prod.quarkus.hibernate-orm.database.generation=update
-
-   # OpenShift configurations
-   %prod.quarkus.kubernetes-client.trust-certs=true
-   %prod.quarkus.kubernetes.deploy=true
-   %prod.quarkus.kubernetes.deployment-target=openshift
-   #%prod.quarkus.kubernetes.deployment-target=knative
-   %prod.quarkus.openshift.build-strategy=docker
-   %prod.quarkus.openshift.expose=true
-   %prod.quarkus.openshift.deployment-kind=Deployment
-   %prod.quarkus.container-image.group=<CHANGE TO YOUR NAMESPACE>
-
-   # Serverless configurations
-   #%prod.quarkus.container-image.group=microsweeper-%prod.quarkus
-   #%prod.quarkus.container-image.registry=image-registry.openshift-image-registry.svc:5000
-
-   # macOS configurations
-   #%prod.quarkus.native.container-build=true
-   ```
-
-
-**Build and deploy the quarkus application to OpenShift.**
-
-One of the great things about OpenShift is the concept of Source to Image, where you simply point to your source code and OpenShift will build and deploy your application.  
+# OpenShift configurations
+%prod.quarkus.kubernetes-client.trust-certs=true
+%prod.quarkus.kubernetes.deploy=true
+%prod.quarkus.kubernetes.deployment-target=openshift
+%prod.quarkus.openshift.build-strategy=docker
+%prod.quarkus.openshift.expose=true
+%prod.quarkus.openshift.deployment-kind=Deployment
+%prod.quarkus.container-image.group=minesweeper
+EOF
+```
 
 For our minesweeper application we will be using source to image and build configs that come built in with Quarkus and OpenShift.  To start the build ( and deploy ) process simply run the following command.
 
-   ```bash
-   quarkus build --no-tests
-   ```
+```bash
+quarkus build --no-tests
+```
 
 Let's take a look at what this did along with everything that was created in your cluster.
 
@@ -273,7 +231,7 @@ The second image you see is the the microsweeper-appservice image.  This is the 
 How did those images get built you ask?   Back on the OpenShift Console, click on Build Configs and then the microsweeper-appservice entry.
 ![Image](images/build-config-list.png)
 
-When you ran the quarkus build command, this created the BuildConfig you can see here.  In our quarkus settings, we set the deployment strategy to build the image using Docker.  The Dockerfile file from the git repo that we cloned was used for this Build Config.  
+When you ran the quarkus build command, this created the BuildConfig you can see here.  In our quarkus settings, we set the deployment strategy to build the image using Docker.  The Dockerfile file from the git repo that we cloned was used for this Build Config.
 
 !!! info
   A build configuration describes a single build definition and a set of triggers for when a new build is created. Build configurations are defined by a BuildConfig, which is a REST object that can be used in a POST to the API server to create a new instance.
@@ -319,7 +277,7 @@ oc get routes -o json | jq -r '.items[0].spec.host'
 Point your browser to the application!!
 ![Image](images/minesweeper.png)
 
-### Application IP 
+### Application IP
 Let's take a quick look at what IP the application resolves to.  Back in your Cloud Shell environment, run
 ```bash
 nslookup <route host name>
