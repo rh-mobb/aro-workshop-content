@@ -6,7 +6,6 @@ To begin, we'll need to gather a few pieces of information from the existing def
 
 ```bash
 export CERT=$(oc get IngressController default -n openshift-ingress-operator -o jsonpath='{.spec.defaultCertificate.name}')
-export SELECTOR=ingresscontroller.operator.openshift.io/deployment-ingresscontroller=private
 export DOMAIN=$(oc get IngressController default -n openshift-ingress-operator -o jsonpath='{.status.domain}' | sed "s/apps/apps-private/g")
 ```
 
@@ -43,7 +42,7 @@ items:
         scope: Internal
       type: LoadBalancerService
     observedGeneration: 2
-    selector: ${SELECTOR}
+    selector: ingresscontroller.operator.openshift.io/deployment-ingresscontroller=private
     tlsProfile:
       ciphers:
       - ECDHE-ECDSA-AES128-GCM-SHA256
