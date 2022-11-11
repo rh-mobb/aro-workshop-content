@@ -19,23 +19,19 @@ While we have a resource group that contains the Azure Red Hat OpenShift (ARO) c
 
 ```bash
 export CLUSTER_RG=$(az aro show -n ${AZ_ARO} \
--g ${AZ_RG} --query 'clusterProfile.resourceGroupId' \
--o tsv | cut -d/ -f5)
+-g ${AZ_RG} --query 'clusterProfile.resourceGroupId' -o tsv | cut -d/ -f5)
 ```
 
 Since Azure Front Door connects to your Azure Red Hat OpenShift (ARO) cluster via Azure Private Link, we need to get a few pieces of information so we can configure the Private Link. To do so, run the following commands:
 
 ```bash
 export WORKER_SUBNET_ID=$(az aro show -n ${AZ_ARO} \
--g ${AZ_RG} --query 'workerProfiles[0].subnetId' \
--o tsv)
+-g ${AZ_RG} --query 'workerProfiles[0].subnetId' -o tsv)
 export INTERNAL_LBNAME=$(az network lb list -g ${CLUSTER_RG} \
---query "[? contains(name, 'internal')].name" \
--o tsv)
+--query "[? contains(name, 'internal')].name" -o tsv)
 export LBCONFIG_ID=$(az network lb frontend-ip list -g ${CLUSTER_RG} \
 --lb-name ${INTERNAL_LBNAME} --query \
-"[? contains(subnet.id,'${WORKER_SUBNET_ID}')].id" \
--o tsv)
+"[? contains(subnet.id,'${WORKER_SUBNET_ID}')].id" -o tsv)
 export LBCONFIG_IP=$(az network lb frontend-ip list -g ${CLUSTER_RG} \
 --lb-name ${INTERNAL_LBNAME} --query \
 "[? contains(subnet.id,'${WORKER_SUBNET_ID}')].privateIpAddress" \
