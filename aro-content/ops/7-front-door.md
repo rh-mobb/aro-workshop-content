@@ -140,7 +140,7 @@ Now, we need to add your custom domain to Azure Front Door. For this workshop, y
 ```bash
 az afd custom-domain create \
 --certificate-type ManagedCertificate \
---custom-domain-name "${AZ_USER}.ws.mobb.cloud" \
+--custom-domain-name "app" \
 --host-name "app.${AZ_USER}.ws.mobb.cloud" \
 --minimum-tls-version TLS12 \
 --profile-name ${AZ_USER}-afd-${UNIQUE} \
@@ -158,7 +158,7 @@ az network dns record-set txt add-record \
 -n _dnsauth.app \
 --value $(az afd custom-domain show -g ${AZ_RG} \
 --profile-name ${AZ_USER}-afd-${UNIQUE} \
---custom-domain-name "app.${AZ_USER}.ws.mobb.cloud" \
+--custom-domain-name "app" \
 --query "validationProperties.validationToken") \
 --record-set-name _dnsauth.app
 ```
