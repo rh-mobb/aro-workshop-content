@@ -14,7 +14,7 @@ if ! which oc > /dev/null; then
 fi
 
 echo "Configure OC bash completion"
-oc completion bash > ~/bin/oc_bash_completion
+# oc completion bash > ~/bin/oc_bash_completion
 
 
 echo "Installing Quarkus"
@@ -49,7 +49,8 @@ fi
 
 echo "Configuring Environment specific variables"
 cat <<"EOF" > ~/.workshoprc
-source ~/bin/oc_bash_completion
+#!/bin/bash
+# source ~/bin/oc_bash_completion
 export AZ_USER=$(az ad signed-in-user show --query "userPrincipalName" -o tsv | cut -d @ -f1)
 export USERID="${AZ_USER}"
 export AZ_PASS="R3dH4t1!"
@@ -64,6 +65,8 @@ export OCP_CONSOLE="$(az aro show --name ${AZ_ARO} --resource-group ${AZ_RG} \
   -o tsv --query consoleProfile)"
 export OCP_API="$(az aro show --name ${AZ_ARO} --resource-group ${AZ_RG} \
   --query apiserverProfile.url -o tsv)"
+
+alias k=kubectl
 EOF
 
 echo "source ~/.workshoprc" >> ~/.bashrc

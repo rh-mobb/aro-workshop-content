@@ -84,7 +84,7 @@ oc -n openshift-machine-api get machines \
   -l "machine.openshift.io/cluster-api-machine-role=worker"
 ```
 
-You will see that one is in the "Provisioned" phase (and in the zone of the machineset we scaled) and will shortly be in "running" phase.
+You will see that one is in the "Provisioning" or "Provisioned" phase (and in the zone of the machineset we scaled) and will shortly be in "running" phase.
 
 ```{ .text .no-copy}
 NAME                                 PHASE         TYPE              REGION    ZONE   AGE

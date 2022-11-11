@@ -64,7 +64,10 @@ managed-upgrade-operator   1/1     1            1           2m2s
 
 ### Configure the Managed Upgrade Operator
 
-Next, configure the Managed Upgrade Operator by using the following YAML:
+Next, configure the Managed Upgrade Operator by using the following YAML
+
+!!! info
+    As you are working through this workshop you'll often see Manifests listed for informational purposes, followed by a command that will use the yaml without having to copy/paste the whole thing. Read the manifest to understand what it is doing, then run the command in the following step.
 
 ``` title="muo-config-map.yaml"
 --8<-- "muo-config-map.yaml"
@@ -87,7 +90,7 @@ oc -n openshift-managed-upgrade-operator \
 Look for available Upgrades
 
 !!! warn
-    If the output of the following command is `parse error: Invalid numeric literal at EOF at line 1, column 5` there are no available upgrades and you should skip the rest of these steps.
+    If the output of the following command is `parse error: Invalid numeric literal at EOF at line 1, column 5` you may not have set the `stable-4.10` channel as instructed earlier, or there are no available upgrades and you should skip the rest of these steps.
 
 ```bash
 oc get clusterversion version -o jsonpath='{.status.availableUpdates}' | jq .
@@ -115,7 +118,7 @@ oc apply -f \
     If the cluster is on the latest version, the upgrade will not apply.
 
 
-Check the status of the scheduled upgrade
+Check the status of the scheduled upgrade (Be patient this may take a minute to run)
 
 ```bash
 oc -n openshift-managed-upgrade-operator get \

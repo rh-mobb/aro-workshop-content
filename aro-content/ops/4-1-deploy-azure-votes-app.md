@@ -27,7 +27,7 @@ cat <<EOF | oc apply -f -
 apiVersion: resources.azure.com/v1beta20200601
 kind: ResourceGroup
 metadata:
-  name: redis-demo
+  name: ${AZ_RG}
   namespace: redis-demo
 spec:
   location: eastus

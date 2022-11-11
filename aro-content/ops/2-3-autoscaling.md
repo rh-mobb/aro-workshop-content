@@ -9,12 +9,12 @@ A ClusterAutoscaler must have at least 1 machine autoscaler in order for the clu
 This can be accomplished via the Web Console or through the CLI with a YAML file for the custom resource definition. We'll use the latter.
 
 !!! info
-    This snippet will load a MachineSet into a variable and then write a MachineAutoscaler resource definition that we can apply later.
+    This snippet will load a MachineSet into a variable and then write a MachineAutoscaler resource definition and apply it to the cluster
 
 ```bash
 MACHINE_SET=$(oc -n openshift-machine-api get machinesets \
   -o name | cut -d / -f2 | head -1)
-cat <<EOF > machine-autoscaler.yaml
+cat <<EOF | oc apply -f -
 apiVersion: "autoscaling.openshift.io/v1beta1"
 kind: "MachineAutoscaler"
 metadata:
@@ -28,12 +28,6 @@ spec:
     kind: MachineSet
     name: "${MACHINE_SET}"
 EOF
-```
-
-Create the resource in the cluster. Assuming you kept the same filename:
-
-```bash
-oc create -f machine-autoscaler.yaml
 ```
 
 You will see the following output:
@@ -51,7 +45,7 @@ You should see output similar to:
 
 ```{.text .no-copy}
 NAME                           REF KIND     REF NAME                      MIN   MAX   AGE
-ok0620-rq5tl-worker-westus21   MachineSet   ok0620-rq5tl-worker-westus2   1     7     40s
+ok0620-rq5tl-worker-westus21   MachineSet   ok0620-rq5tl-worker-westus2   1     3     40s
 ```
 
 ### Create the Cluster Autoscaler
@@ -157,23 +151,14 @@ ok0620-rq5tl-worker-westus22-9dtk5   Running       Standard_D4s_v3   westus2   2
 ok0620-rq5tl-worker-westus23-hzggb   Running       Standard_D4s_v3   westus2   3      7h15m
 ```
 
-After a few minutes we should see all 5 are provisioned.
-
-```bash
-oc -n openshift-machine-api get machinesets
-```
-
-```{.text .no-copy}
-NAME                           DESIRED   CURRENT   READY   AVAILABLE   AGE
-ok0620-rq5tl-worker-westus21   5         5         5       5           7h23m
-ok0620-rq5tl-worker-westus22   1         1         1       1           7h23m
-ok0620-rq5tl-worker-westus23   1         1         1       1           7h23m
-```
-
 You can watch the cluster autoscaler create more machines and to accomodate the extra workload and then delete them again after the job has completed
 
+!!! info
+    Watch will refresh the output of a command every second. use CTRL-C to exit it when you're ready to move on to the next steps.
+
+
 ```bash
-watch oc -n openshift-machine-api get machines \
+watch ~/bin/oc -n openshift-machine-api get machines \
   -l "machine.openshift.io/cluster-api-machine-role=worker"
 ```
 

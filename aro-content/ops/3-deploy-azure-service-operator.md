@@ -2,7 +2,7 @@
 
 Azure Service Operator (ASO) is an open-source project by Microsoft Azure. ASO gives you the ability to provision and manage Azure resources such as compute, databases, resource groups, networking, etc. as objects in Kubernetes using declarative Kubernetes manifests.
 
-!!!! warn
+!!! warn
     Azure Service Operator is in its second incarnation (v2) and is in Tech Preview, this means it is not fully operizationalized into Operator Hub and should not be used for Production. However it's really nifty and we like it.
 
 ASO consists of:
@@ -20,42 +20,56 @@ We will deploy ASO on an ARO cluster to provision and manage Azure resources. To
 
 ###  Install and run ASO on your ARO cluster
 
-#### Prepare your environment
-First, set the required environment variables for your environment, be sure to replace the ClientID and Client Secret with the values you were provided, and set the correct Resource Group and Cluster Name:
-
-```bash
-AZURE_TENANT_ID="$(az account show -o tsv --query tenantId)"
-AZURE_SUBSCRIPTION_ID="$(az account show -o tsv --query id)"
-CLUSTER_NAME=$USERID
-AZURE_RESOURCE_GROUP=$USERID
-AZURE_CLIENT_ID=<your-client-id> # This is the appID from the service principal provided to you.
-AZURE_CLIENT_SECRET=<your-client-secret> # This is the password from the service principal we created.
-```
-
 #### Install Cert Manager Operator
 
 The cert-manager operator can easily be installed from the OpenShift Console OperatorHub. To install cert-manager, navigate to Operators > OperatorHub from the OpenShift console and search for `cert-manager`:
 
+!!! info
+    When installing Operators there are sometimes multiple versions of the same (or similar) Operators, you should always install the Red Hat provided operator (with the `Red Hat` label and the text `provided by Red Hat`)
+
 ![operator-hub](../assets/images/operator-hub-cert-manager.png)
 
-Click on the cert-manager tile to show the details page, and follow the install prompts:
+Click on the cert-manager tile to show the details page, and follow the install prompts (accept all the default settings):
 
 ![cert-manager-details](../assets/images/cert-manager-install-1.png)
 
 ![cert-manager-details](../assets/images/cert-manager-install-2.png)
 
 
+
+#### Prepare your environment
+
+Create a service principal for ASO to use
+
+```bash
+az ad sp create-for-rbac --display-name "aso"
+```
+
+First, set the required environment variables for your environment, be sure to replace the ClientID and Client Secret with the values you were provided, and set the correct Resource Group and Cluster Name:
+
+```bash
+AZURE_TENANT_ID="$(az account show -o tsv --query tenantId)"
+AZURE_SUBSCRIPTION_ID="$(az account show -o tsv --query id)"
+CLUSTER_NAME="${AZ_ARO}"
+AZURE_RESOURCE_GROUP="${AZ_RG}"
+AZURE_CLIENT_ID="$(az ad sp list --show-mine --query "[0].{id:appId}" -o tsv)"
+AZURE_CLIENT_SECRET=$(az ad app credential reset --id $AZURE_CLIENT_ID --append -o tsv --query {password:password})
+```
+
+
 #### Install the latest ASOv2 Helm Chart
 
 ```bash
-helm repo add aso2 https://raw.githubusercontent.com/Azure/azure-service-operator/main/v2/charts
+helm repo add aso2 \
+  https://raw.githubusercontent.com/Azure/azure-service-operator/main/v2/charts
+helm repo update
 helm upgrade --install --devel aso2 aso2/azure-service-operator \
---create-namespace \
---namespace=azureserviceoperator-system \
---set azureSubscriptionID=$AZURE_SUBSCRIPTION_ID \
---set azureTenantID=$AZURE_TENANT_ID \
---set azureClientID=$AZURE_CLIENT_ID \
---set azureClientSecret=$AZURE_CLIENT_SECRET
+  --create-namespace \
+  --namespace=azureserviceoperator-system \
+  --set azureSubscriptionID=$AZURE_SUBSCRIPTION_ID \
+  --set azureTenantID=$AZURE_TENANT_ID \
+  --set azureClientID=$AZURE_CLIENT_ID \
+  --set azureClientSecret=$AZURE_CLIENT_SECRET
 ```
 
 You should see the following output immediately:
@@ -76,7 +90,7 @@ TEST SUITE: None
 There is a pod in the azureserviceoperator-system namespace with two containers, when both are running the controller is installed and ready:
 
 ```bash
-oc get pod -n azureserviceoperator-system
+oc -n azureserviceoperator-system get pod
 ```
 
 ```bash
