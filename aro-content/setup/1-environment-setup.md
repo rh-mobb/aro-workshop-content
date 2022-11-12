@@ -15,7 +15,6 @@ When prompted, you'll log in with the credentials provided by the workshop team.
 - Resource Group
 - vNet (with two subnets)
 - Azure Red Hat OpenShift Cluster
-- Cloud Storage Account
 - Azure AD Service Principal
 - Azure DNS Zone
 
