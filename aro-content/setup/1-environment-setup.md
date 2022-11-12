@@ -8,7 +8,7 @@ When prompted, you'll log in with the credentials provided by the workshop team.
 
 !!! warning "Log out of existing Microsoft Azure sessions"
 
-    While these commands can be run in any Microsoft Azure account, we've completed many of the prerequisites to ensure they work in the workshop environment. As such, we recommend ensuring that you are logged out of any other Microsoft Azure sessions. 
+    While these commands can be run in any Microsoft Azure account, we've completed many of the prerequisites for you to ensure they work in the workshop environment. As such, we recommend ensuring that you are logged out of any other Microsoft Azure sessions. 
 
 ### Pre-created Resources
 
@@ -23,13 +23,17 @@ When prompted, you'll log in with the credentials provided by the workshop team.
 
 Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for managing Azure resources. In this workshop, we'll use Azure Cloud Shell extensively to execute commands. 
 
+First, go ahead and skip the tour of the Azure Portal by clicking the *Maybe Later* button. 
+
+![Azure Portal Skip Tour](../assets/images/overview-skip-tour.png){ align=center }
+
 To start Azure Cloud Shell, click on the `>_` button at the top right corner of the Azure Portal.
 
-![Azure Portal Cloud Shell](../assets/images/cloud-shell-icon.png){ align=center }
+![Azure Portal Cloud Shell](../assets/images/overview-cloud-shell-icon.png){ align=center }
 
 Once prompted, select *Bash* from the *Welcome* screen.
 
-![Cloud Shell Choice](../assets/images/cloud-shell-bash.png){ align=center }
+![Cloud Shell Language Choice](../assets/images/cloud-shell-bash.png){ align=center }
 
 On the next screen, you'll receive a message that says "You have no storage mounted". Select the *Show advanced settings* link. While we've pre-created a number of resources, including a storage account for you to use with Azure Cloud Shell, you'll need to configure Azure Cloud Shell using the table below.  
 
@@ -39,8 +43,8 @@ On the next screen, you'll receive a message that says "You have no storage moun
 | Cloud Shell region       | East US                 | N/A |
 | Show VNET isolation settings    | *Leave Unchecked* | N/A |
 | Resource group       | (Select *Use Existing* Button) `user#-rg` | user2-rg | 
-| Storage account       | (Select *Use Existing* Button) `user#xxxxxx` | user2lfjsad |
-| File share       | (Select *Create New* Button) `cloudshell` | N/A |
+| Storage account       | (Select *Create New* Button) `user#atl` | user2atl |
+| File share       | (Select *Create New* Button) `clouddrive` | N/A |
 
 Your options should look like the screenshot below once filled out:
 
