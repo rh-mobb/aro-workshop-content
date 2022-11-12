@@ -29,7 +29,7 @@ items:
         name: ""
       clientCertificatePolicy: ""
     defaultCertificate:
-      name: ${INGRESSCERT}
+      name: ${CERT}
     httpCompression: {}
     httpEmptyRequestsPolicy: Respond
     httpErrorCodePages:
