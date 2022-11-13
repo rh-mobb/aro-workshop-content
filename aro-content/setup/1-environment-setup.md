@@ -34,7 +34,11 @@ Once prompted, select *Bash* from the *Welcome* screen.
 
 ![Cloud Shell Language Choice](../assets/images/cloud-shell-bash.png){ align=center }
 
-On the next screen, you'll receive a message that says "You have no storage mounted". Select the *Show advanced settings* link. While we've pre-created a number of resources, including a storage account for you to use with Azure Cloud Shell, you'll need to configure Azure Cloud Shell using the table below.  
+On the next screen, you'll receive a message that says "You have no storage mounted". Select the *Show advanced settings* link. 
+
+![Cloud Shell Show Advanced Options](../assets/images/cloud-shell-show-advanced-options.png){ align=center }
+
+While we've pre-created a number of resources, including a storage account for you to use with Azure Cloud Shell, you'll need to configure Azure Cloud Shell using the table below.  
 
 | Option     | Value                               | Example |
 | ----------- | ------------------------------------ | -------- |
