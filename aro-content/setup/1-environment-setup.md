@@ -45,9 +45,9 @@ While we've pre-created a number of resources, including a storage account for y
 | Subscription       | Red Hat Cloud Services - Microsoft Azure Sponsorship  | N/A |
 | Cloud Shell region       | East US                 | N/A |
 | Show VNET isolation settings    | *Leave Unchecked* | N/A |
-| Resource group       | (Select *Use Existing* Button) `user#-rg` | user2-rg | 
-| Storage account       | (Select *Create New* Button) `user#atl` | user2atl |
-| File share       | (Select *Create New* Button) `clouddrive` | N/A |
+| Resource group       | user#-rg (Select *Use Existing* Button) | user2-rg | 
+| Storage account       | user#atl (Select *Create New* Button) | user2atl |
+| File share       | clouddrive` (Select *Create New* Button) | N/A |
 
 Your options should look like the screenshot below once filled out:
 
