@@ -30,7 +30,7 @@ if ! which envsubst > /dev/null; then
 fi
 
 echo "Installing tekton cli"
-if ! which quarkus > /dev/null; then
+if ! which tkn > /dev/null; then
   curl -Ls https://mirror.openshift.com/pub/openshift-v4/clients/pipeline/latest/tkn-linux-amd64.tar.gz | tar xzf -
   install tkn ~/bin
 fi

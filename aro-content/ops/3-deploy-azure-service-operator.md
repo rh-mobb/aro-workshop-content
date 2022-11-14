@@ -44,8 +44,8 @@ First, set the required environment variables for your environment, be sure to r
 ```bash
 export AZURE_TENANT_ID="$(az account show -o tsv --query tenantId)"
 export AZURE_SUBSCRIPTION_ID="$(az account show -o tsv --query id)"
-export AZURE_CLIENT_ID="$(az ad sp list --show-mine --query "[0].{id:appId}" -o tsv)"
-export AZURE_CLIENT_SECRET="$(az ad app credential reset --id $AZURE_CLIENT_ID --append -o tsv --query {password:password})"
+export AZURE_CLIENT_ID="$(oc get secret azure-credentials -n kube-system -o json | jq -r .data.azure_client_id | base64 --decode)"
+export AZURE_CLIENT_SECRET="$(oc get secret azure-credentials -n kube-system -o json | jq -r .data.azure_client_secret | base64 --decode)"
 ```
 
 Save these into your `.workshoprc` file in case the cloud shell session restarts

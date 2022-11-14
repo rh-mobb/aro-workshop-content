@@ -28,12 +28,15 @@ MACHINESET=<machineset name>
 
 Next label each machine in that machineset:
 
+!!! info
+    MachineSets do not automatically relabel their existing child resources, this means we need to relabel them ourselves to avoid having to restart them.
+
 ```bash
 MACHINES=$(oc -n openshift-machine-api get machines -o name \
   -l "machine.openshift.io/cluster-api-machineset=$MACHINESET" | xargs)
 oc label -n openshift-machine-api "${MACHINES}" tier=frontend
 NODE=$(echo $MACHINES | cut -d "/" -f 2)
-kubectl label nodes "${NODE}" tier=frontend
+oc label nodes "${NODE}" tier=frontend
 ```
 
 Click on one of the machines and you can see that the label is now there.
@@ -78,8 +81,7 @@ hello-openshift   hello-openshift-hello-openshift.apps.auo2ltzt.eastus.aroapp.io
 To see that the app was scheduled on the correct node run the following commands:
 
 ```bash
-POD=$(oc get po -l app=hello-openshift -o jsonpath="{.items[0].metadata.name}")
-oc describe po $POD | grep "Node"
+ oc describe po -l app=hello-openshift | grep Node
 ```
 
 Output:
