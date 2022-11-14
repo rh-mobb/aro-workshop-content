@@ -32,6 +32,8 @@ Next label each machine in that machineset:
 MACHINES=$(oc -n openshift-machine-api get machines -o name \
   -l "machine.openshift.io/cluster-api-machineset=$MACHINESET" | xargs)
 oc label -n openshift-machine-api "${MACHINES}" tier=frontend
+NODE=$(echo $MACHINES | cut -d "/" -f 2)
+kubectl label nodes "${NODE}" tier=frontend
 ```
 
 Click on one of the machines and you can see that the label is now there.
@@ -59,5 +61,31 @@ Apply the manifest:
 ```bash
 oc create -f \
   https://rh-mobb.github.io/aro-hackathon-content/assets/node-select-deployment.yaml
+```
+
+To view the app in a browser, get the route:
+
+```bash
+oc get route hello-openshift
+```
+
+Output:
+```bash
+NAME              HOST/PORT                                                        PATH   SERVICES          PORT   TERMINATION     WILDCARD
+hello-openshift   hello-openshift-hello-openshift.apps.auo2ltzt.eastus.aroapp.io          hello-openshift   8080   edge/Redirect   None
+```
+
+To see that the app was scheduled on the correct node run the following commands:
+
+```bash
+POD=$(oc get po -l app=hello-openshift -o jsonpath="{.items[0].metadata.name}")
+oc describe po $POD | grep "Node"
+```
+
+Output:
+
+```bash
+Node:         workshop-prgbs-worker-eastus2-x7ltv/10.0.2.6
+Node-Selectors:              tier=frontend
 ```
 
