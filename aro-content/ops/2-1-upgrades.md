@@ -2,9 +2,9 @@
 
 Azure Red Hat OpenShift (ARO) provides fully-managed cluster updates. These updates can be triggered from inside the OpenShift Console, or scheduled in advance by utilizing the Managed Upgrade Operator. All updates are monitored and managed by the Red Hat and Microsoft ARO SRE team. 
 
-For more information on how OpenShift's Upgrade Service works, please see the [Red Hat documentation](https://docs.openshift.com/container-platform/4.10/updating/index.html){:target="_blank"}). 
+For more information on how OpenShift's Upgrade Service works, please see the [Red Hat documentation](https://docs.openshift.com/container-platform/4.10/updating/index.html){:target="_blank"}. 
 
-### Upgrade using the OpenShift Web Console
+## Upgrade using the OpenShift Web Console
 
 1. Return to your tab with the OpenShift Web Console. If you need to reauthenticate, follow the steps in the [Access Your Cluster](../setup/3-access-cluster/) section. 
 
@@ -28,7 +28,7 @@ For more information on how OpenShift's Upgrade Service works, please see the [R
 
     ![Web Console - Available Upgrades](Images/aro-console-upgrade.png)
 
-### Upgrade using the Managed Upgrade Operator
+## Upgrade using the Managed Upgrade Operator
 
 The Managed Upgrade Operator has been created to manage the orchestration of automated in-place cluster upgrades.
 
@@ -52,7 +52,7 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
     !!! warning
         If the output of the following command is `parse error: Invalid numeric literal at EOF at line 1, column 5` you may not have set the `stable-4.10` channel as instructed earlier, or there are no available upgrades and you should skip the rest of these steps.
 
-2. Next, let's use that information to populate a manifest for the Managed Upgrade Operator to use. To do so, run the following command:
+1. Next, let's use that information to populate a manifest for the Managed Upgrade Operator to use. To do so, run the following command:
 
     ```yaml
     cat <<EOF | oc apply -f -
@@ -74,7 +74,53 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
 
     This manifest will schedule an upgrade to 4.10.39 for 1 day from now, allow nodes which are blocked by PodDisruptionBudgets to drain for 60 minutes before a drain is forced, and sets a capacity reservation so that workloads are not interrupted during an upgrade.
 
-3. Once created, we can see that the update is pending by running the following command: 
+1. Once created, we can see that the update is pending by running the following command: 
+
+    ```bash
+    oc describe upgradeconfig.upgrade.managed.openshift.io/managed-upgrade-config -n openshift-managed-upgrade-operator
+    ```
+
+    The output of the command will look something like this:
+
+    ```bash
+    Spec:
+      PDB Force Drain Timeout:  60
+      Capacity Reservation:     true
+      Desired:
+        Channel:   stable-4.10
+        Version:   4.10.36
+      Type:        ARO
+      Upgrade At:  2022-11-14T18:23:16+00:00
+    Status:
+      History:
+        Phase:    Pending
+        Version:  4.10.39
+    Events:       <none>
+    ```
+
+1. Next, let's use that information to populate a manifest for the Managed Upgrade Operator to use. To do so, run the following command:
+
+    ```yaml
+    cat <<EOF | oc apply -f -
+    apiVersion: upgrade.managed.openshift.io/v1alpha1
+    kind: UpgradeConfig
+    metadata:
+      name: managed-upgrade-config
+      namespace: openshift-managed-upgrade-operator
+    spec:
+      type: "ARO"
+      upgradeAt: $(date -u --iso-8601=seconds --date "+1 day")
+      PDBForceDrainTimeout: 60
+      capacityReservation: true
+      desired:
+        channel: "stable-4.10"
+        version: "4.10.39"
+    EOF
+    ```
+
+    This manifest will schedule an upgrade to 4.10.39 for 1 day from now, allow nodes which are blocked by PodDisruptionBudgets to drain for 60 minutes before a drain is forced, and sets a capacity reservation so that workloads are not interrupted during an upgrade.
+
+1. Once created, we can see that the update is pending by running the following command: 
 
     ```bash
     oc describe upgradeconfig.upgrade.managed.openshift.io/managed-upgrade-config -n openshift-managed-upgrade-operator
