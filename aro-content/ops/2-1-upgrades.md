@@ -52,7 +52,6 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
     !!! warning
         If the output of the following command is `parse error: Invalid numeric literal at EOF at line 1, column 5` you may not have set the `stable-4.10` channel as instructed earlier, or there are no available upgrades and you should skip the rest of these steps.
 
-
 2. Next, let's use that information to populate a manifest for the Managed Upgrade Operator to use. To do so, run the following command:
 
     ```yaml
