@@ -165,7 +165,7 @@ psql \
 From the Azure Cloud Shell, set an environment variable for your user id and the Azure Resource Group given to you by the facilitator:
 
 ```bash
-export ARO_APP_FQDN=minesweeper.$USERID.azure.mobb.ninja
+export ARO_APP_FQDN=minesweeper.$USERID.ws.mobb.ninja
 ```
 
 Clone the application from github.
