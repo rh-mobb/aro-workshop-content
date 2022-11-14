@@ -77,7 +77,7 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
 1. Once created, we can see that the update is pending by running the following command: 
 
     ```bash
-    oc describe upgradeconfig.upgrade.managed.openshift.io/managed-upgrade-config -n openshift-managed-upgrade-operator
+    oc -n openshift-managed-upgrade-operator describe upgradeconfig.upgrade.managed.openshift.io/managed-upgrade-config
     ```
 
     The output of the command will look something like this:
@@ -123,7 +123,7 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
 1. Once created, we can see that the update is pending by running the following command: 
 
     ```bash
-    oc describe upgradeconfig.upgrade.managed.openshift.io/managed-upgrade-config -n openshift-managed-upgrade-operator
+    oc -n openshift-managed-upgrade-operator describe upgradeconfig.upgrade.managed.openshift.io/managed-upgrade-config
     ```
 
     The output of the command will look something like this:

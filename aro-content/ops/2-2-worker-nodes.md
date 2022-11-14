@@ -1,115 +1,117 @@
 ## Introduction
 
-There may be times when you need to change aspects of your worker nodes. Things like scaling, changing the type, adding labels or taints to name a few. Most of these things are done through the use of machine sets. A machine is a unit that describes the host for a node and a machine set is a group of machines. Think of a machine set as a “template” for the kinds of machines that make up the worker nodes of your cluster. Similar to how a replicaset is to pods. A machine set allows users to manage many machines as a single entity though it is contained to a specific availability zone. If you'd like to learn more see [Overview of machine management](https://docs.openshift.com/container-platform/latest/machine_management/index.html)
+When deploying your Azure Red Hat OpenShift (ARO) cluster, you can configure many aspects of your worker nodes, but what happens when you need to change your worker nodes after they've already been created? These activities include scaling the number of nodes, changing the instance type, adding labels or taints, just to name a few. 
+
+Many of these changes are done using MachineSets. MachineSets ensure that a specified number of Machine replicas are running at any given time. Think of a MachineSet as a "template" for the kinds of Machines that make up the worker nodes of your cluster. These are similar to other Kubernetes resources, like a ReplicaSet is to Pods. One important caveat, is that MachineSets allow users to manage many Machines as a single entity, but are contained to a specific availability zone. If you'd like to learn more, see the [Red Hat documentation on machine management](https://docs.openshift.com/container-platform/latest/machine_management/index.html){:target="_blank"}.
 
 ## Scaling worker nodes
+### Via the CLI
 
-### View the machine sets that are in the cluster
+1. First, let's see what MachineSets already exist in our cluster. To do so, run the following command:
 
-Let's see which machine sets we have in our cluster.  If you are following this lab, you should only have three so far (one for each availability zone).
+    ```bash
+    oc -n openshift-machine-api get machineset
+    ```
 
-From the terminal run:
+    By default, ARO clusters have three MachineSets, one for each availability zone. The output will look something like this:
 
-```bash
-oc -n openshift-machine-api get machinesets
-```
+    ```bash
+    NAME                                 DESIRED   CURRENT   READY   AVAILABLE   AGE
+    user1-cluster-8kvh4-worker-eastus1   1         1         1       1           4h36m
+    user1-cluster-8kvh4-worker-eastus2   1         1         1       1           4h36m
+    user1-cluster-8kvh4-worker-eastus3   1         1         1       1           4h36m
+    ```
 
-You will see a response like:
+2. Now, let's take a look at the machines that have been created according to the instructions provided by the above MachineSets. To do so, run the following command:
 
-```{ .text .no-copy}
-NAME                           DESIRED   CURRENT   READY   AVAILABLE   AGE
-ok0620-rq5tl-worker-westus21   1         1         1       1           72m
-ok0620-rq5tl-worker-westus22   1         1         1       1           72m
-ok0620-rq5tl-worker-westus23   1         1         1       1           72m
-```
-This is telling us that there is a machine set defined for each availability zone in westus2 and that each has one machine.
+    ```bash
+    oc -n openshift-machine-api get machine
+    ```
 
-### View the machines that are in the cluster
+    For this workshop, we've deployed your ARO cluster with six total machines (three workers machines and three control plane machines), one in each availability zone. The output will look something like this:  
 
-Let's see which machines (nodes) we have in our cluster.
+    ```bash
+    NAME                                       PHASE     TYPE              REGION   ZONE   AGE
+    user1-cluster-8kvh4-master-0               Running   Standard_D8s_v3   eastus   1      4h39m
+    user1-cluster-8kvh4-master-1               Running   Standard_D8s_v3   eastus   2      4h39m
+    user1-cluster-8kvh4-master-2               Running   Standard_D8s_v3   eastus   3      4h39m
+    user1-cluster-8kvh4-worker-eastus1-gls9k   Running   Standard_D4s_v3   eastus   1      4h36m
+    user1-cluster-8kvh4-worker-eastus2-xmhrw   Running   Standard_D4s_v3   eastus   2      4h36m
+    user1-cluster-8kvh4-worker-eastus3-kggpz   Running   Standard_D4s_v3   eastus   3      4h36m
+    ```
 
-From the terminal run:
+3. Now that we know that we have three worker nodes, let's pick a MachineSet to scale up using the OpenShift CLI tools. To do so, run the following command:
 
-```bash
-oc -n openshift-machine-api get machine
-```
+    ```bash
+    MACHINESET=$(oc -n openshift-machine-api get machinesets -o name | head -1)
+    echo ${MACHINESET}
+    ```
 
-You will see a response like:
+    The output of the command should look something like this:
 
-```{ .text .no-copy}
-NAME                                 PHASE     TYPE              REGION    ZONE   AGE
-ok0620-rq5tl-master-0                Running   Standard_D8s_v3   westus2   1      73m
-ok0620-rq5tl-master-1                Running   Standard_D8s_v3   westus2   2      73m
-ok0620-rq5tl-master-2                Running   Standard_D8s_v3   westus2   3      73m
-ok0620-rq5tl-worker-westus21-n6lcs   Running   Standard_D4s_v3   westus2   1      73m
-ok0620-rq5tl-worker-westus22-ggcmv   Running   Standard_D4s_v3   westus2   2      73m
-ok0620-rq5tl-worker-westus23-hzggb   Running   Standard_D4s_v3   westus2   3      73m
-```
+    ```bash
+    machineset.machine.openshift.io/user1-cluster-8kvh4-worker-eastus1
+    ```
 
-As you can see we have 3 master nodes, 3 worker nodes, the types of nodes, and which region/zone they are in.
+4. Now, let's scale up our selected MachineSet from one to two machines. To do so, run the following command:
 
-### Scale the number of nodes up via the CLI
+    ```bash
+    oc -n openshift-machine-api scale --replicas=2 ${MACHINE_SET}
+    ```
 
-Now that we know that we have 3 worker nodes, let's scale the cluster up to have 4 worker nodes. We can accomplish this through the CLI or through the OpenShift Web Console. We'll explore both.
+5. Now that we've scaled the MachineSet to two machines, we can see that the machine is already being created. First, let's quickly check the output of the same command we ran in step 1:
 
-From the terminal run the following to imperatively scale up a machine set to 2 worker nodes for a total of 4.
+    ```bash
+    oc -n openshift-machine-api get machinesets
+    ```
+    
+    The output should look something like this:
 
-!!! info
-    Remember that each machine set is tied to an availability zone so with 3 machine sets with 1 machine each, in order to get to a TOTAL of 4 nodes we need to select one of the machine sets to scale up to 2 machines.
+    ```bash
+    NAME                                 DESIRED   CURRENT   READY   AVAILABLE   AGE
+    user1-cluster-8kvh4-worker-eastus1   2         2         1       1           4h50m
+    user1-cluster-8kvh4-worker-eastus2   1         1         1       1           4h50m
+    user1-cluster-8kvh4-worker-eastus3   1         1         1       1           4h50m
+    ```
 
-```bash
-MACHINE_SET=$(oc -n openshift-machine-api get machinesets -o name | head -1)
-oc -n openshift-machine-api scale --replicas=2 "${MACHINE_SET}"
-```
+    Note, that the number of *desired* and *current* nodes matches the scale we specified, but only one is *ready* and *available*. 
 
-View the machine set
+    We can also run the same command we ran in step 2 to see the machine being provisioned:
 
-```bash
-oc -n openshift-machine-api get machinesets
-```
+    ```bash
+    oc -n openshift-machine-api get machine
+    ```
+    
+    The output should look something like this:
 
-You will now see that the desired number of machines in the machine set we scaled is "2".
+    ```bash
+    NAME                                       PHASE         TYPE              REGION   ZONE   AGE
+    user1-cluster-8kvh4-master-0               Running       Standard_D8s_v3   eastus   1      4h58m
+    user1-cluster-8kvh4-master-1               Running       Standard_D8s_v3   eastus   2      4h58m
+    user1-cluster-8kvh4-master-2               Running       Standard_D8s_v3   eastus   3      4h58m
+    user1-cluster-8kvh4-worker-eastus1-gls9k   Running       Standard_D4s_v3   eastus   1      4h55m
+    user1-cluster-8kvh4-worker-eastus1-zj7dl   Provisioned   Standard_D4s_v3   eastus   1      9s
+    user1-cluster-8kvh4-worker-eastus2-xmhrw   Running       Standard_D4s_v3   eastus   2      4h55m
+    user1-cluster-8kvh4-worker-eastus3-kggpz   Running       Standard_D4s_v3   eastus   3      4h55m
+    ```
 
-```{ .text .no-copy}
-NAME                           DESIRED   CURRENT   READY   AVAILABLE   AGE
-ok0620-rq5tl-worker-westus1   2         2         1       1           73m
-ok0620-rq5tl-worker-westus2   1         1         1       1           73m
-ok0620-rq5tl-worker-westus3   1         1         1       1           73m
-```
+### Via the Console
 
-If we check the machines in the clusters
+Now let's scale the cluster back down to a total of 3 worker nodes, but this time, from the web console. 
 
-```bash
-oc -n openshift-machine-api get machines \
-  -l "machine.openshift.io/cluster-api-machine-role=worker"
-```
+1. Return to your tab with the OpenShift Web Console. If you need to reauthenticate, follow the steps in the [Access Your Cluster](../setup/3-access-cluster/) section. 
 
-You will see that one is in the "Provisioning" or "Provisioned" phase (and in the zone of the machineset we scaled) and will shortly be in "running" phase.
+1. Using the menu on the left Select *Compute* -> *MachineSets*.
 
-```{ .text .no-copy}
-NAME                                 PHASE         TYPE              REGION    ZONE   AGE
-ok0620-rq5tl-worker-westus21-n6lcs   Running       Standard_D4s_v3   westus2   1      74m
-ok0620-rq5tl-worker-westus22-ggcmv   Running       Standard_D4s_v3   westus2   2      74m
-ok0620-rq5tl-worker-westus23-5fhm5   Provisioned   Standard_D4s_v3   westus2   3      54s
-ok0620-rq5tl-worker-westus23-hzggb   Running       Standard_D4s_v3   westus2   3      74m
-```
+    ![Web Console - Cluster Settings](../assets/images/web-console-machineset-sidebar.png){ align=center }
 
-### Scale the number of nodes down via the Web Console
+1. In the overview you will see the same information about the MachineSets that you saw on the command line. Now, locate the MachineSet which has "2 of 2" machines, and click on the ⋮ icon, then select *Edit machine count*. 
 
-Now let's scale the cluster back down to a total of 3 worker nodes, but this time, from the web console. (If you need the URL or credentials in order to access it please go back to the relevant portion of Lab 1)
+    ![Web Console - MachineSets Menu](../assets/images/web-console-machinesets-three-dots.png){ align=center }
+    ![Web Console - MachineSets Count Menu](../assets/images/web-console-machinesets-edit-count-menu.png){ align=center }
 
-Access your OpenShift web console, if you need help remembering the URL or credentials you can run
+1. Next, reduce the count from "2" to "1" and click *Save* to save your changes. 
 
-```bash
-env | grep OCP_
-```
+    ![Web Console - MachineSets Edit Count](../assets/images/web-console-machinesets-edit-count.png){ align=center }
 
-Expand "Compute" in the left menu and then click on "MachineSets"
-
-![machinesets-console](../assets/images/scale-down-console.png)
-
-In the main pane you will see the same information about the machine sets from the command line.  Now click on the "three dots" at the end of the line for the machine set that you scaled up to "2". Select "Edit machine count" and decrease it to "1". Click save.
-
-![machinesets-edit](../assets/images/edit-machinesets.png)
-
-This will now decrease that machine set to only have one machine in it.
+Congratulations! You've successfully scaled your cluster up and back down to three nodes. 
