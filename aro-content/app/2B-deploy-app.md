@@ -11,13 +11,13 @@ Frontdoor to private cluster:
 There are several advantages of this approach:
 
 * ARO cluster and all the resources in your Azure account can be private.
-* Azure FrontDoor operates at the edge so we are controlling traffic before it gets into your Azure account. 
+* Azure FrontDoor operates at the edge so we are controlling traffic before it gets into your Azure account.
 * Azure FrontDoor offers WAF and DDoS protection, certificate management and SSL Offloading just to name a few benefits.
 
 As you can see in the diagram, Azure Front Door sits on the edge of the Microsoft network and is connected to the cluster via a private link service.
 
 <todo>
-Setting up and configuring Azure Front Door for the minesweeper application is typically something the operations team would do.  If you are interested in going through the steps, you can do so [here](../ops/6-front-door.md)  
+Setting up and configuring Azure Front Door for the minesweeper application is typically something the operations team would do.  If you are interested in going through the steps, you can do so [here](../ops/6-front-door.md)
 <todo>
 
 ## Verify the private Ingress Controller
@@ -96,12 +96,12 @@ From the OpenShift Console, click on Networking, Routes and then click on the ur
 Notice that the application is secured! This is done automatically for us by Front Door.
 ![Image](images/secure-fd.png)
 
-The last thing we will validate it where is your custom domain coming from.  If you remember, one of the benefits of using Azure Front Door is that traffic is sent through and secured at the Microsoft edge rather than your application.
 
-To check where the traffic is coming from run the following command from your cloudshell:
+ If you remember, one of the benefits of using Azure Front Door is that traffic is sent through and secured at the Microsoft edge rather than your application. You can get some idea of how the traffic flows by looking at how the DNS for the custom domain is resolving:
 
-```bash 
-nslookup minesweeper.arohack.azure.mobb.ninja
+
+```bash
+nslookup ${ARO_APP_FQDN}
 ```
 
 Notice how the results show traffic coming from *.t-msedge.net
