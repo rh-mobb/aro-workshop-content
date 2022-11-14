@@ -89,7 +89,7 @@ oc -n openshift-managed-upgrade-operator \
 
 Look for available Upgrades
 
-!!! warn
+!!! warning
     If the output of the following command is `parse error: Invalid numeric literal at EOF at line 1, column 5` you may not have set the `stable-4.10` channel as instructed earlier, or there are no available upgrades and you should skip the rest of these steps.
 
 ```bash
