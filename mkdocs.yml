@@ -14,11 +14,12 @@ nav:
   - Environment Setup: setup/1-environment-setup.md
   - Access Your Cluster: setup/3-access-cluster.md
   - Managing Cluster Upgrades: ops/2-1-upgrades.md
+  - Managing Worker Nodes: ops/2-2-worker-nodes.md
+  - Cluster Autoscaling: ops/2-3-autoscaling.md
   - Operations:
     - ARO Day 2 Operations:
-      
-      - Managing Worker Nodes: ops/2-2-worker-nodes.md
-      - Cluster Autoscaling: ops/2-3-autoscaling.md
+
+
       - Labeling Nodes: ops/2-4-label-nodes.md
     - Azure Front Door:
       - Create a Private Ingress Controller: ops/6-private-ingress.md

@@ -12,7 +12,7 @@ export VNET_NAME=$(az network vnet list \
 To ensure we don't inadvertently collide with another user, we should generate a unique random number to append to our services. To do so, run the following command:
 
 ```bash
-export UNIQUE=$RANDOM
+export UNIQUE=$RANDOM 
 ```
 
 While we have a resource group that contains the Azure Red Hat OpenShift (ARO) cluster object, the ARO service itself creates a separate resource group that is fully controlled by the ARO service. This resource group contains all the virtual machines, storage accounts, load balancers, and more that ARO needs to function. To identify that resource group, run the following command:
@@ -92,9 +92,8 @@ Now we need to create an Azure Front Door origin group that will point to the AR
 az afd origin-group create \
 --origin-group-name ${AZ_USER}-afd-og \
 --probe-path '/' \
---probe-protocol Http \
---probe-request-type GET \
---probe-interval-in-seconds 100 \
+--probe-protocol NotSet \
+--probe-request-type NotSet \
 --profile-name ${AZ_USER}-afd-${UNIQUE} \
 --resource-group ${AZ_RG} \
 --probe-interval-in-seconds 120 \
@@ -120,7 +119,8 @@ az afd origin create \
 --host-name ${LBCONFIG_IP} \
 --origin-name ${AZ_USER}-afd-origin \
 --profile-name ${AZ_USER}-afd-${UNIQUE} \
---resource-group ${AZ_RG}
+--resource-group ${AZ_RG} \
+--origin-host-header app.${AZ_USER}.ws.mobb.cloud
 ```
 
 Interested in learning more about Azure Front Door origins and origin groups, [click here to read the Azure documentation](https://learn.microsoft.com/en-us/azure/frontdoor/origin?pivots=front-door-standard-premium).
@@ -173,6 +173,22 @@ az afd custom-domain list -g ${AZ_RG} \
 
 !!! warning
     If the output of the above command shows `Pending` wait a few minutes and try again. Once it shows `Approved` you can move on to the following step.
+
+
+Next, we need to create a route to connect our endpoint to our origin group. To do so, run the following command:
+
+```bash
+az afd route create \
+--endpoint-name ${AZ_USER}-ilb-${UNIQUE} \
+--forwarding-protocol HttpOnly \
+--https-redirect Enabled \
+--origin-group ${AZ_USER}-afd-og \
+--route-name ${AZ_USER}-afd-route \
+--supported-protocols Https \
+--custom-domains app \
+--profile-name ${AZ_USER}-afd-${UNIQUE} \
+--resource-group ${AZ_RG}
+```
 
 Once your domain has been successfully validated, you'll need to create a CNAME record in your custom domain that points to the Azure Front Door endpoint. To do so, run the following command:
 
