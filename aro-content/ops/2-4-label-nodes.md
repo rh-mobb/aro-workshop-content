@@ -1,6 +1,6 @@
 ## Introduction
 
-Labels are a useful way to select which nodes / machine sets that an application will run on. If you have a memory intensitve application, you may choose to use a memory heavy node type to place that application on. By using labels on the machinesets and selectors on your pod / deployment specification, you ensure thats where the application lands.
+Labels are a useful way to select which nodes / machine sets that an application will run on. If you have a memory intensive application, you may choose to use a memory heavy node type to place that application on. By using labels on the machinesets and selectors on your pod / deployment specification, you ensure thats where the application lands.
 
 While you can directly add a label to a node it is not recommended as nodes can be restarted or recreated and the label would disappear. Therefore we need to label the MachineSet itself, however only new Machines created by the MachineSet will get the label, this means you will need to either scale the MachineSet down to zero then back up, or you can label the existing nodes.
 
