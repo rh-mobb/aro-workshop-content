@@ -1,41 +1,60 @@
 ## Access the OpenShift Console and CLI
 
-Ensure that your workshop environment has our helper variables configured
+### Login to the OpenShift Web Console
 
-```bash
-env | grep -E  'AZ_|OCP'
-```
+1. First, let's ensure that your workshop environment has our helper variables configured. To do so, let's run the following command:
 
-You should see a list of variables including `AZ_USER` and `OCP_CONSOLE`
+    ```bash
+    env | grep -E 'AZ_|OCP'
+    ```
 
-To access the OpenShift `oc` CLI and web console you will need to retrieve your cluster credentials. The helper variables from above will make this simple!
+    You should see a list of variables including `AZ_USER` and `OCP_CONSOLE`.
 
-To retrieve the credentials run:
+    !!! info "Helper Variables"
 
-```bash
-az aro list-credentials --name "${AZ_ARO}" --resource-group "${AZ_RG}"
-```
+        We use helper variables extensively throughout this workshop, but we also include the commands we used to populate these helper variables to ensure you can craft these commands later. 
 
-To retrieve the console URL run:
+1. To access the OpenShift CLI tools (`oc`) and web console you will need to retrieve your cluster credentials. The helper variables from above will make this simple!
 
-```bash
-az aro show --name "${AZ_ARO}" --resource-group \
-  "${AZ_RG}" -o tsv --query consoleProfile
-```
+    To retrieve the credentials, run the following command:
 
-Login to the console with the provided credentials through a browser.
+    ```bash
+    az aro list-credentials --name "${AZ_ARO}" --resource-group "${AZ_RG}"
+    ```
 
-### OpenShift CLI Login
+1. Next retrieve the console URL by running the following command:
 
-To retrieve the API server's address.
+    ```bash
+    az aro show --name "${AZ_ARO}" --resource-group \
+    "${AZ_RG}" -o tsv --query consoleProfile
+    ```
 
-```bash
-az aro show -g "${AZ_RG}" -n "${AZ_ARO}" --query apiserverProfile.url -o tsv
-```
+1. Finally, open the link to the console provided in a separate tab, and login with the provided credentials. 
 
-Login to the OpenShift cluster's API server using the following command.
+### Login to the OpenShift CLI
 
-```bash
-oc login "${OCP_API}" -u "${OCP_USER}" -p "${OCP_PASS}"
-```
+Now that you're logged into the cluster's console, return to your Azure Cloud Shell. 
 
+1. To login to the cluster using the OpenShift CLI tools (`oc`), first we need to retrieve the API server endpoint. To do so, run the following command:
+
+    ```bash
+    az aro show -g "${AZ_RG}" -n "${AZ_ARO}" --query apiserverProfile.url -o tsv
+    ```
+
+1. Now that we've captured the API server endpoint, we can login to the cluster by running the following command:
+
+    ```bash
+    oc login "${OCP_API}" -u "${OCP_USER}" -p "${OCP_PASS}"
+    ```
+
+    Once logged in, you'll see output that looks like this:
+
+    ```bash
+    Login successful.
+
+    You have access to 68 projects, the list has been suppressed. You can list all projects with 'oc projects'
+
+    Using project "default".
+    ```
+
+    Congratulations, you're now logged into the cluster and ready to move on to the workshop content.

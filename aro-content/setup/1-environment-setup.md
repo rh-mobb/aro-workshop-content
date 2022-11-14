@@ -1,8 +1,8 @@
 ## The Workshop Environment You Are Using
 
-Your workshop environment consists of several components which have been pre-configured and are ready to use. This includes a [Microsoft Azure](https://azure.microsoft.com/en-us/) account, an [Azure Red Hat OpenShift](https://azure.microsoft.com/en-us/products/openshift/) cluster, and many other supporting resources.
+Your workshop environment consists of several components which have been pre-configured and are ready to use. This includes a [Microsoft Azure](https://azure.microsoft.com/en-us/){:target="_blank"} account, an [Azure Red Hat OpenShift](https://azure.microsoft.com/en-us/products/openshift/){:target="_blank"} cluster, and many other supporting resources.
 
-To access your working environment, you'll need to log into the Microsoft Azure portal by [clicking here](https://portal.azure.com).
+To access your working environment, you'll need to log into the Microsoft Azure portal by [clicking here](https://portal.azure.com){:target="_blank"}.
 
 When prompted, you'll log in with the credentials provided by the workshop team.
 
@@ -22,51 +22,53 @@ When prompted, you'll log in with the credentials provided by the workshop team.
 
 Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for managing Azure resources. In this workshop, we'll use Azure Cloud Shell extensively to execute commands.
 
-First, go ahead and skip the tour of the Azure Portal by clicking the *Maybe Later* button.
+1. First, go ahead and skip the tour of the Azure Portal by clicking the *Maybe Later* button.
 
-![Azure Portal Skip Tour](../assets/images/overview-skip-tour.png){ align=center }
+    ![Azure Portal Skip Tour](../assets/images/overview-skip-tour.png){ align=center }
 
-To start Azure Cloud Shell, click on the `>_` button at the top right corner of the Azure Portal.
+1. To start Azure Cloud Shell, click on the `>_` button at the top right corner of the Azure Portal.
 
-![Azure Portal Cloud Shell](../assets/images/overview-cloud-shell-icon.png){ align=center }
+    ![Azure Portal Cloud Shell](../assets/images/overview-cloud-shell-icon.png){ align=center }
 
-Once prompted, select *Bash* from the *Welcome* screen.
+1. Once prompted, select *Bash* from the *Welcome* screen.
 
-![Cloud Shell Language Choice](../assets/images/cloud-shell-bash.png){ align=center }
+    ![Cloud Shell Language Choice](../assets/images/cloud-shell-bash.png){ align=center }
 
-On the next screen, you'll receive a message that says "You have no storage mounted". Select the *Show advanced settings* link.
+1. On the next screen, you'll receive a message that says "You have no storage mounted". Select the *Show advanced settings* link.
 
-![Cloud Shell Show Advanced Options](../assets/images/cloud-shell-show-advanced-options.png){ align=center }
+    ![Cloud Shell Show Advanced Options](../assets/images/cloud-shell-show-advanced-options.png){ align=center }
 
-While we've pre-created a number of resources, including a storage account for you to use with Azure Cloud Shell, you'll need to configure Azure Cloud Shell using the table below.
+1. While we've pre-created a number of resources, including a storage account for you to use with Azure Cloud Shell, you'll need to configure Azure Cloud Shell using the table below.
 
-| Option     | Value                               | Example |
-| ----------- | ------------------------------------ | -------- |
-| Subscription       | **Red Hat Cloud Services - Microsoft Azure Sponsorship**  | N/A |
-| Cloud Shell region       | **East US**                 | N/A |
-| Show VNET isolation settings    | *Leave Unchecked* | N/A |
-| Resource group       | **user#-rg** (Select *Use Existing* Button) | **user2-rg** |
-| Storage account       | **user#atl** (Select *Create New* Button) | **user2atl** |
-| File share       | **clouddrive** (Select *Create New* Button) | N/A |
+    | Option     | Value                               | Example |
+    | ----------- | ------------------------------------ | -------- |
+    | Subscription       | **Red Hat Cloud Services - Microsoft Azure Sponsorship**  | N/A |
+    | Cloud Shell region       | **East US**                 | N/A |
+    | Show VNET isolation settings    | *Leave Unchecked* | N/A |
+    | Resource group       | **user#-rg** (Select *Use Existing* Button) | **user2-rg** |
+    | Storage account       | **user#atl** (Select *Create New* Button) | **user2atl** |
+    | File share       | **clouddrive** (Select *Create New* Button) | N/A |
 
-Your options should look like the screenshot below once filled out:
+    Your options should look like the screenshot below once filled out:
 
-![Cloud Shell Advanced Settings](../assets/images/cloud-shell-advanced-settings.png){ align=center }
+    ![Cloud Shell Advanced Settings](../assets/images/cloud-shell-advanced-settings.png){ align=center }
 
-Once completed, click on the *Create Storage* button to start your Azure Cloud Shell session.
+1. Once completed, click on the *Create Storage* button to start your Azure Cloud Shell session.
 
-![Cloud Shell Create Storage](../assets/images/cloud-shell-create-storage.png){ align=center }
+    ![Cloud Shell Create Storage](../assets/images/cloud-shell-create-storage.png){ align=center }
 
-When your shell is ready and you are at the bash prompt, run the following command to prepare your Cloud Shell environment for the remainder of the workshop:
+1. When your shell is ready and you are at the bash prompt, run the following command to prepare your Cloud Shell environment for the remainder of the workshop:
 
-```
-curl https://rh-mobb.github.io/aro-hackathon-content/assets/cloudshell-setup.sh | bash
-```
+    ```
+    curl https://rh-mobb.github.io/aro-hackathon-content/assets/cloudshell-setup.sh | bash
+    ```
 
-You will see a significant amount of output as the script prepares your environment for the workshop.
+    You will see a significant amount of output as the script prepares your environment for the workshop.
 
-Once it is complete follow its instructions and source the `~/.workshoprc` file which contains credentials and other useful environment variables for your cluster.
+1. Once it is complete follow its instructions and source the `~/.workshoprc` file which contains credentials and other useful environment variables for your cluster.
 
-```bash
-source ~/.workshoprc
-```
+    ```bash
+    source ~/.workshoprc
+    ```
+
+    Congratulations, your Azure Cloud Shell is now configured and you're ready to move on to the next page.
