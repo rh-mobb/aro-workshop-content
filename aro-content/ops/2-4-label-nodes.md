@@ -1,35 +1,36 @@
 ## Introduction
 
-Labels are a useful way to select which nodes / machine sets that an application will run on. If you have a memory intensive application, you may choose to use a memory heavy node type to place that application on. By using labels on the machinesets and selectors on your pod / deployment specification, you ensure thats where the application lands.
+Labels are a useful way to select which nodes that an application will run on. These nodes are created by machines which are defined by the MachineSets we worked with in previous sections of this workshop. An example of this would be running a memory intensive application only on a specific node type.
 
-While you can directly add a label to a node it is not recommended as nodes can be restarted or recreated and the label would disappear. Therefore we need to label the MachineSet itself, however only new Machines created by the MachineSet will get the label, this means you will need to either scale the MachineSet down to zero then back up, or you can label the existing nodes.
+While you can directly add a label to a node, it is not recommended because nodes can be recreated, which would cause the label to disappear. Therefore we need to label the MachineSet itself. An important caveat to this process is that only **new machines** created by the MachineSet will get the label. This means you will need to either scale the MachineSet down to zero then back up to create new machines with the label, or you can label the existing machines directly.
 
-### Use the Web Console to set a label for the MachineSet
+## Set a label for the MachineSet
 
-Select "MachineSets" from the left menu.  You will see the list of machinesets.
+1. Just like the last section, let's pick a MachineSet to add our label. To do so, run the following command:
 
-![webconsollemachineset](../assets/images/43-machinesets.png)
+    ```bash
+    MACHINESET=$(oc -n openshift-machine-api get machinesets -o name | head -1)
+    echo ${MACHINESET}
+    ```
 
-Select a machine set that was not used in the previous autoscaling activity such as `workshop-prgbs-worker-eastus2`
+1. Now, let's patch the MachineSet with our new label. To do so, run the following command:
 
-Click on the second tab **YAML**
+    ```bash
+    oc -n openshift-machine-api patch ${MACHINESET} -p '{"spec":{"template":{"spec":{"metadata":{"labels":{"tier":"frontend"}}}}}}'
+    ```
 
-Click into the text editor and find `spec.template.spec.metadata.labels` add a key:value pair for the label you want.  In our example we can add a label `tier: frontend`. Click **Save**.
+1. As you'll remember, the existing machines won't get this label, but all new machines will. While we could just scale this MachineSet down to zero and back up again, that could disrupt our workloads. Instead, let's just loop through and add the label to all of our nodes in that MachineSet. To do so, run the following command: 
 
-![webconsollemachineset](../assets/images/44-edit-machinesets.png)
-
-The already existing machines won't get this label but any new machines will. Rather than scale the MachineSet down to zero and back up which may disrupt your workloads you can write a quick script to label all machines that belong to the machineset.
-
-First set a variable containing the machineset you just modified:
-
-```bash
-MACHINESET=<machineset name>
-```
-
-Next label each machine in that machineset:
+    ```bash
+    MACHINES=$(oc -n openshift-machine-api get machines -o name -l "machine.openshift.io/cluster-api-machineset=$(echo $MACHINESET | cut -d / -f2 )" | xargs)
+    oc label -n openshift-machine-api ${MACHINES} tier=frontend
+    NODES=$(echo $MACHINES | sed 's/machine.machine.openshift.io/node/g')
+    oc label ${NODES} tier=frontend
+    ```
 
 !!! info
-    MachineSets do not automatically relabel their existing child resources, this means we need to relabel them ourselves to avoid having to restart them.
+
+    Just like MachineSets, machines do not automatically label their existing child resources, this means we need to relabel them ourselves to avoid having to recreate them.
 
 ```bash
 MACHINES=$(oc -n openshift-machine-api get machines -o name \
@@ -38,6 +39,8 @@ oc label -n openshift-machine-api "${MACHINES}" tier=frontend
 NODE=$(echo $MACHINES | cut -d "/" -f 2)
 oc label nodes "${NODE}" tier=frontend
 ```
+
+@todo - stopping point mrmc
 
 Click on one of the machines and you can see that the label is now there.
 
