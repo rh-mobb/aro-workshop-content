@@ -12,7 +12,7 @@ export DOMAIN=$(oc get IngressController default -n openshift-ingress-operator -
 Next, we'll apply the following YAML file to our cluster to create a second ingress controller by running the following command:
 
 ``` bash
-envsubst << EOF | oc apply -f -
+cat << EOF | oc apply -f -
 apiVersion: v1
 items:
 - apiVersion: operator.openshift.io/v1
@@ -83,7 +83,7 @@ Status:
       Scope:            Internal
     Type:               LoadBalancerService
   Observed Generation:  1
-  Selector:             
+  Selector:
 Events:
   Type    Reason    Age    From                Message
   ----    ------    ----   ----                -------
