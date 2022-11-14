@@ -1,0 +1,51 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: hello-openshift
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-openshift
+  template:
+    metadata:
+      labels:
+        app: hello-openshift
+    spec:
+      nodeSelector:
+        tier: frontend
+      containers:
+        - name: hello-openshift
+          image: "docker.io/openshift/hello-openshift"
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8888
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-openshift
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: hello-openshift
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: hello-openshift
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: hello-openshift
+    weight: 100
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  wildcardPolicy: None
