@@ -140,7 +140,7 @@ Now, we need to add your custom domain to Azure Front Door. For this workshop, y
 ```bash
 az afd custom-domain create \
 --certificate-type ManagedCertificate \
---custom-domain-name "${AZ_USER}.ws.mobb.cloud" \
+--custom-domain-name "app" \
 --host-name "app.${AZ_USER}.ws.mobb.cloud" \
 --minimum-tls-version TLS12 \
 --profile-name ${AZ_USER}-afd-${UNIQUE} \
@@ -158,17 +158,17 @@ az network dns record-set txt add-record \
 -n _dnsauth.app \
 --value $(az afd custom-domain show -g ${AZ_RG} \
 --profile-name ${AZ_USER}-afd-${UNIQUE} \
---custom-domain-name "app.${AZ_USER}.ws.mobb.cloud" \
+--custom-domain-name "app" \
 --query "validationProperties.validationToken") \
 --record-set-name _dnsauth.app
 ```
 
 Now, we can check if the domain has been validated by Azure Front Door by running the following command, but do note it can take several minutes for Azure Front Door to validate your domain. 
 
-```
+```bash
 az afd custom-domain list -g ${AZ_RG} \
---profile-name ${AZ_USER}-afd-${UNIQUE} --query \
-"[? contains(hostName, app.${AZ_USER}.ws.mobb.cloud)].domainValidationState"
+--profile-name ${AZ_USER}-afd-${UNIQUE} \
+--query "[? contains(hostName, \`app.${AZ_USER}.ws.mobb.cloud\`)].domainValidationState"
 ```
 
 Once your domain has been successfully validated, you'll need to create a CNAME record in your custom domain that points to the Azure Front Door endpoint. To do so, run the following command:
@@ -177,7 +177,7 @@ Once your domain has been successfully validated, you'll need to create a CNAME 
 az network dns record-set cname set-record \
 -g ${AZ_RG} \
 -z ${AZ_USER}.ws.mobb.cloud \
--n "app" 
+-n "app" \
 -c $(az afd endpoint show -g ${AZ_RG} \
 --profile-name ${AZ_USER}-afd-${UNIQUE} \
 --endpoint-name ${AZ_USER}-ilb-${UNIQUE} \
