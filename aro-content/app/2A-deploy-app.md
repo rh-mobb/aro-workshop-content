@@ -40,6 +40,8 @@ apiVersion: resources.azure.com/v1beta20200601
 kind: ResourceGroup
 metadata:
   name: ${AZ_RG}
+  annotations:
+    serviceoperator.azure.com/reconcile-policy: skip
 spec:
   location: ${AZ_LOCATION}
 EOF
@@ -165,7 +167,8 @@ psql \
 From the Azure Cloud Shell, set an environment variable for your user id and the Azure Resource Group given to you by the facilitator:
 
 ```bash
-export ARO_APP_FQDN=minesweeper.$USERID.azure.mobb.ninja
+export ARO_APP_FQDN=app.${AZ_USER}.ws.mobb.cloud
+echo "export ARO_APP_FQDN=${ARO_APP_FQDN}" >> ~/.workshoprc
 ```
 
 Clone the application from github.
