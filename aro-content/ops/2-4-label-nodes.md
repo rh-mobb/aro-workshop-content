@@ -10,23 +10,23 @@ Select "MachineSets" from the left menu.  You will see the list of machinesets.
 
 ![webconsollemachineset](../assets/images/43-machinesets.png)
 
-Select a machine set that was not used in the previous autoscaling such as `ok0620-rq5tl-worker-westus21`
+Select a machine set that was not used in the previous autoscaling activity such as `workshop-prgbs-worker-eastus2`
 
 Click on the second tab **YAML**
 
-Click into the text editor and find `spec.template.metadata.labels` add a key:value pair for the label you want.  In our example we can add a label `tier: frontend`. Click **Save**.
+Click into the text editor and find `spec.template.spec.metadata.labels` add a key:value pair for the label you want.  In our example we can add a label `tier: frontend`. Click **Save**.
 
 ![webconsollemachineset](../assets/images/44-edit-machinesets.png)
 
-The already existing machines won't get this label but any new machines will. Rather than scale the MachineSet down to zero and back up which may disrupt your workloads you can write a quick script to label all machines that belong to the machineset
+The already existing machines won't get this label but any new machines will. Rather than scale the MachineSet down to zero and back up which may disrupt your workloads you can write a quick script to label all machines that belong to the machineset.
 
-First set a variable containing the machineset you just modified
+First set a variable containing the machineset you just modified:
 
 ```bash
 MACHINESET=<machineset name>
 ```
 
-Next label each machine in that machineset
+Next label each machine in that machineset:
 
 ```bash
 MACHINES=$(oc -n openshift-machine-api get machines -o name \
