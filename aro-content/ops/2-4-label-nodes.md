@@ -37,3 +37,27 @@ oc label -n openshift-machine-api "${MACHINES}" tier=frontend
 Click on one of the machines and you can see that the label is now there.
 
 ![checklabel](../assets/images/45-machine-label.png)
+
+### Deploy an app to the labelled nodes
+
+To test the functionality of deploying an app that uses `nodeSelector` to determine app placement, use the Deployment manifest provided below.
+
+``` title="node-select-deployment.yaml"
+--8<-- "node-select-deployment.yaml"
+```
+
+#### Deploy the app
+
+Create a new project for the app:
+
+```bash
+oc new-project hello-openshift
+```
+
+Apply the manifest:
+
+```bash
+oc create -f \
+  https://rh-mobb.github.io/aro-hackathon-content/assets/node-select-deployment.yaml
+```
+
