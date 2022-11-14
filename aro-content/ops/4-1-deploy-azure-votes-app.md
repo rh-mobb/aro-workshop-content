@@ -29,6 +29,8 @@ kind: ResourceGroup
 metadata:
   name: "${AZ_RG}"
   namespace: redis-demo
+  annotations:
+    serviceoperator.azure.com/reconcile-policy: skip
 spec:
   location: eastus
 EOF
@@ -78,10 +80,6 @@ EOF
 
 This will take a couple of minutes to complete as well. Also note that there is typically a bit of lag between a resource being created and showing up in the Azure Portal.
 
-You can view the resource being created in the Azure Portal by searching for "Redis"
-
-![screenshot of azure portal showing redis](./Images/azr-portal-redis.png)
-
 You can watch the progress in the Cloud Shell by running
 
 ```bash
@@ -94,6 +92,10 @@ Eventually it will show
 NAME             READY   SEVERITY   REASON      MESSAGE
 redis-tjgf1lwg   True               Succeeded
 ```
+
+You can view the resource being created in the Azure Portal by searching for "Redis"
+
+![screenshot of azure portal showing redis](./Images/azr-portal-redis.png)
 
 ### Deploy the Azure Voting App
 
