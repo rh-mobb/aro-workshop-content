@@ -32,13 +32,6 @@ az extension add --name "connectedk8s"
 az extension add --name "k8s-configuration"
 az extension add --name "k8s-extension"
 ```
-We then need to reqister the required providers for Azure Arc-enabled Kubernetes. Note that the registration may take up to 5 minutes.
-
-```bash
-az provider register --namespace Microsoft.Kubernetes
-az provider register --namespace Microsoft.KubernetesConfiguration
-az provider register --namespace Microsoft.ExtendedLocation
-```
 
 ## Connect ARC Your ARO Cluster
 
@@ -125,7 +118,7 @@ resource-sync-agent-bb79c44b8-5brjr          2/2     Running   0          4m47s
 To check the status of clusters connected to Azure ARC, run the following command
 
 ```
- az connectedk8s list --resource-group $USERID --output table
+ az connectedk8s list --resource-group $AZ_RG --output table
 ```
 
 ```{.text .no-copy}
@@ -140,7 +133,8 @@ In order to see ARO resources (namespaces, pods, services, etc) inside Azure Arc
 ```bash
 oc project azure-arc
 oc create serviceaccount azure-arc-observability
-oc create clusterrolebinding azure-arc-observability-rb --clusterrole cluster-admin --serviceaccount azure-arc:azure-arc-observability
+oc create clusterrolebinding azure-arc-observability-rb \
+  --clusterrole cluster-admin --serviceaccount azure-arc:azure-arc-observability
 ```
 
 We now need to create a secret to store our token. This can be done by saving the below as a file on your Azure Cloud Shell.
@@ -162,7 +156,7 @@ And finally we can obtain the token for Azure Arc by running the below.
 
 ```bash
 TOKEN=$(oc get secret azure-arc-observability-secret -o jsonpath='{$.data.token}' | base64 -d | sed 's/$/\\n/g')
-echo $TOKEN
+printf $TOKEN
 ```
 
 In the Azure Portal search for "Azure Arc" and then select **Kubernetes Clusters** in the left menu, and then click on your cluster name.
@@ -312,6 +306,15 @@ oc create secret generic secrets-store-creds \
 oc label secret secrets-store-creds secrets-store.csi.k8s.io/used=true
 ```
 
+Give your cluster read access to the secret
+
+```bash
+OID="$(az ad sp show --id ${AZURE_CLIENT_ID} --query '{id:id}' -o tsv)"
+az keyvault set-policy --name "${AZ_USER}" \
+  --object-id "${OID}" \
+  --secret-permissions get
+```
+
 Create a SecretProviderClass for your Key vault resource
 
 ```bash
@@ -371,12 +374,15 @@ EOF
 After the pod starts, the mounted content at the volume path specified in your deployment YAML is available.
 
 ```bash
-## show secrets held in secrets-store
-oc exec secret-store-pod -- ls /mnt/secrets-store/DemoSecret
-## print a test secret 'DemoSecret' held in secrets-store
 oc exec secret-store-pod -- cat /mnt/secrets-store/DemoSecret
+```
+
+You should see the following output
+
+```{.text .no-copy}
 MyExampleSecret
 ```
+
 <!--
 ## Enable log aggregation
 Azure Arc provides the ability to collect and aggregate logs from multiple sources. In order to collect logs from our ARO cluster and store it in Azure ARC, we will need to configure Azure monitor.
