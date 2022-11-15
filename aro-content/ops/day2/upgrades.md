@@ -26,7 +26,7 @@ For more information on how OpenShift's Upgrade Service works, please see the [R
 
 1. In a moment, you'll begin to see what upgrades are available for your cluster. From here, you could click the *Select a version* button and upgrade the cluster, or you could follow the instructions below to use the Managed Upgrade Operator.
 
-    ![Web Console - Available Upgrades](Images/aro-console-upgrade.png)
+    ![Web Console - Available Upgrades](../../Images/aro-console-upgrade.png)
 
 ## Upgrade using the Managed Upgrade Operator
 
