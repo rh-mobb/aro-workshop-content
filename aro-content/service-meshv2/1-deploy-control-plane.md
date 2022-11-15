@@ -4,11 +4,13 @@ Based on the open source Istio project, Red Hat OpenShift Service Mesh adds a tr
 
 ## Deploy Control Plane
 
+
 1. Create a project named istio-system.
 
      ```bash
      oc new-project istio-system
      ```
+
 
 1. Look over this example `ServiceMeshControlPlane` resource
 
@@ -37,12 +39,14 @@ Based on the open source Istio project, Red Hat OpenShift Service Mesh adds a tr
           enabled: true
     ```
 
+
 1. Run the following command to deploy the Service Mesh control plane.
 
     ```bash
     oc create -n istio-system -f \
       https://raw.githubusercontent.com/rh-mobb/aro-hackathon-content/main/aro-content/assets/istio_installation.yaml
     ```
+
 
 1. To watch the progress of the pod deployment, run the following command:
 
@@ -62,6 +66,7 @@ Based on the open source Istio project, Red Hat OpenShift Service Mesh adds a tr
     prometheus-58954b8d6b-m5std            2/2     Running   0          66m
     wasm-cacher-basic-8c986c75-vj2cd       1/1     Running   0          65m
     ```
+
 
 1. Run the following command to verify the Service Mesh control plane installation, where istio-system is the namespace where you installed the Service Mesh control plane.
 
