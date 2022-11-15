@@ -1,8 +1,11 @@
 ## Operator Overview
 
-### Red Hat OpenShift Service Mesh requires the following four Operators:
+Red Hat OpenShift Service Mesh requires the following four Operators:
 
-1. **OpenShift Elasticsearch** - (Optional) Provides database storage for tracing and logging with the distributed tracing platform. It is based on the open source Elasticsearch project.
+!!! warning
+    Before moving on, ensure you have deployed all four of these Operators in order.
+
+1. **OpenShift Elasticsearch** - Provides database storage for tracing and logging with the distributed tracing platform. It is based on the open core Elasticsearch project.
 
 1. **Red Hat OpenShift distributed tracing platform** - Provides distributed tracing to monitor and troubleshoot transactions in complex distributed systems. It is based on the open source Jaeger project.
 
@@ -10,19 +13,7 @@
 
 1. **Red Hat OpenShift Service Mesh** - Allows you to connect, secure, control, and observe the microservices that comprise your applications. The Service Mesh Operator defines and monitors the ServiceMeshControlPlane resources that manage the deployment, updating, and deletion of the Service Mesh components. It is based on the open source Istio project.
 
-### Installing the Operators
-#### To install Red Hat OpenShift Service Mesh, install following Operators in this order. Repeat the procedure for each Operator.
-
-1. **OpenShift Elasticsearch**
-
-1. **Red Hat OpenShift distributed tracing platform**
-
-1. **Kiali**
-
-1. **Red Hat OpenShift Service Mesh**
-
-### Procedure
-1. Log in to the OpenShift Container Platform web console as a user with the cluster-admin role. If you use Red Hat OpenShift Dedicated, you must have an account with the dedicated-admin role.
+### Operator installation Procedure
 
 1. In the OpenShift Container Platform web console, click **Operators → OperatorHub.**
 ![operator hub](../assets/images/operatorhub.PNG)
