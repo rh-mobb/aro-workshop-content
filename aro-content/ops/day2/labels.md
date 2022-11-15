@@ -16,7 +16,7 @@ While you can directly add a label to a node, it is not recommended because node
 1. Now, let's patch the MachineSet with our new label. To do so, run the following command:
 
     ```bash
-    oc -n openshift-machine-api patch ${MACHINESET} -p '{"spec":{"template":{"spec":{"metadata":{"labels":{"tier":"frontend"}}}}}}'
+    oc -n openshift-machine-api patch ${MACHINESET} --type=merge -p '{"spec":{"template":{"spec":{"metadata":{"labels":{"tier":"frontend"}}}}}}'
     ```
 
 1. As you'll remember, the existing machines won't get this label, but all new machines will. While we could just scale this MachineSet down to zero and back up again, that could disrupt our workloads. Instead, let's just loop through and add the label to all of our nodes in that MachineSet. To do so, run the following command: 
