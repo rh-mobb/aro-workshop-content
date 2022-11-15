@@ -65,7 +65,7 @@ Based on the open source Istio project, Red Hat OpenShift Service Mesh adds a tr
 
 ### Validating your SMCP installation with the CLI
 
-6. Run the following command to verify the Service Mesh control plane installation, where istio-system is the namespace where you installed the Service Mesh control plane.
+1. Run the following command to verify the Service Mesh control plane installation, where istio-system is the namespace where you installed the Service Mesh control plane.
 
    ```bash
    oc get smcp -n istio-system
