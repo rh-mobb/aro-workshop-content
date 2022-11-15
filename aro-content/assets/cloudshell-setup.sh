@@ -4,6 +4,11 @@ mkdir -p ~/bin
 mkdir -p ~/scratch
 cd ~/scratch
 
+echo "Configuring AZ extensions"
+az extension add --name "connectedk8s"
+az extension add --name "k8s-configuration"
+az extension add --name "k8s-extension"
+
 echo "Installing OC cli"
 
 if ! which oc > /dev/null; then
@@ -76,5 +81,5 @@ cd ~
 echo "******SETUP COMPLETE *******"
 echo
 echo
-echo "Run '. ~/.workshoprc' to enable bash completion and load environment specific variables"
+echo "Run '. ~/.workshoprc' to load environment specific variables"
 
