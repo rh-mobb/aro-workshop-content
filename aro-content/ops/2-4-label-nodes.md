@@ -28,69 +28,77 @@ While you can directly add a label to a node, it is not recommended because node
     oc label ${NODES} tier=frontend
     ```
 
-!!! info
+    !!! info
 
-    Just like MachineSets, machines do not automatically label their existing child resources, this means we need to relabel them ourselves to avoid having to recreate them.
+        Just like MachineSets, machines do not automatically label their existing child resources, this means we need to relabel them ourselves to avoid having to recreate them.
+
+1. Now, let's verify the nodes are properly labeled. To do so, run the following command:
+
+    ```bash
+    oc get nodes --show-labels --selector='tier=frontend'
+    ```
+
+    Your output will look something like this:
+
+    ```bash
+    NAME                                       STATUS   ROLES    AGE     VERSION
+    user1-cluster-8kvh4-worker-eastus1-hd5cw   Ready    worker   7h31m   v1.23.5+3afdacb
+    user1-cluster-8kvh4-worker-eastus1-zj7dl   Ready    worker   7h22m   v1.23.5+3afdacb
+    ```
+
+    Pending that your output shows one or more node, this demonstrates that our MachineSet and associated nodes are properly annotated! 
+
+## Deploy an app to the labeled nodes
+
+Now that we've successfully labeled our nodes, let's deploy a workload to demonstrate app placement using `nodeSelector`. This should force our app to only our labeled nodes. 
+
+1. First, let's create a namespace (also known as a project in OpenShift). To do so, run the following command:
+
+    ```bash
+    oc new-project nodeselector-ex
+    ```
+
+1. Next, let's deploy our application and associated resources that will target our labeled nodes. To do so, run the following command:
+
+    ```bash
+    oc create -f https://rh-mobb.github.io/aro-hackathon-content/assets/node-select-deployment.yaml
+    ```
+
+    !!! info "Wondering what we just created?"
+
+        This is the app deployment and associated resource definition that will target our labeled worker nodes.
+
+    ``` title="node-select-deployment.yaml"
+    --8<-- "node-select-deployment.yaml"
+    ```
+
+1. Now, let's validate that the application has been deployed to one of the labeled nodes. To do so, run the following command:
+
+    ```bash
+    oc -n nodeselector-ex get pod -l app=nodeselector-app -o wide
+    ```
+
+    Your output will look something like this:
+
+    ```bash
+    NAME                                READY   STATUS    RESTARTS   AGE   IP            NODE                                       NOMINATED NODE   READINESS GATES
+    nodeselector-app-7746c49485-tbnmd   1/1     Running   0          74s   10.131.2.73   user1-cluster-8kvh4-worker-eastus1-zj7dl   <none>           <none>
+    ```
+
+    Verify that the app was scheduled on a node that matches the output from the previous section's step four. 
+
+1. And finally, if you'd like to view the app in your browser, get the route of the application. To do so, run the following command:
 
 ```bash
-MACHINES=$(oc -n openshift-machine-api get machines -o name \
-  -l "machine.openshift.io/cluster-api-machineset=$MACHINESET" | xargs)
-oc label -n openshift-machine-api "${MACHINES}" tier=frontend
-NODE=$(echo $MACHINES | cut -d "/" -f 2)
-oc label nodes "${NODE}" tier=frontend
+oc -n nodeselector-ex get route nodeselector-app -o jsonpath='{.spec.host}'
 ```
 
-@todo - stopping point mrmc
-
-Click on one of the machines and you can see that the label is now there.
-
-![checklabel](../assets/images/45-machine-label.png)
-
-### Deploy an app to the labelled nodes
-
-To test the functionality of deploying an app that uses `nodeSelector` to determine app placement, use the Deployment manifest provided below.
-
-``` title="node-select-deployment.yaml"
---8<-- "node-select-deployment.yaml"
-```
-
-#### Deploy the app
-
-Create a new project for the app:
+Then visit the URL presented in a new tab in your web browser (using HTTPS). For example, your output will look something similar to:
 
 ```bash
-oc new-project hello-openshift
+nodeselector-app-nodeselector-ex.apps.ce7l3kf6.eastus.aroapp.io
 ```
 
-Apply the manifest:
+In that case, you'd visit `https://nodeselector-app-nodeselector-ex.apps.ce7l3kf6.eastus.aroapp.io` in your browser. 
 
-```bash
-oc create -f \
-  https://rh-mobb.github.io/aro-hackathon-content/assets/node-select-deployment.yaml
-```
-
-To view the app in a browser, get the route:
-
-```bash
-oc get route hello-openshift
-```
-
-Output:
-```bash
-NAME              HOST/PORT                                                        PATH   SERVICES          PORT   TERMINATION     WILDCARD
-hello-openshift   hello-openshift-hello-openshift.apps.auo2ltzt.eastus.aroapp.io          hello-openshift   8080   edge/Redirect   None
-```
-
-To see that the app was scheduled on the correct node run the following commands:
-
-```bash
- oc describe po -l app=hello-openshift | grep Node
-```
-
-Output:
-
-```bash
-Node:         workshop-prgbs-worker-eastus2-x7ltv/10.0.2.6
-Node-Selectors:              tier=frontend
-```
-
+Congratulations! You've successfully demonstrated the ability to label nodes and target those nodes using `nodeSelector`. 
