@@ -11,35 +11,35 @@ repo_url: https://github.com/rh-mobb/aro-hackathon-content
 # Nav Menu Definition
 nav:
   - Welcome: index.md
-  - Environment Setup: setup/1-environment-setup.md
-  - Access Your Cluster: setup/3-access-cluster.md
+  - Environment Setup: setup/environment.md
+  - Access Your Cluster: setup/access-cluster.md
   - Day Two ARO Operations:
-    - Managing Cluster Upgrades: ops/2-1-upgrades.md
-    - Managing Worker Nodes: ops/2-2-worker-nodes.md
-    - Cluster Autoscaling: ops/2-3-autoscaling.md
-    - Labeling Nodes: ops/2-4-label-nodes.md
+    - Managing Cluster Upgrades: ops/day2/upgrades.md
+    - Managing Worker Nodes: ops/day2/scaling-nodes.md
+    - Cluster Autoscaling: ops/day2/autoscaling.md
+    - Labeling Nodes: ops/day2/labels.md
   - Azure Service Operator (ASO):
-    - Deploy the Azure Service Operator: ops/3-deploy-azure-service-operator.md
-    - Deploy an Azure Service using ASO: ops/4-1-deploy-azure-votes-app.md
+    - Deploy the Azure Service Operator: ops/aso/deploy.md
+    - Deploy an Azure Service using ASO: ops/aso/app.md
   - Azure Front Door:
-    - Create a Private Ingress Controller: ops/6-private-ingress.md
-    - Configure Azure Front Door: ops/7-front-door.md
+    - Create a Private Ingress Controller: ops/afd/private-ingress.md
+    - Configure Azure Front Door: ops/afd/configure.md
   - Azure Arc: 
-    - Connect Azure Arc with ARO: ops/5-1-arc-integration.md
-    - Enable Azure Arc Observability: ops/5-2-arc-observability.md
-    - Integrate Azure Key Vault: ops/5-3-arc-key-vault.md
+    - Connect Azure Arc with ARO: ops/arc/integration.md
+    - Enable Azure Arc Observability: ops/arc/observability.md
+    - Integrate Azure Key Vault: ops/arc/key-vault.md
   - Deploy and Expose an App:
-    - Deploy the App: app/2A-deploy-app.md
-    - Expose the App with Front Door: app/2B-deploy-app.md
-    - Automate Deploying the App: app/2C-deploy-app.md
-  - Make an App Resilient: app/3-scale-app.md
+    - Deploy the App: app/deploy.md
+    - Expose the App with Front Door: app/afd.md
+    - Automate Deploying the App: app/cicd.md
+  - Make an App Resilient: app/resilience.md
   - Service Mesh:
-    - Service Mesh: service-meshv2/00-introduction.md
-    - Deploy Service Mesh Operator: service-meshv2/0-infrastructure_operator_install.md
-    - Deploy Control Plane: service-meshv2/1-deploy-control-plane.md
-    - Deploy Workloads: service-meshv2/2-deploying-workloads.md
-    - Deploy Weighted Load Balancing: service-meshv2/3-weighted-routing.md
-    - Access Kiali Dashboard: service-meshv2/access_kiali_dashboard.md
+    - Service Mesh: service-mesh/introduction.md
+    - Deploy Service Mesh Operator: service-mesh/install.md
+    - Deploy Control Plane: service-mesh/deploy-control-plane.md
+    - Deploy Workloads: service-mesh/deploy-workload.md
+    - Deploy Weighted Load Balancing: service-mesh/weighted-routing.md
+    - Access Kiali Dashboard: service-mesh/kiali.md
 
 
 # Theme Configuration
