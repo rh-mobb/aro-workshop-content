@@ -28,12 +28,6 @@ if ! which quarkus > /dev/null; then
   curl -Ls https://sh.jbang.dev | bash -s - app install --fresh --force quarkus@quarkusio
 fi
 
-echo "Installing envsubst"
-if ! which envsubst > /dev/null; then
-  curl -Ls https://github.com/a8m/envsubst/releases/download/v1.2.0/envsubst-`uname -s`-`uname -m` -o envsubst
-  install envsubst ~/bin
-fi
-
 echo "Installing tekton cli"
 if ! which tkn > /dev/null; then
   curl -Ls https://mirror.openshift.com/pub/openshift-v4/clients/pipeline/latest/tkn-linux-amd64.tar.gz | tar xzf -
@@ -51,8 +45,6 @@ if ! which siege > /dev/null; then
   mkdir -p ~/.siege
   siege.config > /dev/null
 fi
-
-export UNIQUE=$RANDOM
 
 echo "Configuring Environment specific variables"
 cat <<"EOF" > ~/.workshoprc
@@ -75,9 +67,10 @@ export OCP_API="$(az aro show --name ${AZ_ARO} --resource-group ${AZ_RG} \
   --query apiserverProfile.url -o tsv)"
 
 alias k=kubectl
-
-export UNIQUE=${UNIQUE}
 EOF
+
+export UNIQUE=$RANDOM
+echo "export UNIQUE=${UNIQUE}" >> ~/.workshoprc
 
 echo "source ~/.workshoprc" >> ~/.bashrc
 
