@@ -36,10 +36,10 @@ nav:
       - Automate Deploying the App: app/2C-deploy-app.md
     - Make Applications Resilient: app/3-scale-app.md
     - Service Mesh:
-      # - Service Mesh: service-meshv2/00-introduction.md
+      - Service Mesh: service-meshv2/00-introduction.md
       - Deploy Service Mesh Operator: service-meshv2/0-infrastructure_operator_install.md
       - Deploy Control Plane: service-meshv2/1-deploy-control-plane.md
-      - Deploy Workloads: service-meshv2/2-deplying-workloads.md
+      - Deploy Workloads: service-meshv2/2-deploying-workloads.md
       - Deploy Weighted Load Balancing: service-meshv2/3-weighted-routing.md
       - Access Kiali Dashboard: service-meshv2/access_kiali_dashboard.md
 

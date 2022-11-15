@@ -10,34 +10,34 @@ Weighted Load Balancing Requests are forwarded to instances in the pool accordin
 
 1. Deploy te weighted load balacing
 
-   ```bash
-   cat << EOF | oc create -f -
-   apiVersion: networking.istio.io/v1alpha3
-   kind: VirtualService
-   metadata:
-     name: reviews
-   spec:
-     hosts:
-       - reviews
-     http:
-     - route:
-       - destination:
-           host: reviews
-           subset: v1
-         weight: 80
-       - destination:
-           host: reviews
-           subset: v2
-         weight: 20
-   EOF
-   ```
+    ```bash
+    cat << EOF | oc create -f -
+    apiVersion: networking.istio.io/v1alpha3
+    kind: VirtualService
+    metadata:
+      name: reviews
+    spec:
+      hosts:
+        - reviews
+      http:
+      - route:
+        - destination:
+            host: reviews
+            subset: v1
+          weight: 80
+        - destination:
+            host: reviews
+            subset: v2
+          weight: 20
+    EOF
+    ```
 
 1. **Refresh** the browser tab containing Bookinfo URL a few times and you'll see that occasionally you'll see the v2 of the book review app which has star ratings.
 
 1. **Generate traffic by using the following snippet**
 
-   ```bash
-   while true; do curl -sSL "http://$GATEWAY_URL/productpage" | head -n 5; sleep 1; done
-   ```
+    ```bash
+    while true; do curl -sSL "http://$GATEWAY_URL/productpage" | head -n 5; sleep 1; done
+    ```
 
 1. Leave the loop running and move onto the next steps.
