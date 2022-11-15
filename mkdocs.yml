@@ -1,6 +1,6 @@
 # Project Information
 site_name: ARO Workshop Atlanta
-site_url: https://rh-mobb.github.io/aro-hackathon-content
+site_url: https://ws.mobb.cloud/
 site_description: A choose-your-own-adventure workshop for Operations and Development teams on ARO.
 site_author: Red Hat
 
@@ -13,10 +13,11 @@ nav:
   - Welcome: index.md
   - Environment Setup: setup/1-environment-setup.md
   - Access Your Cluster: setup/3-access-cluster.md
-  - Managing Cluster Upgrades: ops/2-1-upgrades.md
-  - Managing Worker Nodes: ops/2-2-worker-nodes.md
-  - Cluster Autoscaling: ops/2-3-autoscaling.md
-  - Labeling Nodes: ops/2-4-label-nodes.md
+  - Day Two ARO Operations:
+    - Managing Cluster Upgrades: ops/2-1-upgrades.md
+    - Managing Worker Nodes: ops/2-2-worker-nodes.md
+    - Cluster Autoscaling: ops/2-3-autoscaling.md
+    - Labeling Nodes: ops/2-4-label-nodes.md
   - Azure Service Operator (ASO):
     - Deploy the Azure Service Operator: ops/3-deploy-azure-service-operator.md
     - Deploy an Azure Service using ASO: ops/4-1-deploy-azure-votes-app.md
@@ -27,20 +28,18 @@ nav:
     - Connect Azure Arc with ARO: ops/5-1-arc-integration.md
     - Enable Azure Arc Observability: ops/5-2-arc-observability.md
     - Integrate Azure Key Vault: ops/5-3-arc-key-vault.md
-  - Development:
-    - home_pages/development/index.md
-    - Deploy and Expose an App:
-      - Deploy the App: app/2A-deploy-app.md
-      - Expose the App with Front Door: app/2B-deploy-app.md
-      - Automate Deploying the App: app/2C-deploy-app.md
-    - Make Applications Resilient: app/3-scale-app.md
-    - Service Mesh:
-      - Service Mesh: service-meshv2/00-introduction.md
-      - Deploy Service Mesh Operator: service-meshv2/0-infrastructure_operator_install.md
-      - Deploy Control Plane: service-meshv2/1-deploy-control-plane.md
-      - Deploy Workloads: service-meshv2/2-deploying-workloads.md
-      - Deploy Weighted Load Balancing: service-meshv2/3-weighted-routing.md
-      - Access Kiali Dashboard: service-meshv2/access_kiali_dashboard.md
+  - Deploy and Expose an App:
+    - Deploy the App: app/2A-deploy-app.md
+    - Expose the App with Front Door: app/2B-deploy-app.md
+    - Automate Deploying the App: app/2C-deploy-app.md
+  - Make an App Resilient: app/3-scale-app.md
+  - Service Mesh:
+    - Service Mesh: service-meshv2/00-introduction.md
+    - Deploy Service Mesh Operator: service-meshv2/0-infrastructure_operator_install.md
+    - Deploy Control Plane: service-meshv2/1-deploy-control-plane.md
+    - Deploy Workloads: service-meshv2/2-deploying-workloads.md
+    - Deploy Weighted Load Balancing: service-meshv2/3-weighted-routing.md
+    - Access Kiali Dashboard: service-meshv2/access_kiali_dashboard.md
 
 
 # Theme Configuration
