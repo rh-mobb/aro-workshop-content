@@ -1,93 +1,104 @@
 ## Introduction
 
-Labels are a useful way to select which nodes / machine sets that an application will run on. If you have a memory intensive application, you may choose to use a memory heavy node type to place that application on. By using labels on the machinesets and selectors on your pod / deployment specification, you ensure thats where the application lands.
+Labels are a useful way to select which nodes that an application will run on. These nodes are created by machines which are defined by the MachineSets we worked with in previous sections of this workshop. An example of this would be running a memory intensive application only on a specific node type.
 
-While you can directly add a label to a node it is not recommended as nodes can be restarted or recreated and the label would disappear. Therefore we need to label the MachineSet itself, however only new Machines created by the MachineSet will get the label, this means you will need to either scale the MachineSet down to zero then back up, or you can label the existing nodes.
+While you can directly add a label to a node, it is not recommended because nodes can be recreated, which would cause the label to disappear. Therefore we need to label the MachineSet itself. An important caveat to this process is that only **new machines** created by the MachineSet will get the label. This means you will need to either scale the MachineSet down to zero then back up to create new machines with the label, or you can label the existing machines directly.
 
-### Use the Web Console to set a label for the MachineSet
+## Set a label for the MachineSet
 
-Select "MachineSets" from the left menu.  You will see the list of machinesets.
+1. Just like the last section, let's pick a MachineSet to add our label. To do so, run the following command:
 
-![webconsollemachineset](../assets/images/43-machinesets.png)
+    ```bash
+    MACHINESET=$(oc -n openshift-machine-api get machinesets -o name | head -1)
+    echo ${MACHINESET}
+    ```
 
-Select a machine set that was not used in the previous autoscaling activity such as `workshop-prgbs-worker-eastus2`
+1. Now, let's patch the MachineSet with our new label. To do so, run the following command:
 
-Click on the second tab **YAML**
+    ```bash
+    oc -n openshift-machine-api patch ${MACHINESET} -p '{"spec":{"template":{"spec":{"metadata":{"labels":{"tier":"frontend"}}}}}}'
+    ```
 
-Click into the text editor and find `spec.template.spec.metadata.labels` add a key:value pair for the label you want.  In our example we can add a label `tier: frontend`. Click **Save**.
+1. As you'll remember, the existing machines won't get this label, but all new machines will. While we could just scale this MachineSet down to zero and back up again, that could disrupt our workloads. Instead, let's just loop through and add the label to all of our nodes in that MachineSet. To do so, run the following command: 
 
-![webconsollemachineset](../assets/images/44-edit-machinesets.png)
+    ```bash
+    MACHINES=$(oc -n openshift-machine-api get machines -o name -l "machine.openshift.io/cluster-api-machineset=$(echo $MACHINESET | cut -d / -f2 )" | xargs)
+    oc label -n openshift-machine-api ${MACHINES} tier=frontend
+    NODES=$(echo $MACHINES | sed 's/machine.machine.openshift.io/node/g')
+    oc label ${NODES} tier=frontend
+    ```
 
-The already existing machines won't get this label but any new machines will. Rather than scale the MachineSet down to zero and back up which may disrupt your workloads you can write a quick script to label all machines that belong to the machineset.
+    !!! info
 
-First set a variable containing the machineset you just modified:
+        Just like MachineSets, machines do not automatically label their existing child resources, this means we need to relabel them ourselves to avoid having to recreate them.
+
+1. Now, let's verify the nodes are properly labeled. To do so, run the following command:
+
+    ```bash
+    oc get nodes --show-labels --selector='tier=frontend'
+    ```
+
+    Your output will look something like this:
+
+    ```bash
+    NAME                                       STATUS   ROLES    AGE     VERSION
+    user1-cluster-8kvh4-worker-eastus1-hd5cw   Ready    worker   7h31m   v1.23.5+3afdacb
+    user1-cluster-8kvh4-worker-eastus1-zj7dl   Ready    worker   7h22m   v1.23.5+3afdacb
+    ```
+
+    Pending that your output shows one or more node, this demonstrates that our MachineSet and associated nodes are properly annotated! 
+
+## Deploy an app to the labeled nodes
+
+Now that we've successfully labeled our nodes, let's deploy a workload to demonstrate app placement using `nodeSelector`. This should force our app to only our labeled nodes. 
+
+1. First, let's create a namespace (also known as a project in OpenShift). To do so, run the following command:
+
+    ```bash
+    oc new-project nodeselector-ex
+    ```
+
+1. Next, let's deploy our application and associated resources that will target our labeled nodes. To do so, run the following command:
+
+    ```bash
+    oc create -f https://rh-mobb.github.io/aro-hackathon-content/assets/node-select-deployment.yaml
+    ```
+
+    !!! info "Wondering what we just created?"
+
+        This is the app deployment and associated resource definition that will target our labeled worker nodes.
+
+    ``` title="node-select-deployment.yaml"
+    --8<-- "node-select-deployment.yaml"
+    ```
+
+1. Now, let's validate that the application has been deployed to one of the labeled nodes. To do so, run the following command:
+
+    ```bash
+    oc -n nodeselector-ex get pod -l app=nodeselector-app -o wide
+    ```
+
+    Your output will look something like this:
+
+    ```bash
+    NAME                                READY   STATUS    RESTARTS   AGE   IP            NODE                                       NOMINATED NODE   READINESS GATES
+    nodeselector-app-7746c49485-tbnmd   1/1     Running   0          74s   10.131.2.73   user1-cluster-8kvh4-worker-eastus1-zj7dl   <none>           <none>
+    ```
+
+    Verify that the app was scheduled on a node that matches the output from the previous section's step four. 
+
+1. And finally, if you'd like to view the app in your browser, get the route of the application. To do so, run the following command:
 
 ```bash
-MACHINESET=<machineset name>
+oc -n nodeselector-ex get route nodeselector-app -o jsonpath='{.spec.host}'
 ```
 
-Next label each machine in that machineset:
-
-!!! info
-    MachineSets do not automatically relabel their existing child resources, this means we need to relabel them ourselves to avoid having to restart them.
+Then visit the URL presented in a new tab in your web browser (using HTTPS). For example, your output will look something similar to:
 
 ```bash
-MACHINES=$(oc -n openshift-machine-api get machines -o name \
-  -l "machine.openshift.io/cluster-api-machineset=$MACHINESET" | xargs)
-oc label -n openshift-machine-api "${MACHINES}" tier=frontend
-NODE=$(echo $MACHINES | cut -d "/" -f 2)
-oc label nodes "${NODE}" tier=frontend
+nodeselector-app-nodeselector-ex.apps.ce7l3kf6.eastus.aroapp.io
 ```
 
-Click on one of the machines and you can see that the label is now there.
+In that case, you'd visit `https://nodeselector-app-nodeselector-ex.apps.ce7l3kf6.eastus.aroapp.io` in your browser. 
 
-![checklabel](../assets/images/45-machine-label.png)
-
-### Deploy an app to the labelled nodes
-
-To test the functionality of deploying an app that uses `nodeSelector` to determine app placement, use the Deployment manifest provided below.
-
-``` title="node-select-deployment.yaml"
---8<-- "node-select-deployment.yaml"
-```
-
-#### Deploy the app
-
-Create a new project for the app:
-
-```bash
-oc new-project hello-openshift
-```
-
-Apply the manifest:
-
-```bash
-oc create -f \
-  https://rh-mobb.github.io/aro-hackathon-content/assets/node-select-deployment.yaml
-```
-
-To view the app in a browser, get the route:
-
-```bash
-oc get route hello-openshift
-```
-
-Output:
-```bash
-NAME              HOST/PORT                                                        PATH   SERVICES          PORT   TERMINATION     WILDCARD
-hello-openshift   hello-openshift-hello-openshift.apps.auo2ltzt.eastus.aroapp.io          hello-openshift   8080   edge/Redirect   None
-```
-
-To see that the app was scheduled on the correct node run the following commands:
-
-```bash
- oc describe po -l app=hello-openshift | grep Node
-```
-
-Output:
-
-```bash
-Node:         workshop-prgbs-worker-eastus2-x7ltv/10.0.2.6
-Node-Selectors:              tier=frontend
-```
-
+Congratulations! You've successfully demonstrated the ability to label nodes and target those nodes using `nodeSelector`. 

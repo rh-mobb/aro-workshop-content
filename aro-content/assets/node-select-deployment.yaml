@@ -1,16 +1,17 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: hello-openshift
+  name: nodeselector-app
+  namespace: nodeselector-ex
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hello-openshift
+      app: nodeselector-app
   template:
     metadata:
       labels:
-        app: hello-openshift
+        app: nodeselector-app
     spec:
       nodeSelector:
         tier: frontend
@@ -26,24 +27,26 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello-openshift
+  name: nodeselector-app
+  namespace: nodeselector-ex
 spec:
   ports:
   - port: 8080
     targetPort: 8080
   selector:
-    app: hello-openshift
+    app: nodeselector-app
 ---
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: hello-openshift
+  name: nodeselector-app
+  namespace: nodeselector-ex
 spec:
   port:
     targetPort: 8080
   to:
     kind: Service
-    name: hello-openshift
+    name: nodeselector-app
     weight: 100
   tls:
     insecureEdgeTerminationPolicy: Redirect

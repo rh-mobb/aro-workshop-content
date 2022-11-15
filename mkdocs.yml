@@ -16,18 +16,17 @@ nav:
   - Managing Cluster Upgrades: ops/2-1-upgrades.md
   - Managing Worker Nodes: ops/2-2-worker-nodes.md
   - Cluster Autoscaling: ops/2-3-autoscaling.md
-  - Operations:
-    - ARO Day 2 Operations:
-
-
-      - Labeling Nodes: ops/2-4-label-nodes.md
-    - Azure Front Door:
-      - Create a Private Ingress Controller: ops/6-private-ingress.md
-      - Configure Azure Front Door: ops/7-front-door.md
-    - Azure Service Operator:
-      - Deploy ASO: ops/3-deploy-azure-service-operator.md
-      - Deploy an Azure Service using ASO: ops/4-1-deploy-azure-votes-app.md
-    - Azure ARC Integration: ops/5-arc-integration.md
+  - Labeling Nodes: ops/2-4-label-nodes.md
+  - Azure Service Operator (ASO):
+    - Deploy the Azure Service Operator: ops/3-deploy-azure-service-operator.md
+    - Deploy an Azure Service using ASO: ops/4-1-deploy-azure-votes-app.md
+  - Azure Front Door:
+    - Create a Private Ingress Controller: ops/6-private-ingress.md
+    - Configure Azure Front Door: ops/7-front-door.md
+  - Azure Arc: 
+    - Connect Azure Arc with ARO: ops/5-1-arc-integration.md
+    - Enable Azure Arc Observability: ops/5-2-arc-observability.md
+    - Integrate Azure Key Vault: ops/5-3-arc-key-vault.md
   - Development:
     - home_pages/development/index.md
     - Deploy and Expose an App:

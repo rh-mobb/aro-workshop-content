@@ -52,6 +52,11 @@ if ! which siege > /dev/null; then
   siege.config > /dev/null
 fi
 
+echo "Installing various Azure CLI extensions"
+az extension add --name "connectedk8s" --yes
+az extension add --name "k8s-configuration" --yes
+az extension add --name "k8s-extension" --yes
+
 echo "Configuring Environment specific variables"
 cat <<"EOF" > ~/.workshoprc
 #!/bin/bash
@@ -73,6 +78,8 @@ export OCP_API="$(az aro show --name ${AZ_ARO} --resource-group ${AZ_RG} \
   --query apiserverProfile.url -o tsv)"
 
 alias k=kubectl
+
+export UNIQUE=$RANDOM
 EOF
 
 echo "source ~/.workshoprc" >> ~/.bashrc
