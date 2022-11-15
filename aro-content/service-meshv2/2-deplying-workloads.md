@@ -105,7 +105,7 @@ destinationrule.networking.istio.io/details created
 
 ### Verifying the Bookinfo installation
 
-8. Verify that all pods are ready with this command:
+1. Verify that all pods are ready with this command:
 
    ```bash
    oc get pods -n bookinfo
@@ -123,12 +123,12 @@ destinationrule.networking.istio.io/details created
    reviews-v3-6dfd49b55b-vcwpf       2/2     Running   0          12m
    ```
 
-   9. Run the following command to retrieve the URL for the product page:
+1. Run the following command to retrieve the URL for the product page:
 
    ```bash
    echo "http://$GATEWAY_URL/productpage"
    ```
 
-10. Copy and paste the output in a web browser to verify the Bookinfo product page is deployed.
+1. Copy and paste the output in a web browser to verify the Bookinfo product page is deployed.
 
    You should see a book review of "The Comedy of Errors".
