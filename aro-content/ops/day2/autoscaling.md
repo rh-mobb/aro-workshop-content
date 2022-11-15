@@ -94,7 +94,7 @@ Now let's test the cluster autoscaler and see it in action. To do so, we'll depl
 1. Next, let's deploy our job that will exhaust the cluster's resources and cause it to scale more worker nodes. To do so, run the following command:
 
     ```bash
-    oc create -f https://rh-mobb.github.io/aro-hackathon-content/assets/job-maxscale.yaml
+    oc create -f https://ws.mobb.cloud/assets/job-maxscale.yaml
     ```
 
     !!! info "Wondering what we just created?"

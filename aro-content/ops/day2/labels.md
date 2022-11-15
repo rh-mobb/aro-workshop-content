@@ -61,7 +61,7 @@ Now that we've successfully labeled our nodes, let's deploy a workload to demons
 1. Next, let's deploy our application and associated resources that will target our labeled nodes. To do so, run the following command:
 
     ```bash
-    oc create -f https://rh-mobb.github.io/aro-hackathon-content/assets/node-select-deployment.yaml
+    oc create -f https://ws.mobb.cloud/assets/node-select-deployment.yaml
     ```
 
     !!! info "Wondering what we just created?"

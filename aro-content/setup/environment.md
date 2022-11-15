@@ -60,7 +60,7 @@ Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for
 1. When your shell is ready and you are at the bash prompt, run the following command to prepare your Cloud Shell environment for the remainder of the workshop:
 
     ```
-    curl https://rh-mobb.github.io/aro-hackathon-content/assets/cloudshell-setup.sh | bash
+    curl https://ws.mobb.cloud/assets/cloudshell-setup.sh | bash
     ```
 
     You will see a significant amount of output as the script prepares your environment for the workshop.
