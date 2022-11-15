@@ -24,15 +24,15 @@ nav:
   - Azure Front Door:
     - Create a Private Ingress Controller: ops/afd/private-ingress.md
     - Configure Azure Front Door: ops/afd/configure.md
-  # - Azure Arc: 
-  #   - Connect Azure Arc with ARO: ops/arc/integration.md
-  #   - Enable Azure Arc Observability: ops/arc/observability.md
-  #   - Integrate Azure Key Vault: ops/arc/key-vault.md
   - Deploy and Expose an App:
     - Deploy the App: app/deploy.md
     - Expose the App with Front Door: app/afd.md
     - Automate Deploying the App: app/cicd.md
   - Make an App Resilient: app/resilience.md
+  - Azure Arc: 
+    - Connect Azure Arc with ARO: ops/arc/integration.md
+    - Enable Azure Arc Observability: ops/arc/observability.md
+    - Integrate Azure Key Vault: ops/arc/key-vault.md
   - Service Mesh:
     - Service Mesh: service-mesh/introduction.md
     - Deploy Service Mesh Operator: service-mesh/install.md
