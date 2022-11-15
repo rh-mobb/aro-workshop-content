@@ -1,6 +1,6 @@
 ## Introduction
 
-When deploying your Azure Red Hat OpenShift (ARO) cluster, you can configure many aspects of your worker nodes, but what happens when you need to change your worker nodes after they've already been created? These activities include scaling the number of nodes, changing the instance type, adding labels or taints, just to name a few. 
+When deploying your Azure Red Hat OpenShift (ARO) cluster, you can configure many aspects of your worker nodes, but what happens when you need to change your worker nodes after they've already been created? These activities include scaling the number of nodes, changing the instance type, adding labels or taints, just to name a few.
 
 Many of these changes are done using MachineSets. MachineSets ensure that a specified number of Machine replicas are running at any given time. Think of a MachineSet as a "template" for the kinds of Machines that make up the worker nodes of your cluster. These are similar to other Kubernetes resources, like a ReplicaSet is to Pods. One important caveat, is that MachineSets allow users to manage many Machines as a single entity, but are contained to a specific availability zone. If you'd like to learn more, see the [Red Hat documentation on machine management](https://docs.openshift.com/container-platform/latest/machine_management/index.html){:target="_blank"}.
 
@@ -28,7 +28,7 @@ Many of these changes are done using MachineSets. MachineSets ensure that a spec
     oc -n openshift-machine-api get machine
     ```
 
-    For this workshop, we've deployed your ARO cluster with six total machines (three workers machines and three control plane machines), one in each availability zone. The output will look something like this:  
+    For this workshop, we've deployed your ARO cluster with six total machines (three workers machines and three control plane machines), one in each availability zone. The output will look something like this:
 
     ```bash
     NAME                                       PHASE     TYPE              REGION   ZONE   AGE
@@ -64,7 +64,7 @@ Many of these changes are done using MachineSets. MachineSets ensure that a spec
     ```bash
     oc -n openshift-machine-api get machinesets
     ```
-    
+
     The output should look something like this:
 
     ```bash
@@ -74,14 +74,14 @@ Many of these changes are done using MachineSets. MachineSets ensure that a spec
     user1-cluster-8kvh4-worker-eastus3   1         1         1       1           4h50m
     ```
 
-    Note, that the number of *desired* and *current* nodes matches the scale we specified, but only one is *ready* and *available*. 
+    Note, that the number of *desired* and *current* nodes matches the scale we specified, but only one is *ready* and *available*.
 
     We can also run the same command we ran in step 2 to see the machine being provisioned:
 
     ```bash
     oc -n openshift-machine-api get machine
     ```
-    
+
     The output should look something like this:
 
     ```bash
@@ -97,21 +97,21 @@ Many of these changes are done using MachineSets. MachineSets ensure that a spec
 
 ### Via the Console
 
-Now let's scale the cluster back down to a total of 3 worker nodes, but this time, from the web console. 
+Now let's scale the cluster back down to a total of 3 worker nodes, but this time, from the web console.
 
-1. Return to your tab with the OpenShift Web Console. If you need to reauthenticate, follow the steps in the [Access Your Cluster](../setup/3-access-cluster/) section. 
+1. Return to your tab with the OpenShift Web Console. If you need to reauthenticate, follow the steps in the [Access Your Cluster](../setup/3-access-cluster/) section.
 
 1. Using the menu on the left Select *Compute* -> *MachineSets*.
 
-    ![Web Console - Cluster Settings](../assets/images/web-console-machineset-sidebar.png){ align=center }
+    ![Web Console - Cluster Settings](/assets/images/web-console-machineset-sidebar.png){ align=center }
 
-1. In the overview you will see the same information about the MachineSets that you saw on the command line. Now, locate the MachineSet which has "2 of 2" machines, and click on the ⋮ icon, then select *Edit machine count*. 
+1. In the overview you will see the same information about the MachineSets that you saw on the command line. Now, locate the MachineSet which has "2 of 2" machines, and click on the ⋮ icon, then select *Edit machine count*.
 
-    ![Web Console - MachineSets Menu](../assets/images/web-console-machinesets-three-dots.png){ align=center }
-    ![Web Console - MachineSets Count Menu](../assets/images/web-console-machinesets-edit-count-menu.png){ align=center }
+    ![Web Console - MachineSets Menu](/assets/images/web-console-machinesets-three-dots.png){ align=center }
+    ![Web Console - MachineSets Count Menu](/assets/images/web-console-machinesets-edit-count-menu.png){ align=center }
 
-1. Next, reduce the count from "2" to "1" and click *Save* to save your changes. 
+1. Next, reduce the count from "2" to "1" and click *Save* to save your changes.
 
-    ![Web Console - MachineSets Edit Count](../assets/images/web-console-machinesets-edit-count.png){ align=center }
+    ![Web Console - MachineSets Edit Count](/assets/images/web-console-machinesets-edit-count.png){ align=center }
 
-Congratulations! You've successfully scaled your cluster up and back down to three nodes. 
+Congratulations! You've successfully scaled your cluster up and back down to three nodes.

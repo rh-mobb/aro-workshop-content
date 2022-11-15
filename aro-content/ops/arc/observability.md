@@ -26,21 +26,21 @@
     oc -n azure-arc get secret azure-arc-observability-secret -o jsonpath='{$.data.token}' | base64 -d'
     ```
 
-    Make sure you copy this value, as you'll need it in a moment. 
+    Make sure you copy this value, as you'll need it in a moment.
 
-1. Next, In the Azure Portal search for "Azure Arc Kubernetes" and click on the *Kubernetes - Azure Arc* option. 
+1. Next, In the Azure Portal search for "Azure Arc Kubernetes" and click on the *Kubernetes - Azure Arc* option.
 
-    ![Azure Portal - Azure Arc Kubernetes Search](../assets/images/azure-arc-search.png)
+    ![Azure Portal - Azure Arc Kubernetes Search](/assets/images/azure-arc-search.png)
 
     !!! warning "Ensure that you DO NOT click on Azure Arc Kubernetes clusters!"
 
-1. Select your cluster name from the page. 
+1. Select your cluster name from the page.
 
-    ![Azure Portal - Azure Arc Cluster List](../assets/images/azure-arc-cluster-list.png)
+    ![Azure Portal - Azure Arc Cluster List](/assets/images/azure-arc-cluster-list.png)
 
 1. Then, select *Namespaces* from the left side menu and paste the token from step three in the *Service account bearer token* field.
 
-    ![Azure Portal - Azure Arc Namespaces - Unauthenticated](../assets/images/azure-arc-unauthenticated-namespaces.png)
+    ![Azure Portal - Azure Arc Namespaces - Unauthenticated](/assets/images/azure-arc-unauthenticated-namespaces.png)
 
     You can now see and explore through the following OpenShift resources inside the Azure Arc portal:
 
@@ -50,4 +50,4 @@
     - Storage
     - Configurations
 
-    ![Azure Portal - Azure Arc Namespaces](../assets/images/azure-arc-namespaces.png)
+    ![Azure Portal - Azure Arc Namespaces](/assets/images/azure-arc-namespaces.png)

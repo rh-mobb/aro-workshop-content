@@ -1,30 +1,30 @@
 ## Introduction
 
-Azure Red Hat OpenShift (ARO) provides fully-managed cluster updates. These updates can be triggered from inside the OpenShift Console, or scheduled in advance by utilizing the Managed Upgrade Operator. All updates are monitored and managed by the Red Hat and Microsoft ARO SRE team. 
+Azure Red Hat OpenShift (ARO) provides fully-managed cluster updates. These updates can be triggered from inside the OpenShift Console, or scheduled in advance by utilizing the Managed Upgrade Operator. All updates are monitored and managed by the Red Hat and Microsoft ARO SRE team.
 
-For more information on how OpenShift's Upgrade Service works, please see the [Red Hat documentation](https://docs.openshift.com/container-platform/4.10/updating/index.html){:target="_blank"}. 
+For more information on how OpenShift's Upgrade Service works, please see the [Red Hat documentation](https://docs.openshift.com/container-platform/4.10/updating/index.html){:target="_blank"}.
 
 ## Upgrade using the OpenShift Web Console
 
-1. Return to your tab with the OpenShift Web Console. If you need to reauthenticate, follow the steps in the [Access Your Cluster](../setup/3-access-cluster/) section. 
+1. Return to your tab with the OpenShift Web Console. If you need to reauthenticate, follow the steps in the [Access Your Cluster](../setup/3-access-cluster/) section.
 
 1. Using the menu on the left Select *Administration* -> *Cluster Settings*.
 
-    ![Web Console - Cluster Settings](../assets/images/web-console-cluster-settings.png){ align=center }   
+    ![Web Console - Cluster Settings](/assets/images/web-console-cluster-settings.png){ align=center }
 
-1. Click on the *Not Configured* link under the *Upgrade Channel* heading. 
+1. Click on the *Not Configured* link under the *Upgrade Channel* heading.
 
-    ![Web Console - Upgrade Channel Not Configured](../assets/images/web-console-upgrade-channel-not-configured.png){ align=center }  
+    ![Web Console - Upgrade Channel Not Configured](/assets/images/web-console-upgrade-channel-not-configured.png){ align=center }
 
     !!! warning "Upgrade channel is not configured by default"
 
-        By default, the [upgrade channel](https://docs.openshift.com/container-platform/4.10/updating/understanding-upgrade-channels-release.html){:target="_blank"} (which is used to recommend the appropriate release versions for cluster updates), is not set in ARO. 
+        By default, the [upgrade channel](https://docs.openshift.com/container-platform/4.10/updating/understanding-upgrade-channels-release.html){:target="_blank"} (which is used to recommend the appropriate release versions for cluster updates), is not set in ARO.
 
 1. In the *Channel* field, enter `stable-4.10` to set the upgrade channel to the stable releases of OpenShift 4.10 and click *Save*.
 
-    ![Web Console - Input Channel](../assets/images/web-console-input-channel.png){ align=center }  
+    ![Web Console - Input Channel](/assets/images/web-console-input-channel.png){ align=center }
 
-1. In a moment, you'll begin to see what upgrades are available for your cluster. From here, you could click the *Select a version* button and upgrade the cluster, or you could follow the instructions below to use the Managed Upgrade Operator. 
+1. In a moment, you'll begin to see what upgrades are available for your cluster. From here, you could click the *Select a version* button and upgrade the cluster, or you could follow the instructions below to use the Managed Upgrade Operator.
 
     ![Web Console - Available Upgrades](Images/aro-console-upgrade.png)
 
@@ -41,9 +41,9 @@ Examples of activities that are not core to an OpenShift upgrade process but cou
 
 Configuring the Managed Upgrade Operator for ARO ensures that your cluster functions as you need it to during upgrades. The process of executing upgrades is shown here:
 
-![MUO Upgrade Process Flow Chart](../assets/images/upgradecluster-flow.svg)
+![MUO Upgrade Process Flow Chart](/assets/images/upgradecluster-flow.svg)
 
-1. First, let's check for available upgrades on your current upgrade channel. To do so, run the following command: 
+1. First, let's check for available upgrades on your current upgrade channel. To do so, run the following command:
 
     ```bash
     oc get clusterversion version -o jsonpath='{.status.availableUpdates}' | jq .[].version
@@ -74,7 +74,7 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
 
     This manifest will schedule an upgrade to 4.10.39 for 1 day from now, allow nodes which are blocked by PodDisruptionBudgets to drain for 60 minutes before a drain is forced, and sets a capacity reservation so that workloads are not interrupted during an upgrade.
 
-1. Once created, we can see that the update is pending by running the following command: 
+1. Once created, we can see that the update is pending by running the following command:
 
     ```bash
     oc -n openshift-managed-upgrade-operator describe upgradeconfig.upgrade.managed.openshift.io/managed-upgrade-config
@@ -120,7 +120,7 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
 
     This manifest will schedule an upgrade to 4.10.39 for 1 day from now, allow nodes which are blocked by PodDisruptionBudgets to drain for 60 minutes before a drain is forced, and sets a capacity reservation so that workloads are not interrupted during an upgrade.
 
-1. Once created, we can see that the update is pending by running the following command: 
+1. Once created, we can see that the update is pending by running the following command:
 
     ```bash
     oc -n openshift-managed-upgrade-operator describe upgradeconfig.upgrade.managed.openshift.io/managed-upgrade-config
@@ -144,4 +144,4 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
     Events:       <none>
     ```
 
-    Congratulations! You've successfully scheduled an upgrade of your cluster for tomorrow at this time. While the workshop environment will be deleted before then, you now have the experience to schedule upgrades in the future. 
+    Congratulations! You've successfully scheduled an upgrade of your cluster for tomorrow at this time. While the workshop environment will be deleted before then, you now have the experience to schedule upgrades in the future.
