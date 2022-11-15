@@ -56,7 +56,7 @@ Many of these changes are done using MachineSets. MachineSets ensure that a spec
 4. Now, let's scale up our selected MachineSet from one to two machines. To do so, run the following command:
 
     ```bash
-    oc -n openshift-machine-api scale --replicas=2 ${MACHINE_SET}
+    oc -n openshift-machine-api scale --replicas=2 ${MACHINESET}
     ```
 
 5. Now that we've scaled the MachineSet to two machines, we can see that the machine is already being created. First, let's quickly check the output of the same command we ran in step 1:
