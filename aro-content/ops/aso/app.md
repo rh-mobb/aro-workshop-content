@@ -12,7 +12,7 @@ The voting app that will be deployed consists of a front end web-app that uses a
     oc new-project redis-ex
     ```
 
-1. Next, let's inherit our existing Azure Resource Group to hold Azure resources that we create with ASO. To do so, run the following commmand: 
+1. Next, let's inherit our existing Azure Resource Group to hold Azure resources that we create with ASO. To do so, run the following commmand:
 
     ```yaml
     cat <<EOF | oc apply -f -
@@ -80,7 +80,7 @@ The voting app that will be deployed consists of a front end web-app that uses a
     EOF
     ```
 
-    This will take a few minutes to complete (sometimes up to 10 minutes). It is not unusual for there to be a lab between a resource being created in ASO and showing up in the Azure Portal. 
+    This will take a few minutes to complete (sometimes up to 10 minutes). It is not unusual for there to be a lab between a resource being created in ASO and showing up in the Azure Portal.
 
 1. To monitor the creation process, run the following command:
 
@@ -107,11 +107,11 @@ The voting app that will be deployed consists of a front end web-app that uses a
         Watch will refresh the output of a command every second. Hit CTRL and c on your keyboard to exit the watch command when you're ready to move on to the next part of the workshop.
 
 
-1. (Optional) If you'd like to monitor the creation of the resource in the Azure Portal, you can search for "Redis" in the search bar. 
-    
-    ![Azure Portal - Redis Search](../assets/images/azure-portal-redis-search.png)
+1. (Optional) If you'd like to monitor the creation of the resource in the Azure Portal, you can search for "Redis" in the search bar.
 
-    Once the Redis instance has successfully deployed, you can move on to deploying the voting app. 
+    ![Azure Portal - Redis Search](/assets/images/azure-portal-redis-search.png)
+
+    Once the Redis instance has successfully deployed, you can move on to deploying the voting app.
 
 ### Deploy the voting app
 
@@ -208,7 +208,7 @@ The Azure Voting App will be deployed from a pre-built container that is stored 
 
     Once you see "1/1" and "Running", the application is available to access.
 
-1. And finally, view the voting app in your browser. To do so, get the route of your application by running the following command: 
+1. And finally, view the voting app in your browser. To do so, get the route of your application by running the following command:
 
 ```bash
 oc -n redis-ex get route azure-vote -o jsonpath='{.spec.host}'
@@ -220,6 +220,6 @@ Then visit the URL presented in a new tab in your web browser (using HTTPS). For
 azure-vote-redis-ex.apps.ce7l3kf6.eastus.aroapp.io
 ```
 
-In that case, you'd visit `https://azure-vote-redis-ex.apps.ce7l3kf6.eastus.aroapp.io` in your browser. 
+In that case, you'd visit `https://azure-vote-redis-ex.apps.ce7l3kf6.eastus.aroapp.io` in your browser.
 
 Congratulations! You've successfully demonstrated the ability to deploy Azure resources using ASO and use those resources with applications on your ARO cluster.
