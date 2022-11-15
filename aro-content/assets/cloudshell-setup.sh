@@ -52,6 +52,8 @@ if ! which siege > /dev/null; then
   siege.config > /dev/null
 fi
 
+export UNIQUE=$RANDOM
+
 echo "Configuring Environment specific variables"
 cat <<"EOF" > ~/.workshoprc
 #!/bin/bash
@@ -74,7 +76,7 @@ export OCP_API="$(az aro show --name ${AZ_ARO} --resource-group ${AZ_RG} \
 
 alias k=kubectl
 
-export UNIQUE=$RANDOM
+export UNIQUE=${UNIQUE}
 EOF
 
 echo "source ~/.workshoprc" >> ~/.bashrc
