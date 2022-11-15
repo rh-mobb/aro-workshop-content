@@ -1,192 +1,215 @@
-# Make Application Resilient
-
-In this section of the workshop, we will deploy an application to an ARO cluster, Ensure the application is resilient to node failure and scale when under load.
+In this section of the workshop, we will deploy an application to an ARO cluster, ensure the application is resilient to node failure, and scale the application when under load.
 
 ## Deploy an application
 
-Let's deploy an application!
+1. First, let's deploy an application. To do so, run the following set of commands:
 
-We will be deploying a JavaScript based application called [frontend-js](https://github.com/sohaibazed/frontend-js.git). This application will run on OpenShift and will be deployed as a Deployment object. The Deployment object creates ReplicaSet and ReplicaSet creates and manages pods.
+    ```bash
+    oc new-project resilience-ex
+    oc -n resilience-ex new-app https://github.com/sohaibazed/frontend-js.git --name frontend-js
+    oc -n resilience-ex expose svc frontend-js
+    oc -n resilience-ex set resources deployment/frontend-js \
+      --limits=cpu=60m,memory=150Mi \
+      --requests=cpu=50m,memory=100Mi
+    ```
 
-Deploy the application
-```bash
-cd ~
-oc new-project frontend-js
-oc new-app https://github.com/sohaibazed/frontend-js.git --name frontend-js
-oc expose svc frontend-js
-oc set resources deployment/frontend-js \
-   --limits=cpu=60m,memory=150Mi \
-   --requests=cpu=50m,memory=100Mi
-```
+1. While the application is being built from source, you can watch the deployment object to see when its finished.
 
-The application is being built from source, you can watch the Deployment object to see when its finished.
+    ```bash
+    watch ~/bin/oc -n resilience-ex get deployment frontend-js
+    ```
 
-```bash
-watch ~/bin/oc get deployment
-```
+    Initially, your output will look like:
 
-Eventually the Deployment will be Ready.
+    ```bash
+    NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+    frontend-js   0/1     0            0           28s
+    ```
 
-```{.text .no-copy}
-NAME          READY   UP-TO-DATE   AVAILABLE   AGE
-frontend-js   1/1     0            0           59s
-```
+    Eventually, your application will be ready and your output will look like this: 
 
-You can now get the route and open it in your browser to ensure that its working.
+    ```bash
+    NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+    frontend-js   1/1     0            0           59s
+    ```
 
-```bash
-oc get route -n frontend-js
-```
+    !!! info
 
-```{.text .no-copy}
-NAME          HOST/PORT                                                           PATH   SERVICES      PORT       TERMINATION   WILDCARD
-frontend-js   frontend-js-frontend-js.apps.hkngv2cf.eastus.aroapp.io ... 1 more          frontend-js   8080-tcp
-```
+        Watch will refresh the output of a command every second. Hit CTRL and c on your keyboard to exit the watch command when you're ready to move on to the next part of the workshop.
 
-!!! warning
-    By default the route does not use TLS, so access the route with **http://frontend-js-frontend-js.apps...**
+1. We can now use the route to view the application in your web browser. To get the route, run the following command:
 
-Right now the application is deployed inside one pod, and in case the worker running the pod crashes, the ReplicaSet object will register that the pod is down and recreate it on another node. You can scale the application to run on multiple pods using the following command
+    ```bash
+    oc -n resilience-ex get route frontend-js -o jsonpath='{.spec.host}'
+    ```
 
-```bash
-oc scale deployment frontend-js --replicas=3
-```
+    Then visit the URL presented in a new tab in your web browser (using HTTP). For example, your output will look something similar to:
 
+    ```bash
+    frontend-js-resilience-ex.apps.ce7l3kf6.eastus.aroapp.io
+    ```
+
+    In that case, you'd visit `http://frontend-js-resilience-ex.apps.ce7l3kf6.eastus.aroapp.io` in your browser. 
+
+1. Initially, this application is deployed with only one pod. In the event a worker node goes down or the pod crashes, there will be an outage of the application. To prevent that, let's scale the number of instances of our applications up to three. To do so, run the following command:
+
+    ```bash
+    oc -n resilience-ex scale deployment frontend-js --replicas=3
+    ```
+
+1. Next, check to see that the application has scaled. To do so, run the following command to see the pods. 
 Then check that it has scaled
 
-```bash
-oc get pods -l deployment=frontend-js
-```
+    ```bash
+    oc -n resilience-ex get pods -l deployment=frontend-js
+    ```
 
-```{.text .no-copy}
-NAME                           READY   STATUS      RESTARTS   AGE
-frontend-js-7cdc846c94-5mrk8   1/1     Running     0          3m45s
-frontend-js-7cdc846c94-bj4wq   1/1     Running     0          3m45s
-frontend-js-7cdc846c94-gjxv6   1/1     Running     0          4m39s
-```
+    Your output should look similar to this: 
+
+    ```bash
+    NAME                           READY   STATUS      RESTARTS   AGE
+    frontend-js-7cdc846c94-5mrk8   1/1     Running     0          3m45s
+    frontend-js-7cdc846c94-bj4wq   1/1     Running     0          3m45s
+    frontend-js-7cdc846c94-gjxv6   1/1     Running     0          4m39s
+    ```
 
 ## Pod Disruption Budget
-A Pod disruption Budget (PBD) allows you to limit the disruption to your application when its pods need to be rescheduled for upgrades or routine maintenance work on ARO nodes. In essence, it lets developers define the minimum tolerable operational requirements for a Deployment so that it remains stable even during a disruption.
 
-For example, frontend-js deployed as part of the last step contains two replicas distributed evenly across two nodes. We can tolerate losing one pods but not two, so we create a PDB that requires a minimum of two replicas.
+A Pod disruption Budget (PBD) allows you to limit the disruption to your application when its pods need to be rescheduled for upgrades or routine maintenance work on ARO nodes. In essence, it lets developers define the minimum tolerable operational requirements for a deployment so that it remains stable even during a disruption.
 
-A PodDisruptionBudget object’s configuration consists of the following key partsi:
+For example, frontend-js deployed as part of the last step contains three replicas distributed evenly across three nodes. We can tolerate losing two pods but not one, so we create a PDB that requires a minimum of one replica.
+
+A PodDisruptionBudget object’s configuration consists of the following key parts:
 
 - A label selector, which is a label query over a set of pods.
 - An availability level, which specifies the minimum number of pods that must be available simultaneously, either:
   - minAvailable is the number of pods must always be available, even during a disruption.
   - maxUnavailable is the number of pods can be unavailable during a disruption.
 
+!!! danger
+    A maxUnavailable of 0% or 0 or a minAvailable of 100% or equal to the number of replicas can be used but will block nodes from being drained and can result in application instability during maintenance activities.
 
-!!! note
-    A maxUnavailable of 0% or 0 or a minAvailable of 100% or equal to the number of replicas is permitted but can block nodes from being drained.
+1. Let's create a Pod Disruption Budget for our `frontend-js` application. To do so, run the following command:
 
+    ```bash
+    cat <<EOF | oc apply -f -
+    apiVersion: policy/v1
+    kind: PodDisruptionBudget
+    metadata:
+      name: frontend-js-pdb
+      namespace: resilience-ex
+    spec:
+      minAvailable: 1
+      selector:
+        matchLabels:
+          deployment: frontend-js
+    EOF
+    ```
 
-Create a Pod Disruption Budget
+    After creating the PDB, OpenShift API will ensure at least one pod of `frontend-js` is running all the time, even when maintenance is going on with the cluster.
 
-```bash
-cat <<EOF | oc apply -f -
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: frontend-js-pdb
-spec:
-  minAvailable: 2
-  selector:
-    matchLabels:
-      deployment: frontend-js
-EOF
-```
+1. Next, let's check the status of Pod Disruption Budget. To do so, run the following command:
 
-After creating PDB, OpenShift API will ensure two pods of ```frontend-js``` is running all the time while cluster is going through upgrade.
+    ```bash
+    oc -n resilience-ex get poddisruptionbudgets
+    ```
 
-Check the status of PBD
+    Your output should match this:
 
-```bash
-oc get poddisruptionbudgets
-```
+    ```bash
+    NAME              MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE
+    frontend-js-pdb   1               N/A               2                     7m39s
+    ```
 
-```{.text .no-copy}
-NAME              MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE
-frontend-js-pdb   2               N/A               1                     7m39s
-```
 ## Horizontal Pod Autoscaler (HPA)
 
-As a developer, you can use a horizontal pod autoscaler (HPA) to specify how OpenShift Container Platform should automatically increase or decrease the scale of a replication controller or deployment configuration, based on metrics collected from the pods that belong to that replication controller or deployment configuration. You can create an HPA for any any deployment, deployment config, replica set, replication controller, or stateful set.
+As a developer, you can use a horizontal pod autoscaler (HPA) to specify how Azure Red Hat OpenShift clusters should automatically increase or decrease the scale of a replication controller or deployment configuration, based on metrics collected from the pods that belong to that replication controller or deployment configuration. You can create an HPA for any any deployment, replica set, replication controller, or stateful set.
 
-In this exercise we will scale frontend application based on CPU utilization:
+In this exercise we will scale the `frontend-js` application based on CPU utilization:
 
 * Scale out when average CPU utilization is greater than 50% of CPU limit
 * Maximum pods is 4
 * Scale down to min replicas if utilization is lower than threshold for 60 sec
 
-```
-cat <<EOF | oc apply -f -
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: frontend-js-cpu
-  namespace: frontend-js
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: frontend-js
-  minReplicas: 2
-  maxReplicas: 4
-  metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          averageUtilization: 50
-          type: Utilization
-  behavior:
-    scaleDown:
-      stabilizationWindowSeconds: 60
-      policies:
-      - type: Percent
-        value: 100
-        periodSeconds: 15
-EOF
-```
+1. First, we should create the HorizontalPodAutoscaler. To do so, run the following command:
 
-Check HPA status
+    ```
+    cat <<EOF | oc apply -f -
+    apiVersion: autoscaling/v2
+    kind: HorizontalPodAutoscaler
+    metadata:
+      name: frontend-js-cpu
+      namespace: resilience-ex
+    spec:
+      scaleTargetRef:
+        apiVersion: apps/v1
+        kind: Deployment
+        name: frontend-js
+      minReplicas: 2
+      maxReplicas: 4
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              averageUtilization: 50
+              type: Utilization
+      behavior:
+        scaleDown:
+          stabilizationWindowSeconds: 60
+          policies:
+          - type: Percent
+            value: 100
+            periodSeconds: 15
+    EOF
+    ```
 
-```bash
-oc get horizontalpodautoscaler/frontend-js-cpu -n frontend-js
-```
+1. Next, check the status of the HPA. To do so, run the following command: 
 
-```{.text .no-copy}
-NAME              REFERENCE                TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
-frontend-js-cpu   Deployment/frontend-js   0%/50%    2         4         2          33s
-```
+    ```bash
+    oc -n resilience-ex get horizontalpodautoscaler/frontend-js-cpu
+    ```
 
-Generate load using siege.
+    Your output should match the following:
 
-```
-FRONTEND_URL=http://$(oc get route frontend-js -n frontend-js -o jsonpath='{.spec.host}')
-siege -c 60 $FRONTEND_URL
-```
+    ```bash
+    NAME              REFERENCE                TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+    frontend-js-cpu   Deployment/frontend-js   0%/50%   2         4         3          45s
+    ```
 
-wait for a minute and then kill the siege command (CTRL-C) and check the status of Horizontal Pod Autoscaler. Your app should have scaled up to more then two replicas by now.
+1. Next, let's generate some load against the `frontend-js` application. To do so, run the following command: 
 
-```bash
-oc get horizontalpodautoscaler/frontend-js-cpu -n frontend-js
-```
+    ```
+    FRONTEND_URL=http://$(oc -n resilience-ex get route frontend-js -o jsonpath='{.spec.host}')
+    siege -c 60 $FRONTEND_URL
+    ```
 
-```{.text .no-copy}
-NAME              REFERENCE                TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
-frontend-js-cpu   Deployment/frontend-js   118%/50%   2         4         4          7m26s
-```
 
-After you kill/stop the seige command, the traffic going to frontend-js service will cool down and after a 60sec cool down period you will see the replica count going back down to two.
+1. Wait for a minute and then kill the siege command (by hitting CTRL and c on your keyboard). Then immediately check the status of Horizontal Pod Autoscaler. To do so, run the following command:
 
-```bash
-oc get horizontalpodautoscaler/frontend-js-cpu -n frontend-js
-```
+    ```bash
+    oc -n resilience-ex get horizontalpodautoscaler/frontend-js-cpu
+    ```
 
-```{.text .no-copy}
-NAME              REFERENCE                TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
-frontend-js-cpu   Deployment/frontend-js   0%/50%   2         4         2          7m26s
-```
+    Your output should look similar to this:
+
+    ```{.text .no-copy}
+    NAME              REFERENCE                TARGETS    MINPODS   MAXPODS   REPLICAS   AGE
+    frontend-js-cpu   Deployment/frontend-js   113%/50%   2         4         4          3m13s
+    ```
+
+    This means you are now running 4 replicas, instead of the original three that we started with. 
+
+
+1. Once you've killed the seige command, the traffic going to `frontend-js` service will cool down and after a 60 second cool down period, your application's replica count will drop back down to two. To demonstrate this, run the following command:
+
+    ```bash
+    oc -n resilience-ex get horizontalpodautoscaler/frontend-js-cpu
+    ```
+
+    After a minute or two, your output should be similar to this:
+
+    ```bash
+    NAME              REFERENCE                TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+    frontend-js-cpu   Deployment/frontend-js   0%/50%   2         4         2          7m26s
+    ```

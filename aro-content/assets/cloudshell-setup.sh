@@ -4,10 +4,10 @@ mkdir -p ~/bin
 mkdir -p ~/scratch
 cd ~/scratch
 
-echo "Configuring AZ extensions"
-az extension add --name "connectedk8s"
-az extension add --name "k8s-configuration"
-az extension add --name "k8s-extension"
+echo "Installing various Azure CLI extensions"
+az extension add --name "connectedk8s" --yes
+az extension add --name "k8s-configuration" --yes
+az extension add --name "k8s-extension" --yes
 
 echo "Installing OC cli"
 
@@ -51,11 +51,6 @@ if ! which siege > /dev/null; then
   mkdir -p ~/.siege
   siege.config > /dev/null
 fi
-
-echo "Installing various Azure CLI extensions"
-az extension add --name "connectedk8s" --yes
-az extension add --name "k8s-configuration" --yes
-az extension add --name "k8s-extension" --yes
 
 echo "Configuring Environment specific variables"
 cat <<"EOF" > ~/.workshoprc

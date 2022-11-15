@@ -1,328 +1,375 @@
-# Automate deploying the application with OpenShift Pipelines ( Part 3 )
+Next, we'll automate deploying our application using the OpenShift Pipelines operator, which is based on the open source Tekton project. 
 
-We will be using OpenShift Pipelines which is based on the Open Source Tekton project to automatically deploy our application using a CI/CD pipeline.
+If you would like to read more about OpenShift Pipelines, [see the Red Hat documentation](https://docs.openshift.com/container-platform/4.11/cicd/pipelines/understanding-openshift-pipelines.html){:target="_blank"}.
 
-!!! warning
-    Before Getting started Browse through to OperatorHub in your OpenShift cluster and deploy the OpenShift Pipelines Operator.
+!!! warning "GitHub Account Required"
 
-If you would like to read more about OpenShift Pipelines, click [here](https://docs.openshift.com/container-platform/4.11/cicd/pipelines/understanding-openshift-pipelines.html)
+    This section of the workshop requires a personal [GitHub](https://github.com){:target="_blank"} account. If you do not have a GitHub account and do not wish to create one, you can skip this section and move to the next section.
 
-The first thing you need to do is fork the code repositories so that you can make changes to the code base and then OpenShift pipelines will build and deploy the new code.
+## Install the OpenShift Pipelines operator
 
-Opening your browser, go to the following github repos
+1. Return to your tab with the OpenShift Web Console. If you need to reauthenticate, follow the steps in the [Access Your Cluster](../setup/3-access-cluster/) section. 
 
-* https://github.com/rh-mobb/common-java-dependencies
-* https://github.com/rh-mobb/aro-hackaton-app
+1. Using the menu on the left Select *Operator* -> *OperatorHub*.
 
-For each of the repositories, click Fork and then choose your own Git Account.
-![Image](images/fork-git.png)
+    ![Web Console - OperatorHub Sidebar](../assets/images/web-console-operatorhub-menu.png){ align=center }
 
-Browse to [https://github.com/settings/tokens/new](https://github.com/settings/tokens/new) in order to create a new GitHub Personal Access Token. Set the Scope to "repo" and click **Generate Token**.
+1. In the search box, search for "OpenShift Pipelines" and click on the *Red Hat OpenShift Pipelines* box.
 
-!!! warning
-    Don't forget to delete this token after the workshop is over
+    ![Web Console - OpenShift Pipelines Operator Selection](../assets/images/web-console-operatorhub-openshift-pipelines.png){ align=center }
 
-Save the token to a variable
+1. Click on *Install* on the page that appears. 
 
-```bash
-GH_PAT=<GH_PERSONAL_ACCESS_TOKEN>
-echo "export GH_PAT=${GH_PAT}" >> ~/.workshoprc
+    ![Web Console - OpenShift Pipelines Simple Install](../assets/images/web-console-openshift-pipelines-simple-install.png){ align=center }
 
-Set your github username as a variable
+1. Accept the defaults that are presented and select *Install* to install the operator. 
 
-```bash
-export GH_USER=<YOUR GITHUB USER ID>
-echo "export GH_USER=${GH_USER}" >> ~/.workshoprc
-```
+    ![Web Console - OpenShift Pipelines Detailed Install](../assets/images/web-console-openshift-pipelines-detailed-install.png){ align=center }
 
-Next, we will need to make a directory and clone your personal github repository that you just forked to.
+1. Allow the operator a few minutes to successfully install the OpenShift Pipelines operator into the cluster. 
 
-```bash
-mkdir ~/gitops
-cd ~/gitops
-git clone https://github.com/${GH_USER}/common-java-dependencies
-git clone https://github.com/${GH_USER}/aro-hackaton-app
-```
+    ![Web Console - OpenShift Pipelines Successful Install](../assets/images/web-console-openshift-pipelines-successful-install.png){ align=center }
 
-**Review OpenShift Pipeline Tasks**
-The next thing we need to do is import common Tekton tasks that our pipeline will use.  These common tasks are designed to be reused across multiple pipelines.
 
-Let's start by taking a look at the reusable Tasks that we will be using.  From your cloud shell, change directorys to ~/aro-hackaton-app/pipeline and list the files.
+## Configure the GitHub integration
 
-```bash
-ls ~/gitops/aro-hackaton-app/pipeline/tasks/*.yaml
-```
+1. In your web browser, go to the following GitHub repositories: 
 
-Expected output:
+    * [https://github.com/rh-mobb/common-java-dependencies](https://github.com/rh-mobb/common-java-dependencies){:target="_blank"}
+    * [https://github.com/rh-mobb/aro-workshop-app](https://github.com/rh-mobb/aro-workshop-app){:target="_blank"}
 
-```{.txt .no-copy}
-/home/user/gitops/aro-hackaton-app/pipeline/tasks/1-git-clone.yaml
-/home/user/gitops/aro-hackaton-app/pipeline/tasks/2-mvn.yaml
-/home/user/gitops/aro-hackaton-app/pipeline/tasks/3-mvn-build-image.yaml
-/home/user/gitops/aro-hackaton-app/pipeline/tasks/4-apply-manifest.yaml
-/home/user/gitops/aro-hackaton-app/pipeline/tasks/5-update-deployment.yaml
-```
+    Ensure you are logged in to GitHub and select the *Fork* button for **both** repositories and then choose your own GitHub account. 
 
-- **1-git-clone.yaml** <br>
-  Clones a given GitHub Repo.
+    ![GitHub Repository Fork](../assets/images/github-fork.png)
 
-- **2-mvn.yaml** <br>
-  This Task can be used to run a Maven build
+1. Next, browse to [https://github.com/settings/tokens/new](https://github.com/settings/tokens/new){:target="_blank"} and create a new GitHub Personal Access Token. Set the Scope to "repo" and click *Generate Token*.
 
-- **3-mvn-build-image.yaml** <br>
-  Packages source with maven builds and into a container image, then pushes it to a container registry. Builds source into a container image using Project Atomic's Buildah build tool. It uses Buildah's support for building from Dockerfiles, using its buildah bud command.This command executes the directives in the Dockerfile to assemble a container image, then pushes that image to a container registry.
+    ![GitHub Personal Access Token](../assets/images/github-personal-access-token.png)
 
-- **4-apply-manifest.yaml** <br>
-  Applied manifest files to the cluster
+    !!! warning
 
-- **5-update-deployment.yaml** <br>
-  Updates a deployment with the new container image.
+        **Do not** forget to delete this token once the workshop is over. 
 
-From the Cloud Shell, we need to apply all of these tasks to our cluster.  Run the following command:
+1. Next, save the token to your Cloud Shell instance. To do so, run the following command, ensuring you replace the `INSERT_TOKEN_HERE` with your Personal Access Token:
 
-```bash
-oc apply -f ~/gitops/aro-hackaton-app/pipeline/tasks
-```
+    ```bash
+    GH_PAT=INSERT_TOKEN_HERE
+    echo "export GH_PAT=${GH_PAT}" >> ~/.workshoprc
+    ```
 
-expected output:
-![Image](images/apply-pipeline-tasks.png)
+1. Then, save your GitHub username as a variable. To do so, run the following command, ensuring you replace the `GITHUB_USER_ID` with your GitHub username.
 
-**Configure Azure Container Registry**
+    ```bash
+    export GH_USER=GITHUB_USER_ID
+    echo "export GH_USER=${GH_USER}" >> ~/.workshoprc
+    ```
 
-Next we need to create an Azure Container Registry
+1. Next, we'll create a new working directory to clone our forked GitHub repositories. To do so, run the following commands:
 
-```bash
-AZ_ACR=${AZ_USER}${UNIQUE}
-echo "export AZ_ACR=${AZ_ACR}" >> ~/.workshoprc
-az acr create --resource-group ${AZ_RG} \
-  --name ${AZ_ACR} --sku Basic
-az acr update -n ${AZ_ACR} --admin-enabled true
-```
+    ```bash
+    mkdir ~/gitops
+    cd ~/gitops
+    git clone https://github.com/${GH_USER}/common-java-dependencies.git
+    git clone https://github.com/${GH_USER}/aro-workshop-app.git
+    ```
 
-Next, we need to create a secret to push and pull images into Azure Container Registry.  Each attendee has their own Azure Container Registry service assigned to them, with the naming convention <USERID>acr.azurecr.io
+## Import tasks to our pipeline
 
-```bash
-ACR_PWD=$(az acr credential show -n ${AZ_ACR} -g ${AZ_RG} --query 'passwords[0].value' -o tsv)
-echo "export ACR_PWD=${ACR_PWD}" >> ~/.workshoprc
+The next thing we need to do is import common tasks that our pipeline will use. These common tasks are designed to be reused across multiple pipelines. 
 
-oc create secret docker-registry --docker-server=${AZ_ACR}.azurecr.io \
-  --docker-username=${AZ_ACR} --docker-password="${ACR_PWD}" \
-  --docker-email=unused acr-secret
-```
+1. Let's start by taking a look at the reusable tasks that we will be using. To do so, run the following command:
 
-**Configure the pipleine service account**
-Create the pipeline service account and permissions that the pipeline tasks will run under:
+    ```bash
+    ls ~/gitops/aro-workshop-app/pipeline/tasks/*.yaml
+    ```
 
-```bash
-oc create -f ~/gitops/aro-hackaton-app/pipeline/1-pipeline-account.yaml
-```
+    Expected output:
 
-Expected output:
-![Image](images/create-pipeline-account.png)
+    ```{.txt .no-copy}
+    /home/user/gitops/aro-workshop-app/pipeline/tasks/1-git-clone.yaml
+    /home/user/gitops/aro-workshop-app/pipeline/tasks/2-mvn.yaml
+    /home/user/gitops/aro-workshop-app/pipeline/tasks/3-mvn-build-image.yaml
+    /home/user/gitops/aro-workshop-app/pipeline/tasks/4-apply-manifest.yaml
+    /home/user/gitops/aro-workshop-app/pipeline/tasks/5-update-deployment.yaml
+    ```
 
-Link the acr-secret you just created to it can mount and pull images
+    - `1-git-clone.yaml` <br>
+      Clones a given GitHub Repo.
 
-```bash
-oc secrets link pipeline acr-secret --for=pull,mount
-```
+    - `2-mvn.yaml` <br>
+      This Task can be used to run a Maven build
 
-Make sure the secret is linked to the pipeline service account.
+    - `3-mvn-build-image.yaml` <br>
+      Packages source with maven builds and into a container image, then pushes it to a container registry. Builds source into a container image using Project Atomic's Buildah build tool. It uses Buildah's support for building from Dockerfiles, using its buildah bud command.This command executes the directives in the Dockerfile to assemble a container image, then pushes that image to a container registry.
 
-```bash
-oc describe sa pipeline
-```
+    - `4-apply-manifest.yaml` <br>
+      Applied manifest files to the cluster
 
-expected output:
-![Image](images/pipeline-sa-secret.png)
+    - `5-update-deployment.yaml` <br>
+      Updates a deployment with the new container image.
 
-We also need to give the pipeline permission for certain security context constraints to that it can execute.
+1. Next, we need to apply all of these tasks to our cluster.  To do so, run the following command:
 
-```bash
-oc adm policy add-scc-to-user anyuid -z pipeline
-oc adm policy add-scc-to-user privileged -z pipeline
-```
+    ```bash
+    oc apply -f ~/gitops/aro-workshop-app/pipeline/tasks
+    ```
 
+    Your output should match this:
 
-**Create a PVC that the pipeline will use to store the build images**\
+    ```bash
+    task.tekton.dev/git-clone configured
+    task.tekton.dev/maven configured
+    task.tekton.dev/build-maven-image configured
+    task.tekton.dev/apply-manifests configured
+    task.tekton.dev/update-deployment configured
+    ```
 
-```bash
-oc create -f ~/gitops/aro-hackaton-app/pipeline/2-pipeline-pvc.yaml
-```
-
-**Review the Pipeline Definition**
-Next we need to create the pipeline definition.  Before we actually create the pipeline, lets take a look at the pipeline definition.
-
-Open a browser to the git repo to browse the pipeline.yaml file.<br>
-https://github.com/rh-mobb/aro-hackaton-app/blob/main/pipeline/3-pipeline.yaml
-
-Browse through the file and notice all the tasks that are being executed.  These are the tasks we imported in the previous step.  The pipeline definition simply says which order the tasks are run and what parameters should be passed between tasks.
-![Image](images/pipeline-yaml.png)
-
-**Update Application Settings**
-Now that we have the source code forked, we need to copy the properties file we created earlier to our new code base.  Let's create a new directory, clone the repo and copy the file.
-
-Using the cloud shell, run the following commands.
-
-```bash
-cp ~/aro-hackaton-app/src/main/resources/application.properties \
-  ~/gitops/aro-hackaton-app/src/main/resources/application.properties
-```
-
-**Setup git and push changes to the properties file**
-
-```bash
-git config --global user.email "${GH_USER}@github.io"
-git config --global user.name "${GH_USER}"
-```
-
-**Commit changes to git**
-```
-cd ~/gitops/aro-hackaton-app
-git remote set-url origin https://${GH_USER}:${GH_PAT}@github.com/${GH_USER}/aro-hackaton-app
-git add .
-git commit -am "Update Properties File"
-git push
-```
-
-**Create git secret**
-
-While you have your github userid and secret handy, let's also create a secret containing your github credentials that we will need later.  First set git envrionment variables and then run a script to create the secret.
-
-```bash
-cat << EOF | oc apply -f -
-apiVersion: v1
-kind: Secret
-metadata:
-  name: gitsecret
-  annotations:
-    tekton.dev/git-0: https://github.com
-type: kubernetes.io/basic-auth
-stringData:
-  username: $GH_USER
-  secretToken: $GH_PAT
-EOF
-```
-
-**Create the pipeline definition on your cluster**
-
-```bash
-oc create -f ~/gitops/aro-hackaton-app/pipeline/3-pipeline.yaml
-```
-
-**Update the deployment to use ACR**
-Finally we will create a pipeline run that will execute the pipeline, which will pull code from the your git repo that you forked, will build the image and deploy it to OpenShift.
-
-There are a couple settings in the pipeline run that we will need to update.
-
-Before we can actually run the pipeline that will update the deployment, we need to tell the deployment to use the ACR pull secret we created in the previous step.
-
-To do so, run the following command.
-
-```bash
-oc patch deploy/microsweeper-appservice \
-  --patch-file ~/gitops/aro-hackaton-app/pipeline/5-deployment-patch.yaml
-```
-
-Create a pipeline run to run the Tekton Pipelines
-
-```bash
-cat << EOF | oc create -f -
-apiVersion: tekton.dev/v1beta1
-kind: PipelineRun
-metadata:
-  generateName: minesweeper-pipeline-
-spec:
-  pipelineRef:
-    name: maven-pipeline
-  serviceAccountName: pipeline
-  params:
-  - name: application-name
-    value: microsweeper-appservice
-  - name: dependency-git-url
-    value: https://github.com/${GH_USER}/common-java-dependencies
-  - name: application-git-url
-    value: https://github.com/${GH_USER}/aro-hackaton-app
-  - name: dockerfile-path
-    value: src/main/docker/Dockerfile.jvm
-  - name: image-name
-    value: ${AZ_ACR}.azurecr.io/minesweeper
-  workspaces:
-  - name: source
-    persistentVolumeClaim:
-      claimName: minesweeper-source-pvc
-EOF
-```
-
-This will start a pipeline run and redeploy the minesweeper application, but this time will build the code from your github repository and the pipeline will deploy the application as well to OpenShift.
-
-**Validate the pipeline**
-Let's take a look at the OpenShift console to see what was created and if the application was successfully deployed.
-
-From the OpenShift Conole - Administrator view, click on Pipelines and then Tasks.
+## Configure Azure Container Registry
+
+1. Next we need to create an Azure Container Registry. To do so, run the following command:
+
+    ```bash
+    az acr create --resource-group ${AZ_RG} \
+      --name ${AZ_USER}${UNIQUE} --sku Basic
+    az acr update -n ${AZ_USER}${UNIQUE} --admin-enabled true
+    ```
+
+1. Next, we need to create a secret to push and pull images into the Azure Container Registry. To do so, run the following command to retrieve the token:
+
+    ```bash
+    ACR_PWD=$(az acr credential show -n ${AZ_USER}${UNIQUE} -g ${AZ_RG} --query 'passwords[0].value' -o tsv)
+    echo "ACR Token (Sensitive Value): ${ACR_PWD}"
+    ```
+
+1. Then, create the secret using the retrieved token. To do so, run the following command:
+
+    ```bash
+    oc -n microsweeper-ex create secret docker-registry --docker-server=${AZ_USER}${UNIQUE}.azurecr.io \
+      --docker-username="${AZ_USER}${UNIQUE}" --docker-password="${ACR_PWD}" \
+      --docker-email=unused acr-secret
+    ```
+
+## Configure our pipeline
+
+1. Next, create the pipeline service account and permissions that the pipeline tasks will run under. To do so, run the following command:
+
+    ```bash
+    oc create -f ~/gitops/aro-workshop-app/pipeline/1-pipeline-account.yaml
+    ```
+
+    Your output should match this:
+
+    ```bash
+    serviceaccount/pipeline configured
+    secret/kube-api-secret created
+    role.rbac.authorization.k8s.io/pipeline-role created
+    rolebinding.rbac.authorization.k8s.io/pipeline-role-binding created
+    ```
+
+1. Next, we need to link the ACR credential secret we just created, so the service account can mount and pull images from ACR. To do so, run the following command:
+
+    ```bash
+    oc -n microsweeper-ex secrets link pipeline acr-secret --for=pull,mount
+    ```
+
+1. Next, we should verify that our secret is linked to our service account, to do so, run the following command:
+
+    ```bash
+    oc -n microsweeper-ex describe sa pipeline | grep "acr-secret"
+    ```
+
+    You should see the following output:
+
+    ```bash
+                        acr-secret
+    Mountable secrets:   acr-secret
+    ```
+
+1. We also need to give the pipeline permission for certain privileged security context constraints to that it can execute builds. To grant these permissions, run the following command:
+
+    ```bash
+    oc -n microsweeper-ex adm policy add-scc-to-user anyuid -z pipeline
+    oc -n microsweeper-ex adm policy add-scc-to-user privileged -z pipeline
+    ```
+
+1. Create a persistent volume claim that the pipeline will use to store build images. To do so, run the following command:
+
+    ```bash
+    oc create -f ~/gitops/aro-workshop-app/pipeline/2-pipeline-pvc.yaml
+    ```
+
+1. Next, let's review the pipeline definition. To do so, open the following link in a new tab: [https://github.com/rh-mobb/aro-hackaton-app/blob/main/pipeline/3-pipeline.yaml](https://github.com/rh-mobb/aro-hackaton-app/blob/main/pipeline/3-pipeline.yaml){:target="_blank"}. 
+
+    Browse through the file and notice all the tasks that are being executed. These are the tasks we imported in the previous step. The pipeline definition simply says which order the tasks are run and what parameters should be passed between tasks.
+
+## Update Application Settings
+
+1. Now that we have the source code forked, we need to copy the properties file we created in the previous section to our new code base. To do so, run the following command:
+
+    ```bash
+    cp ~/aro-workshop-app/src/main/resources/application.properties \
+      ~/gitops/aro-workshop-app/src/main/resources/application.properties
+    ```
+
+1. Next, let's configure our Git CLI. To do so, run the following commands:
+
+    ```bash
+    git config --global user.email "${GH_USER}@github.io"
+    git config --global user.name "${GH_USER}"
+    ```
+
+1. Finally, let's commit our changes to GitHub. To do so, run the following set of commands:
+
+    ```
+    cd ~/gitops/aro-workshop-app
+    git remote set-url origin https://${GH_USER}:${GH_PAT}@github.com/${GH_USER}/aro-workshop-app
+    git add .
+    git commit -am "Update Properties File"
+    git push
+    ```
+
+1. In addition, let's go ahead and create a secret with our GitHub credentials that we will need later. To do so, run the following command:
+
+    ```yaml
+    cat << EOF | oc apply -f -
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: gitsecret
+      annotations:
+        tekton.dev/git-0: https://github.com
+      namespace: microsweeper-ex
+    type: kubernetes.io/basic-auth
+    stringData:
+      username: ${GH_USER}
+      secretToken: ${GH_PAT}
+    EOF
+    ```
+
+1. Now let's proceed with creating our pipeline definition. To do so, run the following command:
+
+    ```bash
+    oc create -f ~/gitops/aro-workshop-app/pipeline/3-pipeline.yaml
+    ```
+
+1. Next, let's tell the deployment to use ACR instead of the built-in OpenShift image registry. To do so, run the following command:
+
+    ```bash
+    oc patch deploy/microsweeper-appservice \
+      --patch-file ~/gitops/aro-workshop-app/pipeline/5-deployment-patch.yaml
+    ```
+
+1. Finally, we will create a pipeline run that will execute the pipeline, pull the code from your forked GitHub repositories, build the image, and deploy it to ARO. To do this, run the following command:
+
+    ```yaml
+    cat << EOF | oc create -f -
+    apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      generateName: minesweeper-pipeline-
+      namespace: microsweeper-ex
+    spec:
+      pipelineRef:
+        name: maven-pipeline
+      serviceAccountName: pipeline
+      params:
+      - name: application-name
+        value: microsweeper-appservice
+      - name: dependency-git-url
+        value: https://github.com/${GH_USER}/common-java-dependencies
+      - name: application-git-url
+        value: https://github.com/${GH_USER}/aro-workshop-app
+      - name: dockerfile-path
+        value: src/main/docker/Dockerfile.jvm
+      - name: image-name
+        value: ${AZ_USER}${UNIQUE}.azurecr.io/minesweeper
+      workspaces:
+      - name: source
+        persistentVolumeClaim:
+          claimName: minesweeper-source-pvc
+    EOF
+    ```
+
+## Validate the pipeline
+
+Let's take a look at the OpenShift Web Console to see what was created and if the application was successfully deployed.
+
+From the OpenShift Web Console, click on *Pipelines* ->*Tasks*.
 ![Image](images/pipeline-tasks-ocp.png)
 
-Notice the 5 tasks that we imported and click into them to view the yaml defitions.
+Notice the 5 tasks that we imported and click into them to view the YAML definitions.
 
-Next, lets look at the Pipeline.   Click on Pipelines.  Notice that it is either still running, or the last run was successful.  Click on maven-pipeline to view the pipeline details.
+Next, lets look at the Pipeline. Click on *Pipelines*. Notice that it is either still running, or the last run was successful. Click on *maven-pipeline* to view the pipeline details.
 ![Image](images/pipeline-ocp.png)
 
-On the following screen, click on Pipeline Runs to view the status of each Pipeline Run.
+On the following screen, click on *PipelineRuns* to view the status of each Pipeline Run.
 ![Image](images/pipeline-run-ocp.png)
 
-Lastely, click on the PipeRun name and you can see all the details and steps of the Pipeline.  If your are curious, also click on logs and view the logs of the different tasks that were ran.
+Lastly, click on the *PipelineRun* name and you can see all the details and steps of the pipeline. If your are curious, you can also view the logs of the different tasks that were run.
 ![Image](images/pipeline-run-details-ocp.png)
 
-# Event Triggering
-At this point, we can successfully build and deploy new code by manually runnning a pipeline run.  But how can we configure the pipeline to run automatically when we commit code with git?  We can do so with an Event Listener and a Trigger!
+## Event Triggering
+
+At this point, we can successfully build and deploy new code by manually running our pipeline. But how can we configure the pipeline to run automatically when we commit code to Git? We can do so with an Event Listener and a Trigger.
 
 Let's start by looking at the resources we will be creating to create our event listener and trigger.
 
 ```bash
-ls ~/gitops/aro-hackaton-app/pipeline/tasks/event-listener/*.yaml
+ls ~/gitops/aro-workshop-app/pipeline/tasks/event-listener/*.yaml
 ```
 
-expected output:
-![Image](images/event-listener-files.png)
+Your output should match:
+
+```bash
+/home/user/gitops/aro-workshop-app/pipeline/tasks/event-listener/1-web-trigger-binding.yaml
+/home/user/gitops/aro-workshop-app/pipeline/tasks/event-listener/2-web-trigger-template.yaml
+/home/user/gitops/aro-workshop-app/pipeline/tasks/event-listener/3-web-trigger.yaml
+/home/user/gitops/aro-workshop-app/pipeline/tasks/event-listener/4-event-listener.yaml
+```
 
 Take a look at the files listed:
 
-- **1-web-trigger-binding.yaml**
+- `1-web-trigger-binding.yaml`
   This TriggerBinding allows you to extract fields, such as the git repository name, git commit number, and the git repository URL in this case.
   To learn more about TriggerBindings, click [here](https://tekton.dev/docs/triggers/triggerbindings/)
 
-- **2-web-trigger-template.yaml**
+- `2-web-trigger-template.yaml`
   The TriggerTemplate specifies how the pipeline should be run.  Browsing the file above, you will see there is a definition of the PipelineRun that looks exactly like the PipelineRun you create in the previous step.  This is by design! ... it should be the same.
 
-Edit `/home/user/gitops/aro-hackaton-app/pipeline/tasks/event-listener/2-web-trigger-template.yaml` with your favorite text editor (vim!) and replace the `<>` sections with the values of $GH_USER and $AZ_ACR.
+  Edit `/home/user/gitops/aro-workshop-app/pipeline/tasks/event-listener/2-web-trigger-template.yaml` with your favorite text editor (vim!) and replace the `<>` sections with the values of from the following command:
 
+  ```bash
+  echo "GITHUB_USER: ${GH_USER}"
+  echo "ACR_ENDPOINT: ${AZ_USER}${UNIQUE}.azurecr.io/minesweeper"
+  ```
 
-```{.text .no-copy}
-  - name: dependency-git-url
-    value: https://github.com/<YOUR-GITHUB-ID>/common-java-dependencies
-  - name: application-git-url
-    value: https://github.com/<YOUR-GITHUB-ID>/aro-hackaton-app
-...
-  - name: image-name
-    value: <CHANGE-ME>.azurecr.io/minesweeper
-```
+  ```{.text .no-copy}
+    - name: dependency-git-url
+      value: https://github.com/GITHUB_USER_ID/common-java-dependencies
+    - name: application-git-url
+      value: https://github.com/GITHUB_USER_ID/aro-workshop-app
+  [...]
+    - name: image-name
+      value: ACR_ENDPOINT.azurecr.io/minesweeper
+  ```
 
-To learn more about TriggerTemplates, click [here](https://tekton.dev/docs/triggers/triggertemplates/)
+  To learn more about TriggerTemplates, [review the Tekton documentation](https://tekton.dev/docs/triggers/triggertemplates/){:target="_blank"}.
 
-- **3-web-trigger.yaml**
+- `3-web-trigger.yaml`
   The next file we have is the Trigger.  The Trigger specifies what should happen when the EventListener detects an Event.  Looking at this file, you will see that we are looking for 'Push' events that will create an instance of the TriggerTemplate that we just created.  This in turn will start the PipelineRun.
 
-  To learn more about Triggers, click [here](https://tekton.dev/docs/triggers/triggers/)
+  To learn more about Triggers, [review the Tekton documentation](https://tekton.dev/docs/triggers/triggers/){:target="_blank"}.
 
-- **4-event-listenter.yaml**
+- `4-event-listenter.yaml`
   The last file we have is the Event Listener.  An EventListener is a Kubernetes object that listens for events at a specified port on your OpenShift cluster. It exposes an OpenShift Route that receives incoming event and specifies one or more Triggers.
 
-  To learn more about EventListeners, click [here](https://tekton.dev/docs/triggers/eventlisteners/)
+  To learn more about EventListeners, [review the Tekton documentation](https://tekton.dev/docs/triggers/eventlisteners/){:target="_blank"}.
 
   Now that you have reviewed all the files, let's apply them to our cluster.
 
-```bash
-  oc create -f ~/gitops/aro-hackaton-app/pipeline/tasks/event-listener
-```
+  ```bash
+  oc create -f ~/gitops/aro-workshop-app/pipeline/tasks/event-listener
+  ```
 
 Before we test out our EventListener and Trigger, lets review what was created in OpenShift.
 
@@ -331,56 +378,50 @@ From the OpenShift console, under Pipelines, click on Triggers.
 Browse the EventListener, TriggerTemplate and TriggerBindings that you just created.
 ![Image](images/ocp-triggers.png)
 
-The next thing we need to do, is connect our EventListener with Git.  When an action, such as a git push, happens, git will need to call our EventListner to start the build and deploy process.
+The next thing we need to do, is connect our EventListener with Git.  When an action, such as a git push, happens, git will need to call our EventListener to start the build and deploy process.
 
-The first thing we need to do is exposing our EventListner service.
-
-From the Cloud Shell, let's start by looking at the event listener service.
+The first thing we need to do is expose our EventListener service to the internet. To do so, we'll run the `oc expose` command:
 
 ```bash
-oc get svc
+oc -n microsweeper-ex expose svc el-minesweeper-el 
 ```
-
-expected output:
-![Image](images/ocp-svc.png)
-
-Expose the service so that Git is able to connect to the event listener.<br>
 
 !!! note
-    Since this is public cluster, we can simply use the included OpenShift Ingress Controller as it is exposed to the Internet.  For a private cluster, you can follow the same process as we did above in exposing the minesweeper application with Front Door!
+    Since this is public cluster, we can simply use the default ingress controller. For a private cluster, you can use Azure Front Door to expose the endpoint.
+
+To get the URL of the Event Listener Route that we just created, run the following command:
 
 ```bash
-oc expose svc el-minesweeper-el
+oc -n microsweeper-ex get route el-minesweeper-el -o jsonpath='{.spec.host}'
 ```
 
-To get the url of the Event Listener Route that we just created, run the following command:
+For example, your output will look something similar to:
 
 ```bash
-oc get route el-minesweeper-el
+el-minesweeper-el-microsweeper-ex.apps.ce7l3kf6.eastus.aroapp.io
 ```
 
-expected output:
-![Image](images/el-route.png)
+In that case, you'd enter `http://el-minesweeper-el-microsweeper-ex.apps.ce7l3kf6.eastus.aroapp.io` in your browser. 
 
-The last step we need to do, is configure git to call this event listner URL when events occur.
+The last step we need to do, is configure GitHub to call this event listener URL when events occur.
 
-From your browser, go to your personal GitHub aro-hackaton-app repository, and click on Settings.
+From your browser, go to your personal GitHub aro-workshop-app repository, and click on *Settings*.
 ![Image](images/git-settings.png)
 
-On the next screen, click on webhooks.
+On the next screen, click on *Webhooks*.
 ![Image](images/git-settings-webhook.png)
 
-Click on add webhook
+Click on the *Add Webhook* button.
 ![Image](images/git-add-webhook.png)
 
 On the next screen, enter the following settings:
 
-- **PayloadURL** - enter http://<event listener hostname you got above>
+- **PayloadURL** - enter the URL you got above (for example: `http://el-minesweeper-el-microsweeper-ex.apps.ce7l3kf6.eastus.aroapp.io`)
 - **ContentType** - select application/json
-- **Secret** - this your github token
+- **Secret** - this your GitHub Personal Access Token
 
 Where does this secret value come from?
-Refer to the `~/gitops/aro-hackaton-app/pipeline/tasks/event-listener/3-web-trigger.yaml` file.
+Refer to the `~/gitops/aro-workshop-app/pipeline/tasks/event-listener/3-web-trigger.yaml` file.
 
 You will see the following snippet that contains the secret to access git.
 
@@ -397,22 +438,22 @@ You will see the following snippet that contains the secret to access git.
           value: ["push"]
 ```
 
-The secret you enter here for the git webhook, needs to match the value for the *secretToken* key of the a secret named gitsecret.  If you remember in the previous step, we create this secret and used your git token as this value.
+The secret you enter here for the git webhook, needs to match the value for the *secretToken* key of the a secret named gitsecret. If you remember in the previous step, we create this secret and used your git token as this value.
 
-Keep the remaining defaults, and click Add webhook
+Keep the remaining defaults, and click *Add webhook*.
 
 ![Image](images/add-webhook.png)
 
-## Test it out!!
+### Test the Event Triggering
 
 Now that we have our trigger, eventlistener and git webhook setup, lets test it out.
 
-Make sure you are in the directory for your personal git repo where the application is, and edit the */src/main/resources/META-INF/resources/index.html* file.
+Make sure you are in the directory for your personal git repo where the application is, and edit the `./src/main/resources/META-INF/resources/index.html` file.
 
 Search for Leaderboard and change it to \<YOUR NAME\> Leaderboard.
 
 ```bash
-cd ~/gitops/aro-hackaton-app
+cd ~/gitops/aro-workshop-app
 vi src/main/resources/META-INF/resources/index.html
 ```
 
@@ -421,7 +462,7 @@ vi src/main/resources/META-INF/resources/index.html
 Now commit and push the change
 
 ```bash
-git commit -am 'updated leaderboard title'
+git commit -am 'Updated leaderboard title'
 git push
 ```
 
@@ -434,15 +475,14 @@ tkn eventlistener logs minesweeper-el
 ```
 ![Image](images/tkn.png)
 
-
-Quickly switch over to your OpenShift Console, and watch the pipeline run.
+Quickly switch over to your OpenShift Web Console, and watch the pipeline run.
 
 ![Image](images/watch-pipeline.png)
 
 Once the pipeline finishes, check out the change.
 
-From the OpenShift Console, click on Networking and the Routes.
+From the OpenShift Web Console, click on *Networking* -> *Routes*.
 ![Image](images/route-2.png)
 
-and drum roll ...  you should see the updated application with a new title for the leaderboard.
+Hopefully, you will see the updated application with a new title for the leaderboard!
 ![Image](images/updated-minesweeper.png)
