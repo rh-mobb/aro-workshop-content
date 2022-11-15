@@ -35,7 +35,7 @@ While you can directly add a label to a node, it is not recommended because node
 1. Now, let's verify the nodes are properly labeled. To do so, run the following command:
 
     ```bash
-    oc get nodes --show-labels --selector='tier=frontend'
+    oc get nodes --selector='tier=frontend'
     ```
 
     Your output will look something like this:
