@@ -22,7 +22,11 @@
    --resource-group $AZR_RESOURCE_GROUP \
    -o tsv
 ```
-1. **Refresh URL** atleast 10 times in the browser to generate traffic for your graph.
+1. **Generate traffic by refreshing app URL or use the following snippet** atleast 10 times in the browser to generate traffic for your graph.
+```bash
+ while true; do curl echo "http://$GATEWAY_URL/productpage"; sleep 5; done
+```
+```
 ![URL](../assets/images/product-page.PNG)
 
 1. Kiali Console.
