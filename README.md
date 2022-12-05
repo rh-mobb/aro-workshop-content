@@ -1,7 +1,37 @@
 # ARO Hack-a-Thon Content
 
-This repository will be used to host public content for the ARO hack-a-thon on 11/15 in Atlanta, Georgia.
-
-**The detailed task instructions should NOT be psoted here, only the guidance for customers to complete each task!**
-
-All customer-facing guides must be written in markdown that is compliant with the Material for MkDocs theme: https://squidfunk.github.io/mkdocs-material/reference/
+  - **Getting Started** - Setup the Azure Cloud Shell environment, create a cluster and retrieve credentials
+    - [Workshop Setup](/aro-content/general/1-workshop-setup.md)
+    - [Create an ARO Cluster](/aro-content/ops/1-1-create-cluster.md)
+    - [Retrieve Cluster Credentials](/aro-content/ops/1-3-get-credentials.md)
+  - **Prepare the Cluster and Evironment** - Install required operators and Azure services that will be used during the workshop.  Install ACR via the Azure Service Operator.  Install Cosmos DB via CLI for speed.
+    - Install Pipelines and Service Mesh Operators
+      - [Deploy Pipeline Operator](/aro-content/ops/2-1-pipeline-operator.md)
+      - [Deploy Service Mesh Operator](/aro-content/service-meshv2/0-infrastructure_operator_install.md)
+    - [Azure Service Operator](/aro-content/ops/3-deploy-azure-service-operator.md)
+    - [Deploy Azure Container Registry](/aro-content/ops/4-1-deploy-acr-aso.md)
+    - [Deploy Cosmos Database](/aro-content/ops/2-5-deploy-cosmos.md)
+    - [Azure ARC Integration](/aro-content/ops/5-arc-integration.md)
+  - **Managing Nodes** - manually adding / removing / labeling nodes.
+    - [Managing Worker Nodes](/aro-content/ops/2-2-worker-nodes.md)
+    - [Label Nodes](/aro-content/ops/2-4-label-nodes.md)
+  - **Deploy the workshop application** Deploy an application that will be used throughout the remaining parts of the workshop.  The application will have two 'microservices' a frontend and backend.
+    - [Deploy the backend](/aro-content/app/2-2-deploy-backend.md)
+    - [Deploy the frontend](/aro-content/app/2-1-deploy-frontend.md)
+  - **Make the workshop application resilent** configure the cluster autoscaler, set resource limits for the application, setup a horizontal pod autoscaler for the application which will kickoff the cluster autoscaler as we scale the application 
+    - [Setup cluster autoscaling](/aro-content/ops/2-3-autoscaling.md)
+    - [Scale Up and Down the application and cluster](/aro-content/app/3-scale-app.md)
+  - **Exposing the workshop application** User Azure Frontdoor to expose the application running on a private network
+    - [Create a private ingress controller](/aro-content/ops/7-private-ingress.md)
+    - [Create Azure Front Door Service](/aro-content/ops/6-front-door.md)
+    - [Expose the application](/aro-content/app/2B-deploy-app.md)
+  - **Automate Deploying an Application** Create an OpenShift Pipeline to automate deploying 'version 2' of the frontend application.
+    - [Automate Deploying the App](/aro-content/app/2C-deploy-app.md)
+  - **Advanced Application Configuration with Service Mesh** Setup the service mesh control plane, create an Istio Ingress Gateway that will send traffic to both v1 and v2 of the application.  Use Kiali to visualize the application service calls. 
+      - [Introduction](/aro-content/service-meshv2/00-introduction.md)
+      - [Deploy the Control Plane ](/aro-content/service-meshv2/1-deploy-control-plane.md)
+      - [Deploy Weighted Load Balancing](/aro-content/service-meshv2/3-weighted-routing.md)
+      - [Access Kiali Dashboard](/aro-content/service-meshv2/access_kiali_dashboard.md)
+  - **ARO Day X Operations** managing upgrades of the cluster
+      - [Managing Upgrades](/aro-content/ops/2-1-upgrades.md)
+  

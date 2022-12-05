@@ -1,15 +1,21 @@
 # Project Information
 site_name: ARO Workshop Atlanta
+<<<<<<< HEAD
 site_url: https://ws.mobb.cloud/
 site_description: A choose-your-own-adventure workshop for Operations and Development teams on ARO.
+=======
+site_url: https://michaelryanmcneill.github.io/aro-hackathon-content
+site_description: A for Operations and Development teams on ARO.
+>>>>>>> a78436f (initial v2)
 site_author: Red Hat
 
 # Repository
-repo_name: rh-mobb/aro-hackathon-content
-repo_url: https://github.com/rh-mobb/aro-hackathon-content
+repo_name: michaelryanmcneill/aro-hackathon-content
+repo_url: https://github.com/michaelryanmcneill/aro-hackathon-content
 
 # Nav Menu Definition
 nav:
+<<<<<<< HEAD
   - Welcome: index.md
   - Environment Setup: setup/environment.md
   - Access Your Cluster: setup/access-cluster.md
@@ -40,6 +46,46 @@ nav:
     - Deploy Workloads: service-mesh/deploy-workload.md
     - Deploy Weighted Load Balancing: service-mesh/weighted-routing.md
     - Access Kiali Dashboard: service-mesh/kiali.md
+=======
+  - index.md
+  - Workshop Setup: general/1-workshop-setup.md
+  - Getting Started
+    - Create an ARO Cluster: ops/1-1-create-cluster.md
+    - Retieve Cluster Credentials: ops/1-3-get-credentials.md
+  - Prepare the Cluster and Evironment
+    - Install Pipelines and Service Mesh Operators
+      - Deploy Pipeline Operator: ops/2-1-operators.md
+      - Deploy Service Mesh Operator: service-meshv2/0-infrastructure_operator_install.md
+    - Label Nodes: ops/2-4-label-nodes.md
+    - Azure Service Operator: ops/3-deploy-azure-service-operator.md
+    - Deploy Cosmos Database: ops/2-5-deploy-cosmos-aso.md
+    - Azure ARC Integration: ops/5-arc-integration.md
+  - Managing Worker Nodes: ops/2-2-worker-nodes.md
+  - Deploy an Application
+    - Deploy the frontend: app/2-1-deploy-frontend.md
+    - Deploy the backend: app/2-2-deploy-backend.md
+    - Test the application app/2-3-test-app.md
+  - Make the application resilent
+    - Setup cluster autoscaling: ops/2-3-autoscaling.md
+    - Make Applications Resilient 
+        - Scale the application: app/3-scale-app.md
+        - Create a Pod Disruption Budget: app/3-scale-app.md
+        - Scale down the application: app/3-scale-app.md
+  - Exposing Applications:
+    - Create a private ingress controller: app/4-private-ingress.md
+    - Create Azure Front Door Service: ops/5-frontdoor.md
+    - Expose the application: app/2A-deploy-app.md
+  - Automate Deploying an Application
+    - Automate Deploying the App: app/2C-deploy-app.md
+  - Advanced Application Configuration with Service Mesh
+      - Introduction: service-meshv2/00-introduction.md
+      - Deploy Weighted Load Balancing: service-meshv2/3-weighted-routing.md
+      - Access Kiali Dashboard: service-meshv2/access_kiali_dashboard.md
+  - ARO Day X Operations:
+      - Managing Upgrades: ops/2-1-upgrades.md
+    
+
+>>>>>>> a78436f (initial v2)
 
 
 # Theme Configuration
@@ -58,10 +104,6 @@ theme:
   favicon: favicon.ico
 docs_dir: aro-content
 
-# plugins
-plugins:
-- section-index
-
 # Extensions
 markdown_extensions:
   - abbr
@@ -77,8 +119,5 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets:
       base_path: 'aro-content/assets/'
-
-extra_css:
-  - assets/css/custom.css
 
 # Google Analytics

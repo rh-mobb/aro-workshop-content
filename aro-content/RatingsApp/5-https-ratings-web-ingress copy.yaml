@@ -1,0 +1,24 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: ratings-web-https
+  namespace: ratingsapp
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
+    # kubernetes.io/ingress.allow-http: 'false'
+    appgw.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  tls:
+    - hosts:
+      - ratingsapp.user-8.ws.mobb.cloud
+  rules:
+  - host: ratingsapp.user-8.ws.mobb.cloud
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: rating-web
+            port:
+              number: 80
