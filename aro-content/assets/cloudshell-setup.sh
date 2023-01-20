@@ -47,24 +47,16 @@ if ! which siege > /dev/null; then
 fi
 
 echo "Configuring Environment specific variables"
-cat <<"EOF" > ~/.workshoprc
+cat <<EOF > ~/.workshoprc
 #!/bin/bash
 # source ~/bin/oc_bash_completion
 export AZ_USER=$(az ad signed-in-user show --query "userPrincipalName" -o tsv | cut -d @ -f1)
 export USERID="${AZ_USER}"
-export AZ_PASS="R3dH4t1!"
+# export AZ_PASS="R3dH4t1!"
 
 export AZ_RG="${AZ_USER}-rg"
 export AZ_ARO="${AZ_USER}-cluster"
 export AZ_LOCATION='eastus'
-
-export OCP_PASS=$(az aro list-credentials --name "${AZ_ARO}" --resource-group "${AZ_RG}" \
-  --query="kubeadminPassword" -o tsv)
-export OCP_USER="kubeadmin"
-export OCP_CONSOLE="$(az aro show --name ${AZ_ARO} --resource-group ${AZ_RG} \
-  -o tsv --query consoleProfile)"
-export OCP_API="$(az aro show --name ${AZ_ARO} --resource-group ${AZ_RG} \
-  --query apiserverProfile.url -o tsv)"
 
 alias k=kubectl
 EOF

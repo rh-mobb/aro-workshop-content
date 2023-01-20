@@ -13,8 +13,8 @@ When prompted, you'll log in with the credentials provided by the workshop team.
 ### Pre-created Resources
 
 - Resource Group
-- vNet (with two subnets)
-- Azure Red Hat OpenShift Cluster
+<!--- vNet (with two subnets)
+- Azure Red Hat OpenShift Cluster -->
 - Azure AD Service Principal
 - Azure DNS Zone
 
@@ -45,13 +45,9 @@ Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for
     | Subscription       | **Red Hat Cloud Services - Microsoft Azure Sponsorship**  | N/A |
     | Cloud Shell region       | **East US**                 | N/A |
     | Show VNET isolation settings    | *Leave Unchecked* | N/A |
-    | Resource group       | **user#-rg** (Select *Use Existing* Button) | **user2-rg** |
-    | Storage account       | **user#atl** (Select *Create New* Button) | **user2atl** |
-    | File share       | **clouddrive** (Select *Create New* Button) | N/A |
-
-    Your options should look like the screenshot below once filled out:
-
-    ![Cloud Shell Advanced Settings](../assets/images/cloud-shell-advanced-settings.png){ align=center }
+    | Resource group       | **user#_mobbws-rg** (Select *Use Existing* Button) | **user2_mobbws-rg** |
+    | Storage account       | **user#mobbws** (Select *Use Existing* Button) | **user2mobbws** |
+    | File share       | **acs** (Select *Use Existing* Button) | acs |
 
 1. Once completed, click on the *Create Storage* button to start your Azure Cloud Shell session.
 
@@ -60,15 +56,12 @@ Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for
 1. When your shell is ready and you are at the bash prompt, run the following command to prepare your Cloud Shell environment for the remainder of the workshop:
 
     ```
-    curl https://ws.mobb.cloud/assets/cloudshell-setup.sh | bash
+    ./clouddrive/setup.sh
+    source ~/.workshoprc
     ```
 
     You will see a significant amount of output as the script prepares your environment for the workshop.
 
-1. Once it is complete follow its instructions and source the `~/.workshoprc` file which contains credentials and other useful environment variables for your cluster.
-
-    ```bash
-    source ~/.workshoprc
-    ```
-
     Congratulations, your Azure Cloud Shell is now configured and you're ready to move on to the next page.
+
+> Note: If you are familiar with tmux and its shortcuts, it would be a good idea to run `tmux` now so that if the Azure Cloud Console times out you can easily connect back to the tmux and retain your working session.

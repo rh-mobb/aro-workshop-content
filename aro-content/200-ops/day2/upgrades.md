@@ -26,6 +26,8 @@ For more information on how OpenShift's Upgrade Service works, please see the [R
 
 1. In a moment, you'll begin to see what upgrades are available for your cluster. From here, you could click the *Select a version* button and upgrade the cluster, or you could follow the instructions below to use the Managed Upgrade Operator.
 
+    !!! warning "Do not perform an upgrade at this stage"
+
     ![Web Console - Available Upgrades](../../Images/aro-console-upgrade.png)
 
 ## Upgrade using the Managed Upgrade Operator
@@ -46,7 +48,8 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
 1. First, let's check for available upgrades on your current upgrade channel. To do so, run the following command:
 
     ```bash
-    oc get clusterversion version -o jsonpath='{.status.availableUpdates}' | jq .[].version
+    oc get clusterversion version -o \
+      jsonpath='{.status.availableUpdates}' | jq -r .[].version
     ```
 
     !!! warning
@@ -77,25 +80,15 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
 1. Once created, we can see that the update is pending by running the following command:
 
     ```bash
-    oc -n openshift-managed-upgrade-operator describe upgradeconfig.upgrade.managed.openshift.io/managed-upgrade-config
+    oc -n openshift-managed-upgrade-operator get \
+      upgradeconfig.upgrade.managed.openshift.io/managed-upgrade-config
     ```
 
     The output of the command will look something like this:
 
-    ```bash
-    Spec:
-      PDB Force Drain Timeout:  60
-      Capacity Reservation:     true
-      Desired:
-        Channel:   stable-4.10
-        Version:   4.10.36
-      Type:        ARO
-      Upgrade At:  2022-11-14T18:23:16+00:00
-    Status:
-      History:
-        Phase:    Pending
-        Version:  4.10.39
-    Events:       <none>
+    ```{.text .no-copy}
+    NAME                     DESIRED_VERSION   PHASE     ...
+    managed-upgrade-config   4.10.39           Pending
     ```
 
     Congratulations! You've successfully scheduled an upgrade of your cluster for tomorrow at this time. While the workshop environment will be deleted before then, you now have the experience to schedule upgrades in the future.

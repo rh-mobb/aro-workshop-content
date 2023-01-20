@@ -1,10 +1,10 @@
 # Introduction
 
-It's time for us to put our cluster to work and deploy a workload. We're going to build an example Java application, [microsweeper](https://github.com/redhat-mw-demos/microsweeper-quarkus/tree/ARO){:target="_blank"}, using [Quarkus](https://quarkus.io/){:target="_blank"} (a Kubernetes Native Java stack) and [Azure Database for PostgreSQL](https://azure.microsoft.com/en-us/products/postgresql/){:target="_blank"}. We'll then deploy the application to our Azure Red Hat OpenShift cluster, connect to the database using Azure Private Link, and securely expose this application over the internet using Azure Front Door. 
+It's time for us to put our cluster to work and deploy a workload. We're going to build an example Java application, [microsweeper](https://github.com/redhat-mw-demos/microsweeper-quarkus/tree/ARO){:target="_blank"}, using [Quarkus](https://quarkus.io/){:target="_blank"} (a Kubernetes Native Java stack) and [Azure Database for PostgreSQL](https://azure.microsoft.com/en-us/products/postgresql/){:target="_blank"}. We'll then deploy the application to our Azure Red Hat OpenShift cluster, connect to the database using Azure Private Link, and securely expose this application over the internet using Azure Front Door.
 
 ## Create Azure Database for PostgreSQL instance
 
-To deploy our PostgreSQL database, we'll use the Azure Service Operator (ASO). 
+To deploy our PostgreSQL database, we'll use the Azure Service Operator (ASO).
 
 1. First, let's create a namespace (also known as a project in OpenShift). To do so, run the following command:
 
@@ -12,187 +12,41 @@ To deploy our PostgreSQL database, we'll use the Azure Service Operator (ASO).
     oc new-project microsweeper-ex
     ```
 
-1. Next, let's inherit our existing Azure Resource Group (again) to hold Azure resources that we create with ASO. To do so, run the following commmand: 
+1. Create the Azure Postgres Server resource. To do so, run the following command (this command will take ~ 5mins)
 
-    ```yaml
-    cat <<EOF | oc apply -f -
-    apiVersion: resources.azure.com/v1beta20200601
-    kind: ResourceGroup
-    metadata:
-      name: "${AZ_RG}"
-      namespace: microsweeper-ex
-      annotations:
-        serviceoperator.azure.com/reconcile-policy: skip
-    spec:
-      location: eastus
-    EOF
-    ```
-    
-1. Let's verify that our Azure Resource Group has been successfully inherited. To do so, run the following command:
+
+    !!! warning "For the sake of the workshop we are creating a public database that any host in Azure can connect to. In a real world scenario you would create a private database and connect to it over a private link service"
 
     ```bash
-    oc get resourcegroup.resources.azure.com/${AZ_RG}
+    az postgres server create --resource-group "${AZ_RG}" \
+      --location "${AZ_LOCATION}" --sku-name GP_Gen5_2 \
+      --name "microsweeper-${UNIQUE}" --storage-size 51200 \
+      --admin-user myAdmin --admin-pass "${AZ_USER}-${UNIQUE}" \
+      --public 0.0.0.0
     ```
-
-    You should receive output that shows your resource group is *Ready* and *Succeeded*, similar to this:
-
-    ```bash
-    NAME       READY   REASON      MESSAGE
-    user1-rg   True    Succeeded
-    ```
-
-1. Let's now create a secret for the database to use for the admin password. We'll re-use our random OpenShift password. To do so, run the following command:
-
-    ```yaml
-    cat <<EOF | oc apply -f -
-    apiVersion: v1
-    kind: Secret
-    metadata:
-      name: server-admin-pw
-      namespace: microsweeper-ex
-    stringData:
-      password: "${OCP_PASS}"
-    type: Opaque
-    EOF
-    ```
-
-1. Next, let's create the Azure Postgres Flexible Server resource. To do so, run the following command:
-
-    ```yaml
-    cat <<EOF | oc apply -f -
-    apiVersion: dbforpostgresql.azure.com/v1beta20210601
-    kind: FlexibleServer
-    metadata:
-      name: "${AZ_USER}-minesweeper-database"
-      namespace: microsweeper-ex
-    spec:
-      location: "${AZ_LOCATION}"
-      owner:
-        name: "${AZ_RG}"
-      version: "13"
-      sku:
-        name: Standard_B1ms
-        tier: Burstable
-      administratorLogin: myAdmin
-      administratorLoginPassword:
-        name: server-admin-pw
-        key: password
-      storage:
-        storageSizeGB: 32
-    EOF
-    ```
-
-1. Now, let's create an Azure Postgres Flexible Server Configuration resource. To do so, run the following command:
-
-    ```bash
-    cat  <<EOF | oc apply -f -
-    apiVersion: dbforpostgresql.azure.com/v1beta20210601
-    kind: FlexibleServersConfiguration
-    metadata:
-      name: pgaudit
-      namespace: microsweeper-ex
-    spec:
-      owner:
-        name: "${AZ_USER}-minesweeper-database"
-      azureName: pgaudit.log
-      source: user-override
-      value: READ
-    EOF
-    ```
-
-1. Now, let's create a wide-open firewall rule for the database. To do so, run the following command:
-
-    ```bash
-    cat  <<EOF | oc apply -f -
-    apiVersion: dbforpostgresql.azure.com/v1beta20210601
-    kind: FlexibleServersFirewallRule
-    metadata:
-      name: wksp-fw-rule
-      name: microsweeper-ex
-    spec:
-      owner:
-        name: "${AZ_USER}-minesweeper-database"
-      startIpAddress: 0.0.0.0
-      endIpAddress: 255.255.255.255
-    EOF
-    ```
-
-1. Next, let's create a Azure Postgres Flexible Server Database instance. To do so, run the following command: 
-
-    ```bash
-    cat  <<EOF | oc apply -f -
-    apiVersion: dbforpostgresql.azure.com/v1beta20210601
-    kind: FlexibleServersDatabase
-    metadata:
-      name: score
-      namespace: microsweeper-ex
-    spec:
-      owner:
-        name: "${AZ_USER}-minesweeper-database"
-      charset: utf8
-    EOF
-    ```
-
-    !!! warning
-
-        It takes about 10 minutes for the database to become fully operational and running.
-
-1. Next, let's monitor the creation process, run the following command:
-
-    ```bash
-    watch ~/bin/oc -n microsweeper-ex get flexibleservers.dbforpostgresql.azure.com ${AZ_USER}-minesweeper-database
-    ```
-
-    Your output will look like this:
-
-    ```bash
-    NAME                         READY   SEVERITY   REASON        MESSAGE
-    user1-minesweeper-database   False   Info       Reconciling   The resource is in the process of being reconciled by the operator
-    ```
-
-    Eventually, the result will show:
-
-    ```bash
-    NAME                         READY   SEVERITY   REASON      MESSAGE
-    user1-minesweeper-database   True               Succeeded
-    ```
-
-    !!! info
-
-        Watch will refresh the output of a command every second. Hit CTRL and c on your keyboard to exit the watch command when you're ready to move on to the next part of the workshop.
-
-1. (Optional) Once created, you can view the resource in the Azure Portal. To do so, search for "Postgres" in the search bar. 
-    
-    ![Azure Portal - Postgres Search](../assets/images/azure-portal-postgres-search.png)
-
-    !!! warning
-
-        The resource will not show up until after the PostgreSQL instance has been created. 
-
-    Then, click on the the database name itself. 
-
-    ![Azure Portal - Postgres Detail](../assets/images/azure-postgres-portal-detail.png)
 
 1. Finally, let's check connectivity from our Cloud Shell to our database. To do so, run the following command:
 
     ```bash
     psql \
-      "host=${AZ_USER}-minesweeper-database.postgres.database.azure.com port=5432 dbname=score user=myAdmin password=${OCP_PASS} sslmode=require" \
+      "host=microsweeper-${UNIQUE}.postgres.database.azure.com port=5432
+      dbname=postgres
+      user=myAdmin@microsweeper-${UNIQUE}.postgres.database.azure.com password=${AZ_USER}-${UNIQUE} sslmode=require" \
       -c "select now();"
     ```
 
     Your output should look similar to:
 
-    ```bash
-                  now              
+    ```{.text .no-copy}
+                  now
     -------------------------------
     2022-11-15 06:39:13.903299+00
     (1 row)
     ```
-
+-->
 ## Build and deploy the Microsweeper app
 
-Now that we've got a PostgreSQL instance up and running, let's build and deploy our application. 
+Now that we've got a PostgreSQL instance up and running, let's build and deploy our application.
 
 1. First, let's clone the application from GitHub to our local Cloud Shell. To do so, run the following command:
 
@@ -218,10 +72,10 @@ Now that we've got a PostgreSQL instance up and running, let's build and deploy 
     cat <<EOF > ./src/main/resources/application.properties
     # Database configurations
     %prod.quarkus.datasource.db-kind=postgresql
-    %prod.quarkus.datasource.jdbc.url=jdbc:postgresql://${AZ_USER}-minesweeper-database.postgres.database.azure.com:5432/score
+    %prod.quarkus.datasource.jdbc.url=jdbc:postgresql://microsweeper-${UNIQUE}.postgres.database.azure.com:5432/postgres
+    %prod.quarkus.datasource.username=myAdmin@microsweeper-${UNIQUE}.postgres.database.azure.com
+    %prod.quarkus.datasource.password=${AZ_USER}-${UNIQUE}
     %prod.quarkus.datasource.jdbc.driver=org.postgresql.Driver
-    %prod.quarkus.datasource.username=myAdmin
-    %prod.quarkus.datasource.password=${OCP_PASS}
     %prod.quarkus.hibernate-orm.database.generation=drop-and-create
     %prod.quarkus.hibernate-orm.database.generation=update
 
@@ -242,14 +96,14 @@ Now that we've got a PostgreSQL instance up and running, let's build and deploy 
     quarkus build --no-tests
     ```
 
-## Review 
+## Review
 
-Let's take a look at what this command did, along with everything that was created in your cluster. Return to your tab with the OpenShift Web Console. If you need to reauthenticate, follow the steps in the [Access Your Cluster](../setup/3-access-cluster/) section. 
+Let's take a look at what this command did, along with everything that was created in your cluster. Return to your tab with the OpenShift Web Console. If you need to reauthenticate, follow the steps in the [Access Your Cluster](../setup/3-access-cluster/) section.
 
 ### Container Images
 From the Administrator perspective, expand *Builds* and then *ImageStreams*, and select the *microsweeper-ex* project.
 
-![OpenShift Web Console - Imagestreams](../assets/images/web-console-imagestreams.png). 
+![OpenShift Web Console - Imagestreams](../assets/images/web-console-imagestreams.png).
 
 You will see two images that were created on your behalf when you ran the quarkus build command.  There is one image for `openjdk-11` that comes with OpenShift as a Universal Base Image (UBI) that the application will run under. With UBI, you get highly optimized and secure container images that you can build your applications with. For more information on UBI please read this [article](https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image).
 
@@ -264,8 +118,7 @@ How did those images get built you ask? Back on the OpenShift Web Console, click
 
 When you ran the `quarkus build` command, this created the BuildConfig you can see here. In our quarkus settings, we set the deployment strategy to build the image using Docker. The Dockerfile file from the git repo that we cloned was used for this BuildConfig.
 
-!!! info
-  A build configuration describes a single build definition and a set of triggers for when a new build is created. Build configurations are defined by a BuildConfig, which is a REST object that can be used in a POST to the API server to create a new instance.
+!!! info "A build configuration describes a single build definition and a set of triggers for when a new build is created. Build configurations are defined by a BuildConfig, which is a REST object that can be used in a POST to the API server to create a new instance."
 
 You can read more about BuildConfigs [here](https://docs.openshift.com/container-platform/latest/cicd/builds/understanding-buildconfigs.html)
 
@@ -306,7 +159,7 @@ oc -n microsweeper-ex get route microsweeper-appservice -o jsonpath='{.spec.host
 ```
 
 ### Application IP
-Let's take a quick look at what IP the application resolves to. Back in your Cloud Shell environment, run the following command: 
+Let's take a quick look at what IP the application resolves to. Back in your Cloud Shell environment, run the following command:
 
 ```bash
 nslookup $(oc -n microsweeper-ex get route microsweeper-appservice -o jsonpath='{.spec.host}')
@@ -339,7 +192,7 @@ On the next screen, click on Frontend IP configuration.  Notice the IP address o
 For the fun of it, we can also look at what backends this load balancer is connected to.
 ![Azure Portal - Load Balancer Frontend IP configuration](../assets/images/azure-portal-lb-frontend-ip-drilldown.png)
 
-Next, click on the pool that ends in 443. 
+Next, click on the pool that ends in 443.
 ![Azure Portal - Load Balancer Frontend IP configuration](../assets/images/azure-portal-lb-frontend-ip-detail.png)
 
 Notice the *Backend pool*. This is the subnet that contains all the worker nodes. And the best part is all of this came with Azure Red Hat OpenShift out of the box!
