@@ -1,4 +1,4 @@
-Next, we'll automate deploying our application using the OpenShift Pipelines operator, which is based on the open source Tekton project. 
+Next, we'll automate deploying our application using the OpenShift Pipelines operator, which is based on the open source Tekton project.
 
 If you would like to read more about OpenShift Pipelines, [see the Red Hat documentation](https://docs.openshift.com/container-platform/4.11/cicd/pipelines/understanding-openshift-pipelines.html){:target="_blank"}.
 
@@ -8,7 +8,7 @@ If you would like to read more about OpenShift Pipelines, [see the Red Hat docum
 
 ## Install the OpenShift Pipelines operator
 
-1. Return to your tab with the OpenShift Web Console. If you need to reauthenticate, follow the steps in the [Access Your Cluster](../setup/3-access-cluster/) section. 
+1. Return to your tab with the OpenShift Web Console. If you need to reauthenticate, follow the steps in the [Access Your Cluster](../setup/3-access-cluster/) section.
 
 1. Using the menu on the left Select *Operator* -> *OperatorHub*.
 
@@ -18,27 +18,27 @@ If you would like to read more about OpenShift Pipelines, [see the Red Hat docum
 
     ![Web Console - OpenShift Pipelines Operator Selection](../assets/images/web-console-operatorhub-openshift-pipelines.png){ align=center }
 
-1. Click on *Install* on the page that appears. 
+1. Click on *Install* on the page that appears.
 
     ![Web Console - OpenShift Pipelines Simple Install](../assets/images/web-console-openshift-pipelines-simple-install.png){ align=center }
 
-1. Accept the defaults that are presented and select *Install* to install the operator. 
+1. Accept the defaults that are presented and select *Install* to install the operator.
 
     ![Web Console - OpenShift Pipelines Detailed Install](../assets/images/web-console-openshift-pipelines-detailed-install.png){ align=center }
 
-1. Allow the operator a few minutes to successfully install the OpenShift Pipelines operator into the cluster. 
+1. Allow the operator a few minutes to successfully install the OpenShift Pipelines operator into the cluster.
 
     ![Web Console - OpenShift Pipelines Successful Install](../assets/images/web-console-openshift-pipelines-successful-install.png){ align=center }
 
 
 ## Configure the GitHub integration
 
-1. In your web browser, go to the following GitHub repositories: 
+1. In your web browser, go to the following GitHub repositories:
 
     * [https://github.com/rh-mobb/common-java-dependencies](https://github.com/rh-mobb/common-java-dependencies){:target="_blank"}
     * [https://github.com/rh-mobb/aro-workshop-app](https://github.com/rh-mobb/aro-workshop-app){:target="_blank"}
 
-    Ensure you are logged in to GitHub and select the *Fork* button for **both** repositories and then choose your own GitHub account. 
+    Ensure you are logged in to GitHub and select the *Fork* button for **both** repositories and then choose your own GitHub account.
 
     ![GitHub Repository Fork](../assets/images/github-fork.png)
 
@@ -48,20 +48,25 @@ If you would like to read more about OpenShift Pipelines, [see the Red Hat docum
 
     !!! warning
 
-        **Do not** forget to delete this token once the workshop is over. 
+        **Do not** forget to delete this token once the workshop is over.
 
 1. Next, save the token to your Cloud Shell instance. To do so, run the following command, ensuring you replace the `INSERT_TOKEN_HERE` with your Personal Access Token:
 
     ```bash
-    GH_PAT=INSERT_TOKEN_HERE
-    echo "export GH_PAT=${GH_PAT}" >> ~/.workshoprc
+    export GH_PAT=INSERT_TOKEN_HERE
     ```
 
 1. Then, save your GitHub username as a variable. To do so, run the following command, ensuring you replace the `GITHUB_USER_ID` with your GitHub username.
 
     ```bash
     export GH_USER=GITHUB_USER_ID
+    ```
+
+1. Save these to your .workshoprc in case of cloud shell timeout
+
+    ```bash
     echo "export GH_USER=${GH_USER}" >> ~/.workshoprc
+    echo "export GH_PAT=${GH_PAT}" >> ~/.workshoprc
     ```
 
 1. Next, we'll create a new working directory to clone our forked GitHub repositories. To do so, run the following commands:
@@ -75,7 +80,13 @@ If you would like to read more about OpenShift Pipelines, [see the Red Hat docum
 
 ## Import tasks to our pipeline
 
-The next thing we need to do is import common tasks that our pipeline will use. These common tasks are designed to be reused across multiple pipelines. 
+The next thing we need to do is import common tasks that our pipeline will use. These common tasks are designed to be reused across multiple pipelines.
+
+1. Switch back to the `microsweeper-ex` project from earlier
+
+    ```bash
+    oc project microsweeper-ex
+    ```
 
 1. Let's start by taking a look at the reusable tasks that we will be using. To do so, run the following command:
 
@@ -111,7 +122,8 @@ The next thing we need to do is import common tasks that our pipeline will use. 
 1. Next, we need to apply all of these tasks to our cluster.  To do so, run the following command:
 
     ```bash
-    oc apply -f ~/gitops/aro-workshop-app/pipeline/tasks
+    oc apply -n microsweeper-ex -f \
+      ~/gitops/aro-workshop-app/pipeline/tasks
     ```
 
     Your output should match this:
@@ -130,22 +142,22 @@ The next thing we need to do is import common tasks that our pipeline will use. 
 
     ```bash
     az acr create --resource-group ${AZ_RG} \
-      --name ${AZ_USER}${UNIQUE} --sku Basic
-    az acr update -n ${AZ_USER}${UNIQUE} --admin-enabled true
+      --name mobbws${UNIQUE} --sku Basic
+    az acr update -n mobbws${UNIQUE} --admin-enabled true
     ```
 
 1. Next, we need to create a secret to push and pull images into the Azure Container Registry. To do so, run the following command to retrieve the token:
 
     ```bash
-    ACR_PWD=$(az acr credential show -n ${AZ_USER}${UNIQUE} -g ${AZ_RG} --query 'passwords[0].value' -o tsv)
+    ACR_PWD=$(az acr credential show -n mobbws${UNIQUE} -g ${AZ_RG} --query 'passwords[0].value' -o tsv)
     echo "ACR Token (Sensitive Value): ${ACR_PWD}"
     ```
 
 1. Then, create the secret using the retrieved token. To do so, run the following command:
 
     ```bash
-    oc -n microsweeper-ex create secret docker-registry --docker-server=${AZ_USER}${UNIQUE}.azurecr.io \
-      --docker-username="${AZ_USER}${UNIQUE}" --docker-password="${ACR_PWD}" \
+    oc -n microsweeper-ex create secret docker-registry --docker-server=mobbws${UNIQUE}.azurecr.io \
+      --docker-username="mobbws${UNIQUE}" --docker-password="${ACR_PWD}" \
       --docker-email=unused acr-secret
     ```
 
@@ -159,11 +171,17 @@ The next thing we need to do is import common tasks that our pipeline will use. 
 
     Your output should match this:
 
-    ```bash
+    ```{.txt .no-copy}
     serviceaccount/pipeline configured
     secret/kube-api-secret created
     role.rbac.authorization.k8s.io/pipeline-role created
     rolebinding.rbac.authorization.k8s.io/pipeline-role-binding created
+    ```
+
+    However it's okay if you see the error:
+
+    ```{.txt .no-copy}
+    serviceaccounts "pipeline" already exists
     ```
 
 1. Next, we need to link the ACR credential secret we just created, so the service account can mount and pull images from ACR. To do so, run the following command:
@@ -198,7 +216,7 @@ The next thing we need to do is import common tasks that our pipeline will use. 
     oc create -f ~/gitops/aro-workshop-app/pipeline/2-pipeline-pvc.yaml
     ```
 
-1. Next, let's review the pipeline definition. To do so, open the following link in a new tab: [https://github.com/rh-mobb/aro-hackaton-app/blob/main/pipeline/3-pipeline.yaml](https://github.com/rh-mobb/aro-hackaton-app/blob/main/pipeline/3-pipeline.yaml){:target="_blank"}. 
+1. Next, let's review the pipeline definition. To do so, open the following link in a new tab: [https://github.com/rh-mobb/aro-hackaton-app/blob/main/pipeline/3-pipeline.yaml](https://github.com/rh-mobb/aro-hackaton-app/blob/main/pipeline/3-pipeline.yaml){:target="_blank"}.
 
     Browse through the file and notice all the tasks that are being executed. These are the tasks we imported in the previous step. The pipeline definition simply says which order the tasks are run and what parameters should be passed between tasks.
 
@@ -282,7 +300,7 @@ The next thing we need to do is import common tasks that our pipeline will use. 
       - name: dockerfile-path
         value: src/main/docker/Dockerfile.jvm
       - name: image-name
-        value: ${AZ_USER}${UNIQUE}.azurecr.io/minesweeper
+        value: mobbws${UNIQUE}.azurecr.io/minesweeper
       workspaces:
       - name: source
         persistentVolumeClaim:
@@ -294,114 +312,122 @@ The next thing we need to do is import common tasks that our pipeline will use. 
 
 Let's take a look at the OpenShift Web Console to see what was created and if the application was successfully deployed.
 
-From the OpenShift Web Console, click on *Pipelines* ->*Tasks*.
-![Image](images/pipeline-tasks-ocp.png)
+!!! warning "Make sure your Project is set to `microsweeper-ex`"
 
-Notice the 5 tasks that we imported and click into them to view the YAML definitions.
+1. From the OpenShift Web Console, click on *Pipelines* ->*Tasks*.
 
-Next, lets look at the Pipeline. Click on *Pipelines*. Notice that it is either still running, or the last run was successful. Click on *maven-pipeline* to view the pipeline details.
-![Image](images/pipeline-ocp.png)
+    ![Image](images/pipeline-tasks-ocp.png)
 
-On the following screen, click on *PipelineRuns* to view the status of each Pipeline Run.
-![Image](images/pipeline-run-ocp.png)
+    Notice the 5 tasks that we imported and click into them to view the YAML definitions.
 
-Lastly, click on the *PipelineRun* name and you can see all the details and steps of the pipeline. If your are curious, you can also view the logs of the different tasks that were run.
-![Image](images/pipeline-run-details-ocp.png)
+1. Next, lets look at the Pipeline. Click on *Pipelines*. Notice that it is either still running, or the last run was successful. Click on *maven-pipeline* to view the pipeline details.
+
+    ![Image](images/pipeline-ocp.png)
+
+1. On the following screen, click on *PipelineRuns* to view the status of each Pipeline Run.
+
+    ![Image](images/pipeline-run-ocp.png)
+
+1. Lastly, click on the *PipelineRun* name and you can see all the details and steps of the pipeline. If your are curious, you can also view the logs of the different tasks that were run.
+
+    ![Image](images/pipeline-run-details-ocp.png)
+
+1. Watch the PipelineRun page as the tasks complete and the PipelineRun finishes.
 
 ## Event Triggering
 
 At this point, we can successfully build and deploy new code by manually running our pipeline. But how can we configure the pipeline to run automatically when we commit code to Git? We can do so with an Event Listener and a Trigger.
 
-Let's start by looking at the resources we will be creating to create our event listener and trigger.
+1. Let's start by looking at the resources we will be creating to create our event listener and trigger.
 
-```bash
-ls ~/gitops/aro-workshop-app/pipeline/tasks/event-listener/*.yaml
-```
+    ```bash
+    ls ~/gitops/aro-workshop-app/pipeline/tasks/event-listener/*.yaml
+    ```
 
-Your output should match:
+    Your output should match:
 
-```bash
-/home/user/gitops/aro-workshop-app/pipeline/tasks/event-listener/1-web-trigger-binding.yaml
-/home/user/gitops/aro-workshop-app/pipeline/tasks/event-listener/2-web-trigger-template.yaml
-/home/user/gitops/aro-workshop-app/pipeline/tasks/event-listener/3-web-trigger.yaml
-/home/user/gitops/aro-workshop-app/pipeline/tasks/event-listener/4-event-listener.yaml
-```
+    ```{.text .no-copy}
+    /home/user/gitops/aro-workshop-app/pipeline/tasks/event-listener/1-web-trigger-binding.yaml
+    /home/user/gitops/aro-workshop-app/pipeline/tasks/event-listener/2-web-trigger-template.yaml
+    /home/user/gitops/aro-workshop-app/pipeline/tasks/event-listener/3-web-trigger.yaml
+    /home/user/gitops/aro-workshop-app/pipeline/tasks/event-listener/4-event-listener.yaml
+    ```
 
-Take a look at the files listed:
+1. Take a look at the files listed:
 
-- `1-web-trigger-binding.yaml`
-  This TriggerBinding allows you to extract fields, such as the git repository name, git commit number, and the git repository URL in this case.
-  To learn more about TriggerBindings, click [here](https://tekton.dev/docs/triggers/triggerbindings/)
+    - `1-web-trigger-binding.yaml`
+      This TriggerBinding allows you to extract fields, such as the git repository name, git commit number, and the git repository URL in this case.
+      To learn more about TriggerBindings, click [here](https://tekton.dev/docs/triggers/triggerbindings/)
 
-- `2-web-trigger-template.yaml`
-  The TriggerTemplate specifies how the pipeline should be run.  Browsing the file above, you will see there is a definition of the PipelineRun that looks exactly like the PipelineRun you create in the previous step.  This is by design! ... it should be the same.
+    - `2-web-trigger-template.yaml`
+      The TriggerTemplate specifies how the pipeline should be run.  Browsing the file above, you will see there is a definition of the PipelineRun that looks exactly like the PipelineRun you create in the previous step.  This is by design! ... it should be the same.
 
-  Edit `/home/user/gitops/aro-workshop-app/pipeline/tasks/event-listener/2-web-trigger-template.yaml` with your favorite text editor (vim!) and replace the `<>` sections with the values of from the following command:
+    To learn more about TriggerTemplates, [review the Tekton documentation](https://tekton.dev/docs/triggers/triggertemplates/){:target="_blank"}.
 
-  ```bash
-  echo "GITHUB_USER: ${GH_USER}"
-  echo "ACR_ENDPOINT: ${AZ_USER}${UNIQUE}.azurecr.io/minesweeper"
-  ```
+    - `3-web-trigger.yaml`
+      The next file we have is the Trigger.  The Trigger specifies what should happen when the EventListener detects an Event.  Looking at this file, you will see that we are looking for 'Push' events that will create an instance of the TriggerTemplate that we just created.  This in turn will start the PipelineRun.
 
-  ```{.text .no-copy}
-    - name: dependency-git-url
-      value: https://github.com/GITHUB_USER_ID/common-java-dependencies
-    - name: application-git-url
-      value: https://github.com/GITHUB_USER_ID/aro-workshop-app
-  [...]
-    - name: image-name
-      value: ACR_ENDPOINT.azurecr.io/minesweeper
-  ```
+      To learn more about Triggers, [review the Tekton documentation](https://tekton.dev/docs/triggers/triggers/){:target="_blank"}.
 
-  To learn more about TriggerTemplates, [review the Tekton documentation](https://tekton.dev/docs/triggers/triggertemplates/){:target="_blank"}.
+    - `4-event-listenter.yaml`
+      The last file we have is the Event Listener.  An EventListener is a Kubernetes object that listens for events at a specified port on your OpenShift cluster. It exposes an OpenShift Route that receives incoming event and specifies one or more Triggers.
 
-- `3-web-trigger.yaml`
-  The next file we have is the Trigger.  The Trigger specifies what should happen when the EventListener detects an Event.  Looking at this file, you will see that we are looking for 'Push' events that will create an instance of the TriggerTemplate that we just created.  This in turn will start the PipelineRun.
+      To learn more about EventListeners, [review the Tekton documentation](https://tekton.dev/docs/triggers/eventlisteners/){:target="_blank"}.
 
-  To learn more about Triggers, [review the Tekton documentation](https://tekton.dev/docs/triggers/triggers/){:target="_blank"}.
+1. Edit `~/gitops/aro-workshop-app/pipeline/tasks/event-listener/2-web-trigger-template.yaml` with your favorite text editor (vim!) and replace the `<>` sections with the values of from the following command:
 
-- `4-event-listenter.yaml`
-  The last file we have is the Event Listener.  An EventListener is a Kubernetes object that listens for events at a specified port on your OpenShift cluster. It exposes an OpenShift Route that receives incoming event and specifies one or more Triggers.
+    ```bash
+    echo "GITHUB_USER: ${GH_USER}"
+    echo "ACR_ENDPOINT: mobbws${UNIQUE}.azurecr.io/minesweeper"
+    ```
 
-  To learn more about EventListeners, [review the Tekton documentation](https://tekton.dev/docs/triggers/eventlisteners/){:target="_blank"}.
+    ```{.text .no-copy}
+      - name: dependency-git-url
+        value: https://github.com/GITHUB_USER_ID/common-java-dependencies
+      - name: application-git-url
+        value: https://github.com/GITHUB_USER_ID/aro-workshop-app
+    [...]
+      - name: image-name
+        value: ACR_ENDPOINT.azurecr.io/minesweeper
+    ```
 
-  Now that you have reviewed all the files, let's apply them to our cluster.
+1. Now that you have reviewed all the files, let's apply them to our cluster.
 
-  ```bash
-  oc create -f ~/gitops/aro-workshop-app/pipeline/tasks/event-listener
-  ```
+    ```bash
+    oc -n microsweeper-ex create -f \
+      ~/gitops/aro-workshop-app/pipeline/tasks/event-listener
+    ```
 
 Before we test out our EventListener and Trigger, lets review what was created in OpenShift.
 
-From the OpenShift console, under Pipelines, click on Triggers.
+1. From the OpenShift console, under Pipelines, click on Triggers.
 
-Browse the EventListener, TriggerTemplate and TriggerBindings that you just created.
+1. Browse the EventListener, TriggerTemplate and TriggerBindings that you just created.
 ![Image](images/ocp-triggers.png)
 
 The next thing we need to do, is connect our EventListener with Git.  When an action, such as a git push, happens, git will need to call our EventListener to start the build and deploy process.
 
-The first thing we need to do is expose our EventListener service to the internet. To do so, we'll run the `oc expose` command:
+1. The first thing we need to do is expose our EventListener service to the internet. To do so, we'll run the `oc expose` command:
 
-```bash
-oc -n microsweeper-ex expose svc el-minesweeper-el 
-```
+    ```bash
+    oc -n microsweeper-ex expose svc el-minesweeper-el
+    ```
 
-!!! note
-    Since this is public cluster, we can simply use the default ingress controller. For a private cluster, you can use Azure Front Door to expose the endpoint.
+    !!! note
+        Since this is public cluster, we can simply use the default ingress controller. For a private cluster, you can use Azure Front Door to expose the endpoint.
 
-To get the URL of the Event Listener Route that we just created, run the following command:
+1. To get the URL of the Event Listener Route that we just created, run the following command:
 
-```bash
-oc -n microsweeper-ex get route el-minesweeper-el -o jsonpath='{.spec.host}'
-```
+    ```bash
+    oc -n microsweeper-ex get route el-minesweeper-el \
+      -o jsonpath="http://{.spec.host}{'\n'}"
+    ```
 
-For example, your output will look something similar to:
+    For example, your output will look something similar to:
 
-```bash
-el-minesweeper-el-microsweeper-ex.apps.ce7l3kf6.eastus.aroapp.io
-```
-
-In that case, you'd enter `http://el-minesweeper-el-microsweeper-ex.apps.ce7l3kf6.eastus.aroapp.io` in your browser. 
+    ```bash
+    el-minesweeper-el-microsweeper-ex.apps.ce7l3kf6.eastus.aroapp.io
+    ```
 
 The last step we need to do, is configure GitHub to call this event listener URL when events occur.
 
@@ -418,9 +444,9 @@ On the next screen, enter the following settings:
 
 - **PayloadURL** - enter the URL you got above (for example: `http://el-minesweeper-el-microsweeper-ex.apps.ce7l3kf6.eastus.aroapp.io`)
 - **ContentType** - select application/json
-- **Secret** - this your GitHub Personal Access Token
+- **Secret** - this your GitHub Personal Access Token (`echo $GH_PAT`)
 
-Where does this secret value come from?
+Where does the secret value come from?
 Refer to the `~/gitops/aro-workshop-app/pipeline/tasks/event-listener/3-web-trigger.yaml` file.
 
 You will see the following snippet that contains the secret to access git.

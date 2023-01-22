@@ -4,8 +4,6 @@ It's time for us to put our cluster to work and deploy a workload. We're going t
 
 ## Create Azure Database for PostgreSQL instance
 
-To deploy our PostgreSQL database, we'll use the Azure Service Operator (ASO).
-
 1. First, let's create a namespace (also known as a project in OpenShift). To do so, run the following command:
 
     ```bash
@@ -167,7 +165,7 @@ nslookup $(oc -n microsweeper-ex get route microsweeper-appservice -o jsonpath='
 
 The output of the command will look similar to this:
 
-```bash
+```{.txt .no-copy}
 Server:         168.63.129.16
 Address:        168.63.129.16#53
 

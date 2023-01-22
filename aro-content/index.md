@@ -1,4 +1,4 @@
-![home-page-image](./assets/images/home-page.png){ align=center }
+<!-- ![home-page-image](./assets/images/home-page.png){ align=center } -->
 
 ## Overview
 Join Red Hat® and Microsoft for a hands-on workshop with Azure Red Hat OpenShift® (ARO). During the event, Red Hat Cloud Services experts will guide you through the ARO architecture, and will answer your questions. Also, it’s your choice as you may follow the Operations or Developer track to get a feel for how ARO will work for your team and workloads.

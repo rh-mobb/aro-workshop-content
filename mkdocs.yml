@@ -15,6 +15,7 @@ nav:
   - Create ARO Cluster: 100-setup/2-cluster-creation.md
   - Access Your Cluster: 100-setup/3-access-cluster.md
   - Day Two ARO Operations:
+    - Configuring OAuth2 authentication: 200-ops/idp/aad.md
     - Managing Cluster Upgrades: 200-ops/day2/upgrades.md
     - Managing Worker Nodes: 200-ops/day2/scaling-nodes.md
     - Cluster Autoscaling: 200-ops/day2/autoscaling.md
@@ -28,7 +29,9 @@ nav:
   - Deploy and Expose an App:
     - Deploy the App: 300-app/deploy.md
     # - Expose the App with Front Door: 300-app/afd.md
-    - Automate Deploying the App: 300-app/cicd.md
+    - Using OpenShift GitOps: 300-app/gitops.md
+    - Restrict Network Access: 300-app/networkpolicy.md
+    - Automate Deploying the App with Tekton: 300-app/cicd.md
   - Make an App Resilient: 300-app/resilience.md
   # - Azure Arc:
   #   - Connect Azure Arc with ARO: 400-cluster-mgmt/arc/integration.md
@@ -41,7 +44,8 @@ nav:
     - Deploy Workloads: 500-service-mesh/deploy-workload.md
     - Deploy Weighted Load Balancing: 500-service-mesh/weighted-routing.md
     - Access Kiali Dashboard: 500-service-mesh/kiali.md
-
+  - Conclusion:
+    - Clean Up: finish.md
 
 # Theme Configuration
 theme:

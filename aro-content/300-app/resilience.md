@@ -13,34 +13,17 @@ In this section of the workshop, we will deploy an application to an ARO cluster
       --requests=cpu=50m,memory=100Mi
     ```
 
-1. While the application is being built from source, you can watch the deployment object to see when its finished.
+1. While the application is being built from source, you can watch the rollout status of the deployment object to see when its finished.
 
     ```bash
-    watch ~/bin/oc -n resilience-ex get deployment frontend-js
+    oc rollout status deploy/frontend-js
     ```
-
-    Initially, your output will look like:
-
-    ```bash
-    NAME          READY   UP-TO-DATE   AVAILABLE   AGE
-    frontend-js   0/1     0            0           28s
-    ```
-
-    Eventually, your application will be ready and your output will look like this: 
-
-    ```bash
-    NAME          READY   UP-TO-DATE   AVAILABLE   AGE
-    frontend-js   1/1     0            0           59s
-    ```
-
-    !!! info
-
-        Watch will refresh the output of a command every second. Hit CTRL and c on your keyboard to exit the watch command when you're ready to move on to the next part of the workshop.
 
 1. We can now use the route to view the application in your web browser. To get the route, run the following command:
 
     ```bash
-    oc -n resilience-ex get route frontend-js -o jsonpath='{.spec.host}'
+    oc -n resilience-ex get route frontend-js \
+      -o jsonpath='http://{.spec.host}{"\n"}'
     ```
 
     Then visit the URL presented in a new tab in your web browser (using HTTP). For example, your output will look something similar to:
@@ -49,22 +32,24 @@ In this section of the workshop, we will deploy an application to an ARO cluster
     frontend-js-resilience-ex.apps.ce7l3kf6.eastus.aroapp.io
     ```
 
-    In that case, you'd visit `http://frontend-js-resilience-ex.apps.ce7l3kf6.eastus.aroapp.io` in your browser. 
+    In that case, you'd visit `http://frontend-js-resilience-ex.apps.ce7l3kf6.eastus.aroapp.io` in your browser.
 
 1. Initially, this application is deployed with only one pod. In the event a worker node goes down or the pod crashes, there will be an outage of the application. To prevent that, let's scale the number of instances of our applications up to three. To do so, run the following command:
 
     ```bash
-    oc -n resilience-ex scale deployment frontend-js --replicas=3
+    oc -n resilience-ex scale deployment \
+      frontend-js --replicas=3
     ```
 
-1. Next, check to see that the application has scaled. To do so, run the following command to see the pods. 
+1. Next, check to see that the application has scaled. To do so, run the following command to see the pods.
 Then check that it has scaled
 
     ```bash
-    oc -n resilience-ex get pods -l deployment=frontend-js
+    oc -n resilience-ex get pods \
+      -l deployment=frontend-js
     ```
 
-    Your output should look similar to this: 
+    Your output should look similar to this:
 
     ```bash
     NAME                           READY   STATUS      RESTARTS   AGE
@@ -116,7 +101,7 @@ A PodDisruptionBudget object’s configuration consists of the following key par
 
     Your output should match this:
 
-    ```bash
+    ```{.text .no-copy}
     NAME              MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE
     frontend-js-pdb   1               N/A               2                     7m39s
     ```
@@ -164,7 +149,7 @@ In this exercise we will scale the `frontend-js` application based on CPU utiliz
     EOF
     ```
 
-1. Next, check the status of the HPA. To do so, run the following command: 
+1. Next, check the status of the HPA. To do so, run the following command:
 
     ```bash
     oc -n resilience-ex get horizontalpodautoscaler/frontend-js-cpu
@@ -172,12 +157,12 @@ In this exercise we will scale the `frontend-js` application based on CPU utiliz
 
     Your output should match the following:
 
-    ```bash
+    ```{.txt .no-copy}
     NAME              REFERENCE                TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
     frontend-js-cpu   Deployment/frontend-js   0%/50%   2         4         3          45s
     ```
 
-1. Next, let's generate some load against the `frontend-js` application. To do so, run the following command: 
+1. Next, let's generate some load against the `frontend-js` application. To do so, run the following command:
 
     ```
     FRONTEND_URL=http://$(oc -n resilience-ex get route frontend-js -o jsonpath='{.spec.host}')
@@ -198,18 +183,21 @@ In this exercise we will scale the `frontend-js` application based on CPU utiliz
     frontend-js-cpu   Deployment/frontend-js   113%/50%   2         4         4          3m13s
     ```
 
-    This means you are now running 4 replicas, instead of the original three that we started with. 
+    This means you are now running 4 replicas, instead of the original three that we started with.
 
 
 1. Once you've killed the seige command, the traffic going to `frontend-js` service will cool down and after a 60 second cool down period, your application's replica count will drop back down to two. To demonstrate this, run the following command:
 
     ```bash
-    oc -n resilience-ex get horizontalpodautoscaler/frontend-js-cpu
+    oc -n resilience-ex get horizontalpodautoscaler/frontend-js-cpu --watch
     ```
 
     After a minute or two, your output should be similar to this:
 
     ```bash
     NAME              REFERENCE                TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
-    frontend-js-cpu   Deployment/frontend-js   0%/50%   2         4         2          7m26s
+    frontend-js-cpu   Deployment/frontend-js   10%/50%   2         4         4          6m55s
+    frontend-js-cpu   Deployment/frontend-js   8%/50%    2         4         4          7m1s
+    frontend-js-cpu   Deployment/frontend-js   8%/50%    2         4         3          7m16s
+    frontend-js-cpu   Deployment/frontend-js   0%/50%    2         4         2          7m31s
     ```
