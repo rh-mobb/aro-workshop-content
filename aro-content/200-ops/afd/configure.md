@@ -75,7 +75,7 @@
     echo "Front Door ID: ${AFD_ID}"
     ```
 
-1. Next, we need to create an Azure Front Door endpoint for the ARO internal load balancer. This will allow Azure Front Door to send traffic directly to the ARO Load Balancer. To do so, run the following command: 
+1. Next, we need to create an Azure Front Door endpoint for the ARO internal load balancer. This will allow Azure Front Door to send traffic directly to the ARO Load Balancer. To do so, run the following command:
 
     ```bash
     az afd endpoint create \

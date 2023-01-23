@@ -1,15 +1,16 @@
 ## Introduction
 
 The cluster autoscaler adjusts the size of an Azure Red Hat OpenShift (ARO) cluster to meet the resource needs of the cluster. The cluster autoscaler increases the size of the cluster when there are pods that fail to schedule on any of the current worker nodes due to insufficient resources or when another node is necessary to meet deployment needs. The cluster autoscaler does not increase the cluster resources beyond the limits that you specify. To learn more about cluster autoscaling, visit the [Red Hat documentation for cluster autoscaling](https://docs.openshift.com/container-platform/latest/machine_management/applying-autoscaling.html){:target="_blank"}.
- 	
+
 ## Create a Machine Autoscaler
 
-Before we can configure cluster autoscaling, we first need to configure machine autoscaler to scale each of our MachineSets. While this can be accomplished via the OpenShift Web Console or OpenShift CLI tools, we'll be using the CLI for this part of the workshop. 
+Before we can configure cluster autoscaling, we first need to configure machine autoscaler to scale each of our MachineSets. While this can be accomplished via the OpenShift Web Console or OpenShift CLI tools, we'll be using the CLI for this part of the workshop.
 
 1. Just like the last section, let's pick a MachineSet to add a machine autoscaler. To do so, run the following command:
 
     ```bash
-    MACHINESET=$(oc -n openshift-machine-api get machinesets -o name | cut -d / -f2 | head -1)
+    MACHINESET=$(oc -n openshift-machine-api get machinesets -o name \
+      | cut -d / -f2 | head -1)
     echo ${MACHINESET}
     ```
 
@@ -34,18 +35,19 @@ Before we can configure cluster autoscaling, we first need to configure machine 
 
     The output of the command will look something like:
 
-    ```bash
+    ```{.text .no-copy}
     machineautoscaler.autoscaling.openshift.io/user1-cluster-8kvh4-worker-eastus1 created
     ```
 
 1. Next, let's check to see that our machine autoscaler has been created. To do so, run the following command:
+
     ```bash
     oc -n openshift-machine-api get machineautoscaler
     ```
 
     You should see output similar to:
 
-    ```bash
+    ```{.text .no-copy}
     NAME                                 REF KIND     REF NAME                             MIN   MAX   AGE
     user1-cluster-8kvh4-worker-eastus1   MachineSet   user1-cluster-8kvh4-worker-eastus1   1     3     3m11s
     ```
@@ -79,11 +81,24 @@ Before we can configure cluster autoscaling, we first need to configure machine 
     EOF
     ```
 
+1. Next, let's check to see that our cluster autoscaler has been created. To do so, run the following command:
+
+    ```bash
+    oc -n openshift-machine-api get clusterautoscaler
+    ```
+
+    You should see output similar to:
+
+    ```{.text .no-copy}
+    NAME      AGE
+    default   3m
+    ```
+
     For a detailed explanation of each parameter, see the [Red Hat documentation on the cluster autoscaler](https://docs.openshift.com/container-platform/latest/machine_management/applying-autoscaling.html#cluster-autoscaler-cr_applying-autoscaling){:target="_blank"}.
 
 ## Test the Cluster Autoscaler
 
-Now let's test the cluster autoscaler and see it in action. To do so, we'll deploy a job with a load that this cluster cannot handle. This should force the cluster to scale to handle the load. 
+Now let's test the cluster autoscaler and see it in action. To do so, we'll deploy a job with a load that this cluster cannot handle. This should force the cluster to scale to handle the load.
 
 1. First, let's create a namespace (also known as a project in OpenShift). To do so, run the following command:
 
@@ -93,16 +108,28 @@ Now let's test the cluster autoscaler and see it in action. To do so, we'll depl
 
 1. Next, let's deploy our job that will exhaust the cluster's resources and cause it to scale more worker nodes. To do so, run the following command:
 
-    ```bash
-    oc create -f https://ws.mobb.cloud/assets/job-maxscale.yaml
-    ```
-
-    !!! info "Wondering what we just created?"
-
-        This is the job resource definition that will exhaust the cluster's resources and cause it to scale more worker nodes.
-
-    ``` title="job-maxscale.yaml"
-    --8<-- "job-maxscale.yaml"
+    ```yaml
+    cat << EOF | oc create -f -
+    apiVersion: batch/v1
+    kind: Job
+    metadata:
+      generateName: maxscale
+    spec:
+      template:
+        spec:
+          containers:
+          - name: work
+            image: busybox
+            command: ["sleep",  "300"]
+            resources:
+              requests:
+                memory: 500Mi
+                cpu: 500m
+          restartPolicy: Never
+      backoffLimit: 4
+      completions: 50
+      parallelism: 50
+    EOF
     ```
 
 1. After a few seconds, run the following to see what pods have been created.
@@ -113,28 +140,19 @@ Now let's test the cluster autoscaler and see it in action. To do so, we'll depl
 
     Your output will look something like this:
 
-    ```bash
+    ```{.text .no-copy}
     NAME                     READY   STATUS    RESTARTS   AGE
     maxscale-2bdjf   0/1     Pending   0          2s
     maxscale-2tvd6   0/1     Pending   0          2s
     maxscale-48rt7   0/1     Pending   0          2s
     maxscale-4nmch   0/1     Pending   0          2s
     maxscale-4zpnf   0/1     Pending   0          2s
-    maxscale-6gr5l   0/1     Pending   0          2s
-    maxscale-6kj94   0/1     Pending   0          2s
-    maxscale-7hjlc   0/1     Pending   0          2s
-    maxscale-9gfhl   0/1     Pending   0          2s
-    maxscale-9mpjn   0/1     Pending   0          2s
-    maxscale-9pqh2   0/1     Pending   0          2s
-    maxscale-bdbd4   0/1     Pending   0          2s
-    maxscale-bjnx8   0/1     Pending   0          2s
-    maxscale-brk6b   0/1     Pending   0          2s
     [...]
     ```
 
-    Notice that we see a lot of pods in a pending state.  This should trigger the cluster autoscaler to create more machines using the MachineAutoscaler we created. 
-    
-    
+    Notice that we see a lot of pods in a pending state.  This should trigger the cluster autoscaler to create more machines using the MachineAutoscaler we created.
+
+
 1. Let's check to see if our MachineSet automatically scaled. To do so, run the following command:
 
     ```bash
@@ -143,15 +161,15 @@ Now let's test the cluster autoscaler and see it in action. To do so, we'll depl
 
     You should see output similar to:
 
-    ```bash
+    ```{.text .no-copy}
     NAME                                 DESIRED   CURRENT   READY   AVAILABLE   AGE
     user1-cluster-8kvh4-worker-eastus1   3         3         3       3           6h47m
     user1-cluster-8kvh4-worker-eastus2   1         1         1       1           6h47m
     user1-cluster-8kvh4-worker-eastus3   1         1         1       1           6h47m
     ```
 
-    This shows that the cluster autoscaler has already scaled the MachineSet up to 3. 
-    
+    This shows that the cluster autoscaler is working on scaling the MachineSet up to 3.
+
 1. Now let's watch the cluster autoscaler create and delete machines as necessary. To do so, run the following command:
 
     ```bash
@@ -161,7 +179,7 @@ Now let's test the cluster autoscaler and see it in action. To do so, we'll depl
 
     Your output will look like this:
 
-    ```bash
+    ```{.text .no-copy}
     NAME                                       PHASE     TYPE              REGION   ZONE   AGE
     user1-cluster-8kvh4-worker-eastus1-h76h5   Running   Standard_D4s_v3   eastus   1      6m52s
     user1-cluster-8kvh4-worker-eastus1-hd5cw   Running   Standard_D4s_v3   eastus   1      121m
@@ -175,4 +193,4 @@ Now let's test the cluster autoscaler and see it in action. To do so, we'll depl
         Watch will refresh the output of a command every second. Hit CTRL and c on your keyboard to exit the watch command when you're ready to move on to the next part of the workshop.
 
 
-Congratulations! You've successfully demonstrated cluster autoscaling. 
+Congratulations! You've successfully demonstrated cluster autoscaling.

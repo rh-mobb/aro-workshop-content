@@ -15,7 +15,7 @@ Many of these changes are done using MachineSets. MachineSets ensure that a spec
 
     By default, ARO clusters have three MachineSets, one for each availability zone. The output will look something like this:
 
-    ```bash
+    ```{.text .no-copy}
     NAME                                 DESIRED   CURRENT   READY   AVAILABLE   AGE
     user1-cluster-8kvh4-worker-eastus1   1         1         1       1           4h36m
     user1-cluster-8kvh4-worker-eastus2   1         1         1       1           4h36m
@@ -30,7 +30,7 @@ Many of these changes are done using MachineSets. MachineSets ensure that a spec
 
     For this workshop, we've deployed your ARO cluster with six total machines (three workers machines and three control plane machines), one in each availability zone. The output will look something like this:
 
-    ```bash
+    ```{.text .no-copy}
     NAME                                       PHASE     TYPE              REGION   ZONE   AGE
     user1-cluster-8kvh4-master-0               Running   Standard_D8s_v3   eastus   1      4h39m
     user1-cluster-8kvh4-master-1               Running   Standard_D8s_v3   eastus   2      4h39m
@@ -49,7 +49,7 @@ Many of these changes are done using MachineSets. MachineSets ensure that a spec
 
     The output of the command should look something like this:
 
-    ```bash
+    ```{.text .no-copy}
     machineset.machine.openshift.io/user1-cluster-8kvh4-worker-eastus1
     ```
 
@@ -67,7 +67,7 @@ Many of these changes are done using MachineSets. MachineSets ensure that a spec
 
     The output should look something like this:
 
-    ```bash
+    ```{.text .no-copy}
     NAME                                 DESIRED   CURRENT   READY   AVAILABLE   AGE
     user1-cluster-8kvh4-worker-eastus1   2         2         1       1           4h50m
     user1-cluster-8kvh4-worker-eastus2   1         1         1       1           4h50m
@@ -84,7 +84,7 @@ Many of these changes are done using MachineSets. MachineSets ensure that a spec
 
     The output should look something like this:
 
-    ```bash
+    ```{.text .no-copy}
     NAME                                       PHASE         TYPE              REGION   ZONE   AGE
     user1-cluster-8kvh4-master-0               Running       Standard_D8s_v3   eastus   1      4h58m
     user1-cluster-8kvh4-master-1               Running       Standard_D8s_v3   eastus   2      4h58m
