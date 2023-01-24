@@ -74,6 +74,8 @@
     --id $APPID
     ```
 
+    !!! warning "If you see the output `Invoking az ad app permission grant --id xxxxxxx --api 00000003-0000-0000-c000-000000000000 is needed to make the change effective` you can safely ignore it."
+
 1. Fetch your tenant ID
 
     ```bash
