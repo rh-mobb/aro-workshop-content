@@ -126,9 +126,11 @@
     EOF
     ```
 
-1. Logout from your OCP Console and you should see a new option `AAD` select that, and log in using your workshop Azure credentials.
+    !!! warning "You can Safely ignore the warning after this command runs"
 
-1. Give Cluster Admin to your AAD user (you need to have logged in above to be known to OpenShift RBAC)
+1. Logout from your OCP Console and browse back to the Console URL (`echo $OCP_CONSOLE` if you have forgotten it) and you should see a new option `AAD` select that, and log in using your workshop Azure credentials.
+
+1. Give Cluster Admin to your AAD user
 
 ```bash
 oc adm policy add-cluster-role-to-user cluster-admin \
