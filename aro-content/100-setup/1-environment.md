@@ -42,12 +42,12 @@ Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for
 
     | Option     | Value                               | Example |
     | ----------- | ------------------------------------ | -------- |
-    | Subscription       | **Red Hat Cloud Services - Microsoft Azure Sponsorship**  | N/A |
+    | Subscription       | **Red Hat Cloud Services Workshops**  | N/A |
     | Cloud Shell region       | **East US**                 | N/A |
     | Show VNET isolation settings    | *Leave Unchecked* | N/A |
     | Resource group       | **user#_mobbws-rg** (Select *Use Existing* Button) | **user2_mobbws-rg** |
     | Storage account       | **user#mobbws** (Select *Use Existing* Button) | **user2mobbws** |
-    | File share       | **acs** (Select *Use Existing* Button) | acs |
+    | File share       | **acs** (Select *Use Existing* Button) | **acs** |
 
 1. Once completed, click on the *Create Storage* button to start your Azure Cloud Shell session.
 
@@ -55,7 +55,7 @@ Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for
 
 1. When your shell is ready and you are at the bash prompt, run the following command to prepare your Cloud Shell environment for the remainder of the workshop:
 
-    ```
+    ```bash
     ./clouddrive/setup.sh
     source ~/.workshoprc
     ```
