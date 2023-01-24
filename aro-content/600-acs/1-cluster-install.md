@@ -46,7 +46,7 @@ The 'Cluster Type' should be set to 'OpenShift 4.x' for purposes of the workshop
 
 1. When those values have been configured, click the 'Next' button at the top of the page. RHACS will then present a page that gives a couple of options for actually configuring the target cluster with the RHACS services: Raw YAML or a Helm values file. 
 
-![ACS-Cluster-Add-Step-2](acs-cluster-step2.png)
+![ACS-Cluster-Add-Step-2](acs-cluster-step-2.png)
 
 Download the Helm values file locally, and then use the 'Upload Files' button in Cloud Shell so it's available there. 
 
