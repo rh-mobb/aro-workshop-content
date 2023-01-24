@@ -87,6 +87,7 @@ Now that we've successfully labeled our nodes, let's deploy a workload to demons
                   protocol: TCP
                 - containerPort: 8888
                   protocol: TCP
+    EOF
     ```
 
 1. Now, let's validate that the application has been deployed to one of the labeled nodes. To do so, run the following command:
