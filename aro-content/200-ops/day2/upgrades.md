@@ -71,7 +71,7 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
       capacityReservation: true
       desired:
         channel: "stable-4.10"
-        version: "4.10.39"
+        version: "4.10.47"
     EOF
     ```
 
@@ -88,7 +88,7 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
 
     ```{.text .no-copy}
     NAME                     DESIRED_VERSION   PHASE     ...
-    managed-upgrade-config   4.10.39           Pending
+    managed-upgrade-config   4.10.47           Pending
     ```
 
     Congratulations! You've successfully scheduled an upgrade of your cluster for tomorrow at this time. While the workshop environment will be deleted before then, you now have the experience to schedule upgrades in the future.
