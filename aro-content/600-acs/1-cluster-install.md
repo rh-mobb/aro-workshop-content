@@ -44,15 +44,15 @@ The admin interface looks like this: ![ACS-Console](acs-cluster-home.png)
 
 The 'Cluster Type' should be set to 'OpenShift 4.x' for purposes of the workshop, though RHACS will also managed OCP 3.x and plain Kubernetes installs as well.
 
-1. When those values have been configured, click the 'Next' button at the top of the page. RHACS will then present a page that gives a couple of options for actually configuring the target cluster with the RHACS services: Raw YAML or a Helm values file. 
+1. When those values have been configured, click the 'Next' button at the top of the page. RHACS will then present a page that gives a couple of options for actually configuring the target cluster with the RHACS services: Raw YAML or a Helm values file.
 
-![ACS-Cluster-Add-Step-2](acs-cluster-step-2.png)
+    ![ACS-Cluster-Add-Step-2](acs-cluster-step-2.png)
 
-Download the Helm values file locally, and then use the 'Upload Files' button in Cloud Shell so it's available there. 
+1. Download the Helm values file locally, and then use the 'Upload Files' button in Cloud Shell so it's available there.
 
-![ACS-File-Upload-Button](acs-upload.png)
+    ![ACS-File-Upload-Button](acs-upload.png)
 
-When the file is uploaded, run the following command to launch the Helm chart:
+1. When the file is uploaded, run the following command to launch the Helm chart:
 
     ```bash
     helm install -n stackrox --create-namespace stackrox-secured-cluster-services rhacs/secured-cluster-services -f <downloaded_helm_values_file> -f clouddrive/adobe-workshop-cluster-init-bundle.yaml
