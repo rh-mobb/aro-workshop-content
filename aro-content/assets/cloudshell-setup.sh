@@ -46,6 +46,8 @@ if ! which siege > /dev/null; then
   siege.config > /dev/null
 fi
 
+AZ_USER=$(az ad signed-in-user show --query "userPrincipalName" -o tsv | cut -d @ -f1)
+
 echo "Configuring Environment specific variables"
 cat <<EOF > ~/.workshoprc
 #!/bin/bash
