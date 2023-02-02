@@ -6,3 +6,6 @@ virtualenv:
 
 preview:
 	./virtualenv/bin/mkdocs serve
+
+publish:
+	./virtualenv/bin/mkdocs gh-deploy -m "Manual update of gh-pages" -b gh-pages --force -v

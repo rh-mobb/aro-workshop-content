@@ -138,3 +138,5 @@ oc adm policy add-cluster-role-to-user cluster-admin \
 ```
 
 1. Log out from Console and log back in as your Azure AD user. You should now have cluster admin rights.
+
+    !!! warning "If you do not see a new **AAD** login option you should close the tab and open a new browser pointing at your OCP console `echo $OCP_CONSOLE`"

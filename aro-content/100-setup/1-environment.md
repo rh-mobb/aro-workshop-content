@@ -43,10 +43,10 @@ Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for
     | Option     | Value                               | Example |
     | ----------- | ------------------------------------ | -------- |
     | Subscription       | **Red Hat Cloud Services Workshops**  | N/A |
-    | Cloud Shell region       | **East US**                 | N/A |
+    | Cloud Shell region       | **Switzerland North**                 | N/A |
     | Show VNET isolation settings    | *Leave Unchecked* | N/A |
     | Resource group       | **user#_mobbws-rg** (Select *Use Existing* Button) | **user2_mobbws-rg** |
-    | Storage account       | **user#mobbws** (Select *Use Existing* Button) | **user2mobbws** |
+    | Storage account       | **azuser#mobbws** (Select *Use Existing* Button) | **user2mobbws** |
     | File share       | **acs** (Select *Use Existing* Button) | **acs** |
 
 1. Once completed, click on the *Create Storage* button to start your Azure Cloud Shell session.
