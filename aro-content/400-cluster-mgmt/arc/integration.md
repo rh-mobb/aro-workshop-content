@@ -14,11 +14,18 @@ Azure Arc for OpenShift supports the following use cases for connected clusters:
 
 ## Connect Azure Arc with your ARO cluster
 
+1. Requisites: Register the following providers:
+     ```bash
+    az provider register -n 'Microsoft.Kubernetes'
+    az provider register -n 'Microsoft.KubernetesConfiguration'
+    az provider register -n 'Microsoft.ExtendedLocation'
+    ```
+
 1. First, we need to connect our ARO cluster to Azure Arc. To do so, run the following command. 
 
     ```bash
     az connectedk8s connect --resource-group "${AZ_RG}" --name "${AZ_ARO}" \
-      --distribution openshift --infrastructure auto
+      --distribution openshift --infrastructure azure
     ```
 
     This command takes about 5 minutes to complete. Once completed, your output will look something like this: 
