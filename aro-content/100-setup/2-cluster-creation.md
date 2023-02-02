@@ -27,17 +27,16 @@ The next step is to get a Red Hat pull secret for your ARO cluster.  This pull s
 
 ### Networking
 
-Before we can create an ARO cluster, we need to setup the virtual network that the cluster will use. Due to accout access restrictions these have been created for you.
+Before we can create an ARO cluster, we need to setup the virtual network that the cluster will use. 
 
 0. Resource group and VNET creation
+
     ```bash
     export AZ_USER=$(az ad signed-in-user show --query "userPrincipalName" -o tsv | cut -d @ -f1)
 
     AZR_RESOURCE_LOCATION=eastus
     
-    AZ_RG=${USER}-openshift
-    
-    AZR_RESOURCE_GROUP=${USER}-openshift
+    AZ_RG=${USER}-rg
     
     AZ_ARO=${USER}-cluster
     
@@ -52,32 +51,32 @@ Before we can create an ARO cluster, we need to setup the virtual network that t
 
     echo "----> Create virtual network"
     az network vnet create \
-    --address-prefixes $AZR_ARO_VNET_PREFIXES \
-    --name "${AZ_USER}-vnet" \
-    --resource-group $AZ_RG
+      --address-prefixes $AZR_ARO_VNET_PREFIXES \
+      --name "${AZ_USER}-vnet" \
+      --resource-group $AZ_RG
 
-   echo "----> Create control plane subnet"
-   az network vnet subnet create \
-   --resource-group $AZ_RG \
-   --vnet-name "${AZ_USER}-vnet" \
-   --name "${AZ_USER}-cp-subnet" \
-   --address-prefixes $AZR_ARO_SUBNET_MASTER_PREFIXES \
-   --service-endpoints Microsoft.ContainerRegistry
+    echo "----> Create control plane subnet"
+    az network vnet subnet create \
+      --resource-group $AZ_RG \
+      --vnet-name "${AZ_USER}-vnet" \
+      --name "${AZ_USER}-cp-subnet" \
+      --address-prefixes $AZR_ARO_SUBNET_MASTER_PREFIXES \
+      --service-endpoints Microsoft.ContainerRegistry
 
-   echo "----> Create machine subnet subnet"
-   az network vnet subnet create \
-   --resource-group $AZ_RG \
-   --vnet-name "${AZ_USER}-vnet" \
-   --name "${AZ_USER}-machine-subnet" \
-   --address-prefixes $AZR_ARO_SUBNET_WORKER_PREFIXES \
-   --service-endpoints Microsoft.ContainerRegistry
+    echo "----> Create machine subnet subnet"
+    az network vnet subnet create \
+      --resource-group $AZ_RG \
+      --vnet-name "${AZ_USER}-vnet" \
+      --name "${AZ_USER}-machine-subnet" \
+      --address-prefixes $AZR_ARO_SUBNET_WORKER_PREFIXES \
+      --service-endpoints Microsoft.ContainerRegistry
 
-   echo "----> Update control plane subnet to disable private link service network policies"
-   az network vnet subnet update \
-   --name "${AZ_USER}-cp-subnet" \
-   --resource-group $AZ_RG \
-   --vnet-name "${AZ_USER}-vnet" \
-   --disable-private-link-service-network-policies true
+    echo "----> Update control plane subnet to disable private   link service network policies"
+    az network vnet subnet update \
+      --name "${AZ_USER}-cp-subnet" \
+      --resource-group $AZ_RG \
+      --vnet-name "${AZ_USER}-vnet" \
+      --disable-private-link-service-network-policies true
 
     ```
 

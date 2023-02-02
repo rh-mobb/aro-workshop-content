@@ -2,7 +2,7 @@
 
 Your workshop environment consists of several components which have been pre-configured and are ready to use. This includes a [Microsoft Azure](https://azure.microsoft.com/en-us/){:target="_blank"} account, an [Azure Red Hat OpenShift](https://azure.microsoft.com/en-us/products/openshift/){:target="_blank"} cluster, and many other supporting resources.
 
-To access your working environment, you'll need to log into the Microsoft Azure portal by [clicking here](https://portal.azure.com){:target="_blank"}.  Use your provided username with `@rhcsbb.onmicrosoft.com`
+To access your working environment, you'll need to log into the Microsoft Azure portal by [clicking here](https://portal.azure.com){:target="_blank"}.  Use your provided username.
 
 When prompted, you'll log in with the credentials provided by the workshop team.
 
@@ -10,13 +10,6 @@ When prompted, you'll log in with the credentials provided by the workshop team.
 
     While these commands can be run in any Microsoft Azure account, we've completed many of the prerequisites for you to ensure they work in the workshop environment. As such, we recommend ensuring that you are logged out of any other Microsoft Azure sessions.
 
-### Pre-created Resources
-
-- Resource Group
-<!--- vNet (with two subnets)
-- Azure Red Hat OpenShift Cluster -->
-- Azure AD Service Principal
-- Azure DNS Zone
 
 ### Access Azure Cloud Shell
 
@@ -56,7 +49,10 @@ Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for
 1. When your shell is ready and you are at the bash prompt, run the following command to prepare your Cloud Shell environment for the remainder of the workshop:
 
     ```bash
-    ./clouddrive/setup.sh
+    curl https://raw.githubusercontent.com/danielpenagos/aro-hackathon-content/main/aro-content/assets/cloudshell-setup.sh > setup.sh
+    
+    ./setup.sh
+    
     source ~/.workshoprc
     ```
 
