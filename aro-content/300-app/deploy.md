@@ -120,6 +120,28 @@ Now that we've got a PostgreSQL instance up and running, let's build and deploy 
     quarkus build --no-tests
     ```
 
+1. We want to see custom metrics from the Quarkus app (they're exposed by the Quarkus micrometer plugin) so we can configure a Prometheus `ServiceMonitor` resource to watch for the applications label.
+
+    ```bash
+    cat << EOF | oc apply -f -
+    apiVersion: monitoring.coreos.com/v1
+    kind: ServiceMonitor
+    metadata:
+      labels:
+        k8s-app: microsweeper-monitor
+      name: microsweeper-monitor
+    spec:
+      endpoints:
+      - interval: 30s
+        targetPort: 8080
+        path: /q/metrics
+        scheme: http
+      selector:
+        matchLabels:
+          app.kubernetes.io/name: microsweeper-appservice
+    EOF
+    ```
+
 ## Review
 
 Let's take a look at what this command did, along with everything that was created in your cluster. Return to your tab with the OpenShift Web Console. If you need to reauthenticate, follow the steps in the [Access Your Cluster](../setup/3-access-cluster/) section.
@@ -181,6 +203,15 @@ You can also get the the URL for your application using the command line:
 ```bash
 oc -n microsweeper-ex get route microsweeper-appservice -o jsonpath='{.spec.host}'
 ```
+
+### View custom metrics for the App
+
+Switch the OpenShift Web Console to the Developer view, select the project `microsweeper-ex` and go to **Observe > Metrics** and type `process_uptime_seconds` into custom metrics. Switch the timeframe to `5min`.
+
+!!! info "While you're here, you might also want to look at the Dashboard tab to see the Project's CPU/Memory usage."
+
+![Microsweeper custom metrics](./images/microsweeper-metrics.png)
+
 
 ### Application IP
 Let's take a quick look at what IP the application resolves to. Back in your Cloud Shell environment, run the following command:

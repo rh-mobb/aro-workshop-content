@@ -20,6 +20,7 @@ nav:
     - Managing Worker Nodes: 200-ops/day2/scaling-nodes.md
     - Cluster Autoscaling: 200-ops/day2/autoscaling.md
     - Labeling Nodes: 200-ops/day2/labels.md
+    - Forward Metrics and Logs to Azure Files: 200-ops/day2/observability.md
   # - Azure Service Operator (ASO):
   #   - Deploy the Azure Service Operator: 200-ops/aso/deploy.md
   #   - Deploy an Azure Service using ASO: 200-ops/aso/app.md
