@@ -188,6 +188,8 @@ Now let's test the cluster autoscaler and see it in action. To do so, we'll depl
     user1-cluster-8kvh4-worker-eastus3-kggpz   Running   Standard_D4s_v3   eastus   3      6h47m
     ```
 
+1. Finally, drop the job you created and watch the cluster's behavior while deleting machines.
+
     !!! info
 
         Watch will refresh the output of a command every second. Hit CTRL and c on your keyboard to exit the watch command when you're ready to move on to the next part of the workshop.
