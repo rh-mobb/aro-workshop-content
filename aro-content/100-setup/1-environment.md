@@ -49,7 +49,7 @@ Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for
     | Storage account       | **azuser#mobbws** (Select *Use Existing* Button) | **user2mobbws** |
     | File share       | **acs** (Select *Use Existing* Button) | **acs** |
 
-1. Once completed, click on the *Create Storage* button to start your Azure Cloud Shell session.
+1. Once completed, click on the *Attach Storage* button to start your Azure Cloud Shell session.
 
     ![Cloud Shell Create Storage](../assets/images/cloud-shell-create-storage.png){ align=center }
 
