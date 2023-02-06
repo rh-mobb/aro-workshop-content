@@ -75,7 +75,7 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
     EOF
     ```
 
-    This manifest will schedule an upgrade to 4.10.39 for 1 day from now, allow nodes which are blocked by PodDisruptionBudgets to drain for 60 minutes before a drain is forced, and sets a capacity reservation so that workloads are not interrupted during an upgrade.
+    This manifest will schedule an upgrade to 4.10.47 for 1 day from now, allow nodes which are blocked by PodDisruptionBudgets to drain for 60 minutes before a drain is forced, and sets a capacity reservation so that workloads are not interrupted during an upgrade.
 
 1. Once created, we can see that the update is pending by running the following command:
 
