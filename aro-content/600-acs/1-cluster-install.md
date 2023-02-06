@@ -1,7 +1,9 @@
 ## Cluster ACS Registration
 
-Red Hat Advanced Cluster Security (RHACS) is a centralized service that provides bladdy bladdy
+Red Hat Advanced Cluster Security for Kubernetes (Red Hat Advanced Cluster Security or RHACS) provides the tools and capabilities to address the security needs of a cloud-native development approach on Kubernetes.
 
+The RHACS solution offers visibility into the security of your cluster, vulnerability management, and security compliance through auditing, network segmentation awareness and configuration, security risk profiling, security-related configuration management, threat detection, and incident response. In addition, RHACS grants an ability to pull the actions from that tooling deep into the application code development process through APIs.
+These security features represent the primary work any developer or administrator faces as they work across a range of environments, including multiple datacenters, private clouds, or public clouds that run Kubernetes clusters.
 
 ## Pre-requisites
 
@@ -36,7 +38,7 @@ The admin interface looks like this: ![ACS-Console](acs-cluster-home.png)
 
 1. On this screen, there's a button on the top right that says '+ New Cluster' which opens a dialog that we'll follow.
 
-1. There are only three **required** values to configure in this dialog: The 'Cluster Name', 'Central API Endpoint' (which must include a port number), and 'Cluster Type' fields need to be populated. The cluster name should match the name of the cluster that was built earlier in the workshop, and the URL will be provided by the workshop facilitators, but should look like this:
+1. There are only three **required** values to configure in this dialog: The 'Cluster Name', 'Central API Endpoint' (which must include a port number), and 'Cluster Type' fields need to be populated. The cluster name should match the name of the cluster that was built earlier in the workshop, and the Central API URL is the same as the one used to get into the ACS console, with the addition of the explicit port number at the end:
 
     ```
     https://central-rhacs-operator.apps.poc-adobe-acs.5fge.p1.openshiftapps.com:443
