@@ -69,6 +69,13 @@ If you would like to read more about OpenShift Pipelines, [see the Red Hat docum
     echo "export GH_PAT=${GH_PAT}" >> ~/.workshoprc
     ```
 
+1. Next, let's configure our Git CLI. To do so, run the following commands:
+
+    ```bash
+    git config --global user.email "${GH_USER}@github.io"
+    git config --global user.name "${GH_USER}"
+    ```
+
 1. Next, we'll create a new working directory to clone our forked GitHub repositories. To do so, run the following commands:
 
     ```bash
@@ -198,9 +205,15 @@ The next thing we need to do is import common tasks that our pipeline will use. 
 
     You should see the following output:
 
-    ```bash
+    ```{.text .no-copy}
                         acr-secret
     Mountable secrets:   acr-secret
+    ```
+
+1. We need the microsweeper service account to also be able to use the acr-secret.
+
+    ```bash
+    oc -n microsweeper-ex secrets link microsweeper-appservice acr-secret --for=pull,mount
     ```
 
 1. We also need to give the pipeline permission for certain privileged security context constraints to that it can execute builds. To grant these permissions, run the following command:
@@ -229,11 +242,10 @@ The next thing we need to do is import common tasks that our pipeline will use. 
       ~/gitops/aro-workshop-app/src/main/resources/application.properties
     ```
 
-1. Next, let's configure our Git CLI. To do so, run the following commands:
+1. We also want to add the Quarkus Kubernetes extensions like we did earlier
 
     ```bash
-    git config --global user.email "${GH_USER}@github.io"
-    git config --global user.name "${GH_USER}"
+    quarkus ext add openshift kubernetes-config
     ```
 
 1. Finally, let's commit our changes to GitHub. To do so, run the following set of commands:
@@ -379,6 +391,10 @@ At this point, we can successfully build and deploy new code by manually running
     ```bash
     echo "GITHUB_USER: ${GH_USER}"
     echo "ACR_ENDPOINT: mobbws${UNIQUE}.azurecr.io/minesweeper"
+    ```
+
+    ```bash
+    vim ~/gitops/aro-workshop-app/pipeline/tasks/event-listener/2-web-trigger-template.yaml
     ```
 
     ```{.text .no-copy}

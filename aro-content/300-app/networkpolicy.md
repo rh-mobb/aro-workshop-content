@@ -34,7 +34,7 @@ You should have two application deployed in your cluster, the `microsweeper` app
 
 1. It's common to want to not allow Pods from another Project. This can be done by a fairly simple Network Policy.
 
-!!! info "This Network Policy will restrict Ingress to the Pods in the project `microsweeper-ex` to just the OpenShift Ingress Pods and only on port 8080."
+    !!! info "This Network Policy will restrict Ingress to the Pods in the project `microsweeper-ex` to just the OpenShift Ingress Pods and only on port 8080."
 
     ```yaml
     cat << EOF | oc apply -f -

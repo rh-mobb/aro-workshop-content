@@ -25,7 +25,7 @@ The RHACS Central instance is configured to use SSO, so the Azure credentials th
 1. Log into the ACS Central Instance
 
     ```
-    https://central-rhacs-operator.apps.poc-adobe-acs.tsir.p1.openshiftapps.com:443
+    https://central-rhacs-operator.apps.poc-adobe-acs.5fge.p1.openshiftapps.com
     ```
 
 The admin interface looks like this: ![ACS-Console](acs-cluster-home.png)
@@ -39,7 +39,7 @@ The admin interface looks like this: ![ACS-Console](acs-cluster-home.png)
 1. There are only three **required** values to configure in this dialog: The 'Cluster Name', 'Central API Endpoint' (which must include a port number), and 'Cluster Type' fields need to be populated. The cluster name should match the name of the cluster that was built earlier in the workshop, and the URL will be provided by the workshop facilitators, but should look like this:
 
     ```
-    https://central-rhacs-operator.apps.poc-adobe-acs.tsir.p1.openshiftapps.com:443
+    https://central-rhacs-operator.apps.poc-adobe-acs.5fge.p1.openshiftapps.com:443
     ```
 
 The 'Cluster Type' should be set to 'OpenShift 4.x' for purposes of the workshop, though RHACS will also managed OCP 3.x and plain Kubernetes installs as well.
@@ -55,7 +55,11 @@ The 'Cluster Type' should be set to 'OpenShift 4.x' for purposes of the workshop
 1. When the file is uploaded, run the following command to launch the Helm chart:
 
     ```bash
-    helm install -n stackrox --create-namespace stackrox-secured-cluster-services rhacs/secured-cluster-services -f <downloaded_helm_values_file> -f clouddrive/adobe-workshop-cluster-init-bundle.yaml
+    helm install -n stackrox --create-namespace stackrox-secured-cluster-services \
+      rhacs/secured-cluster-services \
+      -f clouddrive/adobe-workshop-cluster-init-bundle.yaml \
+      -f <downloaded_helm_values_file>
+
     ```
 
 1. This will create a number of resources on the target cluster in relatively short order. The RHACS console may or may not immediately update indicating that the target cluster is reporting, so the first step in validation is to run an `oc` command in Cloud Shell:

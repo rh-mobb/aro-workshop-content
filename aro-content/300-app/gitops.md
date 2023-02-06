@@ -1,6 +1,6 @@
 # Deploying your Application with OpenShift GitOps
 
-1. From the OpenShift Console Administrator view click through **HOME** -> **Operators** -> **Operator Hub**, search for "openshift gitops" and hit Install.  Accept all defaults.
+1. From the OpenShift Console Administrator view click through **HOME** -> **Operators** -> **Operator Hub**, search for "Red Hat OpenShift GitOps" and hit Install.  Accept all defaults.
 
 ![](./images/gitops_operator.png)
 
@@ -117,3 +117,20 @@
 1. Check again, you should see a green box in the website like so
 
     ![](./images/bgd_green.png)
+
+1. Patch the ArgoCD application to automatically self Heal
+
+    ```bash
+    kubectl patch application bgd-app --type merge \
+      -p='{"spec":{"syncPolicy":{"automated":{"selfHeal": true}}}}'
+    ```
+
+1. Change the Application again and watch the ArgoCD web gui, you should see the change made in the cluster get quickly reverted back to match what is in git.
+
+    !!! info "The self healing may happen so fast you don't even see it happen."
+
+    ```bash
+    oc patch deploy/bgd --type='json' \
+      -p='[{"op": "replace", "path":
+      "/spec/template/spec/containers/0/env/0/value", "value":"blue"}]'
+    ```
