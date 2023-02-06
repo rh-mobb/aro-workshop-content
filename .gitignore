@@ -4,3 +4,4 @@
 aro-content/app/.DS_Store
 virtualenv/*
 site/*
+.npm

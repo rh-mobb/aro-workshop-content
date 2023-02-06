@@ -62,7 +62,7 @@ Then check that it has scaled
 
 A Pod disruption Budget (PBD) allows you to limit the disruption to your application when its pods need to be rescheduled for upgrades or routine maintenance work on ARO nodes. In essence, it lets developers define the minimum tolerable operational requirements for a deployment so that it remains stable even during a disruption.
 
-For example, frontend-js deployed as part of the last step contains three replicas distributed evenly across three nodes. We can tolerate losing two pods but not one, so we create a PDB that requires a minimum of one replica.
+For example, frontend-js deployed as part of the last step contains three replicas distributed evenly across three nodes. We can tolerate losing two pods but not three, so we create a PDB that requires a minimum of one replica.
 
 A PodDisruptionBudget object’s configuration consists of the following key parts:
 
