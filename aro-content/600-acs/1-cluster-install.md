@@ -30,11 +30,11 @@ The RHACS Central instance is configured to use SSO, so the Azure credentials th
     https://central-rhacs-operator.apps.poc-adobe-acs.5fge.p1.openshiftapps.com
     ```
 
-The admin interface looks like this: ![ACS-Console](acs-cluster-home.png)
+    The admin interface looks like this: ![ACS-Console](acs-cluster-home.png)
 
 1. On the left-hand menu, there's an item labelled 'Platform Configuration' and then there's a sub-menu item labelled 'Clusters' that needs to be selected.
 
-![ACS-Cluster-Add-Step-1](acs-cluster-step-1.png)
+    ![ACS-Cluster-Add-Step-1](acs-cluster-step-1.png)
 
 1. On this screen, there's a button on the top right that says '+ New Cluster' which opens a dialog that we'll follow.
 
@@ -44,7 +44,7 @@ The admin interface looks like this: ![ACS-Console](acs-cluster-home.png)
     https://central-rhacs-operator.apps.poc-adobe-acs.5fge.p1.openshiftapps.com:443
     ```
 
-The 'Cluster Type' should be set to 'OpenShift 4.x' for purposes of the workshop, though RHACS will also managed OCP 3.x and plain Kubernetes installs as well.
+    The 'Cluster Type' should be set to 'OpenShift 4.x' for purposes of the workshop, though RHACS will also managed OCP 3.x and plain Kubernetes installs as well.
 
 1. When those values have been configured, click the 'Next' button at the top of the page. RHACS will then present a page that gives a couple of options for actually configuring the target cluster with the RHACS services: Raw YAML or a Helm values file.
 
@@ -70,17 +70,17 @@ The 'Cluster Type' should be set to 'OpenShift 4.x' for purposes of the workshop
     oc -n stackrox get pod -w
     ```
 
-The output should indicate that three distinct types of Pod are running:
+    The output should indicate that three distinct types of Pod are running:
 
-- Admission controller
-- Sensor
-- Collector
+    - Admission controller
+    - Sensor
+    - Collector
 
-There will only be one `sensor` Pod, three `admission-control` Pods (one per master node), and a `collector` Pod for every node regardless of type (9 on a standard multi-AZ ROSA cluster, 6 on a standard ARO cluster).
+    There will only be one `sensor` Pod, three `admission-control` Pods (one per master node), and a `collector` Pod for every node regardless of type (9 on a standard multi-AZ ROSA cluster, 6 on a standard ARO cluster).
 
-![ACS-oc-output](acs-oc-output.png)
+    ![ACS-oc-output](acs-oc-output.png)
 
-When the Pods are all started and stable, it may be necessary to refresh the page on the RHACS console, but the 'Cluster Status' should now show 'Healthy' with a detail of each component type underneath.
+    When the Pods are all started and stable, it may be necessary to refresh the page on the RHACS console, but the 'Cluster Status' should now show 'Healthy' with a detail of each component type underneath.
 
 
 
