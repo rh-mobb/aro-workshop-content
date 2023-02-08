@@ -4,7 +4,7 @@ metadata:
   name: user1-wksp-rg
   namespace: default
 spec:
-  location: eastus
+  location: {{ azure_region }}
 ---
 apiVersion: v1
 kind: Secret
@@ -22,7 +22,7 @@ metadata:
   name: user1-minesweeper-database
   namespace: default
 spec:
-  location: eastus
+  location: {{ azure_region }}
   owner:
     name: user1-wksp-rg
   version: "13"

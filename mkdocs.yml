@@ -68,6 +68,10 @@ docs_dir: aro-content
 # plugins
 plugins:
 - section-index
+- macros
+
+extra:
+  azure_region: switzerlandnorth
 
 # Extensions
 markdown_extensions:

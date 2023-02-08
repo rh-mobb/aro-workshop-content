@@ -27,3 +27,5 @@ soupsieve==2.3.2.post1
 urllib3==1.26.12
 watchdog==2.1.9
 zipp==3.10.0
+mkdocs-macros-plugin==0.7.0
+termcolor==2.2.0

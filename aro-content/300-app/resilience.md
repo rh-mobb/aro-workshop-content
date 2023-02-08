@@ -29,10 +29,10 @@ In this section of the workshop, we will deploy an application to an ARO cluster
     Then visit the URL presented in a new tab in your web browser (using HTTP). For example, your output will look something similar to:
 
     ```bash
-    frontend-js-resilience-ex.apps.ce7l3kf6.eastus.aroapp.io
+    frontend-js-resilience-ex.apps.ce7l3kf6.{{ azure_region }}.aroapp.io
     ```
 
-    In that case, you'd visit `http://frontend-js-resilience-ex.apps.ce7l3kf6.eastus.aroapp.io` in your browser.
+    In that case, you'd visit `http://frontend-js-resilience-ex.apps.ce7l3kf6.{{ azure_region }}.aroapp.io` in your browser.
 
 1. Initially, this application is deployed with only one pod. In the event a worker node goes down or the pod crashes, there will be an outage of the application. To prevent that, let's scale the number of instances of our applications up to three. To do so, run the following command:
 

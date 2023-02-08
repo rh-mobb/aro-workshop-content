@@ -43,7 +43,7 @@ While you can directly add a label to a node, it is not recommended because node
     Your output will look something like this:
 
     ```{.text .no-copy}
-    node/user1-mobbws-cluster-zljxp-worker-eastus1-gkhgf
+    node/user1-mobbws-cluster-zljxp-worker-{{ azure_region }}1-gkhgf
     ```
 
     Pending that your output shows one or more node, this demonstrates that our MachineSet and associated nodes are properly annotated!
@@ -100,7 +100,7 @@ Now that we've successfully labeled our nodes, let's deploy a workload to demons
     Your output will look something like this:
 
     ```{.text .no-copy}
-    user1-mobbws-cluster-zljxp-worker-eastus1-gkhgf
+    user1-mobbws-cluster-zljxp-worker-{{ azure_region }}1-gkhgf
     ```
 
 1. Double check the name of the node to compare it to the output above to ensure the node selector worked to put the pod on the correct node
@@ -112,7 +112,7 @@ Now that we've successfully labeled our nodes, let's deploy a workload to demons
     Your output will look something like this (look for the final string to match, in this example `gkhgf`)
 
     ```{.text .no-copy}
-    node/user1-mobbws-cluster-zljxp-worker-eastus1-gkhgf
+    node/user1-mobbws-cluster-zljxp-worker-{{ azure_region }}1-gkhgf
     ```
 
 
@@ -137,10 +137,10 @@ Now that we've successfully labeled our nodes, let's deploy a workload to demons
     Then visit the URL presented in a new tab in your web browser (using HTTPS). For example, your output will look something similar to:
 
     ```{.text .no-copy}
-    nodeselector-app-nodeselector-ex.apps.ce7l3kf6.eastus.aroapp.io
+    nodeselector-app-nodeselector-ex.apps.ce7l3kf6.{{ azure_region }}.aroapp.io
     ```
 
-1. In the above case, you'd visit `https://nodeselector-app-nodeselector-ex.apps.ce7l3kf6.eastus.aroapp.io` in your browser.
+1. In the above case, you'd visit `https://nodeselector-app-nodeselector-ex.apps.ce7l3kf6.{{ azure_region }}.aroapp.io` in your browser.
 
     > Note the application is exposed over the default ingress using a predetermined URL and trusted TLS certificate. This is done using the OpenShift `Route` resource which is an extension to the Kubernetes `Ingress` resource.
 

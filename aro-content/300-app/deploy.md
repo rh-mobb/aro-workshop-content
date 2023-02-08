@@ -227,7 +227,7 @@ Server:         168.63.129.16
 Address:        168.63.129.16#53
 
 Non-authoritative answer:
-Name:   microsweeper-appservice-microsweeper-ex.apps.ce7l3kf6.eastus.aroapp.io
+Name:   microsweeper-appservice-microsweeper-ex.apps.ce7l3kf6.{{ azure_region }}.aroapp.io
 Address: 40.117.143.193
 ```
 

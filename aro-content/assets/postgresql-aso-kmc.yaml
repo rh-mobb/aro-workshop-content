@@ -4,7 +4,7 @@
 #   name: wksp-rg
 #   namespace: default
 # spec:
-#   location: eastus
+#   location: {{ azure_region }}
 ---
 apiVersion: v1
 kind: Secret
@@ -22,7 +22,7 @@ metadata:
   name: arohack-minesweeper1
   namespace: default
 spec:
-  location: eastus
+  location: {{ azure_region }}
   owner:
     name: arohack
   version: "13"
