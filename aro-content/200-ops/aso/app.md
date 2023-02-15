@@ -24,7 +24,7 @@ The voting app that will be deployed consists of a front end web-app that uses a
       annotations:
         serviceoperator.azure.com/reconcile-policy: skip
     spec:
-      location: eastus
+      location: {{ azure_region }}
     EOF
     ```
 
@@ -51,7 +51,7 @@ The voting app that will be deployed consists of a front end web-app that uses a
       name: redis-${UNIQUE}
       namespace: redis-ex
     spec:
-      location: eastus
+      location: {{ azure_region }}
       owner:
         name: "${AZ_RG}"
       sku:
@@ -217,9 +217,9 @@ oc -n redis-ex get route azure-vote -o jsonpath='{.spec.host}'
 Then visit the URL presented in a new tab in your web browser (using HTTPS). For example, your output will look something similar to:
 
 ```bash
-azure-vote-redis-ex.apps.ce7l3kf6.eastus.aroapp.io
+azure-vote-redis-ex.apps.ce7l3kf6.{{ azure_region }}.aroapp.io
 ```
 
-In that case, you'd visit `https://azure-vote-redis-ex.apps.ce7l3kf6.eastus.aroapp.io` in your browser.
+In that case, you'd visit `https://azure-vote-redis-ex.apps.ce7l3kf6.{{ azure_region }}.aroapp.io` in your browser.
 
 Congratulations! You've successfully demonstrated the ability to deploy Azure resources using ASO and use those resources with applications on your ARO cluster.

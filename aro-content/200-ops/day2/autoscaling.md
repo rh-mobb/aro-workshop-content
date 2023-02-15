@@ -36,7 +36,7 @@ Before we can configure cluster autoscaling, we first need to configure machine 
     The output of the command will look something like:
 
     ```{.text .no-copy}
-    machineautoscaler.autoscaling.openshift.io/user1-cluster-8kvh4-worker-eastus1 created
+    machineautoscaler.autoscaling.openshift.io/user1-cluster-8kvh4-worker-{{ azure_region }}1 created
     ```
 
 1. Next, let's check to see that our machine autoscaler has been created. To do so, run the following command:
@@ -49,7 +49,7 @@ Before we can configure cluster autoscaling, we first need to configure machine 
 
     ```{.text .no-copy}
     NAME                                 REF KIND     REF NAME                             MIN   MAX   AGE
-    user1-cluster-8kvh4-worker-eastus1   MachineSet   user1-cluster-8kvh4-worker-eastus1   1     3     3m11s
+    user1-cluster-8kvh4-worker-{{ azure_region }}1   MachineSet   user1-cluster-8kvh4-worker-{{ azure_region }}1   1     3     3m11s
     ```
 
 ## Create a Cluster Autoscaler
@@ -163,9 +163,9 @@ Now let's test the cluster autoscaler and see it in action. To do so, we'll depl
 
     ```{.text .no-copy}
     NAME                                 DESIRED   CURRENT   READY   AVAILABLE   AGE
-    user1-cluster-8kvh4-worker-eastus1   3         3         3       3           6h47m
-    user1-cluster-8kvh4-worker-eastus2   1         1         1       1           6h47m
-    user1-cluster-8kvh4-worker-eastus3   1         1         1       1           6h47m
+    user1-cluster-8kvh4-worker-{{ azure_region }}1   3         3         3       3           6h47m
+    user1-cluster-8kvh4-worker-{{ azure_region }}2   1         1         1       1           6h47m
+    user1-cluster-8kvh4-worker-{{ azure_region }}3   1         1         1       1           6h47m
     ```
 
     This shows that the cluster autoscaler is working on scaling the MachineSet up to 3.
@@ -181,11 +181,11 @@ Now let's test the cluster autoscaler and see it in action. To do so, we'll depl
 
     ```{.text .no-copy}
     NAME                                       PHASE     TYPE              REGION   ZONE   AGE
-    user1-cluster-8kvh4-worker-eastus1-h76h5   Running   Standard_D4s_v3   eastus   1      6m52s
-    user1-cluster-8kvh4-worker-eastus1-hd5cw   Running   Standard_D4s_v3   eastus   1      121m
-    user1-cluster-8kvh4-worker-eastus1-zj7dl   Running   Standard_D4s_v3   eastus   1      112m
-    user1-cluster-8kvh4-worker-eastus2-xmhrw   Running   Standard_D4s_v3   eastus   2      6h47m
-    user1-cluster-8kvh4-worker-eastus3-kggpz   Running   Standard_D4s_v3   eastus   3      6h47m
+    user1-cluster-8kvh4-worker-{{ azure_region }}1-h76h5   Running   Standard_D4s_v3   {{ azure_region }}   1      6m52s
+    user1-cluster-8kvh4-worker-{{ azure_region }}1-hd5cw   Running   Standard_D4s_v3   {{ azure_region }}   1      121m
+    user1-cluster-8kvh4-worker-{{ azure_region }}1-zj7dl   Running   Standard_D4s_v3   {{ azure_region }}   1      112m
+    user1-cluster-8kvh4-worker-{{ azure_region }}2-xmhrw   Running   Standard_D4s_v3   {{ azure_region }}   2      6h47m
+    user1-cluster-8kvh4-worker-{{ azure_region }}3-kggpz   Running   Standard_D4s_v3   {{ azure_region }}   3      6h47m
     ```
 
     !!! info

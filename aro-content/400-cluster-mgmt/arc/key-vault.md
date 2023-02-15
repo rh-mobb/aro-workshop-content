@@ -31,7 +31,7 @@ The [Azure Key Vault](https://azure.microsoft.com/en-us/products/key-vault/){:ta
 
     ```bash
     az keyvault create -n "${AZ_USER}-vault" \
-      --resource-group "${AZ_RG}" -l eastus
+      --resource-group "${AZ_RG}" -l {{ azure_region }}
     az keyvault secret set --vault-name "${AZ_USER}-vault" \
       -n DemoSecret --value MyExampleSecret
     ```

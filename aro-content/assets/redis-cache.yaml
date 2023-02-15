@@ -3,7 +3,7 @@ kind: RedisCache
 metadata:
   name: azure-redis
 spec:
-  location: eastus
+  location: {{ azure_region }}
   properties:
     sku:
       name: Basic

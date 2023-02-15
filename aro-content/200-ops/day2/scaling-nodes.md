@@ -17,9 +17,9 @@ Many of these changes are done using MachineSets. MachineSets ensure that a spec
 
     ```{.text .no-copy}
     NAME                                 DESIRED   CURRENT   READY   AVAILABLE   AGE
-    user1-cluster-8kvh4-worker-eastus1   1         1         1       1           4h36m
-    user1-cluster-8kvh4-worker-eastus2   1         1         1       1           4h36m
-    user1-cluster-8kvh4-worker-eastus3   1         1         1       1           4h36m
+    user1-cluster-8kvh4-worker-{{ azure_region }}1   1         1         1       1           4h36m
+    user1-cluster-8kvh4-worker-{{ azure_region }}2   1         1         1       1           4h36m
+    user1-cluster-8kvh4-worker-{{ azure_region }}3   1         1         1       1           4h36m
     ```
 
 2. Now, let's take a look at the machines that have been created according to the instructions provided by the above MachineSets. To do so, run the following command:
@@ -32,12 +32,12 @@ Many of these changes are done using MachineSets. MachineSets ensure that a spec
 
     ```{.text .no-copy}
     NAME                                       PHASE     TYPE              REGION   ZONE   AGE
-    user1-cluster-8kvh4-master-0               Running   Standard_D8s_v3   eastus   1      4h39m
-    user1-cluster-8kvh4-master-1               Running   Standard_D8s_v3   eastus   2      4h39m
-    user1-cluster-8kvh4-master-2               Running   Standard_D8s_v3   eastus   3      4h39m
-    user1-cluster-8kvh4-worker-eastus1-gls9k   Running   Standard_D4s_v3   eastus   1      4h36m
-    user1-cluster-8kvh4-worker-eastus2-xmhrw   Running   Standard_D4s_v3   eastus   2      4h36m
-    user1-cluster-8kvh4-worker-eastus3-kggpz   Running   Standard_D4s_v3   eastus   3      4h36m
+    user1-cluster-8kvh4-master-0               Running   Standard_D8s_v3   {{ azure_region }}   1      4h39m
+    user1-cluster-8kvh4-master-1               Running   Standard_D8s_v3   {{ azure_region }}   2      4h39m
+    user1-cluster-8kvh4-master-2               Running   Standard_D8s_v3   {{ azure_region }}   3      4h39m
+    user1-cluster-8kvh4-worker-{{ azure_region }}1-gls9k   Running   Standard_D4s_v3   {{ azure_region }}   1      4h36m
+    user1-cluster-8kvh4-worker-{{ azure_region }}2-xmhrw   Running   Standard_D4s_v3   {{ azure_region }}   2      4h36m
+    user1-cluster-8kvh4-worker-{{ azure_region }}3-kggpz   Running   Standard_D4s_v3   {{ azure_region }}   3      4h36m
     ```
 
 3. Now that we know that we have three worker nodes, let's pick a MachineSet to scale up using the OpenShift CLI tools. To do so, run the following command:
@@ -50,7 +50,7 @@ Many of these changes are done using MachineSets. MachineSets ensure that a spec
     The output of the command should look something like this:
 
     ```{.text .no-copy}
-    machineset.machine.openshift.io/user1-cluster-8kvh4-worker-eastus1
+    machineset.machine.openshift.io/user1-cluster-8kvh4-worker-{{ azure_region }}1
     ```
 
 4. Now, let's scale up our selected MachineSet from one to two machines. To do so, run the following command:
@@ -69,9 +69,9 @@ Many of these changes are done using MachineSets. MachineSets ensure that a spec
 
     ```{.text .no-copy}
     NAME                                 DESIRED   CURRENT   READY   AVAILABLE   AGE
-    user1-cluster-8kvh4-worker-eastus1   2         2         1       1           4h50m
-    user1-cluster-8kvh4-worker-eastus2   1         1         1       1           4h50m
-    user1-cluster-8kvh4-worker-eastus3   1         1         1       1           4h50m
+    user1-cluster-8kvh4-worker-{{ azure_region }}1   2         2         1       1           4h50m
+    user1-cluster-8kvh4-worker-{{ azure_region }}2   1         1         1       1           4h50m
+    user1-cluster-8kvh4-worker-{{ azure_region }}3   1         1         1       1           4h50m
     ```
 
     Note, that the number of *desired* and *current* nodes matches the scale we specified, but only one is *ready* and *available*.
@@ -86,13 +86,13 @@ Many of these changes are done using MachineSets. MachineSets ensure that a spec
 
     ```{.text .no-copy}
     NAME                                       PHASE         TYPE              REGION   ZONE   AGE
-    user1-cluster-8kvh4-master-0               Running       Standard_D8s_v3   eastus   1      4h58m
-    user1-cluster-8kvh4-master-1               Running       Standard_D8s_v3   eastus   2      4h58m
-    user1-cluster-8kvh4-master-2               Running       Standard_D8s_v3   eastus   3      4h58m
-    user1-cluster-8kvh4-worker-eastus1-gls9k   Running       Standard_D4s_v3   eastus   1      4h55m
-    user1-cluster-8kvh4-worker-eastus1-zj7dl   Provisioned   Standard_D4s_v3   eastus   1      9s
-    user1-cluster-8kvh4-worker-eastus2-xmhrw   Running       Standard_D4s_v3   eastus   2      4h55m
-    user1-cluster-8kvh4-worker-eastus3-kggpz   Running       Standard_D4s_v3   eastus   3      4h55m
+    user1-cluster-8kvh4-master-0               Running       Standard_D8s_v3   {{ azure_region }}   1      4h58m
+    user1-cluster-8kvh4-master-1               Running       Standard_D8s_v3   {{ azure_region }}   2      4h58m
+    user1-cluster-8kvh4-master-2               Running       Standard_D8s_v3   {{ azure_region }}   3      4h58m
+    user1-cluster-8kvh4-worker-{{ azure_region }}1-gls9k   Running       Standard_D4s_v3   {{ azure_region }}   1      4h55m
+    user1-cluster-8kvh4-worker-{{ azure_region }}1-zj7dl   Provisioned   Standard_D4s_v3   {{ azure_region }}   1      9s
+    user1-cluster-8kvh4-worker-{{ azure_region }}2-xmhrw   Running       Standard_D4s_v3   {{ azure_region }}   2      4h55m
+    user1-cluster-8kvh4-worker-{{ azure_region }}3-kggpz   Running       Standard_D4s_v3   {{ azure_region }}   3      4h55m
     ```
 
 ### Via the Console

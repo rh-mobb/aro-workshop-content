@@ -442,7 +442,7 @@ The next thing we need to do, is connect our EventListener with Git.  When an ac
     For example, your output will look something similar to:
 
     ```bash
-    el-minesweeper-el-microsweeper-ex.apps.ce7l3kf6.eastus.aroapp.io
+    el-minesweeper-el-microsweeper-ex.apps.ce7l3kf6.{{ azure_region }}.aroapp.io
     ```
 
 The last step we need to do, is configure GitHub to call this event listener URL when events occur.
@@ -458,7 +458,7 @@ Click on the *Add Webhook* button.
 
 On the next screen, enter the following settings:
 
-- **PayloadURL** - enter the URL you got above (for example: `http://el-minesweeper-el-microsweeper-ex.apps.ce7l3kf6.eastus.aroapp.io`)
+- **PayloadURL** - enter the URL you got above (for example: `http://el-minesweeper-el-microsweeper-ex.apps.ce7l3kf6.{{ azure_region }}.aroapp.io`)
 - **ContentType** - select application/json
 - **Secret** - this your GitHub Personal Access Token (`echo $GH_PAT`)
 

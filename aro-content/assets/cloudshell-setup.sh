@@ -56,7 +56,7 @@ export USERID="${AZ_USER}"
 
 export AZ_RG="${AZ_USER}-rg"
 export AZ_ARO="${AZ_USER}-cluster"
-export AZ_LOCATION='eastus'
+export AZ_LOCATION='{{ azure_region }}'
 
 alias k=kubectl
 EOF
