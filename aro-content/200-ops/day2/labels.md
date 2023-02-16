@@ -46,7 +46,7 @@ While you can directly add a label to a node, it is not recommended because node
     node/user1-mobbws-cluster-zljxp-worker-{{ azure_region }}1-gkhgf
     ```
 
-    Pending that your output shows one or more node, this demonstrates that our MachineSet and associated nodes are properly annotated!
+    Pending that your output shows one or more node(s), this demonstrates that our MachineSet and associated nodes are properly annotated!
 
 ## Deploy an app to the labeled nodes
 

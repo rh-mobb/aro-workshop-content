@@ -2,9 +2,23 @@
 
 ### Login to the OpenShift Web Console
 
-1. First, let's ensure that your workshop environment has our helper variables configured. To do so, let's run the following command:
+1. First, let's configure your workshop environment with our helper variables. To do so, let's run the following command:
 
     ```bash
+    cat << EOF >> ~/.workshoprc
+    export OCP_PASS=$(az aro list-credentials --name \
+      "${AZ_ARO}" --resource-group "${AZ_RG}" \
+      --query="kubeadminPassword" -o tsv)
+    export OCP_USER="kubeadmin"
+    export OCP_CONSOLE="$(az aro show --name ${AZ_ARO} \
+      --resource-group ${AZ_RG} \
+      -o tsv --query consoleProfile)"
+    export OCP_API="$(az aro show --name ${AZ_ARO} \
+      --resource-group ${AZ_RG} \
+      --query apiserverProfile.url -o tsv)"
+    EOF
+    source ~/.bashrc
+    source ~/.workshoprc
     env | grep -E 'AZ_|OCP'
     ```
 

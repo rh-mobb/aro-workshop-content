@@ -70,21 +70,3 @@ Before we can create an ARO cluster, we need to setup the virtual network that t
     ```
 
     While the cluster is being created, let's learn more about what you will be doing in this workshop.
-
-7. Once the cluster is ready, fetch credentials, API URL, and Console URL
-
-    ```bash
-    cat << EOF >> ~/.workshoprc
-    export OCP_PASS=$(az aro list-credentials --name \
-      "${AZ_ARO}" --resource-group "${AZ_RG}" \
-      --query="kubeadminPassword" -o tsv)
-    export OCP_USER="kubeadmin"
-    export OCP_CONSOLE="$(az aro show --name ${AZ_ARO} \
-      --resource-group ${AZ_RG} \
-      -o tsv --query consoleProfile)"
-    export OCP_API="$(az aro show --name ${AZ_ARO} \
-      --resource-group ${AZ_RG} \
-      --query apiserverProfile.url -o tsv)"
-    EOF
-    source ~/.workshoprc
-    ```

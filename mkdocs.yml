@@ -5,22 +5,22 @@ site_description: A choose-your-own-adventure workshop for Operations and Develo
 site_author: Red Hat
 
 # Repository
-repo_name: rh-mobb/aro-hackathon-content
-repo_url: https://github.com/rh-mobb/aro-hackathon-content
+repo_name: rh-mobb/aro-workshop-content
+repo_url: https://github.com/rh-mobb/aro-workshop-content
 
 # Nav Menu Definition
 nav:
   - Welcome: index.md
   - Environment Setup: 100-setup/1-environment.md
-  - Create ARO Cluster: 100-setup/2-cluster-creation.md
+#  - Create ARO Cluster: 100-setup/2-cluster-creation.md
   - Access Your Cluster: 100-setup/3-access-cluster.md
   - Day Two ARO Operations:
-    - Configuring OAuth2 authentication: 200-ops/idp/aad.md
+    - Configuring cluster authentication: 200-ops/idp/aad.md
     - Managing Cluster Upgrades: 200-ops/day2/upgrades.md
     - Managing Worker Nodes: 200-ops/day2/scaling-nodes.md
     - Cluster Autoscaling: 200-ops/day2/autoscaling.md
     - Labeling Nodes: 200-ops/day2/labels.md
-    - Forward Metrics and Logs to Azure Files: 200-ops/day2/observability.md
+  #  - Forward Metrics and Logs to Azure Files: 200-ops/day2/observability.md
   # - Azure Service Operator (ASO):
   #   - Deploy the Azure Service Operator: 200-ops/aso/deploy.md
   #   - Deploy an Azure Service using ASO: 200-ops/aso/app.md
@@ -32,22 +32,22 @@ nav:
     # - Expose the App with Front Door: 300-app/afd.md
     - Using OpenShift GitOps: 300-app/gitops.md
     - Restrict Network Access: 300-app/networkpolicy.md
-    - Automate Deploying the App with Tekton: 300-app/cicd.md
+    # - Automate Deploying the App with Tekton: 300-app/cicd.md
   - Make an App Resilient: 300-app/resilience.md
   # - Azure Arc:
   #   - Connect Azure Arc with ARO: 400-cluster-mgmt/arc/integration.md
   #   - Enable Azure Arc Observability: 400-cluster-mgmt/arc/observability.md
   #   - Integrate Azure Key Vault: 400-cluster-mgmt/arc/key-vault.md
-  - Advanced Cluster Security: 600-acs/1-cluster-install.md
-  - Service Mesh:
-    - Service Mesh: 500-service-mesh/introduction.md
-    - Deploy Service Mesh Operator: 500-service-mesh/install.md
-    - Deploy Control Plane: 500-service-mesh/deploy-control-plane.md
-    - Deploy Workloads: 500-service-mesh/deploy-workload.md
-    - Deploy Weighted Load Balancing: 500-service-mesh/weighted-routing.md
-    - Access Kiali Dashboard: 500-service-mesh/kiali.md
-  - Conclusion:
-    - Clean Up: finish.md
+  # - Advanced Cluster Security: 600-acs/1-cluster-install.md
+  # - Service Mesh:
+  #   - Service Mesh: 500-service-mesh/introduction.md
+  #   - Deploy Service Mesh Operator: 500-service-mesh/install.md
+  #   - Deploy Control Plane: 500-service-mesh/deploy-control-plane.md
+  #   - Deploy Workloads: 500-service-mesh/deploy-workload.md
+  #   - Deploy Weighted Load Balancing: 500-service-mesh/weighted-routing.md
+  #   - Access Kiali Dashboard: 500-service-mesh/kiali.md
+  # - Conclusion:
+  #   - Clean Up: finish.md
 
 # Theme Configuration
 theme:

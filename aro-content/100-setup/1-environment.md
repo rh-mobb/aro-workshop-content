@@ -17,6 +17,7 @@ When prompted, you'll log in with the credentials provided by the workshop team.
 - Resource Group
 - vNet (with two subnets)
 - Azure AD Service Principal
+- Azure Red Hat OpenShift Cluster
 
 ### Access Azure Cloud Shell
 
@@ -46,8 +47,8 @@ Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for
     | Cloud Shell region       | **eastus**                 | N/A |
     | Show VNET isolation settings    | *Leave Unchecked* | N/A |
     | Resource group       | **cloudshell** (Select *Use Existing* Button) | **cloudshell** |
-    | Storage account       | **workshop###** (Select *Use Existing* Button) | **workshopfo5022** |
-    | File share       | **user#** (Select *Use Existing* Button) | **user1** |
+    | Storage account       | **workshop9befafc2** (Select *Use Existing* Button) | N/A |
+    | File share       | **user#** (Select *Use Existing* Button) | **user0** |
 
 1. Once completed, click on the *Attach Storage* button to start your Azure Cloud Shell session.
 

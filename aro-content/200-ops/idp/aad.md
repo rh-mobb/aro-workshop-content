@@ -1,16 +1,21 @@
 # Configuring Azure AD for Cluster authentication
 <!-- taken from here - https://mobb.ninja/docs/idp/azuread-aro-cli/ -->
-## Configure Azure AD for OAuth
 
-1. Determine the OAuth callback URL
+Your Azure Red Hat OpenShift (ARO) cluster has a built-in OAuth server. Developers and administrators do not really directly interact with the OAuth server itself, but instead interact with an external identity provider (such as Azure AD) which is brokered by the OAuth server in the cluster. To learn more about cluster authentication, visit the [Red Hat documentation for identity provider configuration](https://docs.openshift.com/container-platform/latest/authentication/understanding-identity-provider.html){:target="_blank"}.
+
+In this section of the workshop, we'll configure Azure AD as the cluster identity provider in Azure Red Hat OpenShift. 
+
+## Configure our Azure AD application
+
+1. First, we need to determine the OAuth callback URL, which we will use to tell Azure AD where it should send authentication responses. To do so, run the following command:
 
     ```bash
-    IDP_CALLBACK="$(az aro show -g $AZ_RG -n $AZ_ARO --query consoleProfile.url \
+    IDP_CALLBACK="$(az aro show -g ${AZ_RG} -n ${AZ_ARO} --query consoleProfile.url \
       -o tsv | sed 's/console-openshift-console/oauth-openshift/')oauth2callback/AAD"
     echo "${IDP_CALLBACK}"
     ```
 
-1. Create a manifest file to configure the AAD application
+1. Next, let's create a manifest file to configure the AAD application. To do so, run the following command:
 
     ```bash
     cat << EOF > manifest.json
@@ -33,66 +38,55 @@
     EOF
     ```
 
-1. Create an Azure AD App for your cluster
+1. Next, let's use the manifest we created above to create an Azure AD App for your cluster. To do so, run the following command:
 
     ```bash
     az ad app create \
-      --display-name $AZ_USER-idp \
-      --web-redirect-uris $IDP_CALLBACK \
+      --display-name ${AZ_USER}-idp \
+      --web-redirect-uris ${IDP_CALLBACK} \
       --sign-in-audience AzureADMyOrg \
       --optional-claims @manifest.json
-    APPID=$(az ad app list --display-name $AZ_USER-idp --query [].appId -o tsv)
+    APPID=$(az ad app list --display-name ${AZ_USER}-idp --query [].appId -o tsv)
     ```
 
-1. Create a Service Principal for the App
+1. To allow us to securely sign our authentication requests, we need to create an Azure Service Principal and grab the credentials to authenticate with. To do so, run the following command: 
 
     ```bash
-    az ad sp create --id $APPID
-    az ad sp update --id $APPID --set 'tags=["WindowsAzureActiveDirectoryIntegratedApp"]'
+    az ad sp create --id ${APPID}
+    az ad sp update --id ${APPID} --set 'tags=["WindowsAzureActiveDirectoryIntegratedApp"]'
+    IDP_SECRET=$(az ad app credential reset --id ${APPID} --query password -o tsv)
     ```
 
-1. Create the client secret
-
-    ```bash
-    IDP_SECRET=$(az ad app credential reset --id $APPID --query password -o tsv)
-    ```
-
-1. Add permissions to AAD for `read email`, `read profile`, and `read user`
+1. Next, we need to add permissions to our Azure AD application which grants `read email`, `read profile`, and `read user`. To do so, run the following command:
 
     ```bash
     az ad app permission add \
     --api 00000003-0000-0000-c000-000000000000 \
     --api-permissions 64a6cdd6-aab1-4aaf-94b8-3cc8405e90d0=Scope \
-    --id $APPID
+    --id ${APPID}
     az ad app permission add \
     --api 00000003-0000-0000-c000-000000000000 \
     --api-permissions 14dad69e-099b-42c9-810b-d002981feec1=Scope \
-    --id $APPID
+    --id ${APPID}
     az ad app permission add \
     --api 00000003-0000-0000-c000-000000000000 \
     --api-permissions e1fe6dd8-ba31-4d61-89e7-88639da4683d=Scope \
-    --id $APPID
+    --id ${APPID}
     ```
 
     !!! warning "If you see the output `Invoking az ad app permission grant --id xxxxxxx --api 00000003-0000-0000-c000-000000000000 is needed to make the change effective` you can safely ignore it."
 
-1. Fetch your tenant ID
+## Configure our OpenShift cluster to use Azure AD
+
+1. Create an secret to store the service principal secret, above. To do so, run the following command:
 
     ```bash
-    TENANTID=$(az account show --query tenantId -o tsv)
+    oc create secret generic openid-client-secret-azuread \
+    -n openshift-config \
+    --from-literal=clientSecret="${IDP_SECRET}"
     ```
 
-## Configure OpenShift for OAuth
-
-1. Create an secret to store the application password
-
-```bash
-    oc create secret generic openid-client-secret-azuread \
-      -n openshift-config \
-      --from-literal=clientSecret="${IDP_SECRET}"
-```
-
-1. Apply the OpenID authentication configuration
+1. Next, let's update the OAuth server's custom resource with our Azure AD configuration. 
 
     ```bash
     cat << EOF | oc apply -f -
@@ -106,7 +100,7 @@
         mappingMethod: claim
         type: OpenID
         openID:
-          clientID: $APPID
+          clientID: ${APPID}
           clientSecret:
             name: openid-client-secret-azuread
           extraScopes:
@@ -122,21 +116,20 @@
             - name
             email:
             - email
-          issuer: https://login.microsoftonline.com/$TENANTID
+          issuer: https://login.microsoftonline.com/$(az account show --query tenantId -o tsv)
     EOF
     ```
 
-    !!! warning "You can Safely ignore the warning after this command runs"
+    !!! note
+    We are specifically requesting `email`, `upn`, and `name` optional claims from Azure AD to populate the data in our user profiles. This is entirely configurable. 
 
-1. Logout from your OCP Console and browse back to the Console URL (`echo $OCP_CONSOLE` if you have forgotten it) and you should see a new option `AAD` select that, and log in using your workshop Azure credentials.
+1. Next, give Cluster Admin permissions to your AAD user by running the following commands:
 
-1. Give Cluster Admin to your AAD user
+    ```bash
+    oc adm policy add-cluster-role-to-user cluster-admin \
+      $(az ad signed-in-user show --query "userPrincipalName" -o tsv)
+    ```
 
-```bash
-oc adm policy add-cluster-role-to-user cluster-admin \
-  $(az ad signed-in-user show --query "userPrincipalName" -o tsv)
-```
+1. Logout from your OCP Console and browse back to the Console URL (`echo $OCP_CONSOLE` if you have forgotten it) and you should see a new option to login called `AAD`. Select that, and log in using your workshop Azure credentials.
 
-1. Log out from Console and log back in as your Azure AD user. You should now have cluster admin rights.
-
-    !!! warning "If you do not see a new **AAD** login option you should close the tab and open a new browser pointing at your OCP console `echo $OCP_CONSOLE`"
+    !!! warning "If you do not see a new **AAD** login option, wait a few more minutes as this process can take a few minutes to deploy across the cluster and revisit the Console URL."
