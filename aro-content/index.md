@@ -9,10 +9,10 @@ Join Red Hat® for a hands-on workshop with Azure Red Hat OpenShift® (ARO). Dur
 
 During this hands on workshop we will cover the following:
 
-- Deploying Azure Red Hat OpenShift clusters
+<!-- - Deploying Azure Red Hat OpenShift clusters -->
 - Perform Day 2 operations tasks such as configuring node and cluster scaling policies, configuring managed upgrades, and using labels for deterministic app placement on nodes
-- Learn how to leverage the built in Observability tooling
-- Deploy an application to ARO, and then automate it using GitOps and Pipelines using modern tooling and practices.
+<!-- - Learn how to leverage the built in Observability tooling -->
+- Deploy an application to ARO, and then automate it using GitOps <!-- and Pipelines --> using modern tooling and practices.
 - Deploy an application that uses an Azure Managed Database
-- Learn how to use OpenShift Service Mesh for application observability and tracing
+<!-- - Learn how to use OpenShift Service Mesh for application observability and tracing -->
 - Make an application on OpenShift scalable and resistant to node failures and upgrades
