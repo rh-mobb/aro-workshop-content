@@ -78,6 +78,7 @@ Now that we've got a PostgreSQL instance up and running, let's build and deploy 
     kind: Secret
     metadata:
       name: microsweeper-secret
+      namespace: microsweeper-ex
     type: Opaque
     stringData:
       PG_URL: jdbc:postgresql://microsweeper-${UNIQUE}.postgres.database.azure.com:5432/postgres
@@ -107,8 +108,7 @@ Now that we've got a PostgreSQL instance up and running, let's build and deploy 
     %prod.quarkus.openshift.expose=true
     %prod.quarkus.openshift.deployment-kind=Deployment
     %prod.quarkus.container-image.group=microsweeper-ex
-    %prod.quarkus.kubernetes-config.secrets.enabled=true
-    %prod.quarkus.kubernetes-config.secrets=microsweeper-secret
+    %prod.quarkus.openshift.env.secrets=microsweeper-secret
     EOF
     ```
 
@@ -130,6 +130,7 @@ Now that we've got a PostgreSQL instance up and running, let's build and deploy 
       labels:
         k8s-app: microsweeper-monitor
       name: microsweeper-monitor
+      namespace: microsweeper-ex
     spec:
       endpoints:
       - interval: 30s
