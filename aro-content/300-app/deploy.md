@@ -144,7 +144,7 @@ Now that we've got a PostgreSQL instance up and running, let's build and deploy 
 
 ## Review
 
-Let's take a look at what this command did, along with everything that was created in your cluster. Return to your tab with the OpenShift Web Console. If you need to reauthenticate, follow the steps in the [Access Your Cluster](../setup/3-access-cluster/) section.
+Let's take a look at what this command did, along with everything that was created in your cluster. Return to your tab with the OpenShift Web Console. If you need to reauthenticate, follow the steps in the [Access Your Cluster](../100-setup/3-access-cluster/) section.
 
 ### Container Images
 From the Administrator perspective, expand *Builds* and then *ImageStreams*, and select the *microsweeper-ex* project.
