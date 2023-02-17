@@ -61,7 +61,7 @@ The RHACS Central instance is configured to use SSO, so the Azure credentials th
     ```bash
     helm install -n stackrox --create-namespace stackrox-secured-cluster-services \
       rhacs/secured-cluster-services \
-      -f clouddrive/adobe-workshop-cluster-init-bundle.yaml \
+      -f clouddrive/acs-bundle.yaml \
       -f <downloaded_helm_values_file>
 
     ```
