@@ -188,7 +188,8 @@ User Workload Metrics is a Prometheus stack that runs in the cluster that can co
 
 1. Restart Log Collector
 
-    !!! warning "Sometimes the log collector agent starts before the operator has finished configuring Loki, restarting it here will resolve."
+    !!! warning 
+        Sometimes the log collector agent starts before the operator has finished configuring Loki, restarting it here will resolve.
 
     ```bash
     oc -n openshift-logging rollout restart daemonset collector

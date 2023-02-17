@@ -74,7 +74,8 @@ Many of these changes are done using MachineSets. MachineSets ensure that a spec
     user1-cluster-8kvh4-worker-{{ azure_region }}3   1         1         1       1           4h50m
     ```
 
-    Note, that the number of *desired* and *current* nodes matches the scale we specified, but only one is *ready* and *available*.
+    !!! note
+        Note, that the number of *desired* and *current* nodes matches the scale we specified, but only one is *ready* and *available*.
 
     We can also run the same command we ran in step 2 to see the machine being provisioned:
 
