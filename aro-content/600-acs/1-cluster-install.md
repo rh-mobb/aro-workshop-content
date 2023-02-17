@@ -13,9 +13,11 @@ In order to make use of RHACS, you'll need the following:
 1. A working set of `admin` credentials on the cluster you wish to add to ACS, which should already be available in your `kubeconfig` as part of earlier workshop activities
 1. The `helm` CLI client, which is one of the tools pre-installed in your Cloud Shell
 1. The `rhacs` Helm repo added to the local configuration with the following command:
+
     ```bash
     helm repo add rhacs https://mirror.openshift.com/pub/rhacs/charts/
     ```
+
 1. The common `init bundle` provided by RHACS that contains certificates to secure communication between the cluster and the Central instance. In the workshop, this should be in the home directory in Cloud Shell already. It will be passed as a parameter to `helm` on install.
 
 ## Configure the Central instance
@@ -23,6 +25,12 @@ In order to make use of RHACS, you'll need the following:
 The first step is to tell the Central instance that it has another cluster to manage. RHACS has it's own web console that it provides, and the URL for it should be provided by your workshop facilitators.
 
 The RHACS Central instance is configured to use SSO, so the Azure credentials that are used for the workshop should automatically get you into the console with `Admin` credentials.
+
+1. Change to your home director
+
+    ```bash
+    cd ~
+    ```
 
 1. Log into the ACS Central Instance
 
@@ -61,7 +69,7 @@ The RHACS Central instance is configured to use SSO, so the Azure credentials th
     ```bash
     helm install -n stackrox --create-namespace stackrox-secured-cluster-services \
       rhacs/secured-cluster-services \
-      -f clouddrive/acs-bundle.yaml \
+      -f ~/clouddrive/acs-bundle.yaml \
       -f <downloaded_helm_values_file>
 
     ```
