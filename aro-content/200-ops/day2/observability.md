@@ -45,10 +45,17 @@ User Workload Metrics is a Prometheus stack that runs in the cluster that can co
 
 ## Configure Cluster Log Forwarding to Azure Files
 -->
+
+1. Create a Storage Account
+
+    ```bash
+    AZR_STORAGE_ACCOUNT_NAME="${AZ_USER}${UNIQUE}"
+    az storage account create --name "${AZR_STORAGE_ACCOUNT_NAME}" -g "${AZ_RG}" --location "${AZ_LOCATION}" --sku Standard_LRS
+    ```
+
 1. Fetch your storage account key
 
     ```bash
-    AZR_STORAGE_ACCOUNT_NAME="az${AZ_USER/_/}"
     AZR_STORAGE_KEY=$(az storage account keys list -g "${AZ_RG}" \
      -n "${AZR_STORAGE_ACCOUNT_NAME}" --query "[0].value" -o tsv)
     ```
