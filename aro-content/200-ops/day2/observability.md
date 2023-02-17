@@ -206,7 +206,7 @@ Now that the Metrics and Log forwarding is set up we can view them in Grafana.
 
 1. Browse to the provided route address and login using your OpenShift kubeadmin credentials (username kubeadmin, password echo $OCP_PASS).
 
-1. View an existing dashboard such as **mobb-aro-obs -> Node Exporter -> USE Method -> Cluster**.
+1. View an existing dashboard such as **custom-logging -> Node Exporter -> USE Method -> Cluster**.
 
     !!! info "These dashboards are copies of the dashboards that are available directly on the OpenShift web console under **Observability**"
 
