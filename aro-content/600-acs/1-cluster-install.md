@@ -27,7 +27,7 @@ The RHACS Central instance is configured to use SSO, so the Azure credentials th
 1. Log into the ACS Central Instance
 
     ```
-    https://central-rhacs-operator.apps.poc-adobe-acs.5fge.p1.openshiftapps.com
+    {{ acs_url }}
     ```
 
     The admin interface looks like this: ![ACS-Console](acs-cluster-home.png)
@@ -40,8 +40,10 @@ The RHACS Central instance is configured to use SSO, so the Azure credentials th
 
 1. There are only three **required** values to configure in this dialog: The 'Cluster Name', 'Central API Endpoint' (which must include a port number), and 'Cluster Type' fields need to be populated. The cluster name should match the name of the cluster that was built earlier in the workshop, and the Central API URL is the same as the one used to get into the ACS console, with the addition of the explicit port number at the end:
 
+    !!! warn "The `:443` in the URL is mandatory, do not skip it."
+
     ```
-    https://central-rhacs-operator.apps.poc-adobe-acs.5fge.p1.openshiftapps.com:443
+    {{ acs_url }}:443
     ```
 
     The 'Cluster Type' should be set to 'OpenShift 4.x' for purposes of the workshop, though RHACS will also managed OCP 3.x and plain Kubernetes installs as well.

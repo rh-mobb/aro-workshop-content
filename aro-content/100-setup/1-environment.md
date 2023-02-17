@@ -47,7 +47,7 @@ Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for
     | Cloud Shell region       | **eastus**                 | N/A |
     | Show VNET isolation settings    | *Leave Unchecked* | N/A |
     | Resource group       | **cloudshell** (Select *Use Existing* Button) | **cloudshell** |
-    | Storage account       | **workshop9befafc2** (Select *Use Existing* Button) | N/A |
+    | Storage account       | **workshop#####** (Select *Use Existing* Button) | **workshop9befafc2** |
     | File share       | **user#** (Select *Use Existing* Button) | **user0** |
 
 1. Once completed, click on the *Attach Storage* button to start your Azure Cloud Shell session.
