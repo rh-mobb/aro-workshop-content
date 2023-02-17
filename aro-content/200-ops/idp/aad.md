@@ -120,8 +120,7 @@ In this section of the workshop, we'll configure Azure AD as the cluster identit
     EOF
     ```
 
-    !!! note
-    We are specifically requesting `email`, `upn`, and `name` optional claims from Azure AD to populate the data in our user profiles. This is entirely configurable. 
+    !!! note "We are specifically requesting `email`, `upn`, and `name` optional claims from Azure AD to populate the data in our user profiles. This is entirely configurable."
 
 1. Next, give Cluster Admin permissions to your AAD user by running the following commands:
 
