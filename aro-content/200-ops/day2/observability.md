@@ -201,7 +201,7 @@ Now that the Metrics and Log forwarding is set up we can view them in Grafana.
 1. Fetch the Route for Grafana
 
     ```bash
-    oc -n custom-logging get route grafana-route
+    oc -n custom-logging get route grafana-route -o jsonpath='{"https://"}{.spec.host}{"\n"}'
     ```
 
 1. Browse to the provided route address and login using your OpenShift kubeadmin credentials (username kubeadmin, password echo $OCP_PASS).
