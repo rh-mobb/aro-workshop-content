@@ -72,7 +72,7 @@
 1. Find the URL for your Argo CD dashboard and log in using your OpenShift credentials
 
     ```bash
-    oc get route argocd-server -n bgd -o jsonpath='{.spec.host}{"\n"}'
+    oc get route argocd-server -n bgd -o jsonpath='{"https://"}{.spec.host}{"\n"}'
     ```
 
     ![](./images/argo_app1.png)
@@ -90,7 +90,7 @@
 1. Get the route and browse to it in your browser
 
     ```bash
-    oc get route bgd -n bgd -o jsonpath='{.spec.host}{"\n"}'
+    oc get route bgd -n bgd -o jsonpath='{"https://"}{.spec.host}{"\n"}'
     ```
 
 1. You should see a green box in the website like so
