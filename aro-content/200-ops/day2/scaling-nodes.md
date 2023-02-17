@@ -107,6 +107,11 @@ Now let's scale the cluster back down to a total of 3 worker nodes, but this tim
 
 1. In the overview you will see the same information about the MachineSets that you saw on the command line. Now, locate the MachineSet which has "2 of 2" machines, and click on the ⋮ icon, then select *Edit machine count*.
 
+    !!! note
+        It may take up to 5 minutes for the MachineSet to scale to 2 nodes 
+        while the underlying machine provisions and becomes ready.  Until this time, 
+        the machine count will read "1 of 2".
+
     ![Web Console - MachineSets Menu](/assets/images/web-console-machinesets-three-dots.png){ align=center }
     ![Web Console - MachineSets Count Menu](/assets/images/web-console-machinesets-edit-count-menu.png){ align=center }
 
