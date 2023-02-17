@@ -122,6 +122,8 @@ In this section of the workshop, we'll configure Azure AD as the cluster identit
 
     !!! note "We are specifically requesting `email`, `upn`, and `name` optional claims from Azure AD to populate the data in our user profiles. This is entirely configurable."
 
+    !!! warning "If you see the output `Warning: resource oauths/cluster is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by oc apply. oc apply should only be used on resources created declaratively by either oc create --save-config or oc apply. The missing annotation will be patched automatically.` you can safely ignore it for this."
+
 1. Next, give Cluster Admin permissions to your AAD user by running the following commands:
 
     ```bash
