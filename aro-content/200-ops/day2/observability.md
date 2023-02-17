@@ -195,6 +195,14 @@ User Workload Metrics is a Prometheus stack that runs in the cluster that can co
     oc -n openshift-logging rollout restart daemonset collector
     ```
 
+    !!! warning 
+        You may see this warning message which can be safely ignored:
+
+        ```
+        Warning: spec.template.metadata.annotations[scheduler.alpha.kubernetes.io/critical-pod]: non-functional in v1.16+; use the "priorityClassName" field instead
+        ```
+
+
 ## View the Metrics and Logs
 
 Now that the Metrics and Log forwarding is set up we can view them in Grafana.
