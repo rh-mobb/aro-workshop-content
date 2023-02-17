@@ -204,7 +204,7 @@ Now that the Metrics and Log forwarding is set up we can view them in Grafana.
     oc -n custom-logging get route grafana-route
     ```
 
-1. Browse to the provided route address and login using your OpenShift kubeadmin credentials (username kubeadmin, password echo $OCP_PASS).
+1. Browse to the provided route address in the same browser window as your OCP console and login via `AAD`. 
 
 1. View an existing dashboard such as **custom-logging -> Node Exporter -> USE Method -> Cluster**.
 
