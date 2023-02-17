@@ -79,10 +79,11 @@ If you would like to read more about OpenShift Pipelines, [see the Red Hat docum
 1. Next, we'll create a new working directory to clone our forked GitHub repositories. To do so, run the following commands:
 
     ```bash
-    mkdir ~/gitops
-    cd ~/gitops
+    mkdir ~/tekton
+    cd ~/tekton
     git clone https://github.com/${GH_USER}/common-java-dependencies.git
     git clone https://github.com/${GH_USER}/aro-workshop-app.git
+    cd aro-workshop-app
     ```
 
 ## Import tasks to our pipeline
@@ -98,7 +99,7 @@ The next thing we need to do is import common tasks that our pipeline will use. 
 1. Let's start by taking a look at the reusable tasks that we will be using. To do so, run the following command:
 
     ```bash
-    ls ~/gitops/aro-workshop-app/pipeline/tasks/*.yaml
+    ls ~/tekton/aro-workshop-app/pipeline/tasks/*.yaml
     ```
 
     Expected output:
@@ -130,7 +131,7 @@ The next thing we need to do is import common tasks that our pipeline will use. 
 
     ```bash
     oc apply -n microsweeper-ex -f \
-      ~/gitops/aro-workshop-app/pipeline/tasks
+      ~/tekton/aro-workshop-app/pipeline/tasks
     ```
 
     Your output should match this:
@@ -173,7 +174,7 @@ The next thing we need to do is import common tasks that our pipeline will use. 
 1. Next, create the pipeline service account and permissions that the pipeline tasks will run under. To do so, run the following command:
 
     ```bash
-    oc create -f ~/gitops/aro-workshop-app/pipeline/1-pipeline-account.yaml
+    oc create -f ~/tekton/aro-workshop-app/pipeline/1-pipeline-account.yaml
     ```
 
     Your output should match this:
@@ -226,7 +227,7 @@ The next thing we need to do is import common tasks that our pipeline will use. 
 1. Create a persistent volume claim that the pipeline will use to store build images. To do so, run the following command:
 
     ```bash
-    oc create -f ~/gitops/aro-workshop-app/pipeline/2-pipeline-pvc.yaml
+    oc create -f ~/tekton/aro-workshop-app/pipeline/2-pipeline-pvc.yaml
     ```
 
 1. Next, let's review the pipeline definition. To do so, open the following link in a new tab: [https://github.com/rh-mobb/aro-hackaton-app/blob/main/pipeline/3-pipeline.yaml](https://github.com/rh-mobb/aro-hackaton-app/blob/main/pipeline/3-pipeline.yaml){:target="_blank"}.
@@ -239,7 +240,7 @@ The next thing we need to do is import common tasks that our pipeline will use. 
 
     ```bash
     cp ~/aro-workshop-app/src/main/resources/application.properties \
-      ~/gitops/aro-workshop-app/src/main/resources/application.properties
+      ~/tekton/aro-workshop-app/src/main/resources/application.properties
     ```
 
 1. We also want to add the Quarkus Kubernetes extensions like we did earlier
@@ -251,7 +252,7 @@ The next thing we need to do is import common tasks that our pipeline will use. 
 1. Finally, let's commit our changes to GitHub. To do so, run the following set of commands:
 
     ```
-    cd ~/gitops/aro-workshop-app
+    cd ~/tekton/aro-workshop-app
     git remote set-url origin https://${GH_USER}:${GH_PAT}@github.com/${GH_USER}/aro-workshop-app
     git add .
     git commit -am "Update Properties File"
@@ -279,14 +280,14 @@ The next thing we need to do is import common tasks that our pipeline will use. 
 1. Now let's proceed with creating our pipeline definition. To do so, run the following command:
 
     ```bash
-    oc create -f ~/gitops/aro-workshop-app/pipeline/3-pipeline.yaml
+    oc create -f ~/tekton/aro-workshop-app/pipeline/3-pipeline.yaml
     ```
 
 1. Next, let's tell the deployment to use ACR instead of the built-in OpenShift image registry. To do so, run the following command:
 
     ```bash
     oc patch deploy/microsweeper-appservice \
-      --patch-file ~/gitops/aro-workshop-app/pipeline/5-deployment-patch.yaml
+      --patch-file ~/tekton/aro-workshop-app/pipeline/5-deployment-patch.yaml
     ```
 
 1. Finally, we will create a pipeline run that will execute the pipeline, pull the code from your forked GitHub repositories, build the image, and deploy it to ARO. To do this, run the following command:
@@ -353,7 +354,7 @@ At this point, we can successfully build and deploy new code by manually running
 1. Let's start by looking at the resources we will be creating to create our event listener and trigger.
 
     ```bash
-    ls ~/gitops/aro-workshop-app/pipeline/tasks/event-listener/*.yaml
+    ls ~/tekton/aro-workshop-app/pipeline/tasks/event-listener/*.yaml
     ```
 
     Your output should match:
@@ -386,7 +387,7 @@ At this point, we can successfully build and deploy new code by manually running
 
       To learn more about EventListeners, [review the Tekton documentation](https://tekton.dev/docs/triggers/eventlisteners/){:target="_blank"}.
 
-1. Edit `~/gitops/aro-workshop-app/pipeline/tasks/event-listener/2-web-trigger-template.yaml` with your favorite text editor (vim!) and replace the `<>` sections with the values of from the following command:
+1. Edit `~/tekton/aro-workshop-app/pipeline/tasks/event-listener/2-web-trigger-template.yaml` with your favorite text editor (vim!) and replace the `<>` sections with the values of from the following command:
 
     ```bash
     echo "GITHUB_USER: ${GH_USER}"
@@ -394,7 +395,7 @@ At this point, we can successfully build and deploy new code by manually running
     ```
 
     ```bash
-    vim ~/gitops/aro-workshop-app/pipeline/tasks/event-listener/2-web-trigger-template.yaml
+    vim ~/tekton/aro-workshop-app/pipeline/tasks/event-listener/2-web-trigger-template.yaml
     ```
 
     ```{.text .no-copy}
@@ -411,7 +412,7 @@ At this point, we can successfully build and deploy new code by manually running
 
     ```bash
     oc -n microsweeper-ex create -f \
-      ~/gitops/aro-workshop-app/pipeline/tasks/event-listener
+      ~/tekton/aro-workshop-app/pipeline/tasks/event-listener
     ```
 
 Before we test out our EventListener and Trigger, lets review what was created in OpenShift.
@@ -463,7 +464,7 @@ On the next screen, enter the following settings:
 - **Secret** - this your GitHub Personal Access Token (`echo $GH_PAT`)
 
 Where does the secret value come from?
-Refer to the `~/gitops/aro-workshop-app/pipeline/tasks/event-listener/3-web-trigger.yaml` file.
+Refer to the `~/tekton/aro-workshop-app/pipeline/tasks/event-listener/3-web-trigger.yaml` file.
 
 You will see the following snippet that contains the secret to access git.
 
@@ -495,7 +496,7 @@ Make sure you are in the directory for your personal git repo where the applicat
 Search for Leaderboard and change it to \<YOUR NAME\> Leaderboard.
 
 ```bash
-cd ~/gitops/aro-workshop-app
+cd ~/tekton/aro-workshop-app
 vi src/main/resources/META-INF/resources/index.html
 ```
 
