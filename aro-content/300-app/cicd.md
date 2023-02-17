@@ -431,7 +431,7 @@ The next thing we need to do, is connect our EventListener with Git.  When an ac
     ```
 
     !!! note
-        Since this is public cluster, we can simply use the default ingress controller. For a private cluster, you can use Azure Front Door to expose the endpoint.
+        Since this is public cluster, we can simply use the default ingress controller. For a private cluster, you might choose to use a service like Azure Front Door to expose the endpoint.
 
 1. To get the URL of the Event Listener Route that we just created, run the following command:
 
