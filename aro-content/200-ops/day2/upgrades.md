@@ -6,7 +6,7 @@ For more information on how OpenShift's Upgrade Service works, please see the [R
 
 ## Upgrade using the OpenShift Web Console
 
-1. Return to your tab with the OpenShift Web Console. If you need to reauthenticate, follow the steps in the [Access Your Cluster](../100-setup/3-access-cluster/) section.
+1. Return to your tab with the OpenShift Web Console. If you need to reauthenticate, follow the steps in the [Access Your Cluster](../setup/3-access-cluster/) section.
 
 1. Using the menu on the left Select *Administration* -> *Cluster Settings*.
 
