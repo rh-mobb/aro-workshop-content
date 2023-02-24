@@ -13,8 +13,13 @@ While you can directly add a label to a node, it is not recommended because node
     echo ${MACHINESET}
     ```
 
-1. Now, let's patch the MachineSet with our new label. To do so, run the following command:
+1. Now, let's review the current definition of the MachineSet. To do so, run the following command (Remember to exit from the editor with :q! ):
 
+    ```bash
+    oc -n openshift-machine-api edit $MACHINESET
+    ```
+
+1. Now, let's patch the MachineSet with our new label. To do so, run the following command:
     ```bash
     oc -n openshift-machine-api patch ${MACHINESET} \
       --type=merge -p '{"spec":{"template":{"spec":{"metadata":
