@@ -12,7 +12,6 @@ When prompted, you'll log in with the credentials provided by the workshop team.
 
     While these commands can be run in any Microsoft Azure account, we've completed many of the prerequisites for you to ensure they work in the workshop environment. As such, we recommend ensuring that you are logged out of any other Microsoft Azure sessions.
 
-
 ### Pre-created Resources
 
 - Resource Group
@@ -58,10 +57,7 @@ Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for
 1. When your shell is ready and you are at the bash prompt, run the following command to prepare your Cloud Shell environment for the remainder of the workshop:
 
     ```bash
-    curl https://raw.githubusercontent.com/danielpenagos/aro-hackathon-content/main/aro-content/assets/cloudshell-setup.sh > setup.sh
-    
-    ./setup.sh
-    
+    ./clouddrive/setup.sh
     source ~/.workshoprc
     ```
 
