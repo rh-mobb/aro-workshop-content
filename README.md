@@ -29,7 +29,7 @@ Contributions should follow the standard GitHub Pull Request workflow and should
 
     For example you can remove the `acs` sections in `mkdocs.yml` to remove the ACS content.
 
-1. Update the `extras` section in `mkdocs.yml`
+1. Update the `extra` section in `mkdocs.yml`
 
     These values will be injected into the workshop content where appropriate to ensure the workshop matches your environment.
 
