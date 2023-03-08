@@ -8,6 +8,12 @@ site_author: Red Hat
 repo_name: rh-mobb/aro-workshop-content
 repo_url: https://github.com/rh-mobb/aro-workshop-content
 
+# these values will be injected into the workshop
+extra:
+  azure_region: eastus
+  acs_url: https://central-stackrox.apps.xxxx.eastus.aroapp.io
+
+
 # Nav Menu Definition
 nav:
   - Welcome: index.md
@@ -69,10 +75,6 @@ docs_dir: aro-content
 plugins:
 - section-index
 - macros
-
-extra:
-  azure_region: eastus
-  acs_url: https://central-stackrox.apps.wdfv7k3p.eastus.aroapp.io
 
 # Extensions
 markdown_extensions:
