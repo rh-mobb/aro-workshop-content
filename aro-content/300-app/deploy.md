@@ -23,7 +23,7 @@ It's time for us to put our cluster to work and deploy a workload. We're going t
       --public 0.0.0.0
     ```
 
-1. Check connectivity from our Cloud Shell to our database. To do so, run the following command:
+1. Check connectivity from to the database. To do so, run the following command:
 
     ```bash
     psql \
@@ -32,7 +32,6 @@ It's time for us to put our cluster to work and deploy a workload. We're going t
       user=myAdmin@microsweeper-${UNIQUE}.postgres.database.azure.com password=${AZ_USER}-${UNIQUE} sslmode=require" \
       -c "select now();"
     ```
-
     Your output should look similar to:
 
     ```{.text .no-copy}
@@ -49,6 +48,8 @@ Now that we've got a PostgreSQL instance up and running, let's build and deploy 
 1. First, let's clone the application from GitHub to our local Cloud Shell. To do so, run the following command:
 
     ```bash
+    mkdir -p {{ workshop_dir }}/deploy
+    cd {{ workshop_dir }}/deploy
     git clone https://github.com/rh-mobb/aro-workshop-app.git
     ```
 
@@ -143,6 +144,12 @@ Now that we've got a PostgreSQL instance up and running, let's build and deploy 
     EOF
     ```
 
+1. Change back to your previous working directory
+
+    ```bash
+    cd -
+    ```
+
 ## Review
 
 Let's take a look at what this command did, along with everything that was created in your cluster. Return to your tab with the OpenShift Web Console. If you need to reauthenticate, follow the steps in the [Access Your Cluster](../100-setup/3-access-cluster/) section.
@@ -201,6 +208,7 @@ While in the route section of the OpenShift Web Console, click the URL under *Lo
 ![OpenShift Web Console - Route Link](../assets/images/web-console-route-link.png)
 
 You can also get the the URL for your application using the command line:
+
 ```bash
 oc -n microsweeper-ex get route microsweeper-appservice -o jsonpath='{.spec.host}'
 ```

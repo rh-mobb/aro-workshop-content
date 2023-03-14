@@ -1,17 +1,20 @@
 # Configuring Azure AD for Cluster authentication
 <!-- taken from here - https://mobb.ninja/docs/idp/azuread-aro-cli/ -->
 
+!!! warning "In order to complete these steps you need permission to create Azure AD Applications, and other Administrative level permissions. If you do not have Admin access in your Azure tenant, you may want to skip this section. If you're not sure you can proceed, if you get any errors, again, just move on to the next section."
+
 Your Azure Red Hat OpenShift (ARO) cluster has a built-in OAuth server. Developers and administrators do not really directly interact with the OAuth server itself, but instead interact with an external identity provider (such as Azure AD) which is brokered by the OAuth server in the cluster. To learn more about cluster authentication, visit the [Red Hat documentation for identity provider configuration](https://docs.openshift.com/container-platform/latest/authentication/understanding-identity-provider.html){:target="_blank"}.
 
-In this section of the workshop, we'll configure Azure AD as the cluster identity provider in Azure Red Hat OpenShift. 
+In this section of the workshop, we'll configure Azure AD as the cluster identity provider in Azure Red Hat OpenShift.
 
 ## Configure our Azure AD application
 
 1. First, we need to determine the OAuth callback URL, which we will use to tell Azure AD where it should send authentication responses. To do so, run the following command:
 
     ```bash
-    IDP_CALLBACK="$(az aro show -g ${AZ_RG} -n ${AZ_ARO} --query consoleProfile.url \
-      -o tsv | sed 's/console-openshift-console/oauth-openshift/')oauth2callback/AAD"
+    IDP_CALLBACK="https://oauth-openshift.apps.$(az \
+      aro show -g ${AZ_RG} -n ${AZ_ARO} --query clusterProfile.domain \
+      -o tsv).${AZ_LOCATION}.aroapp.io/oauth2callback/AAD"
     echo "${IDP_CALLBACK}"
     ```
 
@@ -46,10 +49,10 @@ In this section of the workshop, we'll configure Azure AD as the cluster identit
       --web-redirect-uris ${IDP_CALLBACK} \
       --sign-in-audience AzureADMyOrg \
       --optional-claims @manifest.json
-    APPID=$(az ad app list --display-name ${AZ_USER}-idp --query [].appId -o tsv)
+    APPID=$(az ad app list --display-name ${AZ_USER}-idp --query "[].appId" -o tsv)
     ```
 
-1. To allow us to securely sign our authentication requests, we need to create an Azure Service Principal and grab the credentials to authenticate with. To do so, run the following command: 
+1. To allow us to securely sign our authentication requests, we need to create an Azure Service Principal and grab the credentials to authenticate with. To do so, run the following command:
 
     ```bash
     az ad sp create --id ${APPID}
@@ -86,9 +89,10 @@ In this section of the workshop, we'll configure Azure AD as the cluster identit
     --from-literal=clientSecret="${IDP_SECRET}"
     ```
 
-1. Next, let's update the OAuth server's custom resource with our Azure AD configuration. 
+1. Next, let's update the OAuth server's custom resource with our Azure AD configuration.
 
     ```bash
+    AZ_TENANT=$(az account show --query tenantId -o tsv)
     cat << EOF | oc apply -f -
     apiVersion: config.openshift.io/v1
     kind: OAuth
@@ -100,7 +104,7 @@ In this section of the workshop, we'll configure Azure AD as the cluster identit
         mappingMethod: claim
         type: OpenID
         openID:
-          clientID: ${APPID}
+          clientID: "${APPID}"
           clientSecret:
             name: openid-client-secret-azuread
           extraScopes:
@@ -116,11 +120,11 @@ In this section of the workshop, we'll configure Azure AD as the cluster identit
             - name
             email:
             - email
-          issuer: https://login.microsoftonline.com/$(az account show --query tenantId -o tsv)
+          issuer: "https://login.microsoftonline.com/${AZ_TENANT}"
     EOF
     ```
 
-    !!! note 
+    !!! note
         We are specifically requesting `email`, `upn`, and `name` optional claims from Azure AD to populate the data in our user profiles. This is entirely configurable.
 
     !!! warning

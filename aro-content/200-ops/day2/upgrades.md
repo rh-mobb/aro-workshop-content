@@ -49,7 +49,7 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
 
     ```bash
     oc get clusterversion version -o \
-      jsonpath='{.status.availableUpdates}' | jq -r .[].version
+      jsonpath='{.status.availableUpdates[*].version}'
     ```
 
     !!! warning
@@ -58,6 +58,8 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
 1. Next, let's use that information to populate a manifest for the Managed Upgrade Operator to use. To do so, run the following command:
 
     ```yaml
+    OCP_UPGRADE_TO=$(oc get clusterversion version -o \
+      jsonpath='{.status.availableUpdates[0].version}')
     cat <<EOF | oc apply -f -
     apiVersion: upgrade.managed.openshift.io/v1alpha1
     kind: UpgradeConfig
@@ -71,7 +73,7 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
       capacityReservation: true
       desired:
         channel: "stable-4.10"
-        version: "4.10.47"
+        version: "${OCP_UPGRADE_TO}"
     EOF
     ```
 

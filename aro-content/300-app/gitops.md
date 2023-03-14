@@ -77,7 +77,7 @@
 
     ![](./images/argo_app1.png)
 
-1. Click on the Application to show its topology
+1. Click on the Application **bgd-app** to show its topology
 
     ![](./images/argo_sync.png)
 

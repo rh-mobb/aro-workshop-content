@@ -1,8 +1,8 @@
-# ARO Hack-a-Thon Content
+# ARO Workshop Content
 
 ## ARO Workshop
 
-This repository hosts the Cloud Services Black Belt workshop for Azure Red Hat Openshift (ARO) which is hosted at [ws.mobb.cloud](https://ws.mobb.cloud)
+This repository hosts the Cloud Services Black Belt self paced workshop for Azure Red Hat Openshift (ARO) which is hosted at [ws.mobb.cloud](https://ws.mobb.cloud).
 
 ### Contribution
 

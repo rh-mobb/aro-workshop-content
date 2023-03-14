@@ -10,6 +10,8 @@ repo_url: https://github.com/rh-mobb/aro-workshop-content
 
 # these values will be injected into the workshop
 extra:
+  redhat_led: false
+  workshop_dir: ~/aro-workshop
   azure_region: eastus
   acs_url: https://central-stackrox.apps.xxxx.eastus.aroapp.io
 
@@ -38,13 +40,13 @@ nav:
     # - Expose the App with Front Door: 300-app/afd.md
     - Using OpenShift GitOps: 300-app/gitops.md
     - Restrict Network Access: 300-app/networkpolicy.md
-    - Automate Deploying the App with Tekton: 300-app/cicd.md
+    - Automate Deploying the App with Tekton: 300-app/pipelines.md
   - Make an App Resilient: 300-app/resilience.md
   # - Azure Arc:
   #   - Connect Azure Arc with ARO: 400-cluster-mgmt/arc/integration.md
   #   - Enable Azure Arc Observability: 400-cluster-mgmt/arc/observability.md
   #   - Integrate Azure Key Vault: 400-cluster-mgmt/arc/key-vault.md
-  - Advanced Cluster Security: 600-acs/1-cluster-install.md
+  # - Advanced Cluster Security: 600-acs/1-cluster-install.md
   - Service Mesh:
     - Service Mesh: 500-service-mesh/introduction.md
     - Deploy Service Mesh Operator: 500-service-mesh/install.md

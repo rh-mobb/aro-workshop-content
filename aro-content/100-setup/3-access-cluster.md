@@ -8,7 +8,13 @@
     az aro show \
       --resource-group "${AZ_RG}" \
       --name "${AZ_ARO}" \
-      --query "{name:name,state:provisioningState}" -o tsv
+      --query "provisioningState" -o tsv
+    ```
+
+    You should see the following output
+
+    ```{.text .no-copy}
+    Succeeded
     ```
 
 1. First, let's configure your workshop environment with our helper variables. To do so, let's run the following command:
@@ -26,7 +32,6 @@
       --resource-group ${AZ_RG} \
       --query apiserverProfile.url -o tsv)"
     EOF
-    source ~/.bashrc
     source ~/.workshoprc
     env | grep -E 'AZ_|OCP'
     ```
@@ -72,7 +77,7 @@ Now that you're logged into the cluster's console, return to your Azure Cloud Sh
 
     Once logged in, you'll see output that looks like this:
 
-    ```bash
+    ```{.text .no-copy}
     Login successful.
 
     You have access to 68 projects, the list has been suppressed. You can list all projects with 'oc projects'
