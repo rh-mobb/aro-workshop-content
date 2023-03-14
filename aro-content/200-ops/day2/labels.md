@@ -24,15 +24,12 @@ While you can directly add a label to a node, it is not recommended because node
 1. As you'll remember, the existing machines won't get this label, but all new machines will. While we could just scale this MachineSet down to zero and back up again, that could disrupt our workloads. Instead, let's just loop through and add the label to all of our nodes in that MachineSet. To do so, run the following command:
 
     ```bash
-    MACHINES=$(oc -n openshift-machine-api get machines -o name -l "machine.openshift.io/cluster-api-machineset=$(echo $MACHINESET | cut -d / -f2 )" | xargs)
-    oc label -n openshift-machine-api ${MACHINES} tier=frontend
-    NODES=$(echo $MACHINES | sed 's/machine.machine.openshift.io/node/g')
-    oc label ${NODES} tier=frontend
+    MACHINES=$(oc -n openshift-machine-api get machines -o name -l "machine.openshift.io/cluster-api-machineset=$(echo $MACHINESET | cut -d / -f2 )" | cut -d / -f2 | xargs)
+    for MACHINE in $(echo ${MACHINES}); do
+      oc label -n openshift-machine-api machine ${MACHINE} tier=frontend
+      oc label node ${MACHINE} tier=frontend
+    done
     ```
-
-    !!! info
-
-        Just like MachineSets, machines do not automatically label their existing child resources, this means we need to relabel them ourselves to avoid having to recreate them.
 
 1. Now, let's verify the nodes are properly labeled. To do so, run the following command:
 
@@ -93,8 +90,8 @@ Now that we've successfully labeled our nodes, let's deploy a workload to demons
 1. Now, let's validate that the application has been deployed to one of the labeled nodes. To do so, run the following command:
 
     ```bash
-    oc -n nodeselector-ex get pod -l app=nodeselector-app -o json \
-      | jq -r .items[0].spec.nodeName
+    oc -n nodeselector-ex get pod -l app=nodeselector-app \
+      -o jsonpath='{.items[0].spec.nodeName}'
     ```
 
     Your output will look something like this:
@@ -131,13 +128,13 @@ Now that we've successfully labeled our nodes, let's deploy a workload to demons
 1.  Fetch the URL for the newly created `route`
 
     ```bash
-    oc get routes/nodeselector-app -o json | jq -r '.spec.host'
+    oc get routes/nodeselector-app -o jsonpath='https://{.spec.host}{"\n"}'
     ```
 
     Then visit the URL presented in a new tab in your web browser (using HTTPS). For example, your output will look something similar to:
 
     ```{.text .no-copy}
-    nodeselector-app-nodeselector-ex.apps.ce7l3kf6.{{ azure_region }}.aroapp.io
+    https://nodeselector-app-nodeselector-ex.apps.ce7l3kf6.{{ azure_region }}.aroapp.io
     ```
 
 1. In the above case, you'd visit `https://nodeselector-app-nodeselector-ex.apps.ce7l3kf6.{{ azure_region }}.aroapp.io` in your browser.

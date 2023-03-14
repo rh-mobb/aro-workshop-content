@@ -98,7 +98,6 @@ User Workload Metrics is a Prometheus stack that runs in the cluster that can co
 1. Create list of Operators to install
 
     ```yaml
-    cd ~
     cat <<EOF > clf-operators.yaml
     subscriptions:
       - name: grafana-operator
@@ -147,10 +146,12 @@ User Workload Metrics is a Prometheus stack that runs in the cluster that can co
     oc create ns resource-locker-operator
     helm upgrade -n custom-logging clf-operators \
       mobb/operatorhub --install \
-      --values ~/clf-operators.yaml
+      --values ./clf-operators.yaml
     ```
 
 1. Wait for the Operators to be installed
+
+    !!! info "These will loop through each type of resource until the CRDs for the Operators have been deployed. Eventually you'll see the message `No resources found in custom-logging namespace.` and be returned to a prompt."
 
     ```bash
     while ! oc get grafana; do sleep 5; echo -n .; done
@@ -188,14 +189,14 @@ User Workload Metrics is a Prometheus stack that runs in the cluster that can co
 
 1. Restart Log Collector
 
-    !!! warning 
+    !!! info
         Sometimes the log collector agent starts before the operator has finished configuring Loki, restarting it here will resolve.
 
     ```bash
     oc -n openshift-logging rollout restart daemonset collector
     ```
 
-    !!! warning 
+    !!! warning
         You may see this warning message which can be safely ignored:
 
         ```
@@ -210,10 +211,11 @@ Now that the Metrics and Log forwarding is set up we can view them in Grafana.
 1. Fetch the Route for Grafana
 
     ```bash
-    oc -n custom-logging get route grafana-route -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+    oc -n custom-logging get route grafana-route \
+      -o jsonpath='{"https://"}{.spec.host}{"\n"}'
     ```
 
-1. Browse to the provided route address in the same browser window as your OCP console and login using your OpenShift credentials (either AAD or kubeadmin). 
+1. Browse to the provided route address in the same browser window as your OCP console and login using your OpenShift credentials (either AAD or kubeadmin).
 
 1. View an existing dashboard such as **custom-logging -> Node Exporter -> USE Method -> Cluster**.
 
