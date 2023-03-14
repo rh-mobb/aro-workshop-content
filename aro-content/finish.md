@@ -21,4 +21,22 @@
       --name "${AZ_ARO}" --yes
     ```
 
+{% if not redhat_led %}
+1. To delete your resource group and any extra left over resources run
+
+    ```bash
+    az group delete --yes \
+      --resource-group "${AZ_RG}"
+    ```
+
+{% endif %}
+
+1. Delete the Azure App you created for IDP
+
+    ```bash
+    APPID=$(az ad app list --display-name ${AZ_USER}-idp \
+      --query "[].appId" -o tsv)
+    az ad app delete --id "${APPID}"
+    ```
+
 1. byeeeeeeee!
