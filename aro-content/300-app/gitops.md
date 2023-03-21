@@ -19,8 +19,17 @@
     metadata:
       name: argocd
     spec:
-      dex:
-        openShiftOAuth: true
+      sso:
+        dex:
+          openShiftOAuth: true
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 250m
+              memory: 128Mi
+        provider: dex
       rbac:
         defaultPolicy: "role:readonly"
         policy: "g, system:authenticated, role:admin"

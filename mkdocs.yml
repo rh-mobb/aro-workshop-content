@@ -29,12 +29,6 @@ nav:
     - Cluster Autoscaling: 200-ops/day2/autoscaling.md
     - Labeling Nodes: 200-ops/day2/labels.md
     - Forward Metrics and Logs to Azure Files: 200-ops/day2/observability.md
-  # - Azure Service Operator (ASO):
-  #   - Deploy the Azure Service Operator: 200-ops/aso/deploy.md
-  #   - Deploy an Azure Service using ASO: 200-ops/aso/app.md
-  # - Azure Front Door:
-  #   - Create a Private Ingress Controller: 200-ops/afd/private-ingress.md
-  #   - Configure Azure Front Door: 200-ops/afd/configure.md
   - Deploy and Expose an App:
     - Deploy the App: 300-app/deploy.md
     # - Expose the App with Front Door: 300-app/afd.md
@@ -42,11 +36,7 @@ nav:
     - Restrict Network Access: 300-app/networkpolicy.md
     - Automate Deploying the App with Tekton: 300-app/pipelines.md
   - Make an App Resilient: 300-app/resilience.md
-  # - Azure Arc:
-  #   - Connect Azure Arc with ARO: 400-cluster-mgmt/arc/integration.md
-  #   - Enable Azure Arc Observability: 400-cluster-mgmt/arc/observability.md
-  #   - Integrate Azure Key Vault: 400-cluster-mgmt/arc/key-vault.md
-  # - Advanced Cluster Security: 600-acs/1-cluster-install.md
+
   - Service Mesh:
     - Service Mesh: 500-service-mesh/introduction.md
     - Deploy Service Mesh Operator: 500-service-mesh/install.md
@@ -56,6 +46,19 @@ nav:
     - Access Kiali Dashboard: 500-service-mesh/kiali.md
   - Conclusion:
     - Clean Up: finish.md
+
+## Unused/Archived sections
+  # - Azure Service Operator (ASO):
+  #   - Deploy the Azure Service Operator: 200-ops/aso/deploy.md
+  #   - Deploy an Azure Service using ASO: 200-ops/aso/app.md
+  # - Azure Front Door:
+  #   - Create a Private Ingress Controller: 200-ops/afd/private-ingress.md
+  #   - Configure Azure Front Door: 200-ops/afd/configure.md
+  # - Azure Arc:
+  #   - Connect Azure Arc with ARO: 400-cluster-mgmt/arc/integration.md
+  #   - Enable Azure Arc Observability: 400-cluster-mgmt/arc/observability.md
+  #   - Integrate Azure Key Vault: 400-cluster-mgmt/arc/key-vault.md
+  # - Advanced Cluster Security: 600-acs/1-cluster-install.md
 
 # Theme Configuration
 theme:
