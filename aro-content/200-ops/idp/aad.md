@@ -3,7 +3,7 @@
 
 !!! warning "In order to complete these steps you need permission to create Azure AD Applications, and other Administrative level permissions. If you do not have Admin access in your Azure tenant, you may want to skip this section. If you're not sure you can proceed, if you get any errors, again, just move on to the next section."
 
-Your Azure Red Hat OpenShift (ARO) cluster has a built-in OAuth server. Developers and administrators do not really directly interact with the OAuth server itself, but instead interact with an external identity provider (such as Azure AD) which is brokered by the OAuth server in the cluster. To learn more about cluster authentication, visit the [Red Hat documentation for identity provider configuration](https://docs.openshift.com/container-platform/latest/authentication/understanding-identity-provider.html){:target="_blank"}.
+Your Azure Red Hat OpenShift (ARO) cluster has a built-in OAuth server. Developers and administrators do not really directly interact with the OAuth server itself, but instead interact with an external identity provider (such as Azure AD) which is brokered by the OAuth server in the cluster. To learn more about cluster authentication, visit the [Red Hat documentation for identity provider configuration](https://docs.openshift.com/container-platform/latest/authentication/understanding-identity-provider.html){:target="_blank"} and the [Microsoft documentation for configuring Azure Active Directory authentication for ARO](https://learn.microsoft.com/en-us/azure/openshift/configure-azure-ad-cli){:target="_blank"}.
 
 In this section of the workshop, we'll configure Azure AD as the cluster identity provider in Azure Red Hat OpenShift.
 
