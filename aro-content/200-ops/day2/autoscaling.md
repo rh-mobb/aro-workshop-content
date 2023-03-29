@@ -192,7 +192,7 @@ Now let's test the cluster autoscaler and see it in action. To do so, we'll depl
 
     !!! info
 
-        Watch will refresh the output of a command every second. Hit CTRL and c on your keyboard to exit the watch command when you're ready to move on to the next part of the workshop.
+        Watch will refresh the output of a command every two seconds. Hit CTRL and c on your keyboard to exit the watch command when you're ready to move on to the next part of the workshop.
 
 
 Congratulations! You've successfully demonstrated cluster autoscaling.

@@ -104,7 +104,7 @@ The voting app that will be deployed consists of a front end web-app that uses a
 
     !!! info
 
-        Watch will refresh the output of a command every second. Hit CTRL and c on your keyboard to exit the watch command when you're ready to move on to the next part of the workshop.
+        Watch will refresh the output of a command every two seconds. Hit CTRL and c on your keyboard to exit the watch command when you're ready to move on to the next part of the workshop.
 
 
 1. (Optional) If you'd like to monitor the creation of the resource in the Azure Portal, you can search for "Redis" in the search bar.
