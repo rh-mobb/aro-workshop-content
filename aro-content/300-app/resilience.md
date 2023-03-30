@@ -6,7 +6,7 @@ In this section of the workshop, we will deploy an application to an ARO cluster
 
     ```bash
     oc new-project resilience-ex
-    oc -n resilience-ex new-app https://github.com/sohaibazed/frontend-js.git --name frontend-js
+    oc -n resilience-ex new-app https://github.com/rh-mobb/frontend-js.git --name frontend-js
     oc -n resilience-ex expose svc frontend-js
     oc -n resilience-ex set resources deployment/frontend-js \
       --limits=cpu=60m,memory=150Mi \
