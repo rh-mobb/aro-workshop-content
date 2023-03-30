@@ -3,6 +3,10 @@
 {% if redhat_led %}
 Your workshop environment consists of several components which have been pre-configured and are ready to use. This includes a [Microsoft Azure](https://azure.microsoft.com/en-us/){:target="_blank"} account, an [Azure Red Hat OpenShift](https://azure.microsoft.com/en-us/products/openshift/){:target="_blank"} cluster, and many other supporting resources.
 
+{% if credentials_doc %}
+Click through to the [Credentials document]({{ credentials_doc }}){:target="_blank"} and claim a username/password by putting your name next to it in the **Participant** column.
+{% endif %}
+
 To access your working environment, you'll need to log into the [Microsoft Azure portal](https://portal.azure.com){:target="_blank"}.  Use your provided username with `@rhcsbb.onmicrosoft.com`. If you use the Azure portal regularly and it already knows a set of credentials for you, it's probably a good idea to use an Incognito window for this task, it should obviate the need to log out of an existing session.
 
 When prompted, you'll log in with the credentials provided by the workshop team.
@@ -111,7 +115,7 @@ When your shell is ready and you are at the bash prompt, run the following comma
 1. Run the prepared workshop setup script
 
     ```bash
-    ./clouddrive/setup.sh
+    ~/clouddrive/setup.sh
     ```
 {%- else %}
 1. Download the prepared workshop setup script

@@ -98,6 +98,18 @@ Before we can create an ARO cluster, we need to setup the resource group and vir
     ```
 {% endif %}
 
+
+{% if not precreated_clusters %}
+
+1. Check what versions of ARO are available
+
+    ```bash
+    ARO_VERSION=$(az aro get-versions --location "${AZ_LOCATION}" \
+      --query "[?contains(@,'{{ aro_version }}')]" --output tsv)
+    echo "${ARO_VERSION}"
+    ```
+
+
 6. Create the cluster
 
     !!! warning "Don't forget to update the pull secret location if its not in the default location. This command will take between 30 and 45 minutes."
@@ -109,6 +121,7 @@ Before we can create an ARO cluster, we need to setup the resource group and vir
       --vnet "${AZ_USER}-vnet" \
       --master-subnet "${AZ_USER}-cp-subnet" \
       --worker-subnet "${AZ_USER}-machine-subnet" \
+      --version "${ARO_VERSION}" \
 {%- if redhat_led %}
       --pull-secret @~/clouddrive/pullsecret.txt
 {%- else %}
@@ -117,3 +130,7 @@ Before we can create an ARO cluster, we need to setup the resource group and vir
     ```
 
     While the cluster is being created, let's learn more about what you will be doing in this workshop.
+{% else %}
+
+1. The ARO cluster has been pre-created for you.  Please skip to the next section to verify access.
+{% endif %}
