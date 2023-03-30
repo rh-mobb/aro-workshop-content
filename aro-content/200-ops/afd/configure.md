@@ -172,7 +172,7 @@
 
     !!! info
 
-        Watch will refresh the output of a command every second. Hit CTRL and c on your keyboard to exit the watch command when you're ready to move on to the next part of the workshop.
+        Watch will refresh the output of a command every two seconds. Hit CTRL and c on your keyboard to exit the watch command when you're ready to move on to the next part of the workshop.
 
     When the output of watch returns *Approved*, you are safe to proceed to the next step.
 
