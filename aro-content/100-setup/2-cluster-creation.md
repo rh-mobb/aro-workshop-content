@@ -12,7 +12,7 @@ You should see something like the following, if not make sure you ran `. ~/.work
 AZ_USER=username
 AZ_RG=username-rg
 AZ_ARO=username-cluster
-AZ_LOCATION=eastus
+AZ_LOCATION={{ azure_region }}
 ```
 
 ### Resource Group and Networking

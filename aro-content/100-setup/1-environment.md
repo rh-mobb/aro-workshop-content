@@ -28,10 +28,10 @@ When prompted, you'll log in with the credentials provided by the workshop team.
 
 Azure Red Hat OpenShift requires a minimum of 40 cores to create and run an OpenShift cluster. The default Azure resource quota for a new Azure subscription is 10 and does not meet this requirement. Therefore, you have to increase your quota from 10 to a minimum of 40. To request an increase in your resource limit, please consult the Microsoft document titled [Increase VM-family vCPU](https://docs.microsoft.com/en-us/azure/azure-portal/supportability/per-vm-quota-requests){:target="_blank"} quotas.
 
-You can verify your quota with the following command (change `eastus` to match the Azure Region you plan on deploying to).
+You can verify your quota with the following command (change `{{ azure_region }}` to match the Azure Region you plan on deploying to).
 
 ```bash
-az vm list-usage -l eastus \
+az vm list-usage -l {{ azure_region }} \
     --query "[?contains(name.value, 'standardDSv3Family')]" \
     -o table
 ```
@@ -81,7 +81,7 @@ Azure Cloud Shell is an interactive, authenticated, browser-accessible shell for
     | Option     | Value                               | Example |
     | ----------- | ------------------------------------ | -------- |
     | Subscription       | **Red Hat Cloud Services Workshops**  | N/A |
-    | Cloud Shell region       | **eastus**                 | N/A |
+    | Cloud Shell region       | **{{ azure_region }}**                 | N/A |
     | Show VNET isolation settings    | *Leave Unchecked* | N/A |
     | Resource group       | **cloudshell** (Select *Use Existing* Button) | **cloudshell** |
     | Storage account       | **workshop#####** (Select *Use Existing* Button) | **workshop9befafc2** |
