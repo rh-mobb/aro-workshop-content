@@ -10,13 +10,13 @@ repo_url: https://github.com/rh-mobb/aro-workshop-content
 
 # these values will be injected into the workshop
 extra:
-  redhat_led: true
+  redhat_led: false
   precreated_clusters: false
-  aro_version: 4.11
+  aro_version: 4.10
   workshop_dir: ~/aro-workshop
-  azure_region: westus
+  azure_region: eastus
   # acs_url: https://central-stackrox.apps.xxxxx.eastus.aroapp.io/
-  credentials_doc: https://docs.google.com/spreadsheets/d/16yUIYeDH6YJatQEQdUcODb9XVoy8TpY27QHHiWD1B-0/edit#gid=0
+  credentials_doc:
 
 # Nav Menu Definition
 nav:
