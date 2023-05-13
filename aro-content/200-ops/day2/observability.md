@@ -171,6 +171,15 @@ User Workload Metrics is a Prometheus stack that runs in the cluster that can co
       --set "enableUserWorkloadMetrics=true"
     ```
 
+1. Validate Grafana is accessible, by fetching it's Route and browsing to it with your web browser.
+
+    ```bash
+    oc -n custom-logging get route grafana-route \
+      -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+    ```
+
+    !!! warning "If your browser displays an error that says *'Application is not available'* wait a minute and try again. If it persists you've hit a race condition with certificate creation. Run `helm delete -n custom-logging aro-thanos-af` and then rerun the previous command to redeploy the Chart, and hopefully not hit the race condition a second time."
+
 1. Deploy Helm Chart to enable Cluster Log forwarding to Azure
 
     ```bash

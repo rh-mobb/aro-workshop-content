@@ -105,7 +105,7 @@ Before we can create an ARO cluster, we need to setup the resource group and vir
 
     ```bash
     ARO_VERSION=$(az aro get-versions --location "${AZ_LOCATION}" \
-      --query "[?contains(@,'{{ aro_version }}')]" --output tsv)
+      --query "[?contains(@,'{{ aro_version }}')] | [0]" --output tsv)
     echo "${ARO_VERSION}"
     ```
 
