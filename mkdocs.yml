@@ -21,9 +21,10 @@ extra:
 # Nav Menu Definition
 nav:
   - Welcome: index.md
-  - Environment Setup: 100-setup/1-environment.md
-  - Create ARO Cluster: 100-setup/2-cluster-creation.md
-  - Access Your Cluster: 100-setup/3-access-cluster.md
+  - Accessing the Workshop:
+    - Environment Setup: 100-setup/1-environment.md
+  #- Create ARO Cluster: 100-setup/2-cluster-creation.md
+    - Access Your Cluster: 100-setup/3-access-cluster.md
   - Day Two ARO Operations:
     - Configuring cluster authentication: 200-ops/idp/aad.md
     - Managing Cluster Upgrades: 200-ops/day2/upgrades.md
@@ -33,21 +34,22 @@ nav:
     - Forward Metrics and Logs to Azure Files: 200-ops/day2/observability.md
   - Deploy and Expose an App:
     - Deploy the App: 300-app/deploy.md
+    - Make the App Resilient: 300-app/resilience.md
     # - Expose the App with Front Door: 300-app/afd.md
-    - Using OpenShift GitOps: 300-app/gitops.md
-    - Restrict Network Access: 300-app/networkpolicy.md
-    - Automate Deploying the App with Tekton: 300-app/pipelines.md
-  - Make an App Resilient: 300-app/resilience.md
-  # - Advanced Cluster Security: 600-acs/1-cluster-install.md
-  - Service Mesh:
-    - Service Mesh: 500-service-mesh/introduction.md
-    - Deploy Service Mesh Operator: 500-service-mesh/install.md
-    - Deploy Control Plane: 500-service-mesh/deploy-control-plane.md
-    - Deploy Workloads: 500-service-mesh/deploy-workload.md
-    - Deploy Weighted Load Balancing: 500-service-mesh/weighted-routing.md
-    - Access Kiali Dashboard: 500-service-mesh/kiali.md
-  - Conclusion:
-    - Clean Up: finish.md
+  #   - Using OpenShift GitOps: 300-app/gitops.md
+  #   - Restrict Network Access: 300-app/networkpolicy.md
+  #   - Automate Deploying the App with Tekton: 300-app/pipelines.md
+  
+  # # - Advanced Cluster Security: 600-acs/1-cluster-install.md
+  # - Service Mesh:
+  #   - Service Mesh: 500-service-mesh/introduction.md
+  #   - Deploy Service Mesh Operator: 500-service-mesh/install.md
+  #   - Deploy Control Plane: 500-service-mesh/deploy-control-plane.md
+  #   - Deploy Workloads: 500-service-mesh/deploy-workload.md
+  #   - Deploy Weighted Load Balancing: 500-service-mesh/weighted-routing.md
+  #   - Access Kiali Dashboard: 500-service-mesh/kiali.md
+  # - Conclusion:
+  #   - Clean Up: finish.md
 
 ## Unused/Archived sections
   # - Azure Service Operator (ASO):
