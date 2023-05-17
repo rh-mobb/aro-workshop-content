@@ -1,3 +1,7 @@
+---
+hide:
+  - toc
+---
 ![Azure Red Hat OpenShift (ARO) Hands-on workshop](./assets/images/summit-aro-header.png){ align=center }
 Welcome to the Azure Red Hat OpenShift (ARO) Hands-on workshop at Red Hat Summit and the OpenShift Commons Gathering! During this event, Red Hat Cloud Services experts will guide you through the ARO architecture and will answer your questions. 
 
