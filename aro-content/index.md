@@ -1,21 +1,15 @@
-<!-- ![home-page-image](./assets/images/home-page.png){ align=center } -->
+![Azure Red Hat OpenShift (ARO) Hands-on workshop](./assets/images/summit-aro-header.png){ align=center }
+Welcome to the Azure Red Hat OpenShift (ARO) Hands-on workshop at Red Hat Summit and the OpenShift Commons Gathering! During this event, Red Hat Cloud Services experts will guide you through the ARO architecture and will answer your questions. 
 
-## Overview
-Join Red Hat® for a self paced hands-on workshop with Azure Red Hat OpenShift® (ARO). <!--During the workshop, Red Hat Cloud Services experts will guide you through the ARO architecture, and will answer your questions. -->
+**Who should attend:** This 2 hour long, in-person workshop is ideal for developers, architects, operators, and platform engineers who need a flexible and proven platform to build, deploy and scale applications.
 
-<!--
+**What to expect:** During the workshop, we will take you through a series of content to help you understand some of the concepts of deploying container-based applications on ARO and how to operate an ARO cluster. We will cover the following:
 
-**Who should attend:** This full-day, in-person workshop is ideal for developers, architects and operations engineers who need a flexible and proven platform to build, deploy and scale applications.
--->
-
-**What to expect:** During the workshop, we will take you through a series of content to help you learn how to deploy ARO, configure it, and securely deploy appplications to it using cloud based backing services such as Azure Container Registry and Azure Postgres.
-
-During this hands on workshop we will cover the following:
-
-- Deploying Azure Red Hat OpenShift clusters
-- Perform Day 2 operations tasks such as configuring node and cluster scaling policies, configuring managed upgrades, and using labels for deterministic app placement on nodes
-<!-- - Learn how to leverage the built in Observability tooling -->
-- Deploy an application to ARO, and then automate it using OpenShift GitOps and OpenShift Pipelines using modern tooling and practices.
-- Make an application on OpenShift scalable and resistant to node failures and upgrades
+- Complete multiple day 2 operations tasks including: 
+    * Configuring node and cluster scaling policies
+    * Configuring managed upgrades
+    * Configuring single-sign-on for the cluster using Azure Active Directory
+    * Configuring metrics and log forwarding to Azure Files
+- Deploy an application using native OpenShift tooling, and use labels for deterministic app placement on nodes.
 - Deploy an application that uses an Azure Managed Database
-- Learn how to use OpenShift Service Mesh for application observability and tracing
+- Make an application scalable and resistant to node failures and upgrades
