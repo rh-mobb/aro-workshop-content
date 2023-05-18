@@ -1,3 +1,7 @@
+## Objective
+
+Nodes labeling can help you to identify and manage your nodes better. Here we will learn how to label your nodes and then run your app on them.  
+
 ## Introduction
 
 Labels are a useful way to select which nodes that an application will run on. These nodes are created by machines which are defined by the MachineSets we worked with in previous sections of this workshop. An example of this would be running a memory intensive application only on a specific node type.

@@ -1,3 +1,9 @@
+## Objective
+
+Resiliency is another important factor in your architecture design that you would want to pay special attention to. Here you will learn how we go about ensuring that your app is resilient. 
+
+## Introduction
+
 ARO is designed with high availablity and resiliency in mind. Within ARO there are multiple tools at your disposal to leverage this highly available and resilient architecture to ensure maximum uptime and availablity for your applications. Disruptions can occur for a variety of different reasons, but with proper configuration of the application, you can eliminate application disruption.  
 
 Limits and Requests can be used to both allocate and restrict the amount of resources an application can use, pod disruption budgets ensure that you always have a particular number of your application pods running and the Horizontal Pod Autoscaler can automatically increase and decrease pod count as needed. 

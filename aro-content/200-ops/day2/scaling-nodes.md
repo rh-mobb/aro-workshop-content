@@ -1,3 +1,7 @@
+## Objective
+
+Scalability is another essential aspect that you will want to consider for your infrastructure architecture. Here you will learn how to scale your nodes, in this case your worker nodes, up and down to meet the workload demands. 
+
 ## Introduction
 
 When deploying your Azure Red Hat OpenShift (ARO) cluster, you can configure many aspects of your worker nodes, but what happens when you need to change your worker nodes after they've already been created? These activities include scaling the number of nodes, changing the instance type, adding labels or taints, just to name a few.

@@ -1,3 +1,7 @@
+## Objective
+
+Now that you understand the environment setup and the resources we created in advance, let's login to your precreated cluster. Here you will learn how to access the cluster via OpenShift console and CLI.
+
 ## Access the OpenShift Console and CLI
 
 ### Login to the OpenShift Web Console

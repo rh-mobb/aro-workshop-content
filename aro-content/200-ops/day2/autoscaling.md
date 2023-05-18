@@ -1,3 +1,7 @@
+## Objective
+
+Now that you understand how to scale your worker nodes up and down, let's learn how to scale your cluster using MachineAutoscaler and ClusterAutoscaler. This is different from just scaling your worker nodes as this one rather scales your cluster, which includes the worker nodes. 
+
 ## Introduction
 
 The cluster autoscaler adjusts the size of an Azure Red Hat OpenShift (ARO) cluster to meet the resource needs of the cluster. The cluster autoscaler increases the size of the cluster when there are pods that fail to schedule on any of the current worker nodes due to insufficient resources or when another node is necessary to meet deployment needs. The cluster autoscaler does not increase the cluster resources beyond the limits that you specify. To learn more about cluster autoscaling, visit the [Red Hat documentation for cluster autoscaling](https://docs.openshift.com/container-platform/latest/machine_management/applying-autoscaling.html){:target="_blank"}.

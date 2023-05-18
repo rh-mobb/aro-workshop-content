@@ -1,4 +1,9 @@
-# Configure Metrics and Log Forwarding to Azure Files
+## Objective
+
+Understanding metrics and logs is critical in successfully running your cluster. You will want to be able to easily interpret them as well and this is typically done and viewed from a dashboard. So here we will learn how to deploy the operators needed to enable this and allowing you to view them in Grafana. 
+
+
+## Configure Metrics and Log Forwarding to Azure Files
 
 OpenShift stores logs and metrics inside the cluster by default, however it also provides tooling to forward both to various locations. Here we will configure ARO
 to forward logs and metrics to Azure Files and use Grafana to view them.
