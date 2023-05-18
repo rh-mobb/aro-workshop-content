@@ -121,3 +121,14 @@ Now let's scale the cluster back down to a total of 3 worker nodes, but this tim
     ![Web Console - MachineSets Edit Count](/assets/images/web-console-machinesets-edit-count.png){ align=center }
 
 Congratulations! You've successfully scaled your cluster up and back down to three nodes.
+
+### Summary and Next Steps
+
+Here you learned how to:
+
+* Scale worker nodes via CLI.
+* Scale worker nodes via console. 
+
+Next, you will learn how to:
+
+* Create machine and cluster autoscaler. 

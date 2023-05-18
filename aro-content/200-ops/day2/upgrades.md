@@ -94,3 +94,14 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
     ```
 
     Congratulations! You've successfully scheduled an upgrade of your cluster for tomorrow at this time. While the workshop environment will be deleted before then, you now have the experience to schedule upgrades in the future.
+
+### Summary and Next Steps
+
+Here you learned how to:
+
+* Upgrade your cluster using OpenShift Web Console.
+* Upgrade your cluster using Managed Upgrade Operator. 
+
+Next, you will learn how to:
+
+* Scale the worker nodes via CLI and console. 

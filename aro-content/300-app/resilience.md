@@ -244,3 +244,12 @@ In this exercise we will scale the `microsweeper-appservice` application based o
     microsweeper-appservice-cpu   Deployment/microsweeper-appservice   0%/50%     2         4         4          19m
     microsweeper-appservice-cpu   Deployment/microsweeper-appservice   0%/50%     2         4         2          20m
     ```
+
+### Summary
+
+Here you learned how to:
+
+* Ensure that your app is resilient to node failure.
+* Utilize Pod Disruption Budget and Horizontal Pod Autoscaler to scale your pods.
+
+Thank you and congratulations on completing the workshop!!

@@ -138,3 +138,14 @@ When your shell is ready and you are at the bash prompt, run the following comma
     ```bash
     . ~/.workshoprc
     ```
+
+### Summary and Next Steps
+
+Here you learned:
+
+* What the Azure and Red Hat requirements are for ARO cluster.
+* How to access your environment via Azure Cloud Shell.
+
+Next, you will learn how to:
+
+* Access your ARO cluster. 

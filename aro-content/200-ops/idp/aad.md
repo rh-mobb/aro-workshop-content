@@ -140,3 +140,14 @@ In this section of the workshop, we'll configure Azure AD as the cluster identit
 1. Logout from your OCP Console and browse back to the Console URL (`echo $OCP_CONSOLE` if you have forgotten it) and you should see a new option to login called `AAD`. Select that, and log in using your workshop Azure credentials.
 
     !!! warning "If you do not see a new **AAD** login option, wait a few more minutes as this process can take a few minutes to deploy across the cluster and revisit the Console URL."
+
+### Summary and Next Steps
+
+Here you learned how to:
+
+* Configure your Azure AD application.
+* Configure your cluster to use Azure AD for authentication. 
+
+Next, you will learn how to:
+
+* Manage your cluster upgrades. 
