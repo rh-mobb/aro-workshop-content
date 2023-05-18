@@ -7,6 +7,10 @@ Your Azure Red Hat OpenShift (ARO) cluster has a built-in OAuth server. Develope
 
 In this section of the workshop, we'll configure Azure AD as the cluster identity provider in Azure Red Hat OpenShift.
 
+The following diagram illustrates the ARO cluster IDP authentication using Azure AD
+
+![aro_idp_aad](../../assets/images/aro_idp_aad.png){ align=center }
+
 ## Configure our Azure AD application
 
 1. First, we need to determine the OAuth callback URL, which we will use to tell Azure AD where it should send authentication responses. To do so, run the following command:
