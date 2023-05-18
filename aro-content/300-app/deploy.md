@@ -261,3 +261,14 @@ Next, click on the pool that ends in 443.
 
 Notice the *Backend pool*. This is the subnet that contains all the worker nodes. And the best part is all of this came with Azure Red Hat OpenShift out of the box!
 ![Azure Portal - Load Balancer Backend Pool](../assets/images/azure-portal-lb-backend-pool.png)
+
+### Summary and Next Steps
+
+Here you learned how to:
+
+* Create Azure Database for PostgreSQL instance.
+* Build and deploy the Microsweeper app. 
+
+Next, you will learn how to:
+
+* Make your app resilient to node failure. 

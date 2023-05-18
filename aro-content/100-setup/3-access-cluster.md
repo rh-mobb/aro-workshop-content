@@ -86,3 +86,14 @@ Now that you're logged into the cluster's console, return to your Azure Cloud Sh
     ```
 
     Congratulations, you're now logged into the cluster and ready to move on to the workshop content.
+
+### Summary and Next Steps
+
+Here you learned how to:
+
+* Access your precreated cluster.
+* Login to your cluster via OpenShift CLI. 
+
+Next, you will learn:
+
+* What to do on Day Two ARO Operations starting with configuring cluster authentication. 

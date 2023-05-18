@@ -235,3 +235,14 @@ Now that the Metrics and Log forwarding is set up we can view them in Grafana.
 1. Click the Explore (compass) Icon in the left hand menu, select “Loki (Application)” in the dropdown and search for `{kubernetes_namespace_name="custom-logging"}`
 
     ![](../Images/grafana-logs.png)
+
+### Summary and Next Steps
+
+Here you learned how to:
+
+* Configure metrics and log forwarding to Azure Files.
+* View the metrics in Grafana dashboard. 
+
+Next, you will learn how to:
+
+* Deploy your cluster and make your app resilient. 

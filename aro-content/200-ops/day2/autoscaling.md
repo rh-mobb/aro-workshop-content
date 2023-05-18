@@ -196,3 +196,14 @@ Now let's test the cluster autoscaler and see it in action. To do so, we'll depl
 
 
 Congratulations! You've successfully demonstrated cluster autoscaling.
+
+### Summary and Next Steps
+
+Here you learned how to:
+
+* Create and configure machine autoscaler.
+* Create and test cluster autoscaler. 
+
+Next, you will learn how to:
+
+* Label your nodes and deploy your app to the labeled nodes. 
