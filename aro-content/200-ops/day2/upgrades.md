@@ -1,3 +1,7 @@
+## Objective
+
+Upgrading your cluster is key to successfully run a secure platform. Here you will learn how to configure the upgrades for your ARO cluster. 
+
 ## Introduction
 
 Azure Red Hat OpenShift (ARO) provides fully-managed cluster updates. These updates can be triggered from inside the OpenShift Console, or scheduled in advance by utilizing the Managed Upgrade Operator. All updates are monitored and managed by the Red Hat and Microsoft ARO SRE team.
