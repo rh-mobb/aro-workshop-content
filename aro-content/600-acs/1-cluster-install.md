@@ -70,8 +70,8 @@ The RHACS Central instance is configured to use SSO, so the Azure credentials th
     helm install -n stackrox --create-namespace stackrox-secured-cluster-services \
       rhacs/secured-cluster-services \
       -f ~/clouddrive/acs-bundle.yaml \
-      -f <downloaded_helm_values_file>
-
+      -f <downloaded_helm_values_file> \
+      --set "createUpgraderServiceAccount=true"
     ```
 
 1. This will create a number of resources on the target cluster in relatively short order. The RHACS console may or may not immediately update indicating that the target cluster is reporting, so the first step in validation is to run an `oc` command in Cloud Shell:
