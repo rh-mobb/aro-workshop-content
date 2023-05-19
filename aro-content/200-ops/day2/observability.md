@@ -183,7 +183,17 @@ User Workload Metrics is a Prometheus stack that runs in the cluster that can co
       -o jsonpath='{"https://"}{.spec.host}{"\n"}'
     ```
 
-    !!! warning "If your browser displays an error that says *'Application is not available'* wait a minute and try again. If it persists you've hit a race condition with certificate creation. Run `helm delete -n custom-logging aro-thanos-af` and then rerun the previous command to redeploy the Chart, and hopefully not hit the race condition a second time."
+    !!! warning
+        If your browser displays an error that says *'Application is not available'* wait a minute and try again. If it persists you've hit a race condition with certificate creation. Run the following command to try to resolve it
+
+        ```bash
+        oc patch -n custom-logging service grafana-alert -p '{ "metadata": { "annotations": null }}'
+        oc -n custom-logging delete secret aro-thanos-af-grafana-cr-tls
+        oc patch -n custom-logging service grafana-service \
+          -p '{"metadata":{"annotations":{"retry": "true" }}}'
+        sleep 5
+        oc -n custom-logging rollout restart deployment grafana-deployment
+        ```
 
 1. Deploy Helm Chart to enable Cluster Log forwarding to Azure
 
