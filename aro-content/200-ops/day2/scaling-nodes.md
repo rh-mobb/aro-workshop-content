@@ -4,6 +4,8 @@ When deploying your Azure Red Hat OpenShift (ARO) cluster, you can configure man
 
 Many of these changes are done using MachineSets. MachineSets ensure that a specified number of Machine replicas are running at any given time. Think of a MachineSet as a "template" for the kinds of Machines that make up the worker nodes of your cluster. These are similar to other Kubernetes resources, like a ReplicaSet is to Pods. One important caveat, is that MachineSets allow users to manage many Machines as a single entity, but are contained to a specific availability zone. If you'd like to learn more, see the [Red Hat documentation on machine management](https://docs.openshift.com/container-platform/latest/machine_management/index.html){:target="_blank"}.
 
+![scale_machinesets](../../assets/images/scale_machinesets.png){ align=center }
+
 ## Scaling worker nodes
 ### Via the CLI
 
