@@ -1,12 +1,12 @@
-## Objective
+## Introduction
 
-Now that you understand the environment setup and the resources we created in advance, let's login to your precreated cluster. Here you will learn how to access the cluster via OpenShift console and CLI.
+Now that you understand the environment setup and the resources we created in advance, let's login to your pre-created cluster. Here you will learn how to access the cluster via the OpenShift Web Console and CLI.
 
 ## Access the OpenShift Console and CLI
 
 ### Login to the OpenShift Web Console
 
-1. Make sure your cluster is ready
+1. First, let's ensure your cluster is ready by running the following command:
 
     ```bash
     az aro show \
@@ -21,7 +21,7 @@ Now that you understand the environment setup and the resources we created in ad
     Succeeded
     ```
 
-1. First, let's configure your workshop environment with our helper variables. To do so, let's run the following command:
+1. Next, let's configure your workshop environment with our helper variables. To do so, let's run the following command:
 
     ```bash
     cat << EOF >> ~/.workshoprc
@@ -95,9 +95,5 @@ Now that you're logged into the cluster's console, return to your Azure Cloud Sh
 
 Here you learned how to:
 
-* Access your precreated cluster.
+* Access your pre-created cluster.
 * Login to your cluster via OpenShift CLI. 
-
-Next, you will learn:
-
-* What to do on Day Two ARO Operations starting with configuring cluster authentication. 

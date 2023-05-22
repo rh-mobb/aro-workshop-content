@@ -1,19 +1,16 @@
-# Configuring Azure AD for Cluster authentication
-<!-- taken from here - https://mobb.ninja/docs/idp/azuread-aro-cli/ -->
+## Introduction
 
-!!! warning "In order to complete these steps you need permission to create Azure AD Applications, and other Administrative level permissions. If you do not have Admin access in your Azure tenant, you may want to skip this section. If you're not sure you can proceed, if you get any errors, again, just move on to the next section."
+[Azure Active Directory](https://azure.microsoft.com/en-us/products/active-directory){:target="_blank"} is a fully managed authentication, authorization, and user management service provided by Microsoft Azure. It simplifies the process of adding user sign-up, sign-in, and access control to your ARO Cluster. Integrating your ARO cluster with Azure Active Directory simplifies user authentication, provides secure access control, supports federated identity and SSO, and enables centralized user management and audit trails. 
 
-## Objective
+As part of the Access Your Cluster page, we utilized a temporary cluster-admin user using the `az aro list-credentials` command. This uses a local identity provider to allow you to access the cluster. In this section of the workshop, we'll configure Azure Active Directory as the cluster identity provider in your ARO cluster.
 
-Authentication is a critical part of cloud security posture. So now that you are logged in to your cluster, we will configure an identity provider, in this case we will use Azure AD for this workshop, to authenticate users accessing your ARO cluster. We will then configure the cluster to use Azure AD for authentication.
+Your ARO cluster has a built-in OAuth server. Developers and administrators do not really directly interact with the OAuth server itself, but instead interact with an external identity provider (such as Azure Active Directory) which is brokered by the OAuth server in the cluster. To learn more about cluster authentication, visit the [Red Hat documentation for identity provider configuration](https://docs.openshift.com/container-platform/latest/authentication/understanding-identity-provider.html){:target="_blank"} and the [Microsoft documentation for configuring Azure Active Directory authentication for ARO](https://learn.microsoft.com/en-us/azure/openshift/configure-azure-ad-cli){:target="_blank"}.
 
-Your Azure Red Hat OpenShift (ARO) cluster has a built-in OAuth server. Developers and administrators do not really directly interact with the OAuth server itself, but instead interact with an external identity provider (such as Azure AD) which is brokered by the OAuth server in the cluster. To learn more about cluster authentication, visit the [Red Hat documentation for identity provider configuration](https://docs.openshift.com/container-platform/latest/authentication/understanding-identity-provider.html){:target="_blank"} and the [Microsoft documentation for configuring Azure Active Directory authentication for ARO](https://learn.microsoft.com/en-us/azure/openshift/configure-azure-ad-cli){:target="_blank"}.
+The following diagram illustrates the ARO authentication process for a cluster configured with Azure Active Directory.
 
-In this section of the workshop, we'll configure Azure AD as the cluster identity provider in Azure Red Hat OpenShift.
+![Flow chart illustrating the ARO authentication process for a cluster configured with Azure Active Directory](../../assets/images/aro_idp_aad.png){ align=center }
 
-The following diagram illustrates the ARO cluster IDP authentication using Azure AD
-
-![aro_idp_aad](../../assets/images/aro_idp_aad.png){ align=center }
+To learn more about cluster authentication, visit the [Red Hat documentation for identity provider configuration](https://docs.openshift.com/container-platform/latest/authentication/understanding-identity-provider.html){:target="_blank"} and the [Microsoft documentation for configuring Azure Active Directory authentication for ARO](https://learn.microsoft.com/en-us/azure/openshift/configure-azure-ad-cli){:target="_blank"}.
 
 ## Configure our Azure AD application
 
@@ -155,7 +152,3 @@ Here you learned how to:
 
 * Configure your Azure AD application.
 * Configure your cluster to use Azure AD for authentication. 
-
-Next, you will learn how to:
-
-* Manage your cluster upgrades. 

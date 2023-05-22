@@ -1,106 +1,50 @@
-## Objective
+## Introduction
 
-Understanding metrics and logs is critical in successfully running your cluster. You will want to be able to easily interpret them as well and this is typically done and viewed from a dashboard. So here we will learn how to deploy the operators needed to enable this and allowing you to view them in Grafana. 
+Azure Red Hat OpenShift (ARO) clusters store log data inside the cluster by default. Understanding metrics and logs is critical in successfully running your cluster. Included with ARO is the OpenShift Cluster Logging Operator, which is intended to simplify log management and analysis within an ARO cluster, offering centralized log collection, powerful search capabilities, visualization tools, and integration with other other Azure systems like [Azure Files](https://azure.microsoft.com/en-us/products/storage/files). 
 
+In this section of the workshop, we'll configure ARO to forward logs and metrics to Azure Files and view them using Grafana.
 
 ## Configure Metrics and Log Forwarding to Azure Files
 
-OpenShift stores logs and metrics inside the cluster by default, however it also provides tooling to forward both to various locations. Here we will configure ARO
-to forward logs and metrics to Azure Files and use Grafana to view them.
-
-<!--
-## Configure User Workload Metrics
-
-User Workload Metrics is a Prometheus stack that runs in the cluster that can collect metrics from your applications.
-
-1. Enable user workload metrics
-
-    ```bash
-    cat << EOF | oc apply -f -
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: cluster-monitoring-config
-      namespace: openshift-monitoring
-    data:
-      config.yaml: |
-        enableUserWorkload: true
-        alertmanagerMain: {}
-        prometheusK8s: {}
-    EOF
-    ```
-
-1. Watch as the user workload prometheus is created
-
-    ```bash
-    oc -n openshift-user-workload-monitoring get pods --watch
-    ```
-
-    Once the output looks like this you can run `CTRL-C` and move on.
-
-    ```{.text .no-copy}
-    NAME                                  READY   STATUS    RESTARTS   AGE
-    prometheus-operator-58768d7cc-hp796   2/2     Running   0          47s
-    prometheus-user-workload-0            6/6     Running   0          45s
-    prometheus-user-workload-1            6/6     Running   0          45s
-    thanos-ruler-user-workload-0          3/3     Running   0          40s
-    thanos-ruler-user-workload-1          3/3     Running   0          40s
-    ```
-
-
-## Configure Cluster Log Forwarding to Azure Files
--->
-
-1. Create a Storage Account
+1. First, let's create our Azure Files storage account. To do so, run the following command:
 
     ```bash
     AZR_STORAGE_ACCOUNT_NAME="${AZ_USER}${UNIQUE}"
     az storage account create --name "${AZR_STORAGE_ACCOUNT_NAME}" -g "${AZ_RG}" --location "${AZ_LOCATION}" --sku Standard_LRS
     ```
 
-1. Fetch your storage account key
+1. Next, let's grab our storage account key. To do so, run the following command:
 
     ```bash
     AZR_STORAGE_KEY=$(az storage account keys list -g "${AZ_RG}" \
      -n "${AZR_STORAGE_ACCOUNT_NAME}" --query "[0].value" -o tsv)
     ```
 
-1. Create a storage bucket for logs
+1. Now, let's create a separate storage bucket for logs and metrics. To do so, run the following command: 
 
     ```bash
     az storage container create --name "aro-logs" \
       --account-name "${AZR_STORAGE_ACCOUNT_NAME}" \
       --account-key "${AZR_STORAGE_KEY}"
-    ```
-
-1. Create a storage bucket for metrics
-
-    ```bash
     az storage container create --name "aro-metrics" \
       --account-name "${AZR_STORAGE_ACCOUNT_NAME}" \
       --account-key "${AZR_STORAGE_KEY}"
     ```
 
-1. Deploy ElasticSearch CRDs (not used, but needed for a [bug workaround](https://access.redhat.com/solutions/6990588))
-
-    ```bash
-    oc create -f https://raw.githubusercontent.com/openshift/elasticsearch-operator/release-5.5/bundle/manifests/logging.openshift.io_elasticsearches.yaml
-    ```
-
-1. Set up the MOBB Helm Chart Repository
+1. Next, let's add the MOBB Helm Chart repository. To do so, run the following command:
 
     ```bash
     helm repo add mobb https://rh-mobb.github.io/helm-charts/
     helm repo update
     ```
 
-1. Create a project to deploy the Helm charts into
+1. Now, we need to create a project (namespace) to deploy our logging resources to. To create that, run the following command:
 
     ```bash
     oc new-project custom-logging
     ```
 
-1. Create list of Operators to install
+1. Next, we need to install a few operators to run our logging setup. These operators include the Red Hat Cluster Logging Operator, the Loki operator, the Grafana operator, and more. First, we'll create a list of all the operators we'll need to install by running the following command: 
 
     ```yaml
     cat <<EOF > clf-operators.yaml
@@ -143,7 +87,7 @@ User Workload Metrics is a Prometheus stack that runs in the cluster that can co
     EOF
     ```
 
-1. Deploy the Grafana, Cluster Logging, and Loki Operator from the file just created above using Helm
+1. Next, let's deploy the Grafana, Cluster Logging, and Loki operators from the file we just created above. To do so, run the following command:
 
     ```bash
     oc create ns openshift-logging
@@ -154,7 +98,7 @@ User Workload Metrics is a Prometheus stack that runs in the cluster that can co
       --values ./clf-operators.yaml
     ```
 
-1. Wait for the Operators to be installed
+1. Now, let's wait for the operators to be installed. 
 
     !!! info "These will loop through each type of resource until the CRDs for the Operators have been deployed. Eventually you'll see the message `No resources found in custom-logging namespace.` and be returned to a prompt."
 
@@ -165,7 +109,7 @@ User Workload Metrics is a Prometheus stack that runs in the cluster that can co
     while ! oc get resourcelocker; do sleep 5; echo -n .; done
     ```
 
-1. Deploy Helm Chart to deploy Grafana and forward metrics to Azure
+1. Now that the operators have been successfully installed, let's use a helm chart to deploy Grafana and forward metrics to Azure Files. To do so, run the following command:
 
     ```bash
     helm upgrade -n "custom-logging" aro-thanos-af \
@@ -176,7 +120,7 @@ User Workload Metrics is a Prometheus stack that runs in the cluster that can co
       --set "enableUserWorkloadMetrics=true"
     ```
 
-1. Validate Grafana is accessible, by fetching it's Route and browsing to it with your web browser.
+1. Next, let's ensure that we can access Grafana. To do so, we should fetch its route and try browsing to it with your web browser. To grab the route, run the following command:
 
     ```bash
     oc -n custom-logging get route grafana-route \
@@ -195,7 +139,7 @@ User Workload Metrics is a Prometheus stack that runs in the cluster that can co
         oc -n custom-logging rollout restart deployment grafana-deployment
         ```
 
-1. Deploy Helm Chart to enable Cluster Log forwarding to Azure
+1. Next, let's use another helm chart to deploy forward logs to Azure Files. To do so, run the following command:
 
     ```bash
     helm upgrade -n custom-logging aro-clf-blob \
@@ -205,16 +149,13 @@ User Workload Metrics is a Prometheus stack that runs in the cluster that can co
       --set "azure.storageContainer=aro-logs"
     ```
 
-1. Wait for the Log Collector agent to be started
+1. Once the Helm Chart deploys its resource, we need to wait for the Log Collector agent to be started. To watch its status, run the following command:
 
     ```bash
     oc -n openshift-logging rollout status daemonset collector
     ```
 
-1. Restart Log Collector
-
-    !!! info
-        Sometimes the log collector agent starts before the operator has finished configuring Loki, restarting it here will resolve.
+1. Occasionally, the log collector agent starts before the operator has finished configuring Loki. To proactively address this, we need to restart the agent. To do so, run the following command:
 
     ```bash
     oc -n openshift-logging rollout restart daemonset collector
@@ -230,20 +171,18 @@ User Workload Metrics is a Prometheus stack that runs in the cluster that can co
 
 ## View the Metrics and Logs
 
-Now that the Metrics and Log forwarding is set up we can view them in Grafana.
+Now that the metrics and log forwarding are forwarding to Azure Files, let's view them in Granfa.
 
-1. Fetch the Route for Grafana
+1. First, we'll need to fetch the route for Grafana and visit it in our web browser. To get the route, run the following command:
 
     ```bash
     oc -n custom-logging get route grafana-route \
       -o jsonpath='{"https://"}{.spec.host}{"\n"}'
     ```
 
-1. Browse to the provided route address in the same browser window as your OCP console and login using your OpenShift credentials (either AAD or kubeadmin).
+1. Once you get to the Grafana interface, you'll be redirected to login using your ARO credentials that you were given by the workshop team. Once you login, proceed with viewing an existing dashboard such as **custom-logging -> Node Exporter -> USE Method -> Cluster**.
 
-1. View an existing dashboard such as **custom-logging -> Node Exporter -> USE Method -> Cluster**.
-
-    !!! info "These dashboards are copies of the dashboards that are available directly on the OpenShift web console under **Observability**"
+    !!! info "These dashboards are copies of the dashboards that are available directly on the OpenShift Web Console under **Observability**"
 
     ![](../Images/grafana-metrics.png)
 
@@ -255,9 +194,5 @@ Now that the Metrics and Log forwarding is set up we can view them in Grafana.
 
 Here you learned how to:
 
-* Configure metrics and log forwarding to Azure Files.
-* View the metrics in Grafana dashboard. 
-
-Next, you will learn how to:
-
-* Deploy your cluster and make your app resilient. 
+* Configured metrics and log forwarding to Azure Files.
+* View the metrics and logs in a Grafana dashboard. 

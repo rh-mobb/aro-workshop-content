@@ -1,10 +1,6 @@
-## Objective
-
-Here we will learn how to deploy an app in your ARO cluster. Note that this is just an example of an app that we are going to deploy in this workshop, you can certainly deploy other apps in your own ARO cluster after completing the workshop.  
-
 ## Introduction
 
-It's time for us to put our cluster to work and deploy a workload. We're going to build an example Java application, [microsweeper](https://github.com/redhat-mw-demos/microsweeper-quarkus/tree/ARO){:target="_blank"}, using [Quarkus](https://quarkus.io/){:target="_blank"} (a Kubernetes Native Java stack) and [Azure Database for PostgreSQL](https://azure.microsoft.com/en-us/products/postgresql/){:target="_blank"}. We'll then deploy the application to our Azure Red Hat OpenShift cluster, connect to the database using Azure Private Link, and automate the deployment with OpenShift Pipelines.
+It's time for us to put our cluster to work and deploy a workload! We're going to build an example Java application, [microsweeper](https://github.com/redhat-mw-demos/microsweeper-quarkus/tree/ARO){:target="_blank"}, using [Quarkus](https://quarkus.io/){:target="_blank"} (a Kubernetes-native Java stack) and [Azure Database for PostgreSQL](https://azure.microsoft.com/en-us/products/postgresql/){:target="_blank"}. After configuring the database, we will use both Quarkus, a Kubernetes-native Java framework optimized for containers, and Source-to-Image (S2I), a toolkit for building container images from source code, to deploy the microsweeper application.
 
 ## Create Azure Database for PostgreSQL instance
 
@@ -14,8 +10,7 @@ It's time for us to put our cluster to work and deploy a workload. We're going t
     oc new-project microsweeper-ex
     ```
 
-1. Create the Azure Postgres Server resource. To do so, run the following command (this command will take ~ 5mins)
-
+1. Create the Azure Postgres Server resource. To do so, run the following command: (this command will take ~ 5mins)
 
     !!! warning "For the sake of the workshop we are creating a public database that any host in Azure can connect to. In a real world scenario you would create a private database and connect to it over a private link service"
 

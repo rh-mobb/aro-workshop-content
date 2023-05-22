@@ -1,7 +1,3 @@
-## Objective
-
-Nodes labeling can help you to identify and manage your nodes better. Here we will learn how to label your nodes and then run your app on them.  
-
 ## Introduction
 
 Labels are a useful way to select which nodes that an application will run on. These nodes are created by machines which are defined by the MachineSets we worked with in previous sections of this workshop. An example of this would be running a memory intensive application only on a specific node type.
@@ -150,11 +146,7 @@ Congratulations! You've successfully demonstrated the ability to label nodes and
 
 ### Summary and Next Steps
 
-Here you learned how to:
+Here you learned:
 
 * Set label for the MachineSets.
-* Deploy the app to the labeled MachineSets.
-
-Next, you will learn how to:
-
-* Configure metrics and logs to Azure Files and view them in Grafana. 
+* Deploy an application on nodes with certain labels 
