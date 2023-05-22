@@ -5,3 +5,6 @@ aro-content/app/.DS_Store
 virtualenv/*
 site/*
 .npm
+# prevent inadvertent publishing of credential pages
+aro-content/credentials/*
+!aro-content/credentials/.gitkeep
