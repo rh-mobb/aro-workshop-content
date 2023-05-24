@@ -1,6 +1,6 @@
 ## Introduction
 
-Now that you understand the environment setup and the resources we created in advance, let's login to your pre-created cluster. Here you will learn how to access the cluster via the OpenShift Web Console and CLI.
+{% if precreated_clusters %}Now that you understand the environment setup and the resources we created in advance, let's login to your pre-created cluster. Here you will learn how to access the cluster via the OpenShift Web Console and CLI.{% else %}Now that you've created your cluster, we need to login to it. Here you will learn how to access the cluster via the OpenShift Web Console and CLI.{% endif %}
 
 ## Access the OpenShift Console and CLI
 
@@ -95,5 +95,5 @@ Now that you're logged into the cluster's console, return to your Azure Cloud Sh
 
 Here you learned how to:
 
-* Access your pre-created cluster.
+* Access your {% if precreated_clusters %}pre-created{% else %}newly created{% endif %} cluster.
 * Login to your cluster via OpenShift CLI. 
