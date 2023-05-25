@@ -42,7 +42,7 @@
 
     ```bash
     oc apply -n bookinfo -f \
-      {{ config.site_url }}/assets/bookinfo.yaml
+      https://ws.mobb.cloud/assets/bookinfo.yaml
     ```
 
     You should see output similar to the following:
@@ -68,7 +68,7 @@
 
     ```bash
     oc apply -n bookinfo -f \
-      {{ config.site_url }}/assets/bookinfo-gateway.yaml
+      https://ws.mobb.cloud/assets/bookinfo-gateway.yaml
     ```
 
     You should see output similar to the following:
@@ -91,7 +91,7 @@
 
 ```bash
 oc apply -n bookinfo -f \
-  {{ config.site_url }}/assets/destination-rule-all.yaml
+  https://ws.mobb.cloud/assets/destination-rule-all.yaml
 ```
 
 You should see output similar to the following:
