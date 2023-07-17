@@ -1,8 +1,16 @@
 ## Introduction
 
-When deploying your Azure Red Hat OpenShift (ARO) cluster, you can configure many aspects of your worker nodes, but what happens when you need to change your worker nodes after they've already been created? These activities include scaling the number of nodes, changing the instance type, adding labels or taints, just to name a few.
+When deploying your ARO cluster, you can configure many aspects of your worker nodes, but what happens when you need to change your worker nodes after they've already been created? These activities include scaling the number of nodes, changing the instance type, adding labels or taints, just to name a few.
 
 Many of these changes are done using MachineSets. MachineSets ensure that a specified number of Machine replicas are running at any given time. Think of a MachineSet as a "template" for the kinds of Machines that make up the worker nodes of your cluster. These are similar to other Kubernetes resources, like a ReplicaSet is to Pods. One important caveat, is that MachineSets allow users to manage many Machines as a single entity, but are contained to a specific availability zone. If you'd like to learn more, see the [Red Hat documentation on machine management](https://docs.openshift.com/container-platform/latest/machine_management/index.html){:target="_blank"}.
+
+Here are some of the advantages of using ARO MachineSets to manage the size of your cluster
+
+* Scalability - MachineSets enables horizontal scaling of your cluster. It can easily add or remove worker to handle the changes in workload. This flexibility ensures that your cluster can dynamically scale to meet the needs of your applications
+* Infrastructure Diversity - MachineSets allow you to provision worker nodes of different instance type. This enables you you leverage the best kind of instance family for different workloads.
+* Integration with Cluster Autoscaler - MachineSets seamlessly integrate with the Cluster Autoscaler feature, which automatically adjusts the number of worker nodes based on the current demand. This integration ensures efficient resource utilization by scaling the cluster up or down as needed, optimizing costs and performance.
+
+![scale_machinesets](../../assets/images/scale_machinesets.png){ align=center }
 
 ## Scaling worker nodes
 ### Via the CLI
@@ -121,3 +129,10 @@ Now let's scale the cluster back down to a total of 3 worker nodes, but this tim
     ![Web Console - MachineSets Edit Count](/assets/images/web-console-machinesets-edit-count.png){ align=center }
 
 Congratulations! You've successfully scaled your cluster up and back down to three nodes.
+
+### Summary and Next Steps
+
+Here you learned how to:
+
+* Scaling an existing MachineSet up to add more nodes to the cluster
+* Scaling your MachineSet down to remove worker nodes from the cluster 

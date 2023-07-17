@@ -7,6 +7,10 @@ Your workshop environment consists of several components which have been pre-con
 Click through to the [Credentials document]({{ credentials_doc }}){:target="_blank"} and claim a username/password by putting your name next to it in the **Participant** column.
 {% endif %}
 
+### Objective
+
+For starter, let's learn about the environment you will be using for this workshop. This environment includes the resources that we have created in advance for your convenience. In addition, you will learn about the requirements needed to create an ARO cluster so you can spin up your own after completing the workshop.
+
 To access your working environment, you'll need to log into the [Microsoft Azure portal](https://portal.azure.com){:target="_blank"}.  Use your provided username with `@rhcsbb.onmicrosoft.com`. If you use the Azure portal regularly and it already knows a set of credentials for you, it's probably a good idea to use an Incognito window for this task, it should obviate the need to log out of an existing session.
 
 When prompted, you'll log in with the credentials provided by the workshop team.
@@ -138,3 +142,14 @@ When your shell is ready and you are at the bash prompt, run the following comma
     ```bash
     . ~/.workshoprc
     ```
+
+### Summary and Next Steps
+
+Here you learned:
+
+* What the Azure and Red Hat requirements are for ARO cluster.
+* How to access your environment via Azure Cloud Shell.
+
+Next, you will learn how to:
+
+* Access your ARO cluster. 

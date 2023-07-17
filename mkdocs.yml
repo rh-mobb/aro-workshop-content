@@ -1,5 +1,5 @@
 # Project Information
-site_name: ARO Workshop
+site_name: MOBB ARO Workshop
 site_url: https://ws.mobb.cloud/
 site_description: A workshop for Operations and Development teams on ARO.
 site_author: Red Hat
@@ -10,22 +10,22 @@ repo_url: https://github.com/rh-mobb/aro-workshop-content
 
 # these values will be injected into the workshop
 extra:
-  redhat_led: false
-  precreated_clusters: false
-  aro_version: 4.10
+  redhat_led: true
+  precreated_clusters: true
+  aro_version: 4.11
+  aro_upgrade_version: 4.11.39
   workshop_dir: ~/aro-workshop
   azure_region: eastus
-  # acs_url: https://central-stackrox.apps.xxxxx.eastus.aroapp.io/
-  credentials_doc:
 
 # Nav Menu Definition
 nav:
   - Welcome: index.md
-  - Environment Setup: 100-setup/1-environment.md
-  - Create ARO Cluster: 100-setup/2-cluster-creation.md
-  - Access Your Cluster: 100-setup/3-access-cluster.md
+  - Accessing the Workshop:
+    - Environment Setup: 100-setup/0-credentials.md
+    - Create ARO Cluster: 100-setup/2-cluster-creation.md
+    - Access Your Cluster: 100-setup/3-access-cluster.md
   - Day Two ARO Operations:
-    - Configuring cluster authentication: 200-ops/idp/aad.md
+    - Configuring Cluster Authentication: 200-ops/idp/aad.md
     - Managing Cluster Upgrades: 200-ops/day2/upgrades.md
     - Managing Worker Nodes: 200-ops/day2/scaling-nodes.md
     - Cluster Autoscaling: 200-ops/day2/autoscaling.md
@@ -33,21 +33,22 @@ nav:
     - Forward Metrics and Logs to Azure Files: 200-ops/day2/observability.md
   - Deploy and Expose an App:
     - Deploy the App: 300-app/deploy.md
-    # - Expose the App with Front Door: 300-app/afd.md
+    - Make the App Resilient: 300-app/resilience.md
+    - Expose the App with Front Door: 300-app/afd.md
     - Using OpenShift GitOps: 300-app/gitops.md
     - Restrict Network Access: 300-app/networkpolicy.md
     - Automate Deploying the App with Tekton: 300-app/pipelines.md
-  - Make an App Resilient: 300-app/resilience.md
-  # - Advanced Cluster Security: 600-acs/1-cluster-install.md
-  - Service Mesh:
-    - Service Mesh: 500-service-mesh/introduction.md
-    - Deploy Service Mesh Operator: 500-service-mesh/install.md
-    - Deploy Control Plane: 500-service-mesh/deploy-control-plane.md
-    - Deploy Workloads: 500-service-mesh/deploy-workload.md
-    - Deploy Weighted Load Balancing: 500-service-mesh/weighted-routing.md
-    - Access Kiali Dashboard: 500-service-mesh/kiali.md
-  - Conclusion:
-    - Clean Up: finish.md
+  
+  # # - Advanced Cluster Security: 600-acs/1-cluster-install.md
+  # - Service Mesh:
+  #   - Service Mesh: 500-service-mesh/introduction.md
+  #   - Deploy Service Mesh Operator: 500-service-mesh/install.md
+  #   - Deploy Control Plane: 500-service-mesh/deploy-control-plane.md
+  #   - Deploy Workloads: 500-service-mesh/deploy-workload.md
+  #   - Deploy Weighted Load Balancing: 500-service-mesh/weighted-routing.md
+  #   - Access Kiali Dashboard: 500-service-mesh/kiali.md
+  # - Conclusion:
+  #   - Clean Up: finish.md
 
 ## Unused/Archived sections
   # - Azure Service Operator (ASO):
@@ -69,8 +70,8 @@ theme:
   name: material
   language: 'en'
   palette:
-    primary: black
-    accent: red
+    primary: custom
+    accent: custom
   font:
     text: Overpass
     code: Overpass Mono
@@ -82,6 +83,16 @@ docs_dir: aro-content
 plugins:
 - section-index
 - macros
+- encryptcontent:
+    password_button: True
+    remember_password: True
+    password_button_text: 'Submit'
+    input_class: 'md-input'
+    button_class: 'md-button md-button--primary'
+    title_prefix: ''
+    summary: 'Welcome to the MOBB ARO Workshop!'
+    placeholder: 'Enter the password provided by the facilitator'
+    encryption_info_message: "To access your lab resources, including credentials, please enter the password provided by the facilitator."
 
 # Extensions
 markdown_extensions:

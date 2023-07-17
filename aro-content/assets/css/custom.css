@@ -1,1 +1,9 @@
 .highlight.no-copy .md-clipboard { display: none; }
+
+:root, [data-md-color-scheme=default] {
+    --md-primary-fg-color: #000000;
+    --md-primary-fg-color--dark: #4d4d4d;
+    --md-primary-fg-color--light: #4d4d4d;
+    --md-accent-fg-color:  #EE0000;
+    --md-typeset-a-color:  #EE0000;
+}

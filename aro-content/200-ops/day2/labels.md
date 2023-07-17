@@ -143,3 +143,10 @@ Now that we've successfully labeled our nodes, let's deploy a workload to demons
         The application is exposed over the default ingress using a predetermined URL and trusted TLS certificate. This is done using the OpenShift `Route` resource which is an extension to the Kubernetes `Ingress` resource.
 
 Congratulations! You've successfully demonstrated the ability to label nodes and target those nodes using `nodeSelector`.
+
+### Summary and Next Steps
+
+Here you learned:
+
+* Set label for the MachineSets.
+* Deploy an application on nodes with certain labels 

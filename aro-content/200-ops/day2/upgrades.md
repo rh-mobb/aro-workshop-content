@@ -1,8 +1,8 @@
 ## Introduction
 
-Azure Red Hat OpenShift (ARO) provides fully-managed cluster updates. These updates can be triggered from inside the OpenShift Console, or scheduled in advance by utilizing the Managed Upgrade Operator. All updates are monitored and managed by the Red Hat and Microsoft ARO SRE team.
+Azure Red Hat OpenShift (ARO) provides provides fully-managed cluster upgrades. These updates can be triggered from inside the OpenShift Web Console, or scheduled in advance by utilizing the Managed Upgrade Operator. The ARO Site Reliability Engineering (SRE) Team will monitor and manage all ARO cluster upgrades.
 
-For more information on how OpenShift's Upgrade Service works, please see the [Red Hat documentation](https://docs.openshift.com/container-platform/4.10/updating/index.html){:target="_blank"}.
+During ARO upgrades, one node is upgraded at a time. This is done to ensure customer applications are not impacted during the update, when deployed in a highly-available and fault-tolerant method.
 
 ## Upgrade using the OpenShift Web Console
 
@@ -18,15 +18,15 @@ For more information on how OpenShift's Upgrade Service works, please see the [R
 
     !!! warning "Upgrade channel is not configured by default"
 
-        By default, the [upgrade channel](https://docs.openshift.com/container-platform/4.10/updating/understanding-upgrade-channels-release.html){:target="_blank"} (which is used to recommend the appropriate release versions for cluster updates), is not set in ARO.
+        By default, the [upgrade channel](https://docs.openshift.com/container-platform/{{ aro_version }}/updating/understanding-upgrade-channels-release.html){:target="_blank"} (which is used to recommend the appropriate release versions for cluster updates), is not set in ARO.
 
-1. In the *Channel* field, enter `stable-4.10` to set the upgrade channel to the stable releases of OpenShift 4.10 and click *Save*.
+1. In the *Channel* field, enter `stable-{{ aro_version }}` to set the upgrade channel to the stable releases of OpenShift {{ aro_version }} and click *Save*.
 
     ![Web Console - Input Channel](/assets/images/web-console-input-channel.png){ align=center }
 
 1. In a moment, you'll begin to see what upgrades are available for your cluster. From here, you could click the *Select a version* button and upgrade the cluster, or you could follow the instructions below to use the Managed Upgrade Operator.
 
-    !!! warning "Do not perform an upgrade at this stage"
+    !!! warning "Do not perform an upgrade at this stage."
 
     ![Web Console - Available Upgrades](../../Images/aro-console-upgrade.png)
 
@@ -58,8 +58,6 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
 1. Next, let's use that information to populate a manifest for the Managed Upgrade Operator to use. To do so, run the following command:
 
     ```yaml
-    OCP_UPGRADE_TO=$(oc get clusterversion version -o \
-      jsonpath='{.status.availableUpdates[0].version}')
     cat <<EOF | oc apply -f -
     apiVersion: upgrade.managed.openshift.io/v1alpha1
     kind: UpgradeConfig
@@ -72,12 +70,12 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
       PDBForceDrainTimeout: 60
       capacityReservation: true
       desired:
-        channel: "stable-4.10"
-        version: "${OCP_UPGRADE_TO}"
+        channel: "stable-{{ aro_version }}"
+        version: "{{ aro_upgrade_version }}"
     EOF
     ```
 
-    This manifest will schedule an upgrade to 4.10.47 for 1 day from now, allow nodes which are blocked by PodDisruptionBudgets to drain for 60 minutes before a drain is forced, and sets a capacity reservation so that workloads are not interrupted during an upgrade.
+    This manifest will schedule an upgrade to {{ aro_upgrade_version }} for 1 day from now, allow nodes which are blocked by PodDisruptionBudgets to drain for 60 minutes before a drain is forced, and sets a capacity reservation so that workloads are not interrupted during an upgrade.
 
 1. Once created, we can see that the update is pending by running the following command:
 
@@ -90,7 +88,29 @@ Configuring the Managed Upgrade Operator for ARO ensures that your cluster funct
 
     ```{.text .no-copy}
     NAME                     DESIRED_VERSION   PHASE     ...
-    managed-upgrade-config   4.10.47           Pending
+    managed-upgrade-config   {{ aro_upgrade_version }}           Pending
     ```
 
     Congratulations! You've successfully scheduled an upgrade of your cluster for tomorrow at this time. While the workshop environment will be deleted before then, you now have the experience to schedule upgrades in the future.
+
+## Additional Resources
+
+### Red Hat OpenShift Upgrade Graph Tool
+Occasionally, you may be not be able to go directly from your current version to a desired version. In these cases, you must first upgrade your cluster from your current version, to an intermediary version, and then to your desired version. To help you navigate these decisions, you can take advantage of the [Red Hat OpenShift Upgrade Graph Tool](https://access.redhat.com/labs/ocpupgradegraph/update_path){:target="_blank"}. 
+
+![ARO Upgrade Graph Tool Screenshot](../../assets/images/aro_upgrade_graph.png){ align=center } 
+
+In this scenario to upgrade your cluster from version 4.11.0 to 4.12.15, you must first upgrade to 4.11.39, then you can upgrade to 4.12.15. The ARO Upgrade Graph Tool helps you easily see which version you should upgrade to. 
+
+### Links to Documentation
+- [Upgrade an Azure Red Hat OpenShift cluster](https://learn.microsoft.com/en-us/azure/openshift/howto-upgrade){:target="_blank"}
+- [Scheduling individual upgrades using the managed-upgrade-operator](https://learn.microsoft.com/en-us/azure/openshift/howto-upgrade#scheduling-individual-upgrades-using-the-managed-upgrade-operator){:target="_blank"}
+- [About the OpenShift Update Service](https://docs.openshift.com/container-platform/{{ rosa_version }}/updating/understanding-openshift-updates.html#update-service-about_understanding-openshift-updates){:target="_blank"}
+
+### Summary and Next Steps
+
+Here you learned:
+
+* All upgrades are monitored and managed by the ARO SRE Team
+* Use the OpenShift Web Console or the Managed Upgrade Operator to schedule an upgrade for your ARO cluster
+* Explore the OpenShift Upgrade Graph Tool to see available upgrade paths
