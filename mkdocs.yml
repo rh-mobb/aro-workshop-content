@@ -22,7 +22,7 @@ nav:
   - Welcome: index.md
   - Accessing the Workshop:
     - Environment Setup: 100-setup/0-credentials.md
-  #- Create ARO Cluster: 100-setup/2-cluster-creation.md
+    - Create ARO Cluster: 100-setup/2-cluster-creation.md
     - Access Your Cluster: 100-setup/3-access-cluster.md
   - Day Two ARO Operations:
     - Configuring Cluster Authentication: 200-ops/idp/aad.md
@@ -34,10 +34,10 @@ nav:
   - Deploy and Expose an App:
     - Deploy the App: 300-app/deploy.md
     - Make the App Resilient: 300-app/resilience.md
-    # - Expose the App with Front Door: 300-app/afd.md
-  #   - Using OpenShift GitOps: 300-app/gitops.md
+    - Expose the App with Front Door: 300-app/afd.md
+    - Using OpenShift GitOps: 300-app/gitops.md
     - Restrict Network Access: 300-app/networkpolicy.md
-  #   - Automate Deploying the App with Tekton: 300-app/pipelines.md
+    - Automate Deploying the App with Tekton: 300-app/pipelines.md
   
   # # - Advanced Cluster Security: 600-acs/1-cluster-install.md
   # - Service Mesh:
