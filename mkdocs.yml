@@ -12,7 +12,7 @@ repo_url: https://github.com/rh-mobb/aro-workshop-content
 extra:
   analytics:
     provider: google 
-    property: G-XXXXXXXXXX
+    property: G-82ZCQ697S8
   redhat_led: false
   precreated_clusters: false
   aro_version: 4.10
