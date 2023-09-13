@@ -76,6 +76,8 @@ theme:
     code: Overpass Mono
   logo: favicon.ico
   favicon: favicon.ico
+  analytics:
+    gtag: G-FXMLB9KVJH
 docs_dir: aro-content
 
 # plugins
