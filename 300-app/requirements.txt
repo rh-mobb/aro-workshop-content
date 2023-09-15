@@ -1,0 +1,21 @@
+A Public Cluster
+OpenShift Pipelines installed on the Cluster
+user has been given access to the internal registry.
+# Note: replace "<user>" with the identity you need to access the registry
+oc policy add-role-to-user -n openshift-image-registry registry-viewer <user>
+oc policy add-role-to-user -n openshift-image-registry registry-editor <user>
+
+A $USERID unique user / developer id
+
+A namespace for each developer - name should be the $USERID
+User should have project admin rights
+
+A $USERID acr instance in the same Resource Group as ARO
+
+$USERID Domain - see Front Door setup
+
+$USER-minesweeper-database instance on shared Postgresql Service
+
+User needs permissions to run:
+oc adm policy add-scc-to-user anyuid -z pipeline
+oc adm policy add-scc-to-user privileged -z pipeline

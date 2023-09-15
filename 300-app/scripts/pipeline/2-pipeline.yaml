@@ -1,0 +1,102 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: maven-pipeline
+spec:
+  params:
+  - name: dependency-git-url
+  - name: dependency-git-revision
+    default: main
+  - name: dependency-folder-name
+    default: dependency-source
+  - name: application-git-url
+  - name: application-git-revision
+    default: main
+  - name: application-folder-name
+    default: application-source
+  - name: dockerfile-path
+    default: "."
+  - name: application-name
+  - name: image-name
+  workspaces:
+  - name: source
+  tasks:
+  - name: dependency-git-clone
+    taskRef:
+      name: git-clone
+    params:
+    - name: url
+      value: $(params.dependency-git-url)
+    - name: revision
+      value: $(params.dependency-git-revision)
+    - name: subdirectory
+      value: $(params.dependency-folder-name)
+    workspaces:
+    - name: output
+      workspace: source
+  - name: application-git-clone
+    runAfter:
+      - dependency-git-clone
+    taskRef:
+      name: git-clone
+    params:
+    - name: url
+      value: $(params.application-git-url)
+    - name: revision
+      value: $(params.application-git-revision)
+    - name: subdirectory
+      value: $(params.application-folder-name)
+    workspaces:
+    - name: output
+      workspace: source
+  - name: maven-install-dependencies
+    runAfter:
+      - application-git-clone
+    taskRef:
+      name: maven
+    params:
+    - name: GOALS
+      value: ["-DskipTests","clean","install"]
+    - name: CONTEXT_DIR
+      value: $(params.dependency-folder-name)
+    workspaces:
+    - name: source
+      workspace: source
+  - name: build-application-image
+    runAfter:
+      - maven-install-dependencies
+    taskRef:
+      name: build-maven-image
+    params:
+    - name: GOALS
+      value: ["-DskipTests", "clean", "package"]
+    - name: IMAGE
+      value: $(params.image-name)":"$(tasks.application-git-clone.results.commit)
+    - name: CONTEXT
+      value: $(params.application-folder-name)
+    - name: DOCKERFILE
+      value: $(params.dockerfile-path)
+    workspaces:
+    - name: source
+      workspace: source
+  - name: apply-manifests
+    runAfter:
+    - build-application-image
+    taskRef:
+      name: apply-manifests
+    params:
+      - name: manifest_dir
+        value: k8s
+    workspaces:
+    - name: source
+      workspace: source
+  - name: update-deployment
+    runAfter:
+    - apply-manifests
+    taskRef:
+      name: update-deployment
+    params:
+    - name: deployment
+      value: $(params.application-name)
+    - name: IMAGE
+      value: $(params.image-name)

@@ -1,0 +1,54 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nodeselector-app
+  namespace: nodeselector-ex
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodeselector-app
+  template:
+    metadata:
+      labels:
+        app: nodeselector-app
+    spec:
+      nodeSelector:
+        tier: frontend
+      containers:
+        - name: hello-openshift
+          image: "docker.io/openshift/hello-openshift"
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8888
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodeselector-app
+  namespace: nodeselector-ex
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: nodeselector-app
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: nodeselector-app
+  namespace: nodeselector-ex
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: nodeselector-app
+    weight: 100
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  wildcardPolicy: None

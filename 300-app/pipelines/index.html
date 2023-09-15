@@ -1,0 +1,1404 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A workshop for Operations and Development teams on ARO.">
+      
+      
+        <meta name="author" content="Red Hat">
+      
+      
+        <link rel="canonical" href="https://ws.mobb.cloud/300-app/pipelines/">
+      
+      <link rel="icon" href="../../favicon.ico">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.9">
+    
+    
+      
+        <title>Automate Deploying the App with Tekton - ARO Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.20d9efc8.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.08040f6c.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#000000">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Overpass:300,300i,400,400i,700,700i%7COverpass+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Overpass";--md-code-font:"Overpass Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/css/custom.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-G42MP6ET81"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-G42MP6ET81",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-G42MP6ET81",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="red">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#install-the-openshift-pipelines-operator" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="ARO Workshop" class="md-header__button md-logo" aria-label="ARO Workshop" data-md-component="logo">
+      
+  <img src="../../favicon.ico" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ARO Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Automate Deploying the App with Tekton
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/rh-mobb/aro-workshop-content" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rh-mobb/aro-workshop-content
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="ARO Workshop" class="md-nav__button md-logo" aria-label="ARO Workshop" data-md-component="logo">
+      
+  <img src="../../favicon.ico" alt="logo">
+
+    </a>
+    ARO Workshop
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/rh-mobb/aro-workshop-content" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rh-mobb/aro-workshop-content
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Welcome
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../100-setup/1-environment/" class="md-nav__link">
+        Environment Setup
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../100-setup/2-cluster-creation/" class="md-nav__link">
+        Create ARO Cluster
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../100-setup/3-access-cluster/" class="md-nav__link">
+        Access Your Cluster
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Day Two ARO Operations
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Day Two ARO Operations" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Day Two ARO Operations
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../200-ops/idp/aad/" class="md-nav__link">
+        Configuring cluster authentication
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../200-ops/day2/upgrades/" class="md-nav__link">
+        Managing Cluster Upgrades
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../200-ops/day2/scaling-nodes/" class="md-nav__link">
+        Managing Worker Nodes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../200-ops/day2/autoscaling/" class="md-nav__link">
+        Cluster Autoscaling
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../200-ops/day2/labels/" class="md-nav__link">
+        Labeling Nodes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../200-ops/day2/observability/" class="md-nav__link">
+        Forward Metrics and Logs to Azure Files
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          Deploy and Expose an App
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Deploy and Expose an App" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Deploy and Expose an App
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deploy/" class="md-nav__link">
+        Deploy the App
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gitops/" class="md-nav__link">
+        Using OpenShift GitOps
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../networkpolicy/" class="md-nav__link">
+        Restrict Network Access
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Automate Deploying the App with Tekton
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Automate Deploying the App with Tekton
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install-the-openshift-pipelines-operator" class="md-nav__link">
+    Install the OpenShift Pipelines operator
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-the-github-integration" class="md-nav__link">
+    Configure the GitHub integration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#import-tasks-to-our-pipeline" class="md-nav__link">
+    Import tasks to our pipeline
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-azure-container-registry" class="md-nav__link">
+    Configure Azure Container Registry
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-our-pipeline" class="md-nav__link">
+    Configure our pipeline
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-application-settings" class="md-nav__link">
+    Update Application Settings
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validate-the-pipeline" class="md-nav__link">
+    Validate the pipeline
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#event-triggering" class="md-nav__link">
+    Event Triggering
+  </a>
+  
+    <nav class="md-nav" aria-label="Event Triggering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-the-event-triggering" class="md-nav__link">
+    Test the Event Triggering
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resilience/" class="md-nav__link">
+        Make an App Resilient
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          Service Mesh
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Service Mesh" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Service Mesh
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../500-service-mesh/introduction/" class="md-nav__link">
+        Service Mesh
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../500-service-mesh/install/" class="md-nav__link">
+        Deploy Service Mesh Operator
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../500-service-mesh/deploy-control-plane/" class="md-nav__link">
+        Deploy Control Plane
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../500-service-mesh/deploy-workload/" class="md-nav__link">
+        Deploy Workloads
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../500-service-mesh/weighted-routing/" class="md-nav__link">
+        Deploy Weighted Load Balancing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../500-service-mesh/kiali/" class="md-nav__link">
+        Access Kiali Dashboard
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9">
+          Conclusion
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Conclusion" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Conclusion
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../finish/" class="md-nav__link">
+        Clean Up
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install-the-openshift-pipelines-operator" class="md-nav__link">
+    Install the OpenShift Pipelines operator
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-the-github-integration" class="md-nav__link">
+    Configure the GitHub integration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#import-tasks-to-our-pipeline" class="md-nav__link">
+    Import tasks to our pipeline
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-azure-container-registry" class="md-nav__link">
+    Configure Azure Container Registry
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-our-pipeline" class="md-nav__link">
+    Configure our pipeline
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-application-settings" class="md-nav__link">
+    Update Application Settings
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validate-the-pipeline" class="md-nav__link">
+    Validate the pipeline
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#event-triggering" class="md-nav__link">
+    Event Triggering
+  </a>
+  
+    <nav class="md-nav" aria-label="Event Triggering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-the-event-triggering" class="md-nav__link">
+    Test the Event Triggering
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  <a href="https://github.com/rh-mobb/aro-workshop-content/edit/master/docs/300-app/pipelines.md" title="Edit this page" class="md-content__button md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+  <h1>Automate Deploying the App with Tekton</h1>
+
+<p>Next, we'll automate deploying our application using the OpenShift Pipelines operator, which is based on the open source Tekton project.</p>
+<p>If you would like to read more about OpenShift Pipelines, <a href="https://docs.openshift.com/container-platform/4.11/cicd/pipelines/understanding-openshift-pipelines.html" target="_blank">see the Red Hat documentation</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">GitHub Account Required</p>
+<p>This section of the workshop requires a personal <a href="https://github.com" target="_blank">GitHub</a> account. If you do not have a GitHub account and do not wish to create one, you can skip this section and move to the next section.</p>
+</div>
+<h2 id="install-the-openshift-pipelines-operator">Install the OpenShift Pipelines operator<a class="headerlink" href="#install-the-openshift-pipelines-operator" title="Permanent link">#</a></h2>
+<ol>
+<li>
+<p>Return to your tab with the OpenShift Web Console. If you need to reauthenticate, follow the steps in the <a href="../setup/3-access-cluster/">Access Your Cluster</a> section.</p>
+</li>
+<li>
+<p>Using the menu on the left Select <em>Operator</em> -&gt; <em>OperatorHub</em>.</p>
+<p><img align="center" alt="Web Console - OperatorHub Sidebar" src="../../assets/images/web-console-operatorhub-menu.png" /></p>
+</li>
+<li>
+<p>In the search box, search for "OpenShift Pipelines" and click on the <em>Red Hat OpenShift Pipelines</em> box.</p>
+<p><img align="center" alt="Web Console - OpenShift Pipelines Operator Selection" src="../../assets/images/web-console-operatorhub-openshift-pipelines.png" /></p>
+</li>
+<li>
+<p>Click on <em>Install</em> on the page that appears.</p>
+<p><img align="center" alt="Web Console - OpenShift Pipelines Simple Install" src="../../assets/images/web-console-openshift-pipelines-simple-install.png" /></p>
+</li>
+<li>
+<p>Accept the defaults that are presented and select <em>Install</em> to install the operator.</p>
+<p><img align="center" alt="Web Console - OpenShift Pipelines Detailed Install" src="../../assets/images/web-console-openshift-pipelines-detailed-install.png" /></p>
+</li>
+<li>
+<p>Allow the operator a few minutes to successfully install the OpenShift Pipelines operator into the cluster.</p>
+<p><img align="center" alt="Web Console - OpenShift Pipelines Successful Install" src="../../assets/images/web-console-openshift-pipelines-successful-install.png" /></p>
+</li>
+</ol>
+<h2 id="configure-the-github-integration">Configure the GitHub integration<a class="headerlink" href="#configure-the-github-integration" title="Permanent link">#</a></h2>
+<ol>
+<li>
+<p>In your web browser, go to the following GitHub repositories:</p>
+<ul>
+<li><a href="https://github.com/rh-mobb/common-java-dependencies" target="_blank">https://github.com/rh-mobb/common-java-dependencies</a></li>
+<li><a href="https://github.com/rh-mobb/aro-workshop-app" target="_blank">https://github.com/rh-mobb/aro-workshop-app</a></li>
+</ul>
+<p>Ensure you are logged in to GitHub and select the <em>Fork</em> button for <strong>both</strong> repositories and then choose your own GitHub account.</p>
+<p><img alt="GitHub Repository Fork" src="../../assets/images/github-fork.png" /></p>
+</li>
+<li>
+<p>Next, browse to <a href="https://github.com/settings/tokens/new" target="_blank">https://github.com/settings/tokens/new</a> and create a new GitHub Personal Access Token. Set the Scope to "repo" and click <em>Generate Token</em>.</p>
+<p><img alt="GitHub Personal Access Token" src="../../assets/images/github-personal-access-token.png" /></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Do not</strong> forget to delete this token once the workshop is over.</p>
+</div>
+</li>
+<li>
+<p>Next, save the token to your Cloud Shell instance. To do so, run the following command, ensuring you replace the <code>INSERT_TOKEN_HERE</code> with your Personal Access Token:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">export</span> <span class="nv">GH_PAT</span><span class="o">=</span>INSERT_TOKEN_HERE
+</code></pre></div>
+</li>
+<li>
+<p>Then, save your GitHub username as a variable. To do so, run the following command, ensuring you replace the <code>GITHUB_USER_ID</code> with your GitHub username.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span> <span class="nv">GH_USER</span><span class="o">=</span>GITHUB_USER_ID
+</code></pre></div>
+</li>
+<li>
+<p>Save these to your .workshoprc</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">echo</span> <span class="s2">&quot;export GH_USER=</span><span class="si">${</span><span class="nv">GH_USER</span><span class="si">}</span><span class="s2">&quot;</span> &gt;&gt; ~/.workshoprc
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">echo</span> <span class="s2">&quot;export GH_PAT=</span><span class="si">${</span><span class="nv">GH_PAT</span><span class="si">}</span><span class="s2">&quot;</span> &gt;&gt; ~/.workshoprc
+</code></pre></div>
+</li>
+<li>
+<p>Next, let's configure our Git CLI. To do so, run the following commands:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>git config --global user.email <span class="s2">&quot;</span><span class="si">${</span><span class="nv">GH_USER</span><span class="si">}</span><span class="s2">@github.io&quot;</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>git config --global user.name <span class="s2">&quot;</span><span class="si">${</span><span class="nv">GH_USER</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div>
+</li>
+<li>
+<p>Next, we'll create a new working directory to clone our forked GitHub repositories. To do so, run the following commands:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>mkdir -p ~/aro-workshop/pipelines
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nb">cd</span> ~/aro-workshop/pipelines
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>git clone https://github.com/<span class="si">${</span><span class="nv">GH_USER</span><span class="si">}</span>/common-java-dependencies.git
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>git clone https://github.com/<span class="si">${</span><span class="nv">GH_USER</span><span class="si">}</span>/aro-workshop-app.git
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nb">cd</span> aro-workshop-app
+</code></pre></div>
+</li>
+</ol>
+<h2 id="import-tasks-to-our-pipeline">Import tasks to our pipeline<a class="headerlink" href="#import-tasks-to-our-pipeline" title="Permanent link">#</a></h2>
+<p>The next thing we need to do is import common tasks that our pipeline will use. These common tasks are designed to be reused across multiple pipelines.</p>
+<ol>
+<li>
+<p>Switch back to the <code>microsweeper-ex</code> project from earlier</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>oc project microsweeper-ex
+</code></pre></div>
+</li>
+<li>
+<p>Let's start by taking a look at the reusable tasks that we will be using. To do so, run the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ls ~/aro-workshop/pipelines/aro-workshop-app/pipeline/tasks/*.yaml
+</code></pre></div>
+<p>Expected output:</p>
+<div class="no-copy highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>/home/user/gitops/aro-workshop-app/pipeline/tasks/1-git-clone.yaml
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>/home/user/gitops/aro-workshop-app/pipeline/tasks/2-mvn.yaml
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>/home/user/gitops/aro-workshop-app/pipeline/tasks/3-mvn-build-image.yaml
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>/home/user/gitops/aro-workshop-app/pipeline/tasks/4-apply-manifest.yaml
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>/home/user/gitops/aro-workshop-app/pipeline/tasks/5-update-deployment.yaml
+</code></pre></div>
+<ul>
+<li>
+<p><code>1-git-clone.yaml</code> <br>
+  Clones a given GitHub Repo.</p>
+</li>
+<li>
+<p><code>2-mvn.yaml</code> <br>
+  This Task can be used to run a Maven build</p>
+</li>
+<li>
+<p><code>3-mvn-build-image.yaml</code> <br>
+  Packages source with maven builds and into a container image, then pushes it to a container registry. Builds source into a container image using Project Atomic's Buildah build tool. It uses Buildah's support for building from Dockerfiles, using its buildah bud command.This command executes the directives in the Dockerfile to assemble a container image, then pushes that image to a container registry.</p>
+</li>
+<li>
+<p><code>4-apply-manifest.yaml</code> <br>
+  Applied manifest files to the cluster</p>
+</li>
+<li>
+<p><code>5-update-deployment.yaml</code> <br>
+  Updates a deployment with the new container image.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Next, we need to apply all of these tasks to our cluster.  To do so, run the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>oc apply -n microsweeper-ex -f <span class="se">\</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>  ~/aro-workshop/pipelines/aro-workshop-app/pipeline/tasks
+</code></pre></div>
+<p>Your output should match this:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>task.tekton.dev/git-clone configured
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>task.tekton.dev/maven configured
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>task.tekton.dev/build-maven-image configured
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>task.tekton.dev/apply-manifests configured
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>task.tekton.dev/update-deployment configured
+</code></pre></div>
+</li>
+</ol>
+<h2 id="configure-azure-container-registry">Configure Azure Container Registry<a class="headerlink" href="#configure-azure-container-registry" title="Permanent link">#</a></h2>
+<ol>
+<li>
+<p>Next we need to create an Azure Container Registry. To do so, run the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>az acr create --resource-group <span class="si">${</span><span class="nv">AZ_RG</span><span class="si">}</span> <span class="se">\</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>  --name mobbws<span class="si">${</span><span class="nv">UNIQUE</span><span class="si">}</span> --sku Basic
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>az acr update -n mobbws<span class="si">${</span><span class="nv">UNIQUE</span><span class="si">}</span> --admin-enabled <span class="nb">true</span>
+</code></pre></div>
+</li>
+<li>
+<p>Next, we need to create a secret to push and pull images into the Azure Container Registry. To do so, run the following command to retrieve the token:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nv">ACR_PWD</span><span class="o">=</span><span class="k">$(</span>az acr credential show -n mobbws<span class="si">${</span><span class="nv">UNIQUE</span><span class="si">}</span> -g <span class="si">${</span><span class="nv">AZ_RG</span><span class="si">}</span> --query <span class="s1">&#39;passwords[0].value&#39;</span> -o tsv<span class="k">)</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="nb">echo</span> <span class="s2">&quot;ACR Token (Sensitive Value): </span><span class="si">${</span><span class="nv">ACR_PWD</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div>
+</li>
+<li>
+<p>Then, create the secret using the retrieved token. To do so, run the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>oc -n microsweeper-ex create secret docker-registry --docker-server<span class="o">=</span>mobbws<span class="si">${</span><span class="nv">UNIQUE</span><span class="si">}</span>.azurecr.io <span class="se">\</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>  --docker-username<span class="o">=</span><span class="s2">&quot;mobbws</span><span class="si">${</span><span class="nv">UNIQUE</span><span class="si">}</span><span class="s2">&quot;</span> --docker-password<span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">ACR_PWD</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>  --docker-email<span class="o">=</span>unused acr-secret
+</code></pre></div>
+</li>
+</ol>
+<h2 id="configure-our-pipeline">Configure our pipeline<a class="headerlink" href="#configure-our-pipeline" title="Permanent link">#</a></h2>
+<ol>
+<li>
+<p>Next, create the pipeline service account and permissions that the pipeline tasks will run under. To do so, run the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>oc create -f ~/aro-workshop/pipelines/aro-workshop-app/pipeline/1-pipeline-account.yaml
+</code></pre></div>
+<p>Your output should match this:</p>
+<div class="no-copy highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>serviceaccount/pipeline configured
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>secret/kube-api-secret created
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>role.rbac.authorization.k8s.io/pipeline-role created
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>rolebinding.rbac.authorization.k8s.io/pipeline-role-binding created
+</code></pre></div>
+<p>However it's okay if you see the error:</p>
+<div class="no-copy highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>serviceaccounts &quot;pipeline&quot; already exists
+</code></pre></div>
+</li>
+<li>
+<p>Next, we need to link the ACR credential secret we just created, so the service account can mount and pull images from ACR. To do so, run the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>oc -n microsweeper-ex secrets link pipeline acr-secret --for<span class="o">=</span>pull,mount
+</code></pre></div>
+</li>
+<li>
+<p>Next, we should verify that our secret is linked to our service account, to do so, run the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>oc -n microsweeper-ex describe sa pipeline <span class="p">|</span> grep <span class="s2">&quot;acr-secret&quot;</span>
+</code></pre></div>
+<p>You should see the following output:</p>
+<div class="no-copy highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>                    acr-secret
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>Mountable secrets:   acr-secret
+</code></pre></div>
+</li>
+<li>
+<p>We need the microsweeper service account to also be able to use the acr-secret.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>oc -n microsweeper-ex secrets link microsweeper-appservice acr-secret --for<span class="o">=</span>pull,mount
+</code></pre></div>
+</li>
+<li>
+<p>We also need to give the pipeline permission for certain privileged security context constraints to that it can execute builds. To grant these permissions, run the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>oc -n microsweeper-ex adm policy add-scc-to-user anyuid -z pipeline
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>oc -n microsweeper-ex adm policy add-scc-to-user privileged -z pipeline
+</code></pre></div>
+</li>
+<li>
+<p>Create a persistent volume claim that the pipeline will use to store build images. To do so, run the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>oc create -f ~/aro-workshop/pipelines/aro-workshop-app/pipeline/2-pipeline-pvc.yaml
+</code></pre></div>
+</li>
+<li>
+<p>Next, let's review the pipeline definition. To do so, open the following link in a new tab: <a href="https://github.com/rh-mobb/aro-hackaton-app/blob/main/pipeline/3-pipeline.yaml" target="_blank">https://github.com/rh-mobb/aro-hackaton-app/blob/main/pipeline/3-pipeline.yaml</a>.</p>
+<p>Browse through the file and notice all the tasks that are being executed. These are the tasks we imported in the previous step. The pipeline definition simply says which order the tasks are run and what parameters should be passed between tasks.</p>
+</li>
+</ol>
+<h2 id="update-application-settings">Update Application Settings<a class="headerlink" href="#update-application-settings" title="Permanent link">#</a></h2>
+<ol>
+<li>
+<p>Now that we have the source code forked, we need to copy the properties file we created in the previous section to our new code base. To do so, run the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>cp ~/aro-workshop/deploy/aro-workshop-app/src/main/resources/application.properties <span class="se">\</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>  ~/aro-workshop/pipelines/aro-workshop-app/src/main/resources/application.properties
+</code></pre></div>
+</li>
+<li>
+<p>We also want to add the Quarkus Kubernetes extensions like we did earlier</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>quarkus ext add openshift kubernetes-config
+</code></pre></div>
+</li>
+<li>
+<p>Finally, let's commit our changes to GitHub. To do so, run the following set of commands:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>cd ~/aro-workshop/pipelines/aro-workshop-app
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>git remote set-url origin https://${GH_USER}:${GH_PAT}@github.com/${GH_USER}/aro-workshop-app
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>git add .
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>git commit -am &quot;Update Properties File&quot;
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>git push
+</code></pre></div>
+</li>
+<li>
+<p>In addition, let's go ahead and create a secret with our GitHub credentials that we will need later. To do so, run the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="l l-Scalar l-Scalar-Plain">cat &lt;&lt; EOF | oc apply -f -</span><span class="w"></span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span><span class="w"></span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gitsecret</span><span class="w"></span>
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="w">    </span><span class="nt">tekton.dev/git-0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com</span><span class="w"></span>
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">microsweeper-ex</span><span class="w"></span>
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.io/basic-auth</span><span class="w"></span>
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a><span class="nt">stringData</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a><span class="w">  </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${GH_USER}</span><span class="w"></span>
+<a id="__codelineno-25-12" name="__codelineno-25-12" href="#__codelineno-25-12"></a><span class="w">  </span><span class="nt">secretToken</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${GH_PAT}</span><span class="w"></span>
+<a id="__codelineno-25-13" name="__codelineno-25-13" href="#__codelineno-25-13"></a><span class="l l-Scalar l-Scalar-Plain">EOF</span><span class="w"></span>
+</code></pre></div>
+</li>
+<li>
+<p>Now let's proceed with creating our pipeline definition. To do so, run the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>oc create -f ~/aro-workshop/pipelines/aro-workshop-app/pipeline/3-pipeline.yaml
+</code></pre></div>
+</li>
+<li>
+<p>Next, let's tell the deployment to use ACR instead of the built-in OpenShift image registry. To do so, run the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>oc patch deploy/microsweeper-appservice <span class="se">\</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>  --patch-file ~/aro-workshop/pipelines/aro-workshop-app/pipeline/5-deployment-patch.yaml
+</code></pre></div>
+</li>
+<li>
+<p>Finally, we will create a pipeline run that will execute the pipeline, pull the code from your forked GitHub repositories, build the image, and deploy it to ARO. To do this, run the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="l l-Scalar l-Scalar-Plain">cat &lt;&lt; EOF | oc create -f -</span><span class="w"></span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tekton.dev/v1beta1</span><span class="w"></span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PipelineRun</span><span class="w"></span>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="w">  </span><span class="nt">generateName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">minesweeper-pipeline-</span><span class="w"></span>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">microsweeper-ex</span><span class="w"></span>
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a><span class="w">  </span><span class="nt">pipelineRef</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">maven-pipeline</span><span class="w"></span>
+<a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a><span class="w">  </span><span class="nt">serviceAccountName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pipeline</span><span class="w"></span>
+<a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a><span class="w">  </span><span class="nt">params</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">application-name</span><span class="w"></span>
+<a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">microsweeper-appservice</span><span class="w"></span>
+<a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dependency-git-url</span><span class="w"></span>
+<a id="__codelineno-28-15" name="__codelineno-28-15" href="#__codelineno-28-15"></a><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/${GH_USER}/common-java-dependencies</span><span class="w"></span>
+<a id="__codelineno-28-16" name="__codelineno-28-16" href="#__codelineno-28-16"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">application-git-url</span><span class="w"></span>
+<a id="__codelineno-28-17" name="__codelineno-28-17" href="#__codelineno-28-17"></a><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/${GH_USER}/aro-workshop-app</span><span class="w"></span>
+<a id="__codelineno-28-18" name="__codelineno-28-18" href="#__codelineno-28-18"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dockerfile-path</span><span class="w"></span>
+<a id="__codelineno-28-19" name="__codelineno-28-19" href="#__codelineno-28-19"></a><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/main/docker/Dockerfile.jvm</span><span class="w"></span>
+<a id="__codelineno-28-20" name="__codelineno-28-20" href="#__codelineno-28-20"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">image-name</span><span class="w"></span>
+<a id="__codelineno-28-21" name="__codelineno-28-21" href="#__codelineno-28-21"></a><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mobbws${UNIQUE}.azurecr.io/minesweeper</span><span class="w"></span>
+<a id="__codelineno-28-22" name="__codelineno-28-22" href="#__codelineno-28-22"></a><span class="w">  </span><span class="nt">workspaces</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-28-23" name="__codelineno-28-23" href="#__codelineno-28-23"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source</span><span class="w"></span>
+<a id="__codelineno-28-24" name="__codelineno-28-24" href="#__codelineno-28-24"></a><span class="w">    </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-28-25" name="__codelineno-28-25" href="#__codelineno-28-25"></a><span class="w">      </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">minesweeper-source-pvc</span><span class="w"></span>
+<a id="__codelineno-28-26" name="__codelineno-28-26" href="#__codelineno-28-26"></a><span class="l l-Scalar l-Scalar-Plain">EOF</span><span class="w"></span>
+</code></pre></div>
+</li>
+</ol>
+<h2 id="validate-the-pipeline">Validate the pipeline<a class="headerlink" href="#validate-the-pipeline" title="Permanent link">#</a></h2>
+<p>Let's take a look at the OpenShift Web Console to see what was created and if the application was successfully deployed.</p>
+<div class="admonition warning">
+<p class="admonition-title">Make sure your Project is set to <code>microsweeper-ex</code></p>
+</div>
+<ol>
+<li>
+<p>From the OpenShift Web Console, click on <em>Pipelines</em> -&gt;<em>Tasks</em>.</p>
+<p><img alt="Image" src="../images/pipeline-tasks-ocp.png" /></p>
+<p>Notice the 5 tasks that we imported and click into them to view the YAML definitions.</p>
+</li>
+<li>
+<p>Next, lets look at the Pipeline. Click on <em>Pipelines</em>. Notice that it is either still running, or the last run was successful. Click on <em>maven-pipeline</em> to view the pipeline details.</p>
+<p><img alt="Image" src="../images/pipeline-ocp.png" /></p>
+</li>
+<li>
+<p>On the following screen, click on <em>PipelineRuns</em> to view the status of each Pipeline Run.</p>
+<p><img alt="Image" src="../images/pipeline-run-ocp.png" /></p>
+</li>
+<li>
+<p>Lastly, click on the <em>PipelineRun</em> name and you can see all the details and steps of the pipeline. If your are curious, you can also view the logs of the different tasks that were run.</p>
+<p><img alt="Image" src="../images/pipeline-run-details-ocp.png" /></p>
+</li>
+<li>
+<p>Watch the PipelineRun page as the tasks complete and the PipelineRun finishes.</p>
+</li>
+</ol>
+<h2 id="event-triggering">Event Triggering<a class="headerlink" href="#event-triggering" title="Permanent link">#</a></h2>
+<p>At this point, we can successfully build and deploy new code by manually running our pipeline. But how can we configure the pipeline to run automatically when we commit code to Git? We can do so with an Event Listener and a Trigger.</p>
+<ol>
+<li>
+<p>Let's start by looking at the resources we will be creating to create our event listener and trigger.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>ls ~/aro-workshop/pipelines/aro-workshop-app/pipeline/tasks/event-listener/*.yaml
+</code></pre></div>
+<p>Your output should match:</p>
+<div class="no-copy highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>/home/user/gitops/aro-workshop-app/pipeline/tasks/event-listener/1-web-trigger-binding.yaml
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>/home/user/gitops/aro-workshop-app/pipeline/tasks/event-listener/2-web-trigger-template.yaml
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>/home/user/gitops/aro-workshop-app/pipeline/tasks/event-listener/3-web-trigger.yaml
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>/home/user/gitops/aro-workshop-app/pipeline/tasks/event-listener/4-event-listener.yaml
+</code></pre></div>
+</li>
+<li>
+<p>Take a look at the files listed:</p>
+<ul>
+<li>
+<p><code>1-web-trigger-binding.yaml</code>
+  This TriggerBinding allows you to extract fields, such as the git repository name, git commit number, and the git repository URL in this case.
+  To learn more about TriggerBindings, click <a href="https://tekton.dev/docs/triggers/triggerbindings/">here</a></p>
+</li>
+<li>
+<p><code>2-web-trigger-template.yaml</code>
+  The TriggerTemplate specifies how the pipeline should be run.  Browsing the file above, you will see there is a definition of the PipelineRun that looks exactly like the PipelineRun you create in the previous step.  This is by design! ... it should be the same.</p>
+</li>
+</ul>
+<p>To learn more about TriggerTemplates, <a href="https://tekton.dev/docs/triggers/triggertemplates/" target="_blank">review the Tekton documentation</a>.</p>
+<ul>
+<li><code>3-web-trigger.yaml</code>
+  The next file we have is the Trigger.  The Trigger specifies what should happen when the EventListener detects an Event.  Looking at this file, you will see that we are looking for 'Push' events that will create an instance of the TriggerTemplate that we just created.  This in turn will start the PipelineRun.</li>
+</ul>
+<p>To learn more about Triggers, <a href="https://tekton.dev/docs/triggers/triggers/" target="_blank">review the Tekton documentation</a>.</p>
+<ul>
+<li><code>4-event-listenter.yaml</code>
+  The last file we have is the Event Listener.  An EventListener is a Kubernetes object that listens for events at a specified port on your OpenShift cluster. It exposes an OpenShift Route that receives incoming event and specifies one or more Triggers.</li>
+</ul>
+<p>To learn more about EventListeners, <a href="https://tekton.dev/docs/triggers/eventlisteners/" target="_blank">review the Tekton documentation</a>.</p>
+</li>
+<li>
+<p>Edit <code>~/aro-workshop/pipelines/aro-workshop-app/pipeline/tasks/event-listener/2-web-trigger-template.yaml</code> with your favorite text editor (vim!) and replace the <code>&lt;&gt;</code> sections with the values of from the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="nb">echo</span> <span class="s2">&quot;GITHUB_USER: </span><span class="si">${</span><span class="nv">GH_USER</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="nb">echo</span> <span class="s2">&quot;ACR_ENDPOINT: mobbws</span><span class="si">${</span><span class="nv">UNIQUE</span><span class="si">}</span><span class="s2">.azurecr.io/minesweeper&quot;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>vim ~/aro-workshop/pipelines/aro-workshop-app/pipeline/tasks/event-listener/2-web-trigger-template.yaml
+</code></pre></div>
+<div class="no-copy highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>  - name: dependency-git-url
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>    value: https://github.com/GITHUB_USER_ID/common-java-dependencies
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>  - name: application-git-url
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>    value: https://github.com/GITHUB_USER_ID/aro-workshop-app
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>[...]
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>  - name: image-name
+<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>    value: ACR_ENDPOINT.azurecr.io/minesweeper
+</code></pre></div>
+</li>
+<li>
+<p>Now that you have reviewed all the files, let's apply them to our cluster.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>oc -n microsweeper-ex create -f <span class="se">\</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>  ~/aro-workshop/pipelines/aro-workshop-app/pipeline/tasks/event-listener
+</code></pre></div>
+</li>
+</ol>
+<p>Before we test out our EventListener and Trigger, lets review what was created in OpenShift.</p>
+<ol>
+<li>
+<p>From the OpenShift console, under Pipelines, click on Triggers.</p>
+</li>
+<li>
+<p>Browse the EventListener, TriggerTemplate and TriggerBindings that you just created.
+<img alt="Image" src="../images/ocp-triggers.png" /></p>
+</li>
+</ol>
+<p>The next thing we need to do, is connect our EventListener with Git.  When an action, such as a git push, happens, git will need to call our EventListener to start the build and deploy process.</p>
+<ol>
+<li>
+<p>The first thing we need to do is expose our EventListener service to the internet. To do so, we'll run the <code>oc expose</code> command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>oc -n microsweeper-ex expose svc el-minesweeper-el
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since this is public cluster, we can simply use the default ingress controller. For a private cluster, you might choose to use a service like Azure Front Door to expose the endpoint.</p>
+</div>
+</li>
+<li>
+<p>To get the URL of the Event Listener Route that we just created, run the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>oc -n microsweeper-ex get route el-minesweeper-el <span class="se">\</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>  -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s2">&quot;http://{.spec.host}{&#39;\n&#39;}&quot;</span>
+</code></pre></div>
+<p>For example, your output will look something similar to:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>el-minesweeper-el-microsweeper-ex.apps.ce7l3kf6.eastus.aroapp.io
+</code></pre></div>
+</li>
+</ol>
+<p>The last step we need to do, is configure GitHub to call this event listener URL when events occur.</p>
+<p>From your browser, go to your personal GitHub aro-workshop-app repository, and click on <em>Settings</em>.
+<img alt="Image" src="../images/git-settings.png" /></p>
+<p>On the next screen, click on <em>Webhooks</em>.
+<img alt="Image" src="../images/git-settings-webhook.png" /></p>
+<p>Click on the <em>Add Webhook</em> button.
+<img alt="Image" src="../images/git-add-webhook.png" /></p>
+<p>On the next screen, enter the following settings:</p>
+<ul>
+<li><strong>PayloadURL</strong> - enter the URL you got above (for example: <code>http://el-minesweeper-el-microsweeper-ex.apps.ce7l3kf6.eastus.aroapp.io</code>)</li>
+<li><strong>ContentType</strong> - select application/json</li>
+<li><strong>Secret</strong> - this your GitHub Personal Access Token (<code>echo $GH_PAT</code>)</li>
+</ul>
+<p>Where does the secret value come from?
+Refer to the <code>~/aro-workshop/pipelines/aro-workshop-app/pipeline/tasks/event-listener/3-web-trigger.yaml</code> file.</p>
+<p>You will see the following snippet that contains the secret to access git.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>  interceptors:
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>    - ref:
+<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a>        name: <span class="s2">&quot;github&quot;</span>
+<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a>      params:
+<a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a>        - name: <span class="s2">&quot;secretRef&quot;</span>
+<a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a>          value:
+<a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a>            secretName: gitsecret
+<a id="__codelineno-38-8" name="__codelineno-38-8" href="#__codelineno-38-8"></a>            secretKey: secretToken
+<a id="__codelineno-38-9" name="__codelineno-38-9" href="#__codelineno-38-9"></a>        - name: <span class="s2">&quot;eventTypes&quot;</span>
+<a id="__codelineno-38-10" name="__codelineno-38-10" href="#__codelineno-38-10"></a>          value: <span class="o">[</span><span class="s2">&quot;push&quot;</span><span class="o">]</span>
+</code></pre></div>
+<p>The secret you enter here for the git webhook, needs to match the value for the <em>secretToken</em> key of the a secret named gitsecret. If you remember in the previous step, we create this secret and used your git token as this value.</p>
+<p>Keep the remaining defaults, and click <em>Add webhook</em>.</p>
+<p><img alt="Image" src="../images/add-webhook.png" /></p>
+<h3 id="test-the-event-triggering">Test the Event Triggering<a class="headerlink" href="#test-the-event-triggering" title="Permanent link">#</a></h3>
+<p>Now that we have our trigger, eventlistener and git webhook setup, lets test it out.</p>
+<p>Make sure you are in the directory for your personal git repo where the application is, and edit the <code>./src/main/resources/META-INF/resources/index.html</code> file.</p>
+<p>Search for Leaderboard and change it to \&lt;YOUR NAME> Leaderboard.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="nb">cd</span> ~/aro-workshop/pipelines/aro-workshop-app
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>vi src/main/resources/META-INF/resources/index.html
+</code></pre></div>
+<p><img alt="Image" src="../images/html-edit.png" /></p>
+<p>Now commit and push the change</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>git commit -am <span class="s1">&#39;Updated leaderboard title&#39;</span>
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>git push
+</code></pre></div>
+<p>Pushing the change to the your git repository will kick of the event listener which will start the pipeline.</p>
+<p>As a bonus, if you want to look at the logs of the event listener, you can use the tekton (tkn) cli.</p>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>tkn eventlistener logs minesweeper-el
+</code></pre></div>
+<img alt="Image" src="../images/tkn.png" /></p>
+<p>Quickly switch over to your OpenShift Web Console, and watch the pipeline run.</p>
+<p><img alt="Image" src="../images/watch-pipeline.png" /></p>
+<p>Once the pipeline finishes, check out the change.</p>
+<p>From the OpenShift Web Console, click on <em>Networking</em> -&gt; <em>Routes</em>.
+<img alt="Image" src="../images/route-2.png" /></p>
+<p>Hopefully, you will see the updated application with a new title for the leaderboard!
+<img alt="Image" src="../images/updated-minesweeper.png" /></p>
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../networkpolicy/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Restrict Network Access" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Restrict Network Access
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../resilience/" class="md-footer__link md-footer__link--next" aria-label="Next: Make an App Resilient" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Make an App Resilient
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.annotate"], "search": "../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d6c3db9e.min.js"></script>
+      
+    
+  </body>
+</html>
